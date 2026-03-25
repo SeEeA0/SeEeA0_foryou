@@ -1,0 +1,388 @@
+import React, { useMemo, useState } from "react";
+import { Calendar, Clock3, Flame, Zap, Star, ChevronLeft, ChevronRight, Swords, Users, Sparkles } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
+
+const raidData = [
+  {
+    id: 1,
+    name: "뮤츠",
+    tier: "전설 레이드",
+    image: "https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=800&auto=format&fit=crop",
+    start: "2026-10-01",
+    end: "2026-10-07",
+    cp: "54,148",
+    boostedCp: "67,685",
+    bossType: ["에스퍼"],
+    color: "from-fuchsia-500/20 to-violet-500/20",
+  },
+  {
+    id: 2,
+    name: "레쿠쟈",
+    tier: "메가/전설 레이드",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop",
+    start: "2026-10-08",
+    end: "2026-10-14",
+    cp: "49,808",
+    boostedCp: "62,260",
+    bossType: ["드래곤", "비행"],
+    color: "from-emerald-500/20 to-cyan-500/20",
+  },
+  {
+    id: 3,
+    name: "가이오가",
+    tier: "전설 레이드",
+    image: "https://images.unsplash.com/photo-1473773508845-188df298d2d1?q=80&w=800&auto=format&fit=crop",
+    start: "2026-10-15",
+    end: "2026-10-21",
+    cp: "54,411",
+    boostedCp: "68,014",
+    bossType: ["물"],
+    color: "from-sky-500/20 to-blue-500/20",
+  },
+  {
+    id: 4,
+    name: "그란돈",
+    tier: "전설 레이드",
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop",
+    start: "2026-10-22",
+    end: "2026-10-31",
+    cp: "54,411",
+    boostedCp: "68,014",
+    bossType: ["땅"],
+    color: "from-orange-500/20 to-rose-500/20",
+  },
+];
+
+const communityData = [
+  {
+    id: 1,
+    title: "커뮤니티 데이 - 이상해씨",
+    date: "2026-10-11",
+    time: "14:00 - 17:00",
+    bonus: "별의모래 3배 / 루어모듈 3시간",
+    image: "https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    title: "레이드 아워 - 뮤츠",
+    date: "2026-10-07",
+    time: "18:00 - 19:00",
+    bonus: "전설 레이드 집중 등장",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    title: "맥스 먼데이 - 가이오가",
+    date: "2026-10-19",
+    time: "18:00 - 19:00",
+    bonus: "특정 보스 집중 공략",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    title: "스포트라이트 아워 - 피카츄",
+    date: "2026-10-27",
+    time: "18:00 - 19:00",
+    bonus: "XP 2배",
+    image: "https://images.unsplash.com/photo-1494253109108-2e30c049369b?q=80&w=800&auto=format&fit=crop",
+  },
+];
+
+const monthLabel = "2026년 10월";
+const weekRanges = [
+  { id: "w1", label: "1주차", range: "10/1 - 10/7" },
+  { id: "w2", label: "2주차", range: "10/8 - 10/14" },
+  { id: "w3", label: "3주차", range: "10/15 - 10/21" },
+  { id: "w4", label: "4주차", range: "10/22 - 10/31" },
+];
+
+function getWeekId(dateStr) {
+  const day = Number(dateStr.split("-")[2]);
+  if (day <= 7) return "w1";
+  if (day <= 14) return "w2";
+  if (day <= 21) return "w3";
+  return "w4";
+}
+
+function buildCalendar(year, monthIndex) {
+  const firstDay = new Date(year, monthIndex, 1);
+  const lastDay = new Date(year, monthIndex + 1, 0);
+  const startWeekday = firstDay.getDay();
+  const totalDays = lastDay.getDate();
+  const cells = [];
+
+  for (let i = 0; i < startWeekday; i++) cells.push(null);
+  for (let d = 1; d <= totalDays; d++) cells.push(new Date(year, monthIndex, d));
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const rows = [];
+  for (let i = 0; i < cells.length; i += 7) rows.push(cells.slice(i, i + 7));
+  return rows;
+}
+
+export default function PokemonGoScheduleDashboard() {
+  const [selectedWeek, setSelectedWeek] = useState("w1");
+  const [search, setSearch] = useState("");
+
+  const calendarRows = useMemo(() => buildCalendar(2026, 9), []);
+
+  const filteredRaid = raidData.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const weeklyRaid = filteredRaid.filter((item) => getWeekId(item.start) === selectedWeek);
+  const weeklyCommunity = communityData.filter((item) => getWeekId(item.date) === selectedWeek);
+
+  return (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#f5f7ff,_#eef3ff_35%,_#f9fbff_70%)] p-4 md:p-8 text-slate-800">
+      <div className="mx-auto max-w-7xl space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_20px_60px_rgba(90,112,180,0.12)] backdrop-blur"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="mb-2 flex items-center gap-2 text-sm text-slate-500">
+                <Sparkles className="h-4 w-4" /> 포켓몬고 일정 대시보드
+              </div>
+              <h1 className="text-2xl font-bold md:text-4xl">월간 캘린더 + 주간 앱형 일정표</h1>
+              <p className="mt-2 text-sm text-slate-500 md:text-base">
+                레이드 일정, 커뮤니티 일정, 보스 정보, CP / 부스트 CP를 한 화면에서 보기 쉽게 구성한 시안입니다.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="relative flex items-center gap-2 rounded-2xl border bg-white px-3 py-2 shadow-sm">
+                <Calendar className="h-4 w-4 text-slate-400" />
+                <span className="font-semibold">{monthLabel}</span>
+              </div>
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="보스명 검색"
+                className="h-11 w-full rounded-2xl border-slate-200 bg-white sm:w-56"
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <Card className="overflow-hidden rounded-[28px] border-white/70 bg-white/85 shadow-[0_18px_50px_rgba(90,112,180,0.10)]">
+            <CardHeader className="border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-sky-50 to-violet-50">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-xl">한달 전체 캘린더</CardTitle>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="icon" className="rounded-2xl"><ChevronLeft className="h-4 w-4" /></Button>
+                  <Button variant="outline" size="icon" className="rounded-2xl"><ChevronRight className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-4 md:p-5">
+              <div className="grid grid-cols-7 gap-2 text-center text-sm font-semibold text-slate-500">
+                {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
+                  <div key={day} className="rounded-xl bg-slate-50 py-3">{day}</div>
+                ))}
+              </div>
+
+              <div className="mt-2 space-y-2">
+                {calendarRows.map((week, idx) => (
+                  <div key={idx} className="grid grid-cols-7 gap-2">
+                    {week.map((date, i) => {
+                      const dayNumber = date ? date.getDate() : "";
+                      const dateKey = date
+                        ? `2026-10-${String(dayNumber).padStart(2, "0")}`
+                        : null;
+                      const dayCommunity = communityData.filter((item) => item.date === dateKey);
+                      const dayRaid = raidData.filter(
+                        (item) => dateKey && item.start <= dateKey && item.end >= dateKey
+                      );
+
+                      return (
+                        <motion.div
+                          key={i}
+                          whileHover={{ y: -2 }}
+                          className={`min-h-[120px] rounded-2xl border p-2 text-left transition ${{
+                            true: "bg-white",
+                            false: "bg-transparent opacity-0",
+                          }[Boolean(date)]}`}
+                        >
+                          {date && (
+                            <>
+                              <div className="mb-2 flex items-center justify-between">
+                                <span className="text-sm font-bold text-slate-700">{dayNumber}</span>
+                                {dayCommunity.length > 0 && (
+                                  <Badge className="rounded-full bg-violet-100 text-violet-700 hover:bg-violet-100">
+                                    일정 {dayCommunity.length}
+                                  </Badge>
+                                )}
+                              </div>
+
+                              <div className="space-y-1.5">
+                                {dayRaid.slice(0, 2).map((raid) => (
+                                  <div
+                                    key={raid.id}
+                                    className="rounded-xl bg-gradient-to-r px-2 py-1.5 text-[11px] font-medium shadow-sm ring-1 ring-inset ring-white/60 ${raid.color}"
+                                  >
+                                    <div className="truncate">{raid.name}</div>
+                                    <div className="truncate text-slate-500">{raid.tier}</div>
+                                  </div>
+                                ))}
+                                {dayCommunity.slice(0, 1).map((event) => (
+                                  <div key={event.id} className="rounded-xl bg-sky-50 px-2 py-1.5 text-[11px] font-medium text-sky-700">
+                                    {event.title}
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          )}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[28px] border-white/70 bg-white/85 shadow-[0_18px_50px_rgba(90,112,180,0.10)]">
+            <CardHeader className="border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50">
+              <CardTitle className="text-xl">앱형 주간 일정표</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4">
+              <Tabs value={selectedWeek} onValueChange={setSelectedWeek} className="w-full">
+                <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1 md:grid-cols-4">
+                  {weekRanges.map((week) => (
+                    <TabsTrigger key={week.id} value={week.id} className="rounded-2xl py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                      <div className="text-center">
+                        <div className="font-semibold">{week.label}</div>
+                        <div className="text-[11px] text-slate-500">{week.range}</div>
+                      </div>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                {weekRanges.map((week) => (
+                  <TabsContent key={week.id} value={week.id} className="mt-4 space-y-4">
+                    <div className="rounded-[24px] bg-slate-900 p-4 text-white shadow-xl">
+                      <div className="mb-3 flex items-center justify-between">
+                        <div>
+                          <div className="text-xs uppercase tracking-[0.24em] text-slate-400">Weekly Overview</div>
+                          <div className="text-xl font-bold">{week.label} 일정</div>
+                        </div>
+                        <Badge className="rounded-full bg-white/10 text-white hover:bg-white/10">{week.range}</Badge>
+                      </div>
+
+                      <div className="space-y-3">
+                        {weeklyRaid.length > 0 ? (
+                          weeklyRaid.map((raid) => (
+                            <motion.div
+                              key={raid.id}
+                              initial={{ opacity: 0, y: 8 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="overflow-hidden rounded-[24px] bg-white/8 ring-1 ring-white/10"
+                            >
+                              <div className="grid gap-3 p-3 sm:grid-cols-[96px_1fr]">
+                                <img src={raid.image} alt={raid.name} className="h-28 w-full rounded-2xl object-cover sm:h-24" />
+                                <div className="space-y-2">
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    <Badge className="rounded-full bg-violet-400/20 text-violet-100 hover:bg-violet-400/20">{raid.tier}</Badge>
+                                    {raid.bossType.map((type) => (
+                                      <Badge key={type} variant="secondary" className="rounded-full border-0 bg-white/10 text-white">{type}</Badge>
+                                    ))}
+                                  </div>
+                                  <div>
+                                    <h3 className="text-lg font-bold">{raid.name}</h3>
+                                    <p className="text-sm text-slate-300">{raid.start} ~ {raid.end}</p>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-2 text-sm">
+                                    <div className="rounded-2xl bg-white/8 p-3">
+                                      <div className="flex items-center gap-1 text-slate-300"><Zap className="h-4 w-4" /> 기본 CP</div>
+                                      <div className="mt-1 text-lg font-bold">{raid.cp}</div>
+                                    </div>
+                                    <div className="rounded-2xl bg-white/8 p-3">
+                                      <div className="flex items-center gap-1 text-slate-300"><Flame className="h-4 w-4" /> 부스트 CP</div>
+                                      <div className="mt-1 text-lg font-bold">{raid.boostedCp}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))
+                        ) : (
+                          <div className="rounded-2xl bg-white/8 p-4 text-sm text-slate-300">선택한 주차에 등록된 레이드 일정이 없습니다.</div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-slate-600">
+                        <Users className="h-4 w-4" /> 커뮤니티 / 단기 이벤트
+                      </div>
+                      {weeklyCommunity.map((event) => (
+                        <div key={event.id} className="flex items-center gap-3 rounded-[24px] border border-slate-100 bg-white p-3 shadow-sm">
+                          <img src={event.image} alt={event.title} className="h-16 w-16 rounded-2xl object-cover" />
+                          <div className="min-w-0 flex-1">
+                            <div className="truncate font-semibold">{event.title}</div>
+                            <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-slate-500">
+                              <span className="flex items-center gap-1"><Calendar className="h-4 w-4" /> {event.date}</span>
+                              <span className="flex items-center gap-1"><Clock3 className="h-4 w-4" /> {event.time}</span>
+                            </div>
+                            <div className="mt-1 text-sm text-sky-600">{event.bonus}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </TabsContent>
+                ))}
+              </Tabs>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <Card className="rounded-[24px] border-white/70 bg-white/85 shadow-[0_14px_40px_rgba(90,112,180,0.08)]">
+            <CardContent className="p-5">
+              <div className="mb-3 flex items-center gap-2 text-slate-500"><Swords className="h-4 w-4" /> 필수 노출 정보</div>
+              <div className="space-y-2 text-sm leading-6 text-slate-700">
+                <p>• 보스명</p>
+                <p>• 보스 이미지</p>
+                <p>• 기간</p>
+                <p>• CP / 부스트 CP</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[24px] border-white/70 bg-white/85 shadow-[0_14px_40px_rgba(90,112,180,0.08)]">
+            <CardContent className="p-5">
+              <div className="mb-3 flex items-center gap-2 text-slate-500"><Star className="h-4 w-4" /> 확장 추천</div>
+              <div className="space-y-2 text-sm leading-6 text-slate-700">
+                <p>• 약점 타입</p>
+                <p>• 추천 인원 수</p>
+                <p>• 날씨 부스트 아이콘</p>
+                <p>• 색상 필터(전설/메가/그림자)</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[24px] border-white/70 bg-white/85 shadow-[0_14px_40px_rgba(90,112,180,0.08)]">
+            <CardContent className="p-5">
+              <div className="mb-3 flex items-center gap-2 text-slate-500"><Sparkles className="h-4 w-4" /> 제작 방향</div>
+              <div className="space-y-2 text-sm leading-6 text-slate-700">
+                <p>• PC에서는 월간 캘린더 중심</p>
+                <p>• 모바일에서는 주간 카드 중심</p>
+                <p>• 공식 일정표 느낌 + 앱 UI 감성</p>
+                <p>• 추후 관리자 등록형 구조로 확장 가능</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
