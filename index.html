@@ -16,7 +16,6 @@
   :root{
     --bg:#edf3fb;
     --card:#ffffff;
-    --card-soft:#f8fbff;
     --line:#d8e3f2;
     --text:#1f2f46;
     --muted:#7486a3;
@@ -39,152 +38,188 @@
     --gray:#67768f;
     --gray-soft:#f2f5fa;
 
-    --shadow:0 18px 40px rgba(43,67,110,.08);
+    --shadow:0 14px 32px rgba(43,67,110,.08);
   }
 
   .wrap{
-    max-width:1320px;
+    max-width:1180px;
     margin:0 auto;
-    padding:20px 16px 110px;
+    padding:16px 14px 110px;
   }
 
-  .hero{
-    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
-    color:#fff;
-    border-radius:34px;
-    padding:34px 32px 30px;
-    box-shadow:0 24px 60px rgba(70,90,190,.22);
-    position:relative;
-    overflow:hidden;
-    margin-bottom:18px;
+  .topbar{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:16px;
   }
 
-  .hero:before,
-  .hero:after{
-    content:"";
-    position:absolute;
-    border-radius:50%;
-    background:rgba(255,255,255,.10);
-  }
-
-  .hero:before{
-    width:260px;
-    height:260px;
-    right:-40px;
-    top:-30px;
-  }
-
-  .hero:after{
-    width:170px;
-    height:170px;
-    left:48%;
-    bottom:-70px;
-  }
-
-  .hero-inner{
-    position:relative;
-    z-index:1;
-  }
-
-  .hero-kicker{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:10px 14px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.18);
-    background:rgba(255,255,255,.12);
-    font-size:13px;
-    font-weight:900;
-  }
-
-  .hero-title{
-    margin-top:18px;
-    font-size:42px;
-    line-height:1.08;
+  .topbar-title{
+    font-size:32px;
     font-weight:900;
     letter-spacing:-.04em;
+    line-height:1.05;
   }
 
-  .hero-sub{
-    margin-top:14px;
-    max-width:840px;
-    font-size:16px;
-    line-height:1.6;
-    font-weight:700;
-    color:rgba(255,255,255,.92);
-  }
-
-  .hero-updated{
-    margin-top:18px;
+  .topbar-sub{
+    margin-top:8px;
+    color:var(--muted);
     font-size:14px;
     font-weight:800;
-    color:rgba(255,255,255,.9);
+  }
+
+  .topbar-date{
+    flex-shrink:0;
+    min-height:52px;
+    padding:0 16px;
+    border-radius:18px;
+    background:rgba(255,255,255,.88);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:900;
+    color:#617899;
+    box-shadow:var(--shadow);
+  }
+
+  .summary-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+    margin-bottom:16px;
+  }
+
+  .summary-card{
+    background:rgba(255,255,255,.9);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    text-decoration:none;
+    color:inherit;
+  }
+
+  .summary-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .summary-label{
+    font-size:13px;
+    color:#7587a5;
+    font-weight:900;
+  }
+
+  .summary-icon{
+    width:40px;
+    height:40px;
+    border-radius:14px;
+    background:#f3f7ff;
+    border:1px solid #dce6f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+  }
+
+  .summary-value{
+    margin-top:12px;
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    line-height:1;
+  }
+
+  .summary-desc{
+    margin-top:10px;
+    font-size:13px;
+    color:var(--muted);
+    font-weight:800;
+    line-height:1.4;
   }
 
   .section{
-    background:rgba(255,255,255,.84);
+    background:rgba(255,255,255,.88);
     border:1px solid var(--line);
-    border-radius:30px;
-    overflow:hidden;
+    border-radius:26px;
     box-shadow:var(--shadow);
-    margin-bottom:18px;
+    overflow:hidden;
+    margin-bottom:16px;
   }
 
   .section-head{
+    padding:18px 18px 14px;
     display:flex;
     justify-content:space-between;
-    align-items:flex-end;
-    gap:18px;
-    padding:24px 26px 18px;
-    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
-    border-bottom:1px solid #e4edf8;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid #e6eef8;
   }
 
   .section-title{
-    font-size:28px;
+    font-size:20px;
     font-weight:900;
     letter-spacing:-.03em;
   }
 
   .section-sub{
-    margin-top:8px;
+    margin-top:6px;
+    font-size:13px;
     color:var(--muted);
-    font-size:14px;
-    line-height:1.5;
-    font-weight:700;
+    font-weight:800;
   }
 
-  .tiny-badge{
+  .head-link{
+    min-height:38px;
+    padding:0 14px;
+    border-radius:999px;
+    background:#f3f7ff;
+    border:1px solid var(--line);
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:42px;
-    padding:0 14px;
-    border-radius:999px;
-    background:#f1f6ff;
-    border:1px solid var(--line);
-    color:#58719a;
-    font-size:13px;
+    font-size:12px;
     font-weight:900;
+    color:#5c7395;
+    text-decoration:none;
     white-space:nowrap;
   }
 
   .section-body{
-    padding:20px;
+    padding:14px;
   }
 
-  .chip{
+  .now-row{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+  }
+
+  .now-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid var(--line);
+    border-radius:22px;
+    padding:14px;
+    min-height:144px;
+    text-decoration:none;
+    color:inherit;
+  }
+
+  .now-chip{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:32px;
-    padding:0 12px;
+    min-height:28px;
+    padding:0 10px;
     border-radius:999px;
-    font-size:12px;
+    font-size:11px;
     font-weight:900;
     line-height:1;
-    white-space:nowrap;
   }
 
   .chip.blue{background:var(--blue-soft);color:var(--blue)}
@@ -194,47 +229,18 @@
   .chip.green{background:var(--green-soft);color:var(--green)}
   .chip.gray{background:var(--gray-soft);color:var(--gray)}
 
-  .now-grid{
+  .now-main{
     display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:16px;
-  }
-
-  .raid-card{
-    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:26px;
-    padding:18px;
-    min-height:220px;
-    box-shadow:0 10px 28px rgba(52,74,119,.05);
-  }
-
-  .raid-card-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
+    grid-template-columns:64px 1fr;
     gap:12px;
-    margin-bottom:16px;
+    align-items:center;
+    margin-top:12px;
   }
 
-  .raid-date{
-    font-size:13px;
-    font-weight:900;
-    color:#6f829f;
-    white-space:nowrap;
-  }
-
-  .raid-main{
-    display:grid;
-    grid-template-columns:96px 1fr;
-    gap:16px;
-    align-items:start;
-  }
-
-  .raid-thumb{
-    width:96px;
-    height:96px;
-    border-radius:24px;
+  .now-thumb{
+    width:64px;
+    height:64px;
+    border-radius:18px;
     background:#f3f7ff;
     border:1px solid #dce6f5;
     display:flex;
@@ -243,183 +249,56 @@
     overflow:hidden;
   }
 
-  .raid-thumb img{
-    width:78px;
-    height:78px;
+  .now-thumb img{
+    width:50px;
+    height:50px;
     object-fit:contain;
   }
 
-  .raid-name{
-    font-size:22px;
+  .now-name{
+    font-size:18px;
     font-weight:900;
-    line-height:1.15;
+    line-height:1.12;
     letter-spacing:-.03em;
   }
 
-  .raid-desc{
+  .now-meta{
     margin-top:6px;
-    font-size:13px;
-    color:#7d8ea8;
-    font-weight:700;
-  }
-
-  .stat-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-    margin-top:12px;
-  }
-
-  .stat-box{
-    background:#f6f9ff;
-    border:1px solid #dde7f5;
-    border-radius:18px;
-    padding:12px 14px;
-  }
-
-  .stat-label{
     font-size:12px;
-    color:#7386a3;
-    font-weight:900;
+    color:#7b8ca8;
+    font-weight:800;
+    line-height:1.35;
   }
 
-  .stat-value{
-    margin-top:6px;
-    font-size:15px;
-    color:#31435d;
-    font-weight:900;
-    line-height:1.2;
-  }
-
-  .boost-box{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-top:6px;
-  }
-
-  .boost-icon{
-    width:26px;
-    height:26px;
-    border-radius:50%;
-    background:#eef3ff;
-    border:1px solid #d9e4f3;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    flex-shrink:0;
-  }
-
-  .boost-icon img{
-    width:16px;
-    height:16px;
-    object-fit:contain;
-  }
-
-  .boost-text{
-    min-width:0;
-    flex:1;
-  }
-
-  .boost-name{
-    font-size:12px;
-    color:#7386a3;
-    font-weight:900;
-    line-height:1.2;
-  }
-
-  .boost-cp{
-    margin-top:4px;
-    font-size:14px;
-    color:#31435d;
-    font-weight:900;
-    line-height:1.2;
-  }
-
-  .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:16px;
-  }
-
-  .quick-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:24px;
-    padding:18px;
-    text-decoration:none;
-    color:inherit;
-    transition:.18s ease;
-    min-height:136px;
-    display:flex;
-    gap:14px;
-    align-items:center;
-  }
-
-  .quick-card:hover{
-    transform:translateY(-2px);
-    border-color:#bfd1ea;
-    box-shadow:0 12px 28px rgba(62,85,131,.08);
-  }
-
-  .quick-icon{
-    width:58px;
-    height:58px;
-    border-radius:18px;
-    background:#f3f7ff;
-    border:1px solid #dce6f4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    flex-shrink:0;
-  }
-
-  .quick-title{
-    font-size:24px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .quick-desc{
-    margin-top:6px;
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.45;
-    font-weight:700;
-  }
-
-  .week-preview{
+  .week-grid{
     display:grid;
     grid-template-columns:repeat(7,minmax(0,1fr));
-    gap:14px;
+    gap:10px;
   }
 
   .week-day{
-    min-height:190px;
+    min-height:136px;
     background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
     border:1.5px solid var(--line);
-    border-radius:24px;
-    padding:14px;
+    border-radius:20px;
+    padding:12px;
   }
 
   .week-day.today{
-    border-color:#a8c1ff;
-    box-shadow:0 12px 28px rgba(90,124,220,.10);
+    border-color:#abc3ff;
     background:linear-gradient(180deg,#ffffff 0%, #f4f8ff 100%);
   }
 
   .week-top{
     display:flex;
-    justify-content:space-between;
     align-items:flex-start;
+    justify-content:space-between;
     gap:8px;
-    margin-bottom:12px;
+    margin-bottom:10px;
   }
 
   .week-date{
-    font-size:22px;
+    font-size:20px;
     font-weight:900;
     letter-spacing:-.03em;
   }
@@ -428,22 +307,22 @@
   .week-date.sat{color:#4b7cf0}
 
   .week-dayname{
-    margin-top:4px;
-    font-size:13px;
-    color:#7f8faa;
+    margin-top:2px;
+    font-size:12px;
+    color:#8090aa;
     font-weight:800;
   }
 
   .today-pill{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:28px;
-    padding:0 10px;
+    min-height:24px;
+    padding:0 8px;
     border-radius:999px;
     background:#e9f1ff;
     color:#4e7deb;
-    font-size:11px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
     font-weight:900;
     white-space:nowrap;
   }
@@ -451,19 +330,19 @@
   .week-items{
     display:flex;
     flex-direction:column;
-    gap:8px;
+    gap:6px;
   }
 
   .week-pill{
     display:flex;
-    align-items:flex-start;
-    gap:8px;
-    min-height:42px;
-    padding:9px 10px;
-    border-radius:16px;
-    font-size:12px;
+    align-items:center;
+    gap:6px;
+    min-height:30px;
+    padding:6px 8px;
+    border-radius:12px;
+    font-size:11px;
     font-weight:900;
-    line-height:1.25;
+    line-height:1.2;
     white-space:normal;
     word-break:keep-all;
   }
@@ -476,85 +355,78 @@
   .week-pill.gray{background:var(--gray-soft);color:var(--gray)}
 
   .week-pill img{
-    width:18px;
-    height:18px;
+    width:14px;
+    height:14px;
     object-fit:contain;
     flex-shrink:0;
   }
 
-  .mini-calendar{
+  .month-grid{
     display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:14px;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:10px;
   }
 
-  .mini-day{
-    min-height:148px;
+  .month-day{
+    min-height:126px;
     background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
     border:1.5px solid var(--line);
-    border-radius:22px;
-    padding:14px;
+    border-radius:18px;
+    padding:12px;
     text-decoration:none;
     color:inherit;
-    transition:.18s ease;
     position:relative;
     overflow:hidden;
   }
 
-  .mini-day:hover{
-    transform:translateY(-2px);
-    border-color:#bfd1ea;
-    box-shadow:0 12px 28px rgba(62,85,131,.08);
-  }
-
-  .mini-day-num{
-    font-size:18px;
+  .month-num{
+    font-size:17px;
     font-weight:900;
-    margin-bottom:10px;
+    margin-bottom:8px;
   }
 
-  .mini-day-items{
+  .month-items{
     display:flex;
     flex-direction:column;
-    gap:7px;
-    padding-right:34px;
+    gap:6px;
+    padding-right:24px;
   }
 
-  .mini-pill{
+  .month-pill{
     display:flex;
-    align-items:flex-start;
-    gap:7px;
-    min-height:34px;
-    padding:8px 10px;
-    border-radius:14px;
-    font-size:11px;
+    align-items:center;
+    gap:6px;
+    min-height:28px;
+    padding:6px 8px;
+    border-radius:11px;
+    font-size:10px;
     font-weight:900;
     line-height:1.2;
     white-space:normal;
     word-break:keep-all;
   }
 
-  .mini-pill.blue{background:var(--blue-soft);color:var(--blue)}
-  .mini-pill.purple{background:var(--purple-soft);color:var(--purple)}
-  .mini-pill.pink{background:var(--pink-soft);color:var(--pink)}
-  .mini-pill.yellow{background:var(--yellow-soft);color:var(--yellow)}
-  .mini-pill.green{background:var(--green-soft);color:var(--green)}
-  .mini-pill.gray{background:var(--gray-soft);color:var(--gray)}
+  .month-pill.blue{background:var(--blue-soft);color:var(--blue)}
+  .month-pill.purple{background:var(--purple-soft);color:var(--purple)}
+  .month-pill.pink{background:var(--pink-soft);color:var(--pink)}
+  .month-pill.yellow{background:var(--yellow-soft);color:var(--yellow)}
+  .month-pill.green{background:var(--green-soft);color:var(--green)}
+  .month-pill.gray{background:var(--gray-soft);color:var(--gray)}
 
-  .mini-pill img{
-    width:16px;
-    height:16px;
+  .month-pill img{
+    width:14px;
+    height:14px;
     object-fit:contain;
     flex-shrink:0;
   }
 
-  .mini-avatar{
+  .month-avatar{
     position:absolute;
-    right:10px;
-    bottom:10px;
-    width:38px;
-    height:38px;
-    border-radius:12px;
+    right:8px;
+    bottom:8px;
+    width:30px;
+    height:30px;
+    border-radius:10px;
     background:#f3f7ff;
     border:1px solid #dce6f4;
     display:flex;
@@ -563,20 +435,20 @@
     overflow:hidden;
   }
 
-  .mini-avatar img{
-    width:28px;
-    height:28px;
+  .month-avatar img{
+    width:22px;
+    height:22px;
     object-fit:contain;
   }
 
   .empty-box{
     border:1px dashed #d9e4f2;
     background:#fbfdff;
-    border-radius:18px;
-    padding:18px 12px;
+    border-radius:14px;
+    padding:14px 10px;
     text-align:center;
     color:#97a5ba;
-    font-size:13px;
+    font-size:12px;
     font-weight:800;
   }
 
@@ -585,10 +457,10 @@
     left:50%;
     bottom:14px;
     transform:translateX(-50%);
-    width:min(1180px, calc(100% - 24px));
-    background:rgba(255,255,255,.92);
+    width:min(980px, calc(100% - 24px));
+    background:rgba(255,255,255,.94);
     border:1px solid var(--line);
-    border-radius:26px;
+    border-radius:24px;
     box-shadow:0 18px 36px rgba(42,59,97,.12);
     backdrop-filter:blur(10px);
     padding:10px;
@@ -599,8 +471,8 @@
   }
 
   .nav-item{
-    min-height:68px;
-    border-radius:18px;
+    min-height:64px;
+    border-radius:16px;
     text-decoration:none;
     color:#6f819e;
     display:flex;
@@ -608,17 +480,11 @@
     justify-content:center;
     flex-direction:column;
     gap:6px;
-    font-size:13px;
+    font-size:12px;
     font-weight:900;
     transition:.18s ease;
     background:#f8fbff;
     border:1px solid transparent;
-  }
-
-  .nav-item:hover{
-    background:#f3f7ff;
-    color:#486995;
-    border-color:#d6e3f3;
   }
 
   .nav-item.active{
@@ -628,19 +494,19 @@
   }
 
   .nav-icon{
-    font-size:20px;
+    font-size:18px;
     line-height:1;
   }
 
-  @media (max-width:1180px){
-    .now-grid,
-    .quick-grid{
+  @media (max-width:1100px){
+    .summary-grid,
+    .now-row{
       grid-template-columns:1fr;
     }
 
-    .week-preview,
-    .mini-calendar{
-      min-width:1100px;
+    .week-grid,
+    .month-grid{
+      min-width:980px;
     }
 
     .section-body{
@@ -649,32 +515,41 @@
   }
 
   @media (max-width:768px){
-    .hero{
-      padding:28px 22px 24px;
-      border-radius:28px;
+    .wrap{
+      padding:14px 12px 120px;
     }
 
-    .hero-title{
-      font-size:32px;
+    .topbar{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .topbar-title{
+      font-size:28px;
     }
 
     .section-head{
+      padding:16px 16px 12px;
       flex-direction:column;
       align-items:flex-start;
-      padding:22px 20px 16px;
     }
 
     .section-body{
-      padding:16px;
+      padding:12px;
     }
 
-    .raid-main{
-      grid-template-columns:1fr;
+    .now-main{
+      grid-template-columns:56px 1fr;
     }
 
-    .raid-thumb{
-      width:84px;
-      height:84px;
+    .now-thumb{
+      width:56px;
+      height:56px;
+    }
+
+    .now-thumb img{
+      width:44px;
+      height:44px;
     }
   }
 </style>
@@ -682,79 +557,79 @@
 <body>
 <div class="wrap">
 
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-kicker">⚡ Pokémon GO Raid Planner</div>
-      <div class="hero-title">포켓몬고 레이드 일정</div>
-      <div class="hero-sub">
-        어드민에서 저장한 데이터를 기준으로 현재 진행 중 레이드, 주간 일정표, 월간 일정 미리보기를 자동으로 불러오는 메인 허브 페이지입니다.
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">레이드 일정</div>
+      <div class="topbar-sub" id="topbarSub">한국 시간 기준 로딩 중...</div>
+    </div>
+    <div class="topbar-date" id="monthBadge">3월</div>
+  </div>
+
+  <section class="summary-grid">
+    <a class="summary-card" href="./raid-now.html">
+      <div class="summary-top">
+        <div class="summary-label">현재 진행 중</div>
+        <div class="summary-icon">⚔️</div>
       </div>
-      <div class="hero-updated" id="heroUpdated">한국 시간 기준 로딩 중...</div>
+      <div class="summary-value" id="liveCount">0</div>
+      <div class="summary-desc">지금 진행 중인 보스</div>
+    </a>
+
+    <a class="summary-card" href="./weekly.html">
+      <div class="summary-top">
+        <div class="summary-label">주간 일정</div>
+        <div class="summary-icon">🗓️</div>
+      </div>
+      <div class="summary-value" id="weekCount">0</div>
+      <div class="summary-desc">7일 안의 일정 수</div>
+    </a>
+
+    <a class="summary-card" href="./monthly.html">
+      <div class="summary-top">
+        <div class="summary-label">이번 달</div>
+        <div class="summary-icon">📆</div>
+      </div>
+      <div class="summary-value" id="monthCount">0</div>
+      <div class="summary-desc">이번 달 표시 일정 수</div>
+    </a>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">지금 레이드</div>
+        <div class="section-sub">현재 진행 중인 보스만 간단히 표시</div>
+      </div>
+      <a class="head-link" href="./raid-now.html">전체 보기</a>
+    </div>
+    <div class="section-body">
+      <div class="now-row" id="nowGrid"></div>
     </div>
   </section>
 
   <section class="section">
     <div class="section-head">
       <div>
-        <div class="section-title">현재 진행 중 레이드</div>
-        <div class="section-sub" id="nowSectionSub">한국 시간 기준 오늘 진행 중인 전설 / 메가 / 그림자 일정만 요약 표시합니다.</div>
+        <div class="section-title">주간 일정</div>
+        <div class="section-sub" id="weekSectionSub">오늘부터 7일</div>
       </div>
-      <a class="tiny-badge" href="./raid-now.html">지금 레이드 전체 보기</a>
+      <a class="head-link" href="./weekly.html">전체 보기</a>
     </div>
     <div class="section-body">
-      <div class="now-grid" id="nowGrid"></div>
+      <div class="week-grid" id="weekPreview"></div>
     </div>
   </section>
 
   <section class="section">
     <div class="section-head">
       <div>
-        <div class="section-title">주간 일정표 미리보기</div>
-        <div class="section-sub" id="weekSectionSub">한국 시간 기준 오늘부터 7일 일정입니다.</div>
+        <div class="section-title">월간 일정</div>
+        <div class="section-sub" id="monthSectionSub">이번 달 미리보기</div>
       </div>
-      <a class="tiny-badge" href="./weekly.html">주간 일정표 전체 보기</a>
+      <a class="head-link" href="./monthly.html">전체 보기</a>
     </div>
     <div class="section-body">
-      <div class="week-preview" id="weekPreview"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <div class="section-title">월간 일정 바로가기</div>
-        <div class="section-sub" id="monthSectionSub">이번 달 월간 일정 미리보기입니다.</div>
-      </div>
-      <a class="tiny-badge" href="./monthly.html">월간 일정 전체 보기</a>
-    </div>
-    <div class="section-body">
-      <div class="quick-grid" style="margin-bottom:16px;">
-        <a href="./raid-now.html" class="quick-card">
-          <div class="quick-icon">⚔️</div>
-          <div>
-            <div class="quick-title">지금 레이드</div>
-            <div class="quick-desc">현재 진행 중인 전설 / 메가 / 그림자 레이드를 카드형으로 확인</div>
-          </div>
-        </a>
-
-        <a href="./weekly.html" class="quick-card">
-          <div class="quick-icon">🗓️</div>
-          <div>
-            <div class="quick-title">주간 일정표</div>
-            <div class="quick-desc">오늘부터 7일간 레이드 아워, 이벤트, 커뮤니티 데이 흐름 보기</div>
-          </div>
-        </a>
-
-        <a href="./monthly.html" class="quick-card">
-          <div class="quick-icon">📆</div>
-          <div>
-            <div class="quick-title">월간 일정</div>
-            <div class="quick-desc">한 달 전체 일정과 날짜별 상세 페이지로 이동</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="mini-calendar" id="miniCalendar"></div>
+      <div class="month-grid" id="miniCalendar"></div>
     </div>
   </section>
 
@@ -800,12 +675,12 @@
 
   function toDate(str){
     if(!str) return null;
-    const [y, m, d] = str.split('-').map(Number);
+    const [y,m,d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
   function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
   }
 
   function getDayKor(day){
@@ -816,18 +691,8 @@
     return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${getDayKor(date.getDay())}요일`;
   }
 
-  function toAmpm(time24){
-    if(!time24) return '';
-    const [hh, mm] = time24.split(':').map(Number);
-    const suffix = hh >= 12 ? 'PM' : 'AM';
-    const h12 = hh % 12 === 0 ? 12 : hh % 12;
-    return `${String(h12).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${suffix}`;
-  }
-
-  function getDisplayTime(item){
-    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
-    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
-    return `${start} ~ ${end}`;
+  function formatRange(start, end){
+    return `${start.getFullYear()}.${pad(start.getMonth()+1)}.${pad(start.getDate())} - ${end.getFullYear()}.${pad(end.getMonth()+1)}.${pad(end.getDate())}`;
   }
 
   function inRange(date, startStr, endStr){
@@ -854,9 +719,11 @@
 
   function chipClass(item){
     return item.type || (
-      item.label === '전설' ? 'blue' :
+      item.label === '5성' ? 'blue' :
       item.label === '메가' ? 'purple' :
       item.label === '그림자' ? 'pink' :
+      item.label === '3성' ? 'yellow' :
+      item.label === '1성' ? 'green' :
       item.label === '레이드 아워' || item.label === '레이드 데이' ? 'yellow' :
       item.label === '이벤트' || item.label === '커뮤니티 데이' ? 'green' : 'gray'
     );
@@ -864,19 +731,21 @@
 
   function typeClass(item){
     const map = {
-      '전설': 0,
-      '메가': 1,
-      '그림자': 2,
-      '레이드 아워': 3,
-      '레이드 데이': 4,
-      '이벤트': 5,
-      '커뮤니티 데이': 6
+      '1성':0,
+      '3성':1,
+      '5성':2,
+      '메가':3,
+      '그림자':4,
+      '레이드 아워':5,
+      '레이드 데이':6,
+      '이벤트':7,
+      '커뮤니티 데이':8
     };
     return map[item.label] ?? 99;
   }
 
   function sortItems(items){
-    return items.sort((a, b) => {
+    return items.sort((a,b) => {
       const diff = typeClass(a) - typeClass(b);
       if(diff !== 0) return diff;
       return (a.name || '').localeCompare(b.name || '', 'ko');
@@ -897,8 +766,8 @@
   function getRaidNowItems(records, today){
     return sortItems(
       records.filter(item =>
-        isAllowed(item, 'index') &&
-        ['전설','메가','그림자'].includes(item.label) &&
+        (isAllowed(item, 'index') || isAllowed(item, 'raid-now')) &&
+        ['1성','3성','5성','메가','그림자'].includes(item.label) &&
         item.startDate &&
         item.endDate &&
         inRange(today, item.startDate, item.endDate)
@@ -906,12 +775,34 @@
     );
   }
 
-  function formatRange(start, end){
-    return `${start.getFullYear()}.${pad(start.getMonth()+1)}.${pad(start.getDate())} - ${end.getFullYear()}.${pad(end.getMonth()+1)}.${pad(end.getDate())}`;
+  function countWeekItems(records, today){
+    let count = 0;
+    for(let i=0; i<7; i++){
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      count += getIndexItemsForDate(records, d).length;
+    }
+    return count;
   }
 
-  function renderHero(today){
-    document.getElementById('heroUpdated').textContent = `한국 시간 기준 ${formatKoreanDate(today)} 로딩`;
+  function countMonthItems(records, year, month){
+    const last = new Date(year, month, 0).getDate();
+    let count = 0;
+    for(let day=1; day<=last; day++){
+      const d = new Date(year, month - 1, day);
+      count += getIndexItemsForDate(records, d).length;
+    }
+    return count;
+  }
+
+  function renderTop(records, today){
+    document.getElementById('topbarSub').textContent = formatKoreanDate(today);
+    document.getElementById('monthBadge').textContent = `${today.getMonth()+1}월`;
+
+    const liveItems = getRaidNowItems(records, today);
+    document.getElementById('liveCount').textContent = liveItems.length;
+    document.getElementById('weekCount').textContent = countWeekItems(records, today);
+    document.getElementById('monthCount').textContent = countMonthItems(records, today.getFullYear(), today.getMonth()+1);
   }
 
   function renderNowSection(records, today){
@@ -923,54 +814,23 @@
       return;
     }
 
-    wrap.innerHTML = items.slice(0, 3).map(item => `
-      <div class="raid-card">
-        <div class="raid-card-top">
-          <span class="chip ${chipClass(item)}">LIVE · ${item.label || '-'}</span>
-          <div class="raid-date">${(item.startDate || '').replaceAll('-', '.')} - ${(item.endDate || '').replaceAll('-', '.')}</div>
-        </div>
-
-        <div class="raid-main">
-          <div class="raid-thumb">
+    wrap.innerHTML = items.slice(0,3).map(item => `
+      <a href="./raid-now.html" class="now-card">
+        <span class="now-chip chip ${chipClass(item)}">${item.label || '-'}</span>
+        <div class="now-main">
+          <div class="now-thumb">
             ${
               item.image
                 ? `<img src="${item.image}" alt="${item.name || ''}">`
-                : `<span style="font-size:34px;">🖼️</span>`
+                : `<span style="font-size:24px;">🖼️</span>`
             }
           </div>
-
           <div>
-            <div class="raid-name">${item.name || '-'}</div>
-            <div class="raid-desc">${item.desc || '현재 진행 중인 일정'}</div>
-
-            <div class="stat-grid">
-              <div class="stat-box">
-                <div class="stat-label">일반 CP</div>
-                <div class="stat-value">${item.cp || '-'}</div>
-              </div>
-
-              <div class="stat-box">
-                <div class="stat-label">부스트</div>
-                <div class="boost-box">
-                  <div class="boost-icon">
-                    ${
-                      item.boostIcon
-                        ? `<img src="${item.boostIcon}" alt="${item.boostWeather || ''}">`
-                        : `<span style="font-size:10px;">?</span>`
-                    }
-                  </div>
-                  <div class="boost-text">
-                    <div class="boost-name">${item.boostWeather || '미입력'}</div>
-                    <div class="boost-cp">${item.boostCp || '-'}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="raid-desc" style="margin-top:10px;">${getDisplayTime(item)}</div>
+            <div class="now-name">${item.name || '-'}</div>
+            <div class="now-meta">${item.cp || '-'}<br>${(item.startDate || '').replaceAll('-', '.')} - ${(item.endDate || '').replaceAll('-', '.')}</div>
           </div>
         </div>
-      </div>
+      </a>
     `).join('');
   }
 
@@ -978,10 +838,10 @@
     const wrap = document.getElementById('weekPreview');
     const end = new Date(today);
     end.setDate(today.getDate() + 6);
-    document.getElementById('weekSectionSub').textContent = `한국 시간 기준 ${formatRange(today, end)}`;
+    document.getElementById('weekSectionSub').textContent = formatRange(today, end);
 
     const days = [];
-    for(let i = 0; i < 7; i++){
+    for(let i=0; i<7; i++){
       const d = new Date(today);
       d.setDate(today.getDate() + i);
       days.push(d);
@@ -996,8 +856,8 @@
         <div class="week-day ${isToday ? 'today' : ''}">
           <div class="week-top">
             <div>
-              <div class="week-date ${dayClass}">${date.getMonth()+1}.${date.getDate()}</div>
-              <div class="week-dayname">${getDayKor(date.getDay())}요일</div>
+              <div class="week-date ${dayClass}">${date.getDate()}</div>
+              <div class="week-dayname">${getDayKor(date.getDay())}</div>
             </div>
             ${isToday ? `<div class="today-pill">TODAY</div>` : ``}
           </div>
@@ -1005,14 +865,14 @@
           <div class="week-items">
             ${
               items.length
-                ? items.slice(0, 3).map(item => `
+                ? items.slice(0,3).map(item => `
                   <div class="week-pill ${chipClass(item)}">
                     ${
                       item.image
                         ? `<img src="${item.image}" alt="${item.name || ''}">`
-                        : `<span style="width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;">🖼️</span>`
+                        : `<span style="width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;">•</span>`
                     }
-                    <span>${item.label === '전설' || item.label === '메가' || item.label === '그림자' ? item.name : item.label}</span>
+                    <span>${['1성','3성','5성','메가','그림자'].includes(item.label) ? item.name : item.label}</span>
                   </div>
                 `).join('')
                 : `<div class="empty-box">일정 없음</div>`
@@ -1027,14 +887,13 @@
     const wrap = document.getElementById('miniCalendar');
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
+    document.getElementById('monthSectionSub').textContent = `${year}년 ${month}월`;
 
-    document.getElementById('monthSectionSub').textContent = `${year}년 ${month}월 월간 일정 미리보기입니다.`;
-
-    const previewDates = [];
     const lastDate = new Date(year, month, 0).getDate();
     const previewEnd = Math.min(lastDate, 7);
+    const previewDates = [];
 
-    for(let day = 1; day <= previewEnd; day++){
+    for(let day=1; day<=previewEnd; day++){
       previewDates.push(new Date(year, month - 1, day));
     }
 
@@ -1042,27 +901,27 @@
       const items = getIndexItemsForDate(records, date);
 
       return `
-        <a href="./detail.html?date=${toKey(date)}" class="mini-day">
-          <div class="mini-day-num">${date.getDate()}</div>
-          <div class="mini-day-items">
+        <a href="./detail.html?date=${toKey(date)}" class="month-day">
+          <div class="month-num">${date.getDate()}</div>
+          <div class="month-items">
             ${
               items.length
-                ? items.slice(0, 2).map(item => `
-                  <div class="mini-pill ${chipClass(item)}">
+                ? items.slice(0,2).map(item => `
+                  <div class="month-pill ${chipClass(item)}">
                     ${
                       item.image
                         ? `<img src="${item.image}" alt="${item.name || ''}">`
-                        : `<span style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;">🖼️</span>`
+                        : `<span style="width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;">•</span>`
                     }
-                    <span>${item.label === '전설' || item.label === '메가' || item.label === '그림자' ? item.name : item.label}</span>
+                    <span>${['1성','3성','5성','메가','그림자'].includes(item.label) ? item.name : item.label}</span>
                   </div>
                 `).join('')
-                : `<div class="empty-box">일정 없음</div>`
+                : `<div class="empty-box">없음</div>`
             }
           </div>
           ${
             items[0] && items[0].image
-              ? `<div class="mini-avatar"><img src="${items[0].image}" alt="${items[0].name || ''}"></div>`
+              ? `<div class="month-avatar"><img src="${items[0].image}" alt="${items[0].name || ''}"></div>`
               : ``
           }
         </a>
@@ -1074,7 +933,7 @@
     const records = loadRecords();
     const today = getKoreaToday();
 
-    renderHero(today);
+    renderTop(records, today);
     renderNowSection(records, today);
     renderWeekSection(records, today);
     renderMonthSection(records, today);
