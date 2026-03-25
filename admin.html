@@ -263,10 +263,6 @@
     gap:14px;
   }
 
-  .form-grid.three{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-  }
-
   .field{
     display:flex;
     flex-direction:column;
@@ -369,22 +365,11 @@
     gap:12px;
   }
 
-  .mini-row{
+  .mini-row.type{
     display:grid;
     grid-template-columns:1fr 1fr auto;
     gap:10px;
     align-items:end;
-  }
-
-  .mini-row.type{
-    grid-template-columns:1fr 1fr 110px;
-  }
-
-  .mini-box{
-    background:#fff;
-    border:1px solid #dde7f5;
-    border-radius:16px;
-    padding:12px;
   }
 
   .status{
@@ -529,6 +514,20 @@
     flex-shrink:0;
   }
 
+  .auto-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:26px;
+    padding:0 10px;
+    border-radius:999px;
+    background:#edf4ff;
+    color:#3567d7;
+    border:1px solid #d6e4fb;
+    font-size:11px;
+    font-weight:900;
+  }
+
   .muted-box{
     background:#f8fbff;
     border:1px dashed #dbe6f4;
@@ -582,13 +581,6 @@
     width:66px;
     height:66px;
     object-fit:contain;
-  }
-
-  .preview-meta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
   }
 
   .preview-grid{
@@ -653,13 +645,6 @@
     background:#f4f8ff;
     border:1px solid #dce6f4;
     padding:3px;
-  }
-
-  .boost-stack{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-top:6px;
   }
 
   .boost-chip{
@@ -735,12 +720,10 @@
 
   @media (max-width:920px){
     .form-grid,
-    .form-grid.three,
     .helper-grid{
       grid-template-columns:1fr;
     }
 
-    .mini-row,
     .mini-row.type{
       grid-template-columns:1fr;
     }
@@ -787,13 +770,13 @@
       <div class="hero-kicker">🛠️ Pokémon GO Admin</div>
       <div class="hero-title">레이드 입력 어드민</div>
       <div class="hero-sub">
-        여기서 입력한 정보를 저장하면 메인, 지금 레이드, 주간 일정표, 월간 일정, 상세 일정 페이지에서 공통으로 불러와서 표시할 수 있게 만드는 기준 페이지입니다.
-        현재 버전은 <b>localStorage 저장 방식</b>이라서 바로 테스트하기 좋습니다.
+        포켓몬/이벤트 이미지만 직접 넣고, 날씨 아이콘과 타입 아이콘은 자동으로 연결되는 통일 버전입니다.
+        저장 후 메인, 지금 레이드, 주간 일정표, 월간 일정, 상세 일정 페이지에서 공통으로 불러옵니다.
       </div>
       <div class="hero-meta">
         <span class="hero-pill">저장키 : pogoRaidAdminData</span>
-        <span class="hero-pill">기본 방식 : 브라우저 저장</span>
-        <span class="hero-pill">나중에 JSON 방식으로 확장 가능</span>
+        <span class="hero-pill">날씨 아이콘 자동 매핑</span>
+        <span class="hero-pill">타입 아이콘 자동 매핑</span>
       </div>
     </div>
   </section>
@@ -805,7 +788,7 @@
         <div class="section-head">
           <div>
             <div class="section-title">입력 폼</div>
-            <div class="section-sub">보스/이벤트 하나를 입력하거나 수정하는 영역입니다. 저장 후 오른쪽 목록과 미리보기에서 바로 확인됩니다.</div>
+            <div class="section-sub">포켓몬 이미지 제외 나머지 아이콘은 자동 연결됩니다. 필요하면 수동 수정도 가능합니다.</div>
           </div>
           <div class="tiny-badge" id="modeBadge">새 일정 입력</div>
         </div>
@@ -827,6 +810,10 @@
                   <option value="5성" selected>5성</option>
                   <option value="메가">메가</option>
                   <option value="그림자">그림자</option>
+                  <option value="레이드 데이">레이드 데이</option>
+                  <option value="레이드 아워">레이드 아워</option>
+                  <option value="이벤트">이벤트</option>
+                  <option value="커뮤니티 데이">커뮤니티 데이</option>
                 </select>
               </div>
 
@@ -891,11 +878,13 @@
                   <option value="눈">눈</option>
                   <option value="안개">안개</option>
                 </select>
+                <div class="hint">선택 시 자동으로 아이콘 경로 입력</div>
               </div>
 
               <div class="field">
                 <label class="label" for="boostIcon1">부스트 아이콘 1 URL</label>
-                <input id="boostIcon1" name="boostIcon1" type="url" placeholder="./icons/weather-windy.png" />
+                <input id="boostIcon1" name="boostIcon1" type="url" placeholder="./icons/windy.png" />
+                <span class="auto-badge">자동 매핑</span>
               </div>
 
               <div class="field">
@@ -910,11 +899,13 @@
                   <option value="눈">눈</option>
                   <option value="안개">안개</option>
                 </select>
+                <div class="hint">선택 시 자동으로 아이콘 경로 입력</div>
               </div>
 
               <div class="field">
                 <label class="label" for="boostIcon2">부스트 아이콘 2 URL</label>
-                <input id="boostIcon2" name="boostIcon2" type="url" placeholder="./icons/weather-cloudy.png" />
+                <input id="boostIcon2" name="boostIcon2" type="url" placeholder="./icons/cloudy.png" />
+                <span class="auto-badge">자동 매핑</span>
               </div>
 
               <div class="field full">
@@ -945,7 +936,7 @@
                 <button class="btn gray" type="button" id="addTypeBtn">+ 타입 추가</button>
               </div>
               <div class="hint" style="margin-bottom:10px;">
-                예: 얼음 / 드래곤 / 페어리, 그리고 원형 타입 아이콘 URL
+                타입명을 입력하면 아이콘 URL이 자동으로 연결됩니다. 필요하면 직접 수정도 가능합니다.
               </div>
               <div class="repeat-list" id="strategyTypeList"></div>
             </div>
@@ -1011,7 +1002,7 @@
         <div class="section-head">
           <div>
             <div class="section-title">아이콘/경로 체크</div>
-            <div class="section-sub">부스트 아이콘과 타입 아이콘 경로가 맞는지 미리 확인할 수 있습니다.</div>
+            <div class="section-sub">프로젝트의 icons 폴더 기준으로 자동 연결됩니다.</div>
           </div>
           <div class="tiny-badge">ICON CHECK</div>
         </div>
@@ -1020,11 +1011,11 @@
           <div class="form-grid">
             <div class="field">
               <label class="label" for="checkBoostIcon">부스트 아이콘 테스트</label>
-              <input id="checkBoostIcon" type="url" placeholder="./icons/weather-windy.png" />
+              <input id="checkBoostIcon" type="url" placeholder="./icons/windy.png" />
             </div>
             <div class="field">
               <label class="label" for="checkTypeIcon">타입 아이콘 테스트</label>
-              <input id="checkTypeIcon" type="url" placeholder="./icons/type-dragon.png" />
+              <input id="checkTypeIcon" type="url" placeholder="./icons/15.png" />
             </div>
           </div>
 
@@ -1040,10 +1031,17 @@
           </div>
 
           <div class="muted-box" style="margin-top:14px;">
-            아이콘은 예를 들어 아래처럼 넣으면 됩니다.<br>
-            <b>부스트:</b> <code>./icons/weather-windy.png</code><br>
-            <b>타입:</b> <code>./icons/type-dragon.png</code><br>
-            실제 페이지와 같은 경로 규칙을 맞춰야 정상적으로 보입니다.
+            <b>날씨 파일명:</b><br>
+            맑음 = <code>sunny.png</code><br>
+            비 = <code>rainy.png</code><br>
+            약간구름 = <code>partlycloudy.png</code><br>
+            흐림 = <code>cloudy.png</code><br>
+            바람 = <code>windy.png</code><br>
+            눈 = <code>snowy.png</code><br>
+            안개 = <code>foggy.png</code><br><br>
+
+            <b>타입 파일명:</b><br>
+            노말=1 / 불꽃=2 / 물=3 / 전기=4 / 풀=5 / 얼음=6 / 격투=7 / 독=8 / 땅=9 / 비행=10 / 에스퍼=11 / 벌레=12 / 바위=13 / 고스트=14 / 드래곤=15 / 악=16 / 강철=17 / 페어리=18
           </div>
         </div>
       </section>
@@ -1066,9 +1064,7 @@
           <div class="sub-card" style="margin-top:14px;">
             <div class="sub-card-title" style="margin-bottom:10px;">불러오기 예시</div>
             <pre style="margin:0;white-space:pre-wrap;word-break:break-word;font-size:12px;line-height:1.6;color:#31435d;background:#fff;border:1px solid #dde7f5;border-radius:16px;padding:14px;">const saved = localStorage.getItem('pogoRaidAdminData');
-const raidData = saved ? JSON.parse(saved) : [];
-// 여기서 날짜 기준으로 필터링해서
-// index / raid-now / weekly / monthly / detail 페이지에 뿌리면 됩니다.</pre>
+const raidData = saved ? JSON.parse(saved) : [];</pre>
           </div>
 
           <div class="sub-card" style="margin-top:14px;">
@@ -1083,9 +1079,9 @@ const raidData = saved ? JSON.parse(saved) : [];
               <tbody>
                 <tr><td>id</td><td>고유 식별값</td></tr>
                 <tr><td>name</td><td>이름</td></tr>
-                <tr><td>label</td><td>1성 / 3성 / 5성 / 메가 / 그림자</td></tr>
+                <tr><td>label</td><td>1성 / 3성 / 5성 / 메가 / 그림자 / 이벤트 등</td></tr>
                 <tr><td>type</td><td>blue / purple / pink / yellow / green / gray</td></tr>
-                <tr><td>image</td><td>메인 이미지 URL</td></tr>
+                <tr><td>image</td><td>포켓몬/이벤트 이미지 URL</td></tr>
                 <tr><td>startDate / endDate</td><td>일정 구간</td></tr>
                 <tr><td>startTime / endTime</td><td>시간</td></tr>
                 <tr><td>cp / boostCp</td><td>일반 CP / 부스트 CP</td></tr>
@@ -1119,6 +1115,37 @@ const raidData = saved ? JSON.parse(saved) : [];
   const searchInput = document.getElementById('searchInput');
   const importFile = document.getElementById('importFile');
 
+  const WEATHER_ICON_MAP = {
+    '맑음':'./icons/sunny.png',
+    '비':'./icons/rainy.png',
+    '약간구름':'./icons/partlycloudy.png',
+    '흐림':'./icons/cloudy.png',
+    '바람':'./icons/windy.png',
+    '눈':'./icons/snowy.png',
+    '안개':'./icons/foggy.png'
+  };
+
+  const TYPE_ICON_MAP = {
+    '노말':'./icons/1.png',
+    '불꽃':'./icons/2.png',
+    '물':'./icons/3.png',
+    '전기':'./icons/4.png',
+    '풀':'./icons/5.png',
+    '얼음':'./icons/6.png',
+    '격투':'./icons/7.png',
+    '독':'./icons/8.png',
+    '땅':'./icons/9.png',
+    '비행':'./icons/10.png',
+    '에스퍼':'./icons/11.png',
+    '벌레':'./icons/12.png',
+    '바위':'./icons/13.png',
+    '고스트':'./icons/14.png',
+    '드래곤':'./icons/15.png',
+    '악':'./icons/16.png',
+    '강철':'./icons/17.png',
+    '페어리':'./icons/18.png'
+  };
+
   function uid(){
     return `raid_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
   }
@@ -1130,6 +1157,18 @@ const raidData = saved ? JSON.parse(saved) : [];
       .replaceAll('>', '&gt;')
       .replaceAll('"', '&quot;')
       .replaceAll("'", '&#039;');
+  }
+
+  function normalizeTypeName(name=''){
+    return String(name).trim();
+  }
+
+  function getWeatherIcon(weather=''){
+    return WEATHER_ICON_MAP[String(weather).trim()] || '';
+  }
+
+  function getTypeIcon(type=''){
+    return TYPE_ICON_MAP[normalizeTypeName(type)] || '';
   }
 
   function loadRecords(){
@@ -1180,8 +1219,24 @@ const raidData = saved ? JSON.parse(saved) : [];
       case '5성': return 'blue';
       case '메가': return 'purple';
       case '그림자': return 'pink';
+      case '레이드 데이': return 'yellow';
+      case '레이드 아워': return 'yellow';
+      case '이벤트': return 'green';
+      case '커뮤니티 데이': return 'green';
       default: return 'gray';
     }
+  }
+
+  function autoFillBoostIcon(weatherSelect, iconInput){
+    if(!weatherSelect || !iconInput) return;
+    const icon = getWeatherIcon(weatherSelect.value);
+    iconInput.value = icon || '';
+  }
+
+  function autoFillTypeIcon(typeInput, iconInput){
+    if(!typeInput || !iconInput) return;
+    const icon = getTypeIcon(typeInput.value);
+    iconInput.value = icon || '';
   }
 
   function createTypeRow(data = {name:'', icon:''}){
@@ -1194,16 +1249,30 @@ const raidData = saved ? JSON.parse(saved) : [];
       </div>
       <div class="field" style="margin:0;">
         <label class="label">아이콘 URL</label>
-        <input type="url" class="strategy-icon" placeholder="./icons/type-ice.png" value="${escapeHtml(data.icon)}">
+        <input type="url" class="strategy-icon" placeholder="./icons/6.png" value="${escapeHtml(data.icon)}">
       </div>
       <button class="btn red remove-type-btn" type="button">삭제</button>
     `;
+
+    const nameInput = row.querySelector('.strategy-name');
+    const iconInput = row.querySelector('.strategy-icon');
+
+    nameInput.addEventListener('input', () => {
+      autoFillTypeIcon(nameInput, iconInput);
+      renderPreview();
+    });
+
+    iconInput.addEventListener('input', renderPreview);
+
     row.querySelector('.remove-type-btn').addEventListener('click', () => {
       row.remove();
       renderPreview();
     });
-    row.querySelector('.strategy-name').addEventListener('input', renderPreview);
-    row.querySelector('.strategy-icon').addEventListener('input', renderPreview);
+
+    if(data.name && !data.icon){
+      autoFillTypeIcon(nameInput, iconInput);
+    }
+
     return row;
   }
 
@@ -1258,7 +1327,6 @@ const raidData = saved ? JSON.parse(saved) : [];
   function getFormData(){
     const formData = new FormData(raidForm);
     const label = formData.get('label')?.trim() || '';
-    const boosts = getFormBoosts(formData);
 
     return {
       id: editingId || uid(),
@@ -1272,7 +1340,7 @@ const raidData = saved ? JSON.parse(saved) : [];
       endTime: formData.get('endTime')?.trim() || '',
       cp: formData.get('cp')?.trim() || '',
       boostCp: formData.get('boostCp')?.trim() || '',
-      boosts,
+      boosts: getFormBoosts(formData),
       desc: formData.get('desc')?.trim() || '',
       note: formData.get('note')?.trim() || '',
       showPages: getCheckedShowPages(),
@@ -1298,6 +1366,8 @@ const raidData = saved ? JSON.parse(saved) : [];
     raidForm.type.value = typeClassForLabel('5성');
     strategyTypeList.innerHTML = '';
     addTypeRow();
+    autoFillBoostIcon(document.getElementById('boostWeather1'), document.getElementById('boostIcon1'));
+    autoFillBoostIcon(document.getElementById('boostWeather2'), document.getElementById('boostIcon2'));
     modeBadge.textContent = '새 일정 입력';
     resetStatus();
     renderPreview();
@@ -1526,7 +1596,7 @@ const raidData = saved ? JSON.parse(saved) : [];
               </div>
             </div>
 
-            <div class="detail-note" style="margin-top:10px;color:#8a98af;font-size:13px;font-weight:700;line-height:1.5;">
+            <div style="margin-top:10px;color:#8a98af;font-size:13px;font-weight:700;line-height:1.5;">
               ${escapeHtml(item.note || '메모 없음')}
             </div>
           </div>
@@ -1541,7 +1611,7 @@ const raidData = saved ? JSON.parse(saved) : [];
       name:'레지드래고',
       label:'5성',
       type:'blue',
-      image:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
+      image:'',
       startDate:'2026-04-01',
       endDate:'2026-04-07',
       startTime:'',
@@ -1549,19 +1619,23 @@ const raidData = saved ? JSON.parse(saved) : [];
       cp:'1614 - 1699',
       boostCp:'2017 - 2124',
       boosts:[
-        { weather:'바람', icon:'./icons/weather-windy.png' },
-        { weather:'안개', icon:'./icons/weather-fog.png' }
+        { weather:'바람', icon:getWeatherIcon('바람') }
       ],
       desc:'현재 5성 레이드 메인 보스',
       note:'기본 시간 미입력 시 06:00 AM ~ 10:00 PM 적용',
       showPages:['index','raid-now','weekly','monthly','detail'],
       strategyTypes:[
-        { name:'얼음', icon:'./icons/type-ice.png' },
-        { name:'드래곤', icon:'./icons/type-dragon.png' },
-        { name:'페어리', icon:'./icons/type-fairy.png' }
+        { name:'얼음', icon:getTypeIcon('얼음') },
+        { name:'드래곤', icon:getTypeIcon('드래곤') },
+        { name:'페어리', icon:getTypeIcon('페어리') }
       ],
       updatedAt:new Date().toISOString()
     };
+  }
+
+  function syncBoostAutoFill(){
+    autoFillBoostIcon(document.getElementById('boostWeather1'), document.getElementById('boostIcon1'));
+    autoFillBoostIcon(document.getElementById('boostWeather2'), document.getElementById('boostIcon2'));
   }
 
   raidForm.addEventListener('submit', (e) => {
@@ -1662,10 +1736,23 @@ const raidData = saved ? JSON.parse(saved) : [];
       const text = await file.text();
       const parsed = JSON.parse(text);
       if(!Array.isArray(parsed)) throw new Error('배열 형식이 아닙니다.');
-      records = parsed.map(item => ({
-        ...item,
-        boosts: normalizeBoosts(item)
-      }));
+      records = parsed.map(item => {
+        const boosts = normalizeBoosts(item).map(boost => ({
+          weather: boost.weather,
+          icon: boost.icon || getWeatherIcon(boost.weather)
+        }));
+
+        const strategyTypes = (item.strategyTypes || []).map(type => ({
+          name: type.name || '',
+          icon: type.icon || getTypeIcon(type.name || '')
+        }));
+
+        return {
+          ...item,
+          boosts,
+          strategyTypes
+        };
+      });
       saveRecords();
       renderRecordList();
       showStatus('JSON 데이터를 불러왔습니다.');
@@ -1688,6 +1775,16 @@ const raidData = saved ? JSON.parse(saved) : [];
     renderPreview();
   });
 
+  document.getElementById('boostWeather1').addEventListener('change', () => {
+    autoFillBoostIcon(document.getElementById('boostWeather1'), document.getElementById('boostIcon1'));
+    renderPreview();
+  });
+
+  document.getElementById('boostWeather2').addEventListener('change', () => {
+    autoFillBoostIcon(document.getElementById('boostWeather2'), document.getElementById('boostIcon2'));
+    renderPreview();
+  });
+
   document.getElementById('checkBoostIcon').addEventListener('input', (e) => {
     const val = e.target.value.trim();
     const img = document.getElementById('boostPreviewImg');
@@ -1707,20 +1804,35 @@ const raidData = saved ? JSON.parse(saved) : [];
   });
 
   loadRecords();
+
   if(records.length === 0){
     records = [collectSample()];
     saveRecords();
   }else{
-    records = records.map(item => ({
-      ...item,
-      boosts: normalizeBoosts(item)
-    }));
+    records = records.map(item => {
+      const boosts = normalizeBoosts(item).map(boost => ({
+        weather: boost.weather,
+        icon: boost.icon || getWeatherIcon(boost.weather)
+      }));
+
+      const strategyTypes = (item.strategyTypes || []).map(type => ({
+        name: type.name || '',
+        icon: type.icon || getTypeIcon(type.name || '')
+      }));
+
+      return {
+        ...item,
+        boosts,
+        strategyTypes
+      };
+    });
     saveRecords();
   }
 
   addTypeRow();
   raidForm.label.value = '5성';
   raidForm.type.value = typeClassForLabel('5성');
+  syncBoostAutoFill();
   renderRecordList();
   renderPreview();
 </script>
