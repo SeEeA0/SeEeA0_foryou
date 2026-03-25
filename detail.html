@@ -3,95 +3,185 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Raid Detail</title>
+<title>상세 일정</title>
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
     font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    background:#eef3f8;
-    color:#243147;
+    background:#edf3fb;
+    color:#1f2f46;
   }
 
   :root{
-    --bg:#f7f9fc;
+    --bg:#edf3fb;
     --card:#ffffff;
-    --line:#d8e2ef;
-    --muted:#7b88a1;
+    --card-soft:#f8fbff;
+    --line:#d8e3f2;
+    --line-strong:#c9d8eb;
+    --text:#1f2f46;
+    --muted:#7486a3;
 
     --blue:#3567d7;
-    --blue-bg:#dfe8f8;
+    --blue-soft:#e7f0ff;
 
     --purple:#7c58e9;
-    --purple-bg:#ece2fa;
-
-    --yellow:#8a6a00;
-    --yellow-bg:#f7e9be;
-
-    --green:#698814;
-    --green-bg:#e4edc8;
+    --purple-soft:#efe7ff;
 
     --pink:#d85b85;
-    --pink-bg:#f8dfe7;
+    --pink-soft:#ffe8f0;
+
+    --yellow:#b88818;
+    --yellow-soft:#fff1c9;
+
+    --green:#49a66b;
+    --green-soft:#e7f5eb;
+
+    --gray:#67768f;
+    --gray-soft:#f2f5fa;
+
+    --shadow:0 18px 40px rgba(43,67,110,.08);
   }
 
   .wrap{
-    max-width:980px;
-    margin:24px auto;
-    padding:0 14px 34px;
+    max-width:1080px;
+    margin:0 auto;
+    padding:20px 16px 110px;
   }
 
-  .topbar{
+  .hero{
+    background:rgba(255,255,255,.82);
+    border:1px solid var(--line);
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
+
+  .hero-head{
+    padding:26px 28px 20px;
+    border-bottom:1px solid #e4edf8;
+    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+  }
+
+  .hero-top{
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    margin-bottom:16px;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:14px;
   }
 
   .back-btn{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:46px;
-    padding:0 18px;
+    min-height:42px;
+    padding:0 14px;
     border-radius:999px;
-    background:#f8fbff;
+    background:#f1f6ff;
     border:1px solid var(--line);
-    color:#31435d;
-    text-decoration:none;
+    color:#58719a;
+    font-size:13px;
     font-weight:900;
+    text-decoration:none;
+    white-space:nowrap;
   }
 
-  .page{
-    background:var(--bg);
-    border:1px solid var(--line);
-    border-radius:28px;
-    overflow:hidden;
-  }
-
-  .page-head{
-    padding:28px 28px 20px;
-    border-bottom:1px solid var(--line);
-    background:#f8fbff;
-  }
-
-  .title{
+  .hero-title{
     font-size:30px;
     font-weight:900;
-    letter-spacing:-0.3px;
+    letter-spacing:-.03em;
   }
 
-  .sub{
-    margin-top:8px;
+  .hero-sub{
+    margin-top:10px;
     font-size:14px;
+    line-height:1.55;
     color:var(--muted);
     font-weight:700;
   }
 
-  .page-body{
-    padding:20px;
+  .hero-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
   }
+
+  .hero-tag{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:40px;
+    padding:0 16px;
+    border-radius:999px;
+    background:#f3f7ff;
+    border:1px solid var(--line);
+    color:#58719a;
+    font-size:13px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .hero-tag.active{
+    background:#eaf2ff;
+    color:#3567d7;
+    border-color:#cfe0f6;
+  }
+
+  .section{
+    background:rgba(255,255,255,.82);
+    border:1px solid var(--line);
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
+
+  .section-head{
+    padding:24px 26px 18px;
+    border-bottom:1px solid #e4edf8;
+    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+  }
+
+  .section-title{
+    font-size:26px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .section-sub{
+    margin-top:8px;
+    font-size:14px;
+    color:var(--muted);
+    font-weight:700;
+    line-height:1.5;
+  }
+
+  .section-body{
+    padding:18px;
+  }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:32px;
+    padding:0 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:900;
+    line-height:1;
+    white-space:nowrap;
+  }
+
+  .chip.blue{background:var(--blue-soft);color:var(--blue)}
+  .chip.purple{background:var(--purple-soft);color:var(--purple)}
+  .chip.pink{background:var(--pink-soft);color:var(--pink)}
+  .chip.yellow{background:var(--yellow-soft);color:var(--yellow)}
+  .chip.green{background:var(--green-soft);color:var(--green)}
+  .chip.gray{background:var(--gray-soft);color:var(--gray)}
 
   .detail-list{
     display:flex;
@@ -99,228 +189,442 @@
     gap:14px;
   }
 
-  .detail-item{
+  .detail-card{
     display:flex;
-    gap:14px;
+    gap:16px;
     align-items:flex-start;
+    background:#fff;
+    border:1.5px solid #dce7f4;
+    border-radius:24px;
     padding:16px;
-    border:1.5px solid var(--line);
-    border-radius:22px;
-    background:var(--card);
+    box-shadow:0 10px 26px rgba(58,81,127,.04);
   }
 
   .detail-thumb{
-    width:72px;
-    height:72px;
-    border-radius:18px;
-    background:#f3f6fb;
-    border:1px solid var(--line);
-    object-fit:contain;
-    padding:6px;
+    width:92px;
+    height:92px;
+    border-radius:24px;
+    background:#f3f7ff;
+    border:1px solid #e0e8f6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
     flex-shrink:0;
   }
 
-  .detail-content{
+  .detail-thumb img{
+    width:72px;
+    height:72px;
+    object-fit:contain;
+  }
+
+  .detail-main{
     flex:1;
     min-width:0;
   }
 
-  .detail-name{
-    font-size:20px;
-    font-weight:900;
-    line-height:1.2;
+  .detail-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
   }
 
-  .chip{
-    display:inline-flex;
-    align-items:center;
-    padding:8px 12px;
-    border-radius:999px;
-    font-size:12px;
+  .detail-name{
+    font-size:24px;
     font-weight:900;
-    line-height:1;
-    margin-top:10px;
+    line-height:1.15;
+    letter-spacing:-.03em;
   }
-  .chip.blue{background:var(--blue-bg);color:var(--blue)}
-  .chip.purple{background:var(--purple-bg);color:var(--purple)}
-  .chip.yellow{background:var(--yellow-bg);color:var(--yellow)}
-  .chip.green{background:var(--green-bg);color:var(--green)}
-  .chip.pink{background:var(--pink-bg);color:var(--pink)}
 
   .detail-time{
     margin-top:10px;
     font-size:15px;
+    color:#59708f;
     font-weight:900;
-    color:#4e627f;
   }
 
-  .detail-period{
-    margin-top:6px;
+  .detail-note{
+    margin-top:8px;
+    color:#8a98af;
     font-size:13px;
-    color:#7a8aa3;
     font-weight:700;
+    line-height:1.45;
   }
 
-  .note{
-    margin-top:18px;
-    padding:16px 18px;
+  .detail-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:12px;
+  }
+
+  .stat-box{
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
     border-radius:18px;
-    background:#fbfdff;
-    border:1px dashed var(--line);
-    color:#70829f;
-    font-size:13px;
-    font-weight:700;
+    padding:12px 14px;
+  }
+
+  .stat-label{
+    font-size:12px;
+    color:#7386a3;
+    font-weight:900;
+  }
+
+  .stat-value{
+    margin-top:6px;
+    font-size:15px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1.25;
+    letter-spacing:-.02em;
   }
 
   .empty-box{
-    border:1.5px dashed var(--line);
+    border:1px dashed #d9e4f2;
     background:#fbfdff;
     border-radius:20px;
-    padding:26px;
+    padding:28px 16px;
     text-align:center;
-    color:#7b88a1;
+    color:#97a5ba;
+    font-size:14px;
     font-weight:800;
+  }
+
+  .quick-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .quick-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid var(--line);
+    border-radius:22px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-decoration:none;
+    color:inherit;
+    transition:.18s ease;
+    min-height:96px;
+  }
+
+  .quick-card:hover{
+    transform:translateY(-2px);
+    border-color:#bfd1ea;
+    box-shadow:0 12px 28px rgba(62,85,131,.08);
+  }
+
+  .quick-icon{
+    width:52px;
+    height:52px;
+    border-radius:16px;
+    background:#f3f7ff;
+    border:1px solid #dce6f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    flex-shrink:0;
+  }
+
+  .quick-title{
+    font-size:16px;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .quick-desc{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.45;
+    font-weight:700;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    width:min(1180px, calc(100% - 24px));
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    border-radius:26px;
+    box-shadow:0 18px 36px rgba(42,59,97,.12);
+    backdrop-filter:blur(10px);
+    padding:10px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    z-index:30;
+  }
+
+  .nav-item{
+    min-height:68px;
+    border-radius:18px;
+    text-decoration:none;
+    color:#6f819e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:6px;
+    font-size:13px;
+    font-weight:900;
+    transition:.18s ease;
+    background:#f8fbff;
+    border:1px solid transparent;
+  }
+
+  .nav-item:hover{
+    background:#f3f7ff;
+    color:#486995;
+    border-color:#d6e3f3;
+  }
+
+  .nav-item.active{
+    background:#edf4ff;
+    color:#3567d7;
+    border-color:#cdddf5;
+  }
+
+  .nav-icon{
+    font-size:20px;
+    line-height:1;
+  }
+
+  @media (max-width:900px){
+    .quick-grid{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media (max-width:768px){
+    .wrap{
+      padding-bottom:120px;
+    }
+
+    .hero-head,
+    .section-head{
+      padding:22px 20px 16px;
+    }
+
+    .section-body{
+      padding:16px;
+    }
+
+    .hero-title{
+      font-size:26px;
+    }
+
+    .section-title{
+      font-size:22px;
+    }
+
+    .hero-top{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .detail-card{
+      flex-direction:column;
+    }
+
+    .detail-thumb{
+      width:84px;
+      height:84px;
+    }
+
+    .stat-grid{
+      grid-template-columns:1fr;
+    }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="topbar">
-    <a href="./index.html" class="back-btn">← 캘린더로 돌아가기</a>
-  </div>
-
-  <section class="page">
-    <div class="page-head">
-      <div class="title" id="pageTitle">상세 일정</div>
-      <div class="sub">해당 날짜의 레이드 일정이 자동으로 표시됩니다.</div>
+  <section class="hero">
+    <div class="hero-head">
+      <div class="hero-top">
+        <a href="./monthly.html" class="back-btn">← 월간 일정으로 돌아가기</a>
+      </div>
+      <div class="hero-title" id="pageTitle">상세 일정</div>
+      <div class="hero-sub">선택한 날짜에 해당하는 레이드와 이벤트를 한 장씩 정리해서 보여주는 페이지입니다.</div>
+      <div class="hero-tags">
+        <span class="hero-tag active">날짜별 자동 상세</span>
+        <span class="hero-tag">기본 시간 자동 적용</span>
+        <span class="hero-tag">레이드 / 이벤트 통합 표시</span>
+      </div>
     </div>
-    <div class="page-body">
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div class="section-title">해당 날짜 일정</div>
+      <div class="section-sub">포켓몬 이름, 일정 종류, 시간, 필요 시 CP 정보까지 확인할 수 있습니다.</div>
+    </div>
+
+    <div class="section-body">
       <div class="detail-list" id="detailList"></div>
-      <div class="note">시간이 없는 포켓몬은 기본적으로 06:00 AM ~ 10:00 PM 으로 표시됩니다.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div class="section-title">빠른 이동</div>
+      <div class="section-sub">다른 화면으로 바로 이동</div>
+    </div>
+
+    <div class="section-body">
+      <div class="quick-grid">
+        <a href="./index.html" class="quick-card">
+          <div class="quick-icon">🏠</div>
+          <div>
+            <div class="quick-title">메인</div>
+            <div class="quick-desc">전체 허브 메인 화면</div>
+          </div>
+        </a>
+
+        <a href="./raid-now.html" class="quick-card">
+          <div class="quick-icon">⚔️</div>
+          <div>
+            <div class="quick-title">지금 레이드</div>
+            <div class="quick-desc">현재 진행 중인 보스 카드형 보기</div>
+          </div>
+        </a>
+
+        <a href="./weekly.html" class="quick-card">
+          <div class="quick-icon">🗓️</div>
+          <div>
+            <div class="quick-title">주간 일정표</div>
+            <div class="quick-desc">오늘부터 7일 흐름 보기</div>
+          </div>
+        </a>
+      </div>
     </div>
   </section>
 
 </div>
 
+<nav class="bottom-nav">
+  <a href="./index.html" class="nav-item">
+    <div class="nav-icon">🏠</div>
+    <div>메인</div>
+  </a>
+  <a href="./raid-now.html" class="nav-item">
+    <div class="nav-icon">⚔️</div>
+    <div>지금 레이드</div>
+  </a>
+  <a href="./weekly.html" class="nav-item">
+    <div class="nav-icon">🗓️</div>
+    <div>주간 일정표</div>
+  </a>
+  <a href="./monthly.html" class="nav-item active">
+    <div class="nav-icon">📆</div>
+    <div>월간 일정</div>
+  </a>
+</nav>
+
 <script>
   const DEFAULT_START = '06:00 AM';
   const DEFAULT_END = '10:00 PM';
 
-  const raidData = [
-    {
-      name:'레지드래고',
-      type:'blue',
-      image:'./images/regidrago.png',
-      startDate:'2026-04-01',
-      endDate:'2026-04-07'
-    },
-    {
-      name:'그림자 라티오스',
-      type:'pink',
-      image:'./images/latios-shadow.png',
-      startDate:'2026-04-01',
-      endDate:'2026-04-06'
-    },
-    {
-      name:'패션 레이드 데이',
-      type:'yellow',
-      image:'./images/event-fashion.png',
-      startDate:'2026-04-04',
-      endDate:'2026-04-04',
-      startTime:'02:00 PM',
-      endTime:'05:00 PM'
-    },
-    {
-      name:'가이오가',
-      type:'blue',
-      image:'./images/kyogre.png',
-      startDate:'2026-04-08',
-      endDate:'2026-04-14'
-    },
-    {
-      name:'메가프테라',
-      type:'purple',
-      image:'./images/aerodactyl-mega.png',
-      startDate:'2026-04-08',
-      endDate:'2026-04-13'
-    },
-    {
-      name:'그란돈',
-      type:'blue',
-      image:'./images/groudon.png',
-      startDate:'2026-04-15',
-      endDate:'2026-04-21'
-    },
-    {
-      name:'메가후딘',
-      type:'purple',
-      image:'./images/alakazam-mega.png',
-      startDate:'2026-04-15',
-      endDate:'2026-04-19',
-      startTime:'11:00 AM',
-      endTime:'08:00 PM'
-    },
-    {
-      name:'카푸꼬꼬꼭',
-      type:'blue',
-      image:'./images/tapu-koko.png',
-      startDate:'2026-04-22',
-      endDate:'2026-04-28'
-    },
-    {
-      name:'메가샤크니아',
-      type:'purple',
-      image:'./images/sharpedo-mega.png',
-      startDate:'2026-04-22',
-      endDate:'2026-04-27'
-    },
-    {
-      name:'카푸나비나',
-      type:'blue',
-      image:'./images/tapu-lele.png',
-      startDate:'2026-04-29',
-      endDate:'2026-04-30'
-    },
-    {
-      name:'메가다크펫',
-      type:'purple',
-      image:'./images/banette-mega.png',
-      startDate:'2026-04-29',
-      endDate:'2026-04-30'
-    }
+  const IMG = {
+    regidrago:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
+    kyogre:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png',
+    groudon:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png',
+    tapuKoko:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/785.png',
+    tapuLele:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/786.png',
+    latios:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png',
+    manectric:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png',
+    aerodactyl:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png',
+    alakazam:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png',
+    sharpedo:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/319.png',
+    banette:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/354.png',
+    pikachu:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
+    tinkatink:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/957.png'
+  };
+
+  const raidRanges = [
+    { name:'레지드래고', label:'5성 레이드', type:'blue', image:IMG.regidrago, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1614 - 1699', boostCp:'2017 - 2124' },
+    { name:'메가썬더볼트', label:'메가 레이드', type:'purple', image:IMG.manectric, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1267 - 1337', boostCp:'1585 - 1672' },
+
+    { name:'가이오가', label:'5성 레이드', type:'blue', image:IMG.kyogre, startDate:'2026-04-08', endDate:'2026-04-14', cp:'2260 - 2351', boostCp:'2825 - 2939' },
+    { name:'메가프테라', label:'메가 레이드', type:'purple', image:IMG.aerodactyl, startDate:'2026-04-08', endDate:'2026-04-14', cp:'1801 - 1888', boostCp:'2251 - 2360' },
+
+    { name:'그란돈', label:'5성 레이드', type:'blue', image:IMG.groudon, startDate:'2026-04-15', endDate:'2026-04-21', cp:'2260 - 2351', boostCp:'2825 - 2939' },
+    { name:'메가후딘', label:'메가 레이드', type:'purple', image:IMG.alakazam, startDate:'2026-04-15', endDate:'2026-04-21', cp:'1843 - 1938', boostCp:'2304 - 2423' },
+
+    { name:'카푸꼬꼬꼭', label:'5성 레이드', type:'blue', image:IMG.tapuKoko, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1730 - 1810', boostCp:'2162 - 2262' },
+    { name:'메가샤크니아', label:'메가 레이드', type:'purple', image:IMG.sharpedo, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1817 - 1907', boostCp:'2271 - 2384' },
+
+    { name:'카푸나비나', label:'5성 레이드', type:'blue', image:IMG.tapuLele, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1730 - 1810', boostCp:'2162 - 2262' },
+    { name:'메가다크펫', label:'메가 레이드', type:'purple', image:IMG.banette, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1794 - 1886', boostCp:'2243 - 2358' }
   ];
 
-  function pad(n){
-    return String(n).padStart(2,'0');
-  }
+  const oneDayEvents = [
+    { name:'레지드래고', label:'레이드 아워', type:'yellow', image:IMG.regidrago, date:'2026-04-01', startTime:'06:00 PM', endTime:'07:00 PM' },
+    { name:'패션 레이드 데이', label:'레이드 데이', type:'yellow', image:IMG.pikachu, date:'2026-04-04', startTime:'02:00 PM', endTime:'05:00 PM' },
 
-  function parseDate(str){
+    { name:'가이오가', label:'레이드 아워', type:'yellow', image:IMG.kyogre, date:'2026-04-08', startTime:'06:00 PM', endTime:'07:00 PM' },
+    { name:'두드리짱', label:'커뮤니티 데이', type:'green', image:IMG.tinkatink, date:'2026-04-11', startTime:'02:00 PM', endTime:'05:00 PM' },
+
+    { name:'지속가능성 위크', label:'이벤트', type:'green', image:IMG.aerodactyl, date:'2026-04-14', startTime:'10:00 AM', endTime:'08:00 PM' },
+    { name:'그란돈', label:'레이드 아워', type:'yellow', image:IMG.groudon, date:'2026-04-15', startTime:'06:00 PM', endTime:'07:00 PM' },
+
+    { name:'카푸꼬꼬꼭', label:'레이드 아워', type:'yellow', image:IMG.tapuKoko, date:'2026-04-22', startTime:'06:00 PM', endTime:'07:00 PM' },
+    { name:'강철의 의지', label:'이벤트', type:'green', image:IMG.banette, date:'2026-04-28', startTime:'10:00 AM', endTime:'08:00 PM' },
+    { name:'카푸나비나', label:'레이드 아워', type:'yellow', image:IMG.tapuLele, date:'2026-04-29', startTime:'06:00 PM', endTime:'07:00 PM' }
+  ];
+
+  const weekendShadow = [
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-01', endDate:'2026-04-05' },
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-11', endDate:'2026-04-12' },
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-18', endDate:'2026-04-19' },
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-25', endDate:'2026-04-26' }
+  ];
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function toDate(str){
     const [y,m,d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
-  function formatDateKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  function toKey(date){
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
   }
 
-  function formatDateKor(date){
-    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  function getDayKor(day){
+    return ['일','월','화','수','목','금','토'][day];
   }
 
-  function getTimeRange(item){
-    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+  function formatKoreanDate(date){
+    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${getDayKor(date.getDay())}요일`;
   }
 
-  function isDateInRange(targetDate, startDate, endDate){
-    const t = parseDate(formatDateKey(targetDate)).getTime();
-    const s = parseDate(startDate).getTime();
-    const e = parseDate(endDate).getTime();
+  function inRange(date, startStr, endStr){
+    const t = toDate(toKey(date)).getTime();
+    const s = toDate(startStr).getTime();
+    const e = toDate(endStr).getTime();
     return t >= s && t <= e;
   }
 
-  function getRaidsForDate(date){
-    return raidData.filter(item => isDateInRange(date, item.startDate, item.endDate));
+  function getDisplayTime(item){
+    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
   }
 
   function getQueryDate(){
@@ -328,35 +632,77 @@
     return params.get('date');
   }
 
+  function getItemsForDate(date){
+    return [
+      ...raidRanges.filter(item => inRange(date, item.startDate, item.endDate)),
+      ...weekendShadow.filter(item => inRange(date, item.startDate, item.endDate)),
+      ...oneDayEvents.filter(item => item.date === toKey(date))
+    ];
+  }
+
   function renderPage(){
     const dateStr = getQueryDate();
-    const title = document.getElementById('pageTitle');
-    const list = document.getElementById('detailList');
+    const pageTitle = document.getElementById('pageTitle');
+    const detailList = document.getElementById('detailList');
 
     if(!dateStr){
-      title.textContent = '날짜 정보 없음';
-      list.innerHTML = `<div class="empty-box">잘못된 접근입니다. 날짜 파라미터가 없습니다.</div>`;
+      pageTitle.textContent = '날짜 정보 없음';
+      detailList.innerHTML = `<div class="empty-box">잘못된 접근입니다. 날짜 파라미터가 없습니다.</div>`;
       return;
     }
 
-    const selectedDate = parseDate(dateStr);
-    title.textContent = `${formatDateKor(selectedDate)} 상세 일정`;
+    const selectedDate = toDate(dateStr);
+    pageTitle.textContent = `${formatKoreanDate(selectedDate)} 상세 일정`;
 
-    const items = getRaidsForDate(selectedDate);
+    const items = getItemsForDate(selectedDate);
 
     if(!items.length){
-      list.innerHTML = `<div class="empty-box">해당 날짜에는 등록된 레이드 일정이 없습니다.</div>`;
+      detailList.innerHTML = `<div class="empty-box">해당 날짜에는 등록된 일정이 없습니다.</div>`;
       return;
     }
 
-    list.innerHTML = items.map(item => `
-      <div class="detail-item">
-        <img class="detail-thumb" src="${item.image}" alt="${item.name}">
-        <div class="detail-content">
-          <div class="detail-name">${item.name}</div>
-          <div class="chip ${item.type || 'blue'}">${item.type || 'raid'}</div>
-          <div class="detail-time">${getTimeRange(item)}</div>
-          <div class="detail-period">${item.startDate} ~ ${item.endDate}</div>
+    detailList.innerHTML = items.map(item => `
+      <div class="detail-card">
+        <div class="detail-thumb">
+          <img src="${item.image}" alt="${item.name}">
+        </div>
+
+        <div class="detail-main">
+          <div class="detail-head">
+            <div class="detail-name">${item.name}</div>
+          </div>
+
+          <div class="detail-meta">
+            <span class="chip ${item.type}">${item.label}</span>
+          </div>
+
+          <div class="detail-time">${getDisplayTime(item)}</div>
+
+          ${
+            item.cp || item.boostCp
+              ? `
+                <div class="stat-grid">
+                  ${item.cp ? `
+                    <div class="stat-box">
+                      <div class="stat-label">일반 CP</div>
+                      <div class="stat-value">${item.cp}</div>
+                    </div>
+                  ` : ``}
+
+                  ${item.boostCp ? `
+                    <div class="stat-box">
+                      <div class="stat-label">부스트 CP</div>
+                      <div class="stat-value">${item.boostCp}</div>
+                    </div>
+                  ` : ``}
+                </div>
+              `
+              : ``
+          }
+
+          <div class="detail-note">
+            시간이 따로 지정되지 않은 일정은 기본적으로 06:00 AM ~ 10:00 PM 으로 표시됩니다.
+          </div>
         </div>
       </div>
     `).join('');
