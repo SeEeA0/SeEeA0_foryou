@@ -1,547 +1,718 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>주간 일정표</title>
-  <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-      background:#eef2f8;
-      color:#232b39;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>주간 일정표</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:#edf3fb;
+    color:#1f2f46;
+  }
+
+  :root{
+    --bg:#edf3fb;
+    --card:#ffffff;
+    --card-soft:#f8fbff;
+    --line:#d8e3f2;
+    --line-strong:#c9d8eb;
+    --text:#1f2f46;
+    --muted:#7486a3;
+
+    --blue:#3567d7;
+    --blue-soft:#e7f0ff;
+
+    --purple:#7c58e9;
+    --purple-soft:#efe7ff;
+
+    --pink:#d85b85;
+    --pink-soft:#ffe8f0;
+
+    --yellow:#b88818;
+    --yellow-soft:#fff1c9;
+
+    --green:#49a66b;
+    --green-soft:#e7f5eb;
+
+    --gray:#67768f;
+    --gray-soft:#f2f5fa;
+
+    --shadow:0 18px 40px rgba(43,67,110,.08);
+  }
+
+  .wrap{
+    max-width:1320px;
+    margin:0 auto;
+    padding:20px 16px 110px;
+  }
+
+  .hero{
+    background:rgba(255,255,255,.82);
+    border:1px solid var(--line);
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
+
+  .hero-head{
+    padding:26px 28px 18px;
+    border-bottom:1px solid #e4edf8;
+    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+  }
+
+  .hero-title{
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .hero-sub{
+    margin-top:10px;
+    font-size:14px;
+    line-height:1.55;
+    color:var(--muted);
+    font-weight:700;
+  }
+
+  .hero-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
+  }
+
+  .hero-tag{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:40px;
+    padding:0 16px;
+    border-radius:999px;
+    background:#f3f7ff;
+    border:1px solid var(--line);
+    color:#58719a;
+    font-size:13px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .hero-tag.active{
+    background:#eaf2ff;
+    color:#3567d7;
+    border-color:#cfe0f6;
+  }
+
+  .section{
+    background:rgba(255,255,255,.82);
+    border:1px solid var(--line);
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:18px;
+    padding:24px 26px 18px;
+    border-bottom:1px solid #e4edf8;
+    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+  }
+
+  .section-title{
+    font-size:26px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .section-sub{
+    margin-top:8px;
+    font-size:14px;
+    color:var(--muted);
+    font-weight:700;
+    line-height:1.5;
+  }
+
+  .section-body{
+    padding:18px;
+  }
+
+  .tiny-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:42px;
+    padding:0 14px;
+    border-radius:999px;
+    background:#f1f6ff;
+    border:1px solid var(--line);
+    color:#58719a;
+    font-size:13px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .week-grid{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .week-card{
+    min-height:420px;
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
+    border:1.5px solid var(--line);
+    border-radius:24px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .week-card.today{
+    border-color:#a8c1ff;
+    box-shadow:0 12px 28px rgba(90,124,220,.10);
+    background:linear-gradient(180deg,#ffffff 0%, #f4f8ff 100%);
+  }
+
+  .week-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:12px;
+  }
+
+  .week-date{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .week-date.sun{color:#ef6b7a}
+  .week-date.sat{color:#4b7cf0}
+
+  .week-dayname{
+    margin-top:4px;
+    font-size:13px;
+    color:#7f8faa;
+    font-weight:800;
+  }
+
+  .today-pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:28px;
+    padding:0 10px;
+    border-radius:999px;
+    background:#e9f1ff;
+    color:#4e7deb;
+    font-size:11px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .week-items{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .timeline-item{
+    background:#fff;
+    border:1px solid #e3ebf7;
+    border-radius:18px;
+    padding:11px;
+  }
+
+  .timeline-top{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .timeline-thumb{
+    width:34px;
+    height:34px;
+    border-radius:12px;
+    background:#f3f7ff;
+    border:1px solid #dde7f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  .timeline-thumb img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+  }
+
+  .timeline-name{
+    min-width:0;
+    flex:1;
+    font-size:13px;
+    font-weight:900;
+    line-height:1.25;
+    word-break:keep-all;
+  }
+
+  .timeline-time{
+    margin-top:8px;
+    font-size:12px;
+    color:#6f809a;
+    font-weight:800;
+    line-height:1.4;
+  }
+
+  .timeline-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:8px;
+  }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:30px;
+    padding:0 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    line-height:1;
+    white-space:nowrap;
+  }
+
+  .chip.blue{background:var(--blue-soft);color:var(--blue)}
+  .chip.purple{background:var(--purple-soft);color:var(--purple)}
+  .chip.pink{background:var(--pink-soft);color:var(--pink)}
+  .chip.yellow{background:var(--yellow-soft);color:var(--yellow)}
+  .chip.green{background:var(--green-soft);color:var(--green)}
+  .chip.gray{background:var(--gray-soft);color:var(--gray)}
+
+  .empty-box{
+    border:1px dashed #d9e4f2;
+    background:#fbfdff;
+    border-radius:18px;
+    padding:18px 12px;
+    text-align:center;
+    color:#97a5ba;
+    font-size:13px;
+    font-weight:800;
+  }
+
+  .quick-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .quick-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid var(--line);
+    border-radius:22px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-decoration:none;
+    color:inherit;
+    transition:.18s ease;
+    min-height:96px;
+  }
+
+  .quick-card:hover{
+    transform:translateY(-2px);
+    border-color:#bfd1ea;
+    box-shadow:0 12px 28px rgba(62,85,131,.08);
+  }
+
+  .quick-icon{
+    width:52px;
+    height:52px;
+    border-radius:16px;
+    background:#f3f7ff;
+    border:1px solid #dce6f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    flex-shrink:0;
+  }
+
+  .quick-title{
+    font-size:16px;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .quick-desc{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.45;
+    font-weight:700;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    width:min(1180px, calc(100% - 24px));
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    border-radius:26px;
+    box-shadow:0 18px 36px rgba(42,59,97,.12);
+    backdrop-filter:blur(10px);
+    padding:10px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    z-index:30;
+  }
+
+  .nav-item{
+    min-height:68px;
+    border-radius:18px;
+    text-decoration:none;
+    color:#6f819e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:6px;
+    font-size:13px;
+    font-weight:900;
+    transition:.18s ease;
+    background:#f8fbff;
+    border:1px solid transparent;
+  }
+
+  .nav-item:hover{
+    background:#f3f7ff;
+    color:#486995;
+    border-color:#d6e3f3;
+  }
+
+  .nav-item.active{
+    background:#edf4ff;
+    color:#3567d7;
+    border-color:#cdddf5;
+  }
+
+  .nav-icon{
+    font-size:20px;
+    line-height:1;
+  }
+
+  @media (max-width:1180px){
+    .week-grid,
+    .quick-grid{
+      min-width:1100px;
     }
-    .page{
-      min-height:100vh;
-      background:linear-gradient(180deg,#f7f9fc 0%,#edf2f8 100%);
+
+    .section-body{
+      overflow-x:auto;
     }
+  }
+
+  @media (max-width:768px){
     .wrap{
-      max-width:1080px;
-      margin:0 auto;
-      padding:16px 12px 96px;
+      padding-bottom:120px;
     }
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:40;
-      background:#ffde00;
-      border:1px solid #e3c600;
-      border-radius:14px 14px 0 0;
-      padding:10px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:13px;
-      font-weight:800;
-      color:#272727;
-      box-shadow:0 8px 20px rgba(28,34,45,.08);
+
+    .hero-head,
+    .section-head{
+      padding:22px 20px 16px;
     }
-    .hero{
-      background:#fff;
-      border:1px solid #dfe6f1;
-      border-top:0;
-      border-radius:0 0 20px 20px;
-      box-shadow:0 12px 28px rgba(28,34,45,.05);
+
+    .section-body{
       padding:16px;
     }
-    .hero h1{
-      margin:0;
-      font-size:22px;
-      line-height:1.28;
-      letter-spacing:-.03em;
-      word-break:keep-all;
-    }
-    .hero p{
-      margin:8px 0 0;
-      color:#68778f;
-      font-size:13px;
-      line-height:1.7;
-    }
-    .hero-chips{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:14px;
-    }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      padding:8px 12px;
-      border-radius:999px;
-      background:#f6f8fc;
-      border:1px solid #dfe6f1;
-      color:#5d6c84;
-      font-size:12px;
-      font-weight:800;
-    }
-    .chip.primary{
-      background:#edf4ff;
-      border-color:#d7e6ff;
-      color:#296be2;
+
+    .hero-title{
+      font-size:26px;
     }
 
-    .week-strip{
-      margin-top:16px;
-      display:grid;
-      grid-template-columns:repeat(7,1fr);
-      gap:8px;
-    }
-    .day-chip{
-      background:#fff;
-      border:1px solid #dfe6f1;
-      border-radius:18px;
-      padding:12px 8px;
-      text-align:center;
-      box-shadow:0 8px 20px rgba(28,34,45,.04);
-    }
-    .day-chip.active{
-      background:#edf4ff;
-      border-color:#cfe0ff;
-    }
-    .day-name{
-      font-size:11px;
-      color:#77869d;
-      font-weight:800;
-    }
-    .day-num{
-      margin-top:6px;
-      font-size:20px;
-      font-weight:900;
-      color:#2f3c52;
-      letter-spacing:-.03em;
-    }
-    .day-mini{
-      margin-top:6px;
-      font-size:12px;
-    }
-
-    .section{
-      margin-top:16px;
-      background:#fff;
-      border:1px solid #dfe6f1;
-      border-radius:20px;
-      box-shadow:0 12px 28px rgba(28,34,45,.05);
-      overflow:hidden;
-    }
-    .section-head{
-      padding:14px 16px;
-      border-bottom:1px solid #e7edf5;
-      background:#f9fbff;
-    }
     .section-title{
-      margin:0;
-      font-size:18px;
-      font-weight:800;
-      color:#253041;
-    }
-    .section-sub{
-      margin:4px 0 0;
-      color:#7a88a1;
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .timeline{
-      padding:14px;
-      display:grid;
-      gap:12px;
-    }
-    .timeline-card{
-      border:1px solid #e3e9f4;
-      border-radius:18px;
-      background:#fbfcff;
-      padding:14px;
-      display:grid;
-      grid-template-columns:72px 1fr;
-      gap:12px;
-      align-items:start;
-    }
-    .time-box{
-      border-radius:16px;
-      background:#f3f6fb;
-      border:1px solid #dfe6f1;
-      min-height:64px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      font-size:12px;
-      font-weight:900;
-      color:#50627d;
-      text-align:center;
-      line-height:1.3;
-      padding:8px;
-    }
-    .timeline-title{
-      font-size:18px;
-      font-weight:800;
-      color:#253041;
-      line-height:1.3;
-    }
-    .timeline-meta{
-      margin-top:4px;
-      font-size:12px;
-      color:#73819a;
-      line-height:1.6;
-    }
-    .timeline-desc{
-      margin-top:8px;
-      font-size:13px;
-      color:#66758f;
-      line-height:1.7;
-    }
-    .tags{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .tag{
-      font-size:11px;
-      font-weight:800;
-      padding:6px 10px;
-      border-radius:999px;
-      line-height:1;
-    }
-    .tag.raid{background:#e8f0ff;color:#356fdb}
-    .tag.event{background:#ffeaf0;color:#d55975}
-    .tag.shadow{background:#efe7ff;color:#7b4de2}
-    .tag.focus{background:#eef7df;color:#6c8b15}
-
-    .boss-panel{
-      padding:14px;
-      display:grid;
-      gap:12px;
-    }
-    .boss-card{
-      border:1px solid #e3e9f4;
-      border-radius:18px;
-      background:#fbfcff;
-      padding:14px;
-      display:grid;
-      grid-template-columns:62px 1fr;
-      gap:12px;
-      align-items:center;
-    }
-    .boss-icon{
-      width:62px;
-      height:62px;
-      border-radius:20px;
-      background:#f3f6fb;
-      border:1px solid #dfe6f1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:28px;
-    }
-    .boss-name{
-      font-size:17px;
-      font-weight:800;
-      color:#253041;
-      line-height:1.2;
-    }
-    .boss-meta{
-      margin-top:4px;
-      font-size:12px;
-      color:#73819a;
-      line-height:1.6;
-    }
-
-    .quick-links{
-      padding:14px;
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-    .quick-link{
-      text-decoration:none;
-      color:inherit;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      border:1px solid #e3e9f4;
-      border-radius:16px;
-      padding:12px;
-      background:#fbfcff;
-    }
-    .quick-icon{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      background:#f3f6fb;
-      border:1px solid #dfe6f1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
       font-size:22px;
-      flex:0 0 44px;
-    }
-    .quick-link h4{
-      margin:0;
-      font-size:14px;
-      font-weight:800;
-      color:#253041;
-    }
-    .quick-link p{
-      margin:4px 0 0;
-      font-size:11px;
-      color:#718099;
-      line-height:1.6;
     }
 
-    .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:10px;
-      width:min(560px, calc(100% - 16px));
-      background:rgba(255,255,255,.94);
-      border:1px solid #dfe6f1;
-      box-shadow:0 16px 30px rgba(28,34,45,.12);
-      backdrop-filter:blur(12px);
-      border-radius:22px;
-      padding:8px;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:6px;
-      z-index:50;
-    }
-    .nav-btn{
-      border:0;
-      background:#f6f8fc;
-      border-radius:16px;
-      min-height:54px;
-      display:flex;
+    .section-head{
       flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:4px;
-      color:#6e7c93;
-      font-size:10px;
-      font-weight:800;
-      text-decoration:none;
+      align-items:flex-start;
     }
-    .nav-btn.active{
-      background:#edf4ff;
-      color:#2f6fe4;
-      box-shadow:inset 0 0 0 1px #d7e6ff;
-    }
-    .nav-icon{font-size:17px}
-
-    @media (min-width: 761px){
-      .wrap{padding:20px 14px 100px}
-      .hero h1{font-size:28px}
-      .quick-links{grid-template-columns:repeat(3,1fr)}
-      .bottom-nav{
-        width:min(920px, calc(100% - 20px));
-        padding:10px;
-        gap:8px;
-      }
-      .nav-btn{min-height:56px;font-size:11px}
-      .nav-icon{font-size:18px}
-    }
-
-    @media (max-width: 720px){
-      .week-strip{
-        grid-template-columns:repeat(4,1fr);
-      }
-      .timeline-card{
-        grid-template-columns:1fr;
-      }
-      .time-box{
-        min-height:52px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="page">
-    <div class="wrap">
-      <div class="topbar">
-        <div>〈</div>
-        <div>주간 일정표</div>
-        <div>✕</div>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-head">
+      <div class="hero-title">주간 일정표</div>
+      <div class="hero-sub">
+        오늘부터 7일간의 레이드, 레이드 아워, 이벤트, 커뮤니티 데이, 그림자 일정을 날짜별로 빠르게 확인하는 페이지입니다.
       </div>
-
-      <section class="hero">
-        <h1>이번 주 일정표</h1>
-        <p>하루 단위로 어떤 보스가 진행되는지, 이벤트가 있는지, 어떤 날짜가 중요한지 빠르게 보는 화면입니다.</p>
-        <div class="hero-chips">
-          <span class="chip primary">주간 흐름 한눈에</span>
-          <span class="chip">보스 / 이벤트 분리</span>
-          <span class="chip">메인보다 자세하게</span>
-        </div>
-      </section>
-
-      <div class="week-strip">
-        <div class="day-chip active">
-          <div class="day-name">월</div>
-          <div class="day-num">01</div>
-          <div class="day-mini">🐉</div>
-        </div>
-        <div class="day-chip">
-          <div class="day-name">화</div>
-          <div class="day-num">02</div>
-          <div class="day-mini">⚡</div>
-        </div>
-        <div class="day-chip">
-          <div class="day-name">수</div>
-          <div class="day-num">03</div>
-          <div class="day-mini">🌑</div>
-        </div>
-        <div class="day-chip">
-          <div class="day-name">목</div>
-          <div class="day-num">04</div>
-          <div class="day-mini">🎩</div>
-        </div>
-        <div class="day-chip">
-          <div class="day-name">금</div>
-          <div class="day-num">05</div>
-          <div class="day-mini">🌪</div>
-        </div>
-        <div class="day-chip">
-          <div class="day-name">토</div>
-          <div class="day-num">06</div>
-          <div class="day-mini">📍</div>
-        </div>
-        <div class="day-chip">
-          <div class="day-name">일</div>
-          <div class="day-num">07</div>
-          <div class="day-mini">🔥</div>
-        </div>
+      <div class="hero-tags">
+        <span class="hero-tag active">오늘부터 7일 자동 반영</span>
+        <span class="hero-tag">시간 기본값 적용</span>
+        <span class="hero-tag">레이드 / 이벤트 통합 표시</span>
       </div>
+    </div>
+  </section>
 
-      <section class="section">
-        <div class="section-head">
-          <h2 class="section-title">이번 주 주요 일정</h2>
-          <p class="section-sub">현재 선택된 주간 기준 예시</p>
-        </div>
-
-        <div class="timeline">
-          <article class="timeline-card">
-            <div class="time-box">4/1<br>ALL DAY</div>
-            <div>
-              <div class="timeline-title">레지드래고 / 메가썬더볼트 시작</div>
-              <div class="timeline-meta">4월 1일 - 4월 7일</div>
-              <div class="timeline-desc">5성 레이드와 메가 레이드가 동시에 시작되는 구간입니다. 메인에서 날짜를 누르면 이 구간 상세로 이동하도록 연결하면 좋습니다.</div>
-              <div class="tags">
-                <span class="tag raid">5성</span>
-                <span class="tag raid">메가</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="timeline-card">
-            <div class="time-box">4/1<br>ALL DAY</div>
-            <div>
-              <div class="timeline-title">그림자 라티오스 진행</div>
-              <div class="timeline-meta">4월 1일 - 5월 5일</div>
-              <div class="timeline-desc">별도 장기 진행 일정으로 표시해 주면 좋습니다. 메인에선 작게, 주간 화면에서는 확실히 보이게 두는 방식이 좋습니다.</div>
-              <div class="tags">
-                <span class="tag shadow">그림자</span>
-                <span class="tag raid">5성</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="timeline-card">
-            <div class="time-box">4/4<br>14:00</div>
-            <div>
-              <div class="timeline-title">패션 레이드 데이</div>
-              <div class="timeline-meta">4월 4일 14:00 - 17:00</div>
-              <div class="timeline-desc">1성 / 3성 코스튬 포켓몬이 집중되는 이벤트 구간입니다. 일반 레이드와 다른 색으로 분리해 주는 것이 좋습니다.</div>
-              <div class="tags">
-                <span class="tag event">이벤트</span>
-                <span class="tag focus">레이드 데이</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="timeline-card">
-            <div class="time-box">4/7<br>END</div>
-            <div>
-              <div class="timeline-title">레지드래고 구간 종료</div>
-              <div class="timeline-meta">다음 구간으로 교체 직전</div>
-              <div class="timeline-desc">메인과 주간표에서 종료일은 따로 표시해 두면 사용자가 헷갈리지 않습니다.</div>
-              <div class="tags">
-                <span class="tag raid">종료일</span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="section-title">이번 주 보스 요약</h2>
-          <p class="section-sub">현재 주간에 핵심적으로 확인할 보스</p>
-        </div>
-
-        <div class="boss-panel">
-          <div class="boss-card">
-            <div class="boss-icon">🐉</div>
-            <div>
-              <div class="boss-name">레지드래고</div>
-              <div class="boss-meta">5성 레이드 · CP 1614 - 1699 · 부스트 2017 - 2124</div>
-            </div>
-          </div>
-
-          <div class="boss-card">
-            <div class="boss-icon">⚡</div>
-            <div>
-              <div class="boss-name">메가썬더볼트</div>
-              <div class="boss-meta">메가 레이드 · CP 1267 - 1337 · 부스트 1585 - 1672</div>
-            </div>
-          </div>
-
-          <div class="boss-card">
-            <div class="boss-icon">🌑</div>
-            <div>
-              <div class="boss-name">그림자 라티오스</div>
-              <div class="boss-meta">그림자 5성 · 장기 진행 일정</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <h2 class="section-title">빠른 이동</h2>
-          <p class="section-sub">다른 화면으로 바로 이동</p>
-        </div>
-        <div class="quick-links">
-          <a class="quick-link" href="index.html">
-            <div class="quick-icon">🏠</div>
-            <div>
-              <h4>메인</h4>
-              <p>날짜 클릭형 메인 캘린더</p>
-            </div>
-          </a>
-          <a class="quick-link" href="current-raids.html">
-            <div class="quick-icon">🔥</div>
-            <div>
-              <h4>지금 레이드</h4>
-              <p>현재 보스만 집중 보기</p>
-            </div>
-          </a>
-          <a class="quick-link" href="april-raids.html">
-            <div class="quick-icon">📆</div>
-            <div>
-              <h4>전체 레이드</h4>
-              <p>4월 전체 구간 확인</p>
-            </div>
-          </a>
-        </div>
-      </section>
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">이번 주 일정</div>
+        <div class="section-sub" id="weekRangeText">기준 날짜 범위</div>
+      </div>
+      <div class="tiny-badge">7 DAYS</div>
     </div>
 
-    <nav class="bottom-nav">
-      <a class="nav-btn" href="index.html"><span class="nav-icon">🏠</span><span>메인</span></a>
-      <a class="nav-btn" href="current-raids.html"><span class="nav-icon">🔥</span><span>지금 레이드</span></a>
-      <a class="nav-btn active" href="weekly.html"><span class="nav-icon">🗓</span><span>주간 일정표</span></a>
-      <a class="nav-btn" href="monthly.html"><span class="nav-icon">✨</span><span>월간 일정</span></a>
-    </nav>
-  </div>
+    <div class="section-body">
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div class="section-title">빠른 이동</div>
+      <div class="section-sub">다른 화면으로 바로 이동</div>
+    </div>
+
+    <div class="section-body">
+      <div class="quick-grid">
+        <a href="./index.html" class="quick-card">
+          <div class="quick-icon">🏠</div>
+          <div>
+            <div class="quick-title">메인</div>
+            <div class="quick-desc">전체 허브 메인 화면</div>
+          </div>
+        </a>
+
+        <a href="./raid-now.html" class="quick-card">
+          <div class="quick-icon">⚔️</div>
+          <div>
+            <div class="quick-title">지금 레이드</div>
+            <div class="quick-desc">현재 진행 중인 보스 카드형 보기</div>
+          </div>
+        </a>
+
+        <a href="./monthly.html" class="quick-card">
+          <div class="quick-icon">📆</div>
+          <div>
+            <div class="quick-title">월간 일정</div>
+            <div class="quick-desc">한 달 전체 흐름 확인</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="bottom-nav">
+  <a href="./index.html" class="nav-item">
+    <div class="nav-icon">🏠</div>
+    <div>메인</div>
+  </a>
+  <a href="./raid-now.html" class="nav-item">
+    <div class="nav-icon">⚔️</div>
+    <div>지금 레이드</div>
+  </a>
+  <a href="./weekly.html" class="nav-item active">
+    <div class="nav-icon">🗓️</div>
+    <div>주간 일정표</div>
+  </a>
+  <a href="./monthly.html" class="nav-item">
+    <div class="nav-icon">📆</div>
+    <div>월간 일정</div>
+  </a>
+</nav>
+
+<script>
+  const DEFAULT_START = '06:00 AM';
+  const DEFAULT_END = '10:00 PM';
+
+  const IMG = {
+    regieleki:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/894.png',
+    regidrago:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
+    kyogre:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png',
+    groudon:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png',
+    tapuKoko:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/785.png',
+    tapuLele:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/786.png',
+    latias:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png',
+    latios:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png',
+    houndoom:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/229.png',
+    manectric:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png',
+    aerodactyl:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png',
+    alakazam:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png',
+    sharpedo:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/319.png',
+    banette:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/354.png',
+    pikachu:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
+    tinkatink:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/957.png'
+  };
+
+  const raidRanges = [
+    { name:'레지에레키', label:'5성 레이드', type:'blue', image:IMG.regieleki, startDate:'2026-03-25', endDate:'2026-03-31' },
+    { name:'메가 헬가', label:'메가 레이드', type:'purple', image:IMG.houndoom, startDate:'2026-03-25', endDate:'2026-03-31' },
+
+    { name:'레지드래고', label:'5성 레이드', type:'blue', image:IMG.regidrago, startDate:'2026-04-01', endDate:'2026-04-07' },
+    { name:'메가썬더볼트', label:'메가 레이드', type:'purple', image:IMG.manectric, startDate:'2026-04-01', endDate:'2026-04-07' },
+
+    { name:'가이오가', label:'5성 레이드', type:'blue', image:IMG.kyogre, startDate:'2026-04-08', endDate:'2026-04-14' },
+    { name:'메가프테라', label:'메가 레이드', type:'purple', image:IMG.aerodactyl, startDate:'2026-04-08', endDate:'2026-04-14' },
+
+    { name:'그란돈', label:'5성 레이드', type:'blue', image:IMG.groudon, startDate:'2026-04-15', endDate:'2026-04-21' },
+    { name:'메가후딘', label:'메가 레이드', type:'purple', image:IMG.alakazam, startDate:'2026-04-15', endDate:'2026-04-21' },
+
+    { name:'카푸꼬꼬꼭', label:'5성 레이드', type:'blue', image:IMG.tapuKoko, startDate:'2026-04-22', endDate:'2026-04-28' },
+    { name:'메가샤크니아', label:'메가 레이드', type:'purple', image:IMG.sharpedo, startDate:'2026-04-22', endDate:'2026-04-28' },
+
+    { name:'카푸나비나', label:'5성 레이드', type:'blue', image:IMG.tapuLele, startDate:'2026-04-29', endDate:'2026-04-30' },
+    { name:'메가다크펫', label:'메가 레이드', type:'purple', image:IMG.banette, startDate:'2026-04-29', endDate:'2026-04-30' }
+  ];
+
+  const oneDayEvents = [
+    { name:'레지에레키', label:'레이드 아워', type:'yellow', image:IMG.regieleki, date:'2026-03-25', startTime:'06:00 PM', endTime:'07:00 PM' },
+    { name:'전기 타입 이벤트', label:'이벤트', type:'green', image:IMG.manectric, date:'2026-03-31', startTime:'10:00 AM', endTime:'08:00 PM' },
+
+    { name:'레지드래고', label:'레이드 아워', type:'yellow', image:IMG.regidrago, date:'2026-04-01', startTime:'06:00 PM', endTime:'07:00 PM' },
+    { name:'패션 레이드 데이', label:'레이드 데이', type:'yellow', image:IMG.pikachu, date:'2026-04-04', startTime:'02:00 PM', endTime:'05:00 PM' },
+
+    { name:'가이오가', label:'레이드 아워', type:'yellow', image:IMG.kyogre, date:'2026-04-08', startTime:'06:00 PM', endTime:'07:00 PM' },
+    { name:'두드리짱', label:'커뮤니티 데이', type:'green', image:IMG.tinkatink, date:'2026-04-11', startTime:'02:00 PM', endTime:'05:00 PM' },
+
+    { name:'지속가능성 위크', label:'이벤트', type:'green', image:IMG.aerodactyl, date:'2026-04-14', startTime:'10:00 AM', endTime:'08:00 PM' },
+    { name:'그란돈', label:'레이드 아워', type:'yellow', image:IMG.groudon, date:'2026-04-15', startTime:'06:00 PM', endTime:'07:00 PM' },
+
+    { name:'카푸꼬꼬꼭', label:'레이드 아워', type:'yellow', image:IMG.tapuKoko, date:'2026-04-22', startTime:'06:00 PM', endTime:'07:00 PM' },
+    { name:'강철의 의지', label:'이벤트', type:'green', image:IMG.banette, date:'2026-04-28', startTime:'10:00 AM', endTime:'08:00 PM' },
+    { name:'카푸나비나', label:'레이드 아워', type:'yellow', image:IMG.tapuLele, date:'2026-04-29', startTime:'06:00 PM', endTime:'07:00 PM' }
+  ];
+
+  const weekendShadow = [
+    { name:'그림자 라티아스', label:'그림자', type:'pink', image:IMG.latias, startDate:'2026-03-29', endDate:'2026-03-31' },
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-01', endDate:'2026-04-05' },
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-11', endDate:'2026-04-12' },
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-18', endDate:'2026-04-19' },
+    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-25', endDate:'2026-04-26' }
+  ];
+
+  const today = new Date('2026-04-01T00:00:00');
+  // 실제 운영시에는 아래 한 줄만 쓰면 됩니다.
+  // const today = new Date();
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function toDate(str){
+    const [y,m,d] = str.split('-').map(Number);
+    return new Date(y, m - 1, d, 0, 0, 0, 0);
+  }
+
+  function toKey(date){
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+  }
+
+  function getDayKor(day){
+    return ['일','월','화','수','목','금','토'][day];
+  }
+
+  function inRange(date, startStr, endStr){
+    const t = toDate(toKey(date)).getTime();
+    const s = toDate(startStr).getTime();
+    const e = toDate(endStr).getTime();
+    return t >= s && t <= e;
+  }
+
+  function getDisplayTime(item){
+    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+  }
+
+  function getAllItemsForDate(date){
+    return [
+      ...raidRanges.filter(item => inRange(date, item.startDate, item.endDate)),
+      ...weekendShadow.filter(item => inRange(date, item.startDate, item.endDate)),
+      ...oneDayEvents.filter(item => item.date === toKey(date))
+    ];
+  }
+
+  function formatWeekRange(start, end){
+    return `${start.getFullYear()}.${pad(start.getMonth()+1)}.${pad(start.getDate())} - ${end.getFullYear()}.${pad(end.getMonth()+1)}.${pad(end.getDate())}`;
+  }
+
+  function renderWeekRangeText(){
+    const start = new Date(today);
+    const end = new Date(today);
+    end.setDate(today.getDate() + 6);
+    document.getElementById('weekRangeText').textContent = `기준 날짜: ${formatWeekRange(start, end)}`;
+  }
+
+  function renderWeekGrid(){
+    const wrap = document.getElementById('weekGrid');
+    const days = [];
+
+    for(let i=0;i<7;i++){
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      days.push(d);
+    }
+
+    wrap.innerHTML = days.map(date => {
+      const items = getAllItemsForDate(date);
+      const isToday = toKey(date) === toKey(today);
+      const dayClass = date.getDay() === 0 ? 'sun' : date.getDay() === 6 ? 'sat' : '';
+
+      return `
+        <div class="week-card ${isToday ? 'today' : ''}">
+          <div class="week-top">
+            <div>
+              <div class="week-date ${dayClass}">${date.getMonth()+1}.${date.getDate()}</div>
+              <div class="week-dayname">${getDayKor(date.getDay())}요일</div>
+            </div>
+            ${isToday ? `<div class="today-pill">TODAY</div>` : ``}
+          </div>
+
+          <div class="week-items">
+            ${
+              items.length
+                ? items.map(item => `
+                  <div class="timeline-item">
+                    <div class="timeline-top">
+                      <div class="timeline-thumb">
+                        <img src="${item.image}" alt="${item.name}">
+                      </div>
+                      <div class="timeline-name">${item.name}</div>
+                    </div>
+                    <div class="timeline-time">${getDisplayTime(item)}</div>
+                    <div class="timeline-meta">
+                      <span class="chip ${item.type}">${item.label}</span>
+                    </div>
+                  </div>
+                `).join('')
+                : `<div class="empty-box">일정 없음</div>`
+            }
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  renderWeekRangeText();
+  renderWeekGrid();
+</script>
 </body>
 </html>
