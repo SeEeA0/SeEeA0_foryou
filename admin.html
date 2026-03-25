@@ -655,6 +655,36 @@
     padding:3px;
   }
 
+  .boost-stack{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:6px;
+  }
+
+  .boost-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:34px;
+    padding:6px 10px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
+    margin-right:8px;
+    margin-bottom:8px;
+  }
+
+  .boost-chip img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    padding:2px;
+  }
+
   .empty-state{
     background:#fbfdff;
     border:1px dashed #dce7f4;
@@ -786,19 +816,17 @@
             <div class="form-grid">
               <div class="field">
                 <label class="label" for="name">이름</label>
-                <input id="name" name="name" type="text" placeholder="예: 레지드래고 / 패션 레이드 데이" required />
+                <input id="name" name="name" type="text" placeholder="예: 레지드래고 / 메가 앱솔 / 그림자 뮤츠" required />
               </div>
 
               <div class="field">
                 <label class="label" for="label">구분</label>
                 <select id="label" name="label" required>
-                  <option value="전설">전설</option>
+                  <option value="1성">1성</option>
+                  <option value="3성">3성</option>
+                  <option value="5성" selected>5성</option>
                   <option value="메가">메가</option>
                   <option value="그림자">그림자</option>
-                  <option value="레이드 아워">레이드 아워</option>
-                  <option value="레이드 데이">레이드 데이</option>
-                  <option value="이벤트">이벤트</option>
-                  <option value="커뮤니티 데이">커뮤니티 데이</option>
                 </select>
               </div>
 
@@ -852,8 +880,8 @@
               </div>
 
               <div class="field">
-                <label class="label" for="boostWeather">부스트 날씨</label>
-                <select id="boostWeather" name="boostWeather">
+                <label class="label" for="boostWeather1">부스트 날씨 1</label>
+                <select id="boostWeather1" name="boostWeather1">
                   <option value="">선택 안함</option>
                   <option value="맑음">맑음</option>
                   <option value="비">비</option>
@@ -866,18 +894,37 @@
               </div>
 
               <div class="field">
-                <label class="label" for="boostIcon">부스트 아이콘 URL</label>
-                <input id="boostIcon" name="boostIcon" type="url" placeholder="./icons/weather-windy.png" />
+                <label class="label" for="boostIcon1">부스트 아이콘 1 URL</label>
+                <input id="boostIcon1" name="boostIcon1" type="url" placeholder="./icons/weather-windy.png" />
+              </div>
+
+              <div class="field">
+                <label class="label" for="boostWeather2">부스트 날씨 2</label>
+                <select id="boostWeather2" name="boostWeather2">
+                  <option value="">선택 안함</option>
+                  <option value="맑음">맑음</option>
+                  <option value="비">비</option>
+                  <option value="약간구름">약간구름</option>
+                  <option value="흐림">흐림</option>
+                  <option value="바람">바람</option>
+                  <option value="눈">눈</option>
+                  <option value="안개">안개</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="label" for="boostIcon2">부스트 아이콘 2 URL</label>
+                <input id="boostIcon2" name="boostIcon2" type="url" placeholder="./icons/weather-cloudy.png" />
               </div>
 
               <div class="field full">
                 <label class="label" for="desc">설명</label>
-                <input id="desc" name="desc" type="text" placeholder="예: 현재 전설 레이드 메인 보스" />
+                <input id="desc" name="desc" type="text" placeholder="예: 현재 5성 레이드 메인 보스" />
               </div>
 
               <div class="field full">
                 <label class="label" for="note">메모 / 참고 문구</label>
-                <textarea id="note" name="note" placeholder="예: 수요일 한정 진행 / 주말 그림자 일정 포함"></textarea>
+                <textarea id="note" name="note" placeholder="예: 주말 그림자 일정 포함 / 특정 시간대만 진행"></textarea>
               </div>
 
               <div class="field full">
@@ -1036,13 +1083,13 @@ const raidData = saved ? JSON.parse(saved) : [];
               <tbody>
                 <tr><td>id</td><td>고유 식별값</td></tr>
                 <tr><td>name</td><td>이름</td></tr>
-                <tr><td>label</td><td>전설 / 메가 / 그림자 / 레이드 아워 / 레이드 데이 / 이벤트 / 커뮤니티 데이</td></tr>
+                <tr><td>label</td><td>1성 / 3성 / 5성 / 메가 / 그림자</td></tr>
                 <tr><td>type</td><td>blue / purple / pink / yellow / green / gray</td></tr>
                 <tr><td>image</td><td>메인 이미지 URL</td></tr>
                 <tr><td>startDate / endDate</td><td>일정 구간</td></tr>
                 <tr><td>startTime / endTime</td><td>시간</td></tr>
                 <tr><td>cp / boostCp</td><td>일반 CP / 부스트 CP</td></tr>
-                <tr><td>boostWeather / boostIcon</td><td>부스트 날씨명 / 아이콘 경로</td></tr>
+                <tr><td>boosts</td><td>부스트 2개까지 저장되는 배열</td></tr>
                 <tr><td>strategyTypes</td><td>공략 타입 배열</td></tr>
                 <tr><td>showPages</td><td>노출할 페이지 목록</td></tr>
                 <tr><td>desc / note</td><td>설명 / 메모</td></tr>
@@ -1128,13 +1175,11 @@ const raidData = saved ? JSON.parse(saved) : [];
 
   function typeClassForLabel(label){
     switch(label){
-      case '전설': return 'blue';
+      case '1성': return 'green';
+      case '3성': return 'yellow';
+      case '5성': return 'blue';
       case '메가': return 'purple';
       case '그림자': return 'pink';
-      case '레이드 아워':
-      case '레이드 데이': return 'yellow';
-      case '이벤트':
-      case '커뮤니티 데이': return 'green';
       default: return 'gray';
     }
   }
@@ -1178,9 +1223,43 @@ const raidData = saved ? JSON.parse(saved) : [];
     })).filter(item => item.name || item.icon);
   }
 
+  function normalizeBoosts(item = {}){
+    if(Array.isArray(item.boosts)){
+      return item.boosts
+        .map(v => ({
+          weather: v?.weather?.trim?.() || v?.weather || '',
+          icon: v?.icon?.trim?.() || v?.icon || ''
+        }))
+        .filter(v => v.weather || v.icon)
+        .slice(0, 2);
+    }
+
+    const legacyBoost = {
+      weather: (item.boostWeather || '').trim(),
+      icon: (item.boostIcon || '').trim()
+    };
+
+    return (legacyBoost.weather || legacyBoost.icon) ? [legacyBoost] : [];
+  }
+
+  function getFormBoosts(formData){
+    return [
+      {
+        weather: formData.get('boostWeather1')?.trim() || '',
+        icon: formData.get('boostIcon1')?.trim() || ''
+      },
+      {
+        weather: formData.get('boostWeather2')?.trim() || '',
+        icon: formData.get('boostIcon2')?.trim() || ''
+      }
+    ].filter(v => v.weather || v.icon);
+  }
+
   function getFormData(){
     const formData = new FormData(raidForm);
     const label = formData.get('label')?.trim() || '';
+    const boosts = getFormBoosts(formData);
+
     return {
       id: editingId || uid(),
       name: formData.get('name')?.trim() || '',
@@ -1193,8 +1272,7 @@ const raidData = saved ? JSON.parse(saved) : [];
       endTime: formData.get('endTime')?.trim() || '',
       cp: formData.get('cp')?.trim() || '',
       boostCp: formData.get('boostCp')?.trim() || '',
-      boostWeather: formData.get('boostWeather')?.trim() || '',
-      boostIcon: formData.get('boostIcon')?.trim() || '',
+      boosts,
       desc: formData.get('desc')?.trim() || '',
       note: formData.get('note')?.trim() || '',
       showPages: getCheckedShowPages(),
@@ -1216,6 +1294,8 @@ const raidData = saved ? JSON.parse(saved) : [];
   function resetFormToNew(){
     editingId = null;
     raidForm.reset();
+    raidForm.label.value = '5성';
+    raidForm.type.value = typeClassForLabel('5성');
     strategyTypeList.innerHTML = '';
     addTypeRow();
     modeBadge.textContent = '새 일정 입력';
@@ -1224,10 +1304,12 @@ const raidData = saved ? JSON.parse(saved) : [];
   }
 
   function fillForm(item){
+    const boosts = normalizeBoosts(item);
+
     editingId = item.id;
     raidForm.name.value = item.name || '';
-    raidForm.label.value = item.label || '전설';
-    raidForm.type.value = item.type || typeClassForLabel(item.label || '전설');
+    raidForm.label.value = item.label || '5성';
+    raidForm.type.value = item.type || typeClassForLabel(item.label || '5성');
     raidForm.image.value = item.image || '';
     raidForm.startDate.value = item.startDate || '';
     raidForm.endDate.value = item.endDate || '';
@@ -1235,8 +1317,12 @@ const raidData = saved ? JSON.parse(saved) : [];
     raidForm.endTime.value = item.endTime || '';
     raidForm.cp.value = item.cp || '';
     raidForm.boostCp.value = item.boostCp || '';
-    raidForm.boostWeather.value = item.boostWeather || '';
-    raidForm.boostIcon.value = item.boostIcon || '';
+
+    raidForm.boostWeather1.value = boosts[0]?.weather || '';
+    raidForm.boostIcon1.value = boosts[0]?.icon || '';
+    raidForm.boostWeather2.value = boosts[1]?.weather || '';
+    raidForm.boostIcon2.value = boosts[1]?.icon || '';
+
     raidForm.desc.value = item.desc || '';
     raidForm.note.value = item.note || '';
 
@@ -1256,15 +1342,26 @@ const raidData = saved ? JSON.parse(saved) : [];
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function renderBoostBadges(boosts){
+    if(!boosts.length) return '';
+    return boosts.map(boost => `
+      <span class="boost-chip">
+        ${boost.icon ? `<img src="${escapeHtml(boost.icon)}" alt="${escapeHtml(boost.weather)}">` : ``}
+        <span>${escapeHtml(boost.weather || '부스트')}</span>
+      </span>
+    `).join('');
+  }
+
   function renderRecordList(){
     const keyword = searchInput.value.trim().toLowerCase();
     const filtered = records.filter(item => {
+      const boosts = normalizeBoosts(item);
       const target = [
         item.name,
         item.label,
         item.desc,
         item.note,
-        item.boostWeather,
+        ...boosts.map(v => v.weather),
         ...(item.strategyTypes || []).map(v => v.name)
       ].join(' ').toLowerCase();
       return target.includes(keyword);
@@ -1277,7 +1374,9 @@ const raidData = saved ? JSON.parse(saved) : [];
       return;
     }
 
-    recordList.innerHTML = filtered.map(item => `
+    recordList.innerHTML = filtered.map(item => {
+      const boosts = normalizeBoosts(item);
+      return `
       <article class="raid-item">
         <div class="raid-item-thumb">
           ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : `<span style="font-size:32px;">🖼️</span>`}
@@ -1288,13 +1387,13 @@ const raidData = saved ? JSON.parse(saved) : [];
           <div class="raid-item-meta">
             <span class="pill ${escapeHtml(item.type || 'gray')}">${escapeHtml(item.label)}</span>
             <span class="pill gray">${escapeHtml(item.startDate)} ~ ${escapeHtml(item.endDate)}</span>
-            ${item.boostWeather ? `<span class="pill gray">${escapeHtml(item.boostWeather)}</span>` : ``}
           </div>
           <div class="raid-item-desc">
             ${escapeHtml(item.desc || '설명 없음')}<br>
             ${item.cp ? `일반 CP: ${escapeHtml(item.cp)} / ` : ``}
             ${item.boostCp ? `부스트 CP: ${escapeHtml(item.boostCp)} / ` : ``}
             표시 페이지: ${(item.showPages || []).join(', ')}
+            ${boosts.length ? `<div style="margin-top:8px;">부스트: ${renderBoostBadges(boosts)}</div>` : ``}
           </div>
         </div>
 
@@ -1304,7 +1403,8 @@ const raidData = saved ? JSON.parse(saved) : [];
           <button class="btn red action-delete" data-id="${item.id}" type="button">삭제</button>
         </div>
       </article>
-    `).join('');
+    `;
+    }).join('');
 
     Array.from(document.querySelectorAll('.action-edit')).forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1348,6 +1448,7 @@ const raidData = saved ? JSON.parse(saved) : [];
 
   function renderPreview(){
     const item = getPreviewData();
+    const boosts = normalizeBoosts(item);
 
     if(!item.name && !item.label && !item.startDate){
       previewWrap.innerHTML = `<div class="empty-state">왼쪽 폼에 내용을 입력하면 여기에 카드 미리보기가 나타납니다.</div>`;
@@ -1378,12 +1479,8 @@ const raidData = saved ? JSON.parse(saved) : [];
               </div>
 
               <div class="preview-box">
-                <div class="preview-label">부스트</div>
-                <div class="preview-value" style="display:flex;align-items:center;gap:8px;">
-                  ${item.boostIcon ? `<img src="${escapeHtml(item.boostIcon)}" alt="" style="width:20px;height:20px;object-fit:contain;border-radius:50%;background:#f4f8ff;border:1px solid #dce6f4;padding:2px;">` : ``}
-                  <span>${escapeHtml(item.boostWeather || '-')}</span>
-                </div>
-                <div class="preview-value" style="margin-top:6px;">${escapeHtml(item.boostCp || '-')}</div>
+                <div class="preview-label">부스트 CP</div>
+                <div class="preview-value">${escapeHtml(item.boostCp || '-')}</div>
               </div>
 
               <div class="preview-box">
@@ -1394,6 +1491,22 @@ const raidData = saved ? JSON.parse(saved) : [];
               <div class="preview-box">
                 <div class="preview-label">표시 페이지</div>
                 <div class="preview-value">${escapeHtml((item.showPages || []).join(', ') || '-')}</div>
+              </div>
+            </div>
+
+            <div class="preview-strategy">
+              <div class="preview-label">부스트 날씨</div>
+              <div class="strategy-items">
+                ${
+                  boosts.length
+                    ? boosts.map(boost => `
+                      <span class="strategy-item">
+                        ${boost.icon ? `<img src="${escapeHtml(boost.icon)}" alt="${escapeHtml(boost.weather)}">` : `<span style="width:22px;height:22px;border-radius:50%;background:#f4f8ff;border:1px solid #dce6f4;display:inline-flex;align-items:center;justify-content:center;font-size:11px;">☁</span>`}
+                        <span>${escapeHtml(boost.weather || '부스트')}</span>
+                      </span>
+                    `).join('')
+                    : `<span class="hint">부스트 없음</span>`
+                }
               </div>
             </div>
 
@@ -1426,7 +1539,7 @@ const raidData = saved ? JSON.parse(saved) : [];
     return {
       id: uid(),
       name:'레지드래고',
-      label:'전설',
+      label:'5성',
       type:'blue',
       image:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
       startDate:'2026-04-01',
@@ -1435,9 +1548,11 @@ const raidData = saved ? JSON.parse(saved) : [];
       endTime:'',
       cp:'1614 - 1699',
       boostCp:'2017 - 2124',
-      boostWeather:'바람',
-      boostIcon:'./icons/weather-windy.png',
-      desc:'현재 전설 레이드 메인 보스',
+      boosts:[
+        { weather:'바람', icon:'./icons/weather-windy.png' },
+        { weather:'안개', icon:'./icons/weather-fog.png' }
+      ],
+      desc:'현재 5성 레이드 메인 보스',
       note:'기본 시간 미입력 시 06:00 AM ~ 10:00 PM 적용',
       showPages:['index','raid-now','weekly','monthly','detail'],
       strategyTypes:[
@@ -1547,7 +1662,10 @@ const raidData = saved ? JSON.parse(saved) : [];
       const text = await file.text();
       const parsed = JSON.parse(text);
       if(!Array.isArray(parsed)) throw new Error('배열 형식이 아닙니다.');
-      records = parsed;
+      records = parsed.map(item => ({
+        ...item,
+        boosts: normalizeBoosts(item)
+      }));
       saveRecords();
       renderRecordList();
       showStatus('JSON 데이터를 불러왔습니다.');
@@ -1563,6 +1681,11 @@ const raidData = saved ? JSON.parse(saved) : [];
   Array.from(raidForm.querySelectorAll('input, select, textarea')).forEach(el => {
     el.addEventListener('input', renderPreview);
     el.addEventListener('change', renderPreview);
+  });
+
+  document.getElementById('label').addEventListener('change', (e) => {
+    raidForm.type.value = typeClassForLabel(e.target.value);
+    renderPreview();
   });
 
   document.getElementById('checkBoostIcon').addEventListener('input', (e) => {
@@ -1587,9 +1710,17 @@ const raidData = saved ? JSON.parse(saved) : [];
   if(records.length === 0){
     records = [collectSample()];
     saveRecords();
+  }else{
+    records = records.map(item => ({
+      ...item,
+      boosts: normalizeBoosts(item)
+    }));
+    saveRecords();
   }
 
   addTypeRow();
+  raidForm.label.value = '5성';
+  raidForm.type.value = typeClassForLabel('5성');
   renderRecordList();
   renderPreview();
 </script>
