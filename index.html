@@ -106,18 +106,18 @@
       line-height:1.6;
     }
     .calendar-wrap{
-      padding:10px;
+      padding:12px;
       overflow-x:auto;
       -webkit-overflow-scrolling:touch;
     }
     .calendar-board{
-      min-width:760px;
+      min-width:860px;
     }
     .calendar-head{
       display:grid;
-      grid-template-columns:repeat(7,1fr);
-      gap:4px;
-      margin-bottom:4px;
+      grid-template-columns:90px repeat(7,1fr);
+      gap:10px;
+      margin-bottom:8px;
     }
     .calendar-head div{
       text-align:center;
@@ -128,16 +128,28 @@
     }
     .calendar-grid{
       display:grid;
-      grid-template-columns:repeat(7,1fr);
-      gap:4px;
+      grid-template-columns:90px repeat(7,1fr);
+      gap:10px;
+    }
+    .week-pill{
+      min-height:122px;
+      border:2px solid #d8e2f0;
+      border-radius:26px;
+      background:#f4f7fc;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      font-weight:800;
+      color:#667790;
     }
     .day-card{
       position:relative;
-      min-height:90px;
-      border:1px solid #e3e9f4;
-      border-radius:12px;
-      background:#fff;
-      padding:6px;
+      min-height:122px;
+      border:2px solid #d8e2f0;
+      border-radius:26px;
+      background:#f9fbff;
+      padding:12px 10px 10px;
       text-decoration:none;
       color:inherit;
       display:block;
@@ -159,48 +171,57 @@
       border-color:#cfe0ff;
     }
     .day-num{
-      font-size:11px;
-      font-weight:800;
+      font-size:14px;
+      font-weight:900;
       color:#6f7d93;
+      margin-bottom:8px;
     }
     .day-card.sat .day-num{color:#4c82e8}
     .day-card.sun .day-num{color:#ea7281}
     .day-mon{
-      width:26px;
-      height:26px;
+      position:absolute;
+      right:10px;
+      bottom:10px;
+      width:48px;
+      height:48px;
       border-radius:50%;
       background:#f3f6fb;
-      border:1px solid #dfe6f1;
+      border:2px solid #d8e2f0;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:14px;
-      margin-top:6px;
+      font-size:24px;
+      box-shadow:0 4px 10px rgba(31,41,55,.06);
     }
     .day-title{
-      margin-top:6px;
-      font-size:10px;
-      line-height:1.35;
-      font-weight:800;
-      color:#3b4658;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
+      display:none;
     }
-    .day-badge{
-      margin-top:6px;
-      display:inline-flex;
+    .stack-bars{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-right:46px;
+    }
+    .stack-bar{
+      min-height:40px;
+      border-radius:16px;
+      display:flex;
       align-items:center;
-      width:fit-content;
-      padding:4px 7px;
-      border-radius:999px;
-      font-size:9px;
-      font-weight:800;
-      line-height:1;
+      padding:0 14px;
+      font-size:12px;
+      line-height:1.2;
+      font-weight:900;
+      color:#fff;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      box-shadow:0 6px 14px rgba(31,41,55,.08);
     }
-    .day-badge.raid{background:#e8f0ff;color:#356fdb}
-    .day-badge.event{background:#ffeaf0;color:#d55975}
+    .stack-bar.blue{background:linear-gradient(90deg,#59aaf6 0%,#4898ef 100%)}
+    .stack-bar.purple{background:linear-gradient(90deg,#a06cff 0%,#8c5af1 100%)}
+    .stack-bar.pink{background:linear-gradient(90deg,#ff7aa0 0%,#f2628d 100%)}
+    .stack-bar.yellow{background:linear-gradient(90deg,#ffd452 0%,#ffbf2f 100%);color:#6a5600}
+    .day-badge{display:none}
     .content-grid{
       display:grid;
       grid-template-columns:1.1fr .9fr;
@@ -453,98 +474,130 @@
         <div class="calendar-wrap">
           <div class="calendar-board">
             <div class="calendar-head">
+              <div></div>
               <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
             </div>
             <div class="calendar-grid">
+              <div class="week-pill">1주차</div>
+
               <div class="day-card empty"></div>
               <div class="day-card empty"></div>
               <div class="day-card empty"></div>
 
               <a class="day-card wed" href="april-raids.html#apr1-7">
                 <div class="day-num">1</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">레지드래고 · 메가썬더볼트</div>
+                  <div class="stack-bar purple">그림자 라티오스 시작</div>
+                </div>
                 <div class="day-mon">🐉</div>
-                <div class="day-title">레지드래고 · 메가썬더볼트</div>
-                <span class="day-badge raid">지금 레이드</span>
               </a>
               <a class="day-card" href="april-raids.html#apr1-7">
                 <div class="day-num">2</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">레지드래고 진행</div>
+                  <div class="stack-bar purple">그림자 라티오스</div>
+                </div>
                 <div class="day-mon">⚡</div>
-                <div class="day-title">레지드래고 진행</div>
-                <span class="day-badge raid">5성 / 메가</span>
               </a>
               <a class="day-card" href="april-raids.html#apr1-7">
                 <div class="day-num">3</div>
-                <div class="day-mon">🌪</div>
-                <div class="day-title">레지드래고 진행</div>
-                <span class="day-badge raid">Windy</span>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">레지드래고 진행</div>
+                  <div class="stack-bars"></div>
+                  <div class="stack-bar purple">그림자 라티오스</div>
+                </div>
+                <div class="day-mon">🪽</div>
               </a>
               <a class="day-card sat" href="april-raids.html#apr4-fashion">
                 <div class="day-num">4</div>
+                <div class="stack-bars">
+                  <div class="stack-bar yellow">패션 레이드 데이</div>
+                  <div class="stack-bar pink">1성 / 3성 이벤트</div>
+                </div>
                 <div class="day-mon">🎩</div>
-                <div class="day-title">패션 레이드 데이</div>
-                <span class="day-badge event">이벤트</span>
               </a>
+
+              <div class="week-pill">2주차</div>
 
               <a class="day-card sun" href="april-raids.html#apr1-7">
                 <div class="day-num">5</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">레지드래고 진행</div>
+                </div>
                 <div class="day-mon">🌑</div>
-                <div class="day-title">그림자 라티오스 포함</div>
-                <span class="day-badge raid">그림자</span>
               </a>
               <a class="day-card" href="april-raids.html#apr1-7">
                 <div class="day-num">6</div>
-                <div class="day-mon">⚙️</div>
-                <div class="day-title">레지드래고 진행</div>
-                <span class="day-badge raid">5성</span>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">CP 1614 - 1699</div>
+                  <div class="stack-bar purple">CP 2017 - 2124</div>
+                </div>
+                <div class="day-mon">🐉</div>
               </a>
               <a class="day-card" href="april-raids.html#apr1-7">
                 <div class="day-num">7</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">레지드래고 마지막 날</div>
+                </div>
                 <div class="day-mon">📍</div>
-                <div class="day-title">레지드래고 마지막 날</div>
-                <span class="day-badge raid">종료일</span>
               </a>
               <a class="day-card" href="april-raids.html#apr8-14">
                 <div class="day-num">8</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">가이오가 · 메가프테라 시작</div>
+                </div>
                 <div class="day-mon">🐋</div>
-                <div class="day-title">가이오가 · 메가프테라 시작</div>
-                <span class="day-badge raid">구간 시작</span>
               </a>
               <a class="day-card" href="april-raids.html#apr8-14">
                 <div class="day-num">9</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">가이오가 진행</div>
+                </div>
                 <div class="day-mon">🪨</div>
-                <div class="day-title">가이오가 진행</div>
-                <span class="day-badge raid">5성 / 메가</span>
               </a>
               <a class="day-card" href="april-raids.html#apr8-14">
                 <div class="day-num">10</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">가이오가 진행</div>
+                </div>
                 <div class="day-mon">💧</div>
-                <div class="day-title">가이오가 진행</div>
-                <span class="day-badge raid">Rainy</span>
               </a>
-              <a class="day-card sat" href="april-raids.html#apr8-14"><div class="day-num">11</div><div class="day-mon">🦖</div><div class="day-title">메가프테라 진행</div></a>
-              <a class="day-card sun" href="april-raids.html#apr8-14"><div class="day-num">12</div><div class="day-mon">🐋</div><div class="day-title">가이오가 진행</div></a>
+              <a class="day-card sat" href="april-raids.html#apr8-14">
+                <div class="day-num">11</div>
+                <div class="stack-bars">
+                  <div class="stack-bar blue">메가프테라 진행</div>
+                </div>
+                <div class="day-mon">🦖</div>
+              </a>
 
-              <a class="day-card" href="april-raids.html#apr8-14"><div class="day-num">13</div><div class="day-mon">🪨</div><div class="day-title">메가프테라 진행</div></a>
-              <a class="day-card" href="april-raids.html#apr8-14"><div class="day-num">14</div><div class="day-mon">📍</div><div class="day-title">가이오가 마지막 날</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">15</div><div class="day-mon">🌋</div><div class="day-title">그란돈 · 메가후딘 시작</div><span class="day-badge raid">구간 시작</span></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">16</div><div class="day-mon">🔮</div><div class="day-title">메가후딘 진행</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">17</div><div class="day-mon">☀️</div><div class="day-title">그란돈 진행</div></a>
-              <a class="day-card sat" href="april-raids.html#apr15-21"><div class="day-num">18</div><div class="day-mon">🌋</div><div class="day-title">그란돈 진행</div></a>
-              <a class="day-card sun" href="april-raids.html#apr15-21"><div class="day-num">19</div><div class="day-mon">🔮</div><div class="day-title">메가후딘 진행</div></a>
+              <div class="week-pill">3주차</div>
 
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">20</div><div class="day-mon">☀️</div><div class="day-title">그란돈 진행</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">21</div><div class="day-mon">📍</div><div class="day-title">그란돈 마지막 날</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">22</div><div class="day-mon">⚡</div><div class="day-title">카푸꼬꼬꼭 · 메가샤크니아 시작</div><span class="day-badge raid">구간 시작</span></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">23</div><div class="day-mon">🦈</div><div class="day-title">메가샤크니아 진행</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">24</div><div class="day-mon">⚡</div><div class="day-title">카푸꼬꼬꼭 진행</div></a>
-              <a class="day-card sat" href="april-raids.html#apr22-28"><div class="day-num">25</div><div class="day-mon">✨</div><div class="day-title">카푸꼬꼬꼭 진행</div></a>
-              <a class="day-card sun" href="april-raids.html#apr22-28"><div class="day-num">26</div><div class="day-mon">🌧</div><div class="day-title">비 / 흐림 부스트 확인</div></a>
+              <a class="day-card sun" href="april-raids.html#apr8-14"><div class="day-num">12</div><div class="stack-bars"><div class="stack-bar blue">가이오가 진행</div></div><div class="day-mon">🐋</div></a>
+              <a class="day-card" href="april-raids.html#apr8-14"><div class="day-num">13</div><div class="stack-bars"><div class="stack-bar blue">메가프테라 진행</div></div><div class="day-mon">🪨</div></a>
+              <a class="day-card" href="april-raids.html#apr8-14"><div class="day-num">14</div><div class="stack-bars"><div class="stack-bar blue">가이오가 마지막 날</div></div><div class="day-mon">📍</div></a>
+              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">15</div><div class="stack-bars"><div class="stack-bar blue">그란돈 · 메가후딘 시작</div></div><div class="day-mon">🌋</div></a>
+              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">16</div><div class="stack-bars"><div class="stack-bar blue">메가후딘 진행</div></div><div class="day-mon">🔮</div></a>
+              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">17</div><div class="stack-bars"><div class="stack-bar blue">그란돈 진행</div></div><div class="day-mon">☀️</div></a>
+              <a class="day-card sat" href="april-raids.html#apr15-21"><div class="day-num">18</div><div class="stack-bars"><div class="stack-bar blue">그란돈 진행</div></div><div class="day-mon">🌋</div></a>
 
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">27</div><div class="day-mon">🦈</div><div class="day-title">메가샤크니아 진행</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">28</div><div class="day-mon">📍</div><div class="day-title">카푸꼬꼬꼭 마지막 날</div></a>
-              <a class="day-card" href="april-raids.html#apr29-may5"><div class="day-num">29</div><div class="day-mon">🧚</div><div class="day-title">카푸나비나 · 메가다크펫 시작</div><span class="day-badge raid">구간 시작</span></a>
-              <a class="day-card" href="april-raids.html#apr29-may5"><div class="day-num">30</div><div class="day-mon">👻</div><div class="day-title">메가다크펫 진행</div></a>
-              <div class="day-card empty"></div>
+              <div class="week-pill">4주차</div>
+
+              <a class="day-card sun" href="april-raids.html#apr15-21"><div class="day-num">19</div><div class="stack-bars"><div class="stack-bar blue">메가후딘 진행</div></div><div class="day-mon">🔮</div></a>
+              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">20</div><div class="stack-bars"><div class="stack-bar blue">그란돈 진행</div></div><div class="day-mon">☀️</div></a>
+              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">21</div><div class="stack-bars"><div class="stack-bar blue">그란돈 마지막 날</div></div><div class="day-mon">📍</div></a>
+              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">22</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 · 메가샤크니아 시작</div></div><div class="day-mon">⚡</div></a>
+              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">23</div><div class="stack-bars"><div class="stack-bar blue">메가샤크니아 진행</div></div><div class="day-mon">🦈</div></a>
+              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">24</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 진행</div></div><div class="day-mon">⚡</div></a>
+              <a class="day-card sat" href="april-raids.html#apr22-28"><div class="day-num">25</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 진행</div></div><div class="day-mon">✨</div></a>
+
+              <div class="week-pill">5주차</div>
+
+              <a class="day-card sun" href="april-raids.html#apr22-28"><div class="day-num">26</div><div class="stack-bars"><div class="stack-bar blue">비 / 흐림 부스트 확인</div></div><div class="day-mon">🌧</div></a>
+              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">27</div><div class="stack-bars"><div class="stack-bar blue">메가샤크니아 진행</div></div><div class="day-mon">🦈</div></a>
+              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">28</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 마지막 날</div></div><div class="day-mon">📍</div></a>
+              <a class="day-card" href="april-raids.html#apr29-may5"><div class="day-num">29</div><div class="stack-bars"><div class="stack-bar blue">카푸나비나 · 메가다크펫 시작</div></div><div class="day-mon">🧚</div></a>
+              <a class="day-card" href="april-raids.html#apr29-may5"><div class="day-num">30</div><div class="stack-bars"><div class="stack-bar blue">메가다크펫 진행</div></div><div class="day-mon">👻</div></a>
               <div class="day-card empty"></div>
               <div class="day-card empty"></div>
             </div>
