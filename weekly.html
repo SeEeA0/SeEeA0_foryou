@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>주간 일정표</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:#eef2f8;
+      color:#232b39;
+    }
+    .page{
+      min-height:100vh;
+      background:linear-gradient(180deg,#f7f9fc 0%,#edf2f8 100%);
+    }
+    .wrap{
+      max-width:1080px;
+      margin:0 auto;
+      padding:16px 12px 96px;
+    }
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:40;
+      background:#ffde00;
+      border:1px solid #e3c600;
+      border-radius:14px 14px 0 0;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:13px;
+      font-weight:800;
+      color:#272727;
+      box-shadow:0 8px 20px rgba(28,34,45,.08);
+    }
+    .hero{
+      background:#fff;
+      border:1px solid #dfe6f1;
+      border-top:0;
+      border-radius:0 0 20px 20px;
+      box-shadow:0 12px 28px rgba(28,34,45,.05);
+      padding:16px;
+    }
+    .hero h1{
+      margin:0;
+      font-size:22px;
+      line-height:1.28;
+      letter-spacing:-.03em;
+      word-break:keep-all;
+    }
+    .hero p{
+      margin:8px 0 0;
+      color:#68778f;
+      font-size:13px;
+      line-height:1.7;
+    }
+    .hero-chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f6f8fc;
+      border:1px solid #dfe6f1;
+      color:#5d6c84;
+      font-size:12px;
+      font-weight:800;
+    }
+    .chip.primary{
+      background:#edf4ff;
+      border-color:#d7e6ff;
+      color:#296be2;
+    }
+
+    .week-strip{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:8px;
+    }
+    .day-chip{
+      background:#fff;
+      border:1px solid #dfe6f1;
+      border-radius:18px;
+      padding:12px 8px;
+      text-align:center;
+      box-shadow:0 8px 20px rgba(28,34,45,.04);
+    }
+    .day-chip.active{
+      background:#edf4ff;
+      border-color:#cfe0ff;
+    }
+    .day-name{
+      font-size:11px;
+      color:#77869d;
+      font-weight:800;
+    }
+    .day-num{
+      margin-top:6px;
+      font-size:20px;
+      font-weight:900;
+      color:#2f3c52;
+      letter-spacing:-.03em;
+    }
+    .day-mini{
+      margin-top:6px;
+      font-size:12px;
+    }
+
+    .section{
+      margin-top:16px;
+      background:#fff;
+      border:1px solid #dfe6f1;
+      border-radius:20px;
+      box-shadow:0 12px 28px rgba(28,34,45,.05);
+      overflow:hidden;
+    }
+    .section-head{
+      padding:14px 16px;
+      border-bottom:1px solid #e7edf5;
+      background:#f9fbff;
+    }
+    .section-title{
+      margin:0;
+      font-size:18px;
+      font-weight:800;
+      color:#253041;
+    }
+    .section-sub{
+      margin:4px 0 0;
+      color:#7a88a1;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .timeline{
+      padding:14px;
+      display:grid;
+      gap:12px;
+    }
+    .timeline-card{
+      border:1px solid #e3e9f4;
+      border-radius:18px;
+      background:#fbfcff;
+      padding:14px;
+      display:grid;
+      grid-template-columns:72px 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    .time-box{
+      border-radius:16px;
+      background:#f3f6fb;
+      border:1px solid #dfe6f1;
+      min-height:64px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:900;
+      color:#50627d;
+      text-align:center;
+      line-height:1.3;
+      padding:8px;
+    }
+    .timeline-title{
+      font-size:18px;
+      font-weight:800;
+      color:#253041;
+      line-height:1.3;
+    }
+    .timeline-meta{
+      margin-top:4px;
+      font-size:12px;
+      color:#73819a;
+      line-height:1.6;
+    }
+    .timeline-desc{
+      margin-top:8px;
+      font-size:13px;
+      color:#66758f;
+      line-height:1.7;
+    }
+    .tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .tag{
+      font-size:11px;
+      font-weight:800;
+      padding:6px 10px;
+      border-radius:999px;
+      line-height:1;
+    }
+    .tag.raid{background:#e8f0ff;color:#356fdb}
+    .tag.event{background:#ffeaf0;color:#d55975}
+    .tag.shadow{background:#efe7ff;color:#7b4de2}
+    .tag.focus{background:#eef7df;color:#6c8b15}
+
+    .boss-panel{
+      padding:14px;
+      display:grid;
+      gap:12px;
+    }
+    .boss-card{
+      border:1px solid #e3e9f4;
+      border-radius:18px;
+      background:#fbfcff;
+      padding:14px;
+      display:grid;
+      grid-template-columns:62px 1fr;
+      gap:12px;
+      align-items:center;
+    }
+    .boss-icon{
+      width:62px;
+      height:62px;
+      border-radius:20px;
+      background:#f3f6fb;
+      border:1px solid #dfe6f1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+    }
+    .boss-name{
+      font-size:17px;
+      font-weight:800;
+      color:#253041;
+      line-height:1.2;
+    }
+    .boss-meta{
+      margin-top:4px;
+      font-size:12px;
+      color:#73819a;
+      line-height:1.6;
+    }
+
+    .quick-links{
+      padding:14px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    .quick-link{
+      text-decoration:none;
+      color:inherit;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid #e3e9f4;
+      border-radius:16px;
+      padding:12px;
+      background:#fbfcff;
+    }
+    .quick-icon{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      background:#f3f6fb;
+      border:1px solid #dfe6f1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      flex:0 0 44px;
+    }
+    .quick-link h4{
+      margin:0;
+      font-size:14px;
+      font-weight:800;
+      color:#253041;
+    }
+    .quick-link p{
+      margin:4px 0 0;
+      font-size:11px;
+      color:#718099;
+      line-height:1.6;
+    }
+
+    .bottom-nav{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:10px;
+      width:min(560px, calc(100% - 16px));
+      background:rgba(255,255,255,.94);
+      border:1px solid #dfe6f1;
+      box-shadow:0 16px 30px rgba(28,34,45,.12);
+      backdrop-filter:blur(12px);
+      border-radius:22px;
+      padding:8px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+      z-index:50;
+    }
+    .nav-btn{
+      border:0;
+      background:#f6f8fc;
+      border-radius:16px;
+      min-height:54px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      color:#6e7c93;
+      font-size:10px;
+      font-weight:800;
+      text-decoration:none;
+    }
+    .nav-btn.active{
+      background:#edf4ff;
+      color:#2f6fe4;
+      box-shadow:inset 0 0 0 1px #d7e6ff;
+    }
+    .nav-icon{font-size:17px}
+
+    @media (min-width: 761px){
+      .wrap{padding:20px 14px 100px}
+      .hero h1{font-size:28px}
+      .quick-links{grid-template-columns:repeat(3,1fr)}
+      .bottom-nav{
+        width:min(920px, calc(100% - 20px));
+        padding:10px;
+        gap:8px;
+      }
+      .nav-btn{min-height:56px;font-size:11px}
+      .nav-icon{font-size:18px}
+    }
+
+    @media (max-width: 720px){
+      .week-strip{
+        grid-template-columns:repeat(4,1fr);
+      }
+      .timeline-card{
+        grid-template-columns:1fr;
+      }
+      .time-box{
+        min-height:52px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="wrap">
+      <div class="topbar">
+        <div>〈</div>
+        <div>주간 일정표</div>
+        <div>✕</div>
+      </div>
+
+      <section class="hero">
+        <h1>이번 주 일정표</h1>
+        <p>하루 단위로 어떤 보스가 진행되는지, 이벤트가 있는지, 어떤 날짜가 중요한지 빠르게 보는 화면입니다.</p>
+        <div class="hero-chips">
+          <span class="chip primary">주간 흐름 한눈에</span>
+          <span class="chip">보스 / 이벤트 분리</span>
+          <span class="chip">메인보다 자세하게</span>
+        </div>
+      </section>
+
+      <div class="week-strip">
+        <div class="day-chip active">
+          <div class="day-name">월</div>
+          <div class="day-num">01</div>
+          <div class="day-mini">🐉</div>
+        </div>
+        <div class="day-chip">
+          <div class="day-name">화</div>
+          <div class="day-num">02</div>
+          <div class="day-mini">⚡</div>
+        </div>
+        <div class="day-chip">
+          <div class="day-name">수</div>
+          <div class="day-num">03</div>
+          <div class="day-mini">🌑</div>
+        </div>
+        <div class="day-chip">
+          <div class="day-name">목</div>
+          <div class="day-num">04</div>
+          <div class="day-mini">🎩</div>
+        </div>
+        <div class="day-chip">
+          <div class="day-name">금</div>
+          <div class="day-num">05</div>
+          <div class="day-mini">🌪</div>
+        </div>
+        <div class="day-chip">
+          <div class="day-name">토</div>
+          <div class="day-num">06</div>
+          <div class="day-mini">📍</div>
+        </div>
+        <div class="day-chip">
+          <div class="day-name">일</div>
+          <div class="day-num">07</div>
+          <div class="day-mini">🔥</div>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="section-head">
+          <h2 class="section-title">이번 주 주요 일정</h2>
+          <p class="section-sub">현재 선택된 주간 기준 예시</p>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-card">
+            <div class="time-box">4/1<br>ALL DAY</div>
+            <div>
+              <div class="timeline-title">레지드래고 / 메가썬더볼트 시작</div>
+              <div class="timeline-meta">4월 1일 - 4월 7일</div>
+              <div class="timeline-desc">5성 레이드와 메가 레이드가 동시에 시작되는 구간입니다. 메인에서 날짜를 누르면 이 구간 상세로 이동하도록 연결하면 좋습니다.</div>
+              <div class="tags">
+                <span class="tag raid">5성</span>
+                <span class="tag raid">메가</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-card">
+            <div class="time-box">4/1<br>ALL DAY</div>
+            <div>
+              <div class="timeline-title">그림자 라티오스 진행</div>
+              <div class="timeline-meta">4월 1일 - 5월 5일</div>
+              <div class="timeline-desc">별도 장기 진행 일정으로 표시해 주면 좋습니다. 메인에선 작게, 주간 화면에서는 확실히 보이게 두는 방식이 좋습니다.</div>
+              <div class="tags">
+                <span class="tag shadow">그림자</span>
+                <span class="tag raid">5성</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-card">
+            <div class="time-box">4/4<br>14:00</div>
+            <div>
+              <div class="timeline-title">패션 레이드 데이</div>
+              <div class="timeline-meta">4월 4일 14:00 - 17:00</div>
+              <div class="timeline-desc">1성 / 3성 코스튬 포켓몬이 집중되는 이벤트 구간입니다. 일반 레이드와 다른 색으로 분리해 주는 것이 좋습니다.</div>
+              <div class="tags">
+                <span class="tag event">이벤트</span>
+                <span class="tag focus">레이드 데이</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-card">
+            <div class="time-box">4/7<br>END</div>
+            <div>
+              <div class="timeline-title">레지드래고 구간 종료</div>
+              <div class="timeline-meta">다음 구간으로 교체 직전</div>
+              <div class="timeline-desc">메인과 주간표에서 종료일은 따로 표시해 두면 사용자가 헷갈리지 않습니다.</div>
+              <div class="tags">
+                <span class="tag raid">종료일</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2 class="section-title">이번 주 보스 요약</h2>
+          <p class="section-sub">현재 주간에 핵심적으로 확인할 보스</p>
+        </div>
+
+        <div class="boss-panel">
+          <div class="boss-card">
+            <div class="boss-icon">🐉</div>
+            <div>
+              <div class="boss-name">레지드래고</div>
+              <div class="boss-meta">5성 레이드 · CP 1614 - 1699 · 부스트 2017 - 2124</div>
+            </div>
+          </div>
+
+          <div class="boss-card">
+            <div class="boss-icon">⚡</div>
+            <div>
+              <div class="boss-name">메가썬더볼트</div>
+              <div class="boss-meta">메가 레이드 · CP 1267 - 1337 · 부스트 1585 - 1672</div>
+            </div>
+          </div>
+
+          <div class="boss-card">
+            <div class="boss-icon">🌑</div>
+            <div>
+              <div class="boss-name">그림자 라티오스</div>
+              <div class="boss-meta">그림자 5성 · 장기 진행 일정</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2 class="section-title">빠른 이동</h2>
+          <p class="section-sub">다른 화면으로 바로 이동</p>
+        </div>
+        <div class="quick-links">
+          <a class="quick-link" href="index.html">
+            <div class="quick-icon">🏠</div>
+            <div>
+              <h4>메인</h4>
+              <p>날짜 클릭형 메인 캘린더</p>
+            </div>
+          </a>
+          <a class="quick-link" href="current-raids.html">
+            <div class="quick-icon">🔥</div>
+            <div>
+              <h4>지금 레이드</h4>
+              <p>현재 보스만 집중 보기</p>
+            </div>
+          </a>
+          <a class="quick-link" href="april-raids.html">
+            <div class="quick-icon">📆</div>
+            <div>
+              <h4>전체 레이드</h4>
+              <p>4월 전체 구간 확인</p>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <nav class="bottom-nav">
+      <a class="nav-btn" href="index.html"><span class="nav-icon">🏠</span><span>메인</span></a>
+      <a class="nav-btn" href="current-raids.html"><span class="nav-icon">🔥</span><span>지금 레이드</span></a>
+      <a class="nav-btn active" href="weekly.html"><span class="nav-icon">🗓</span><span>주간 일정표</span></a>
+      <a class="nav-btn" href="monthly.html"><span class="nav-icon">✨</span><span>월간 일정</span></a>
+    </nav>
+  </div>
+</body>
+</html>
