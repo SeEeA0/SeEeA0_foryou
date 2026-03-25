@@ -16,9 +16,7 @@
   :root{
     --bg:#edf3fb;
     --card:#ffffff;
-    --card-soft:#f8fbff;
     --line:#d8e3f2;
-    --line-strong:#c9d8eb;
     --text:#1f2f46;
     --muted:#7486a3;
 
@@ -49,65 +47,8 @@
     padding:20px 16px 110px;
   }
 
-  .hero{
-    background:rgba(255,255,255,.82);
-    border:1px solid var(--line);
-    border-radius:30px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    margin-bottom:18px;
-  }
-
-  .hero-head{
-    padding:26px 28px 18px;
-    border-bottom:1px solid #e4edf8;
-    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
-  }
-
-  .hero-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .hero-sub{
-    margin-top:10px;
-    font-size:14px;
-    line-height:1.55;
-    color:var(--muted);
-    font-weight:700;
-  }
-
-  .hero-tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:18px;
-  }
-
-  .hero-tag{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:40px;
-    padding:0 16px;
-    border-radius:999px;
-    background:#f3f7ff;
-    border:1px solid var(--line);
-    color:#58719a;
-    font-size:13px;
-    font-weight:900;
-    white-space:nowrap;
-  }
-
-  .hero-tag.active{
-    background:#eaf2ff;
-    color:#3567d7;
-    border-color:#cfe0f6;
-  }
-
   .section{
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.84);
     border:1px solid var(--line);
     border-radius:30px;
     overflow:hidden;
@@ -311,59 +252,6 @@
     font-weight:800;
   }
 
-  .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:14px;
-  }
-
-  .quick-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:22px;
-    padding:14px 16px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    text-decoration:none;
-    color:inherit;
-    transition:.18s ease;
-    min-height:96px;
-  }
-
-  .quick-card:hover{
-    transform:translateY(-2px);
-    border-color:#bfd1ea;
-    box-shadow:0 12px 28px rgba(62,85,131,.08);
-  }
-
-  .quick-icon{
-    width:52px;
-    height:52px;
-    border-radius:16px;
-    background:#f3f7ff;
-    border:1px solid #dce6f4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-    flex-shrink:0;
-  }
-
-  .quick-title{
-    font-size:16px;
-    font-weight:900;
-    letter-spacing:-.02em;
-  }
-
-  .quick-desc{
-    margin-top:5px;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.45;
-    font-weight:700;
-  }
-
   .bottom-nav{
     position:fixed;
     left:50%;
@@ -417,11 +305,9 @@
   }
 
   @media (max-width:1180px){
-    .week-grid,
-    .quick-grid{
+    .week-grid{
       min-width:1100px;
     }
-
     .section-body{
       overflow-x:auto;
     }
@@ -432,26 +318,18 @@
       padding-bottom:120px;
     }
 
-    .hero-head,
     .section-head{
       padding:22px 20px 16px;
+      flex-direction:column;
+      align-items:flex-start;
     }
 
     .section-body{
       padding:16px;
     }
 
-    .hero-title{
-      font-size:26px;
-    }
-
     .section-title{
       font-size:22px;
-    }
-
-    .section-head{
-      flex-direction:column;
-      align-items:flex-start;
     }
   }
 </style>
@@ -459,66 +337,17 @@
 <body>
 <div class="wrap">
 
-  <section class="hero">
-    <div class="hero-head">
-      <div class="hero-title">주간 일정표</div>
-      <div class="hero-sub">
-        오늘부터 7일간의 레이드, 레이드 아워, 이벤트, 커뮤니티 데이, 그림자 일정을 날짜별로 빠르게 확인하는 페이지입니다.
-      </div>
-      <div class="hero-tags">
-        <span class="hero-tag active">오늘부터 7일 자동 반영</span>
-        <span class="hero-tag">시간 기본값 적용</span>
-        <span class="hero-tag">레이드 / 이벤트 통합 표시</span>
-      </div>
-    </div>
-  </section>
-
   <section class="section">
     <div class="section-head">
       <div>
-        <div class="section-title">이번 주 일정</div>
-        <div class="section-sub" id="weekRangeText">기준 날짜 범위</div>
+        <div class="section-title">주간 일정표</div>
+        <div class="section-sub" id="weekRangeText">한국 시간 기준 오늘부터 7일</div>
       </div>
       <div class="tiny-badge">7 DAYS</div>
     </div>
 
     <div class="section-body">
       <div class="week-grid" id="weekGrid"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <div class="section-title">빠른 이동</div>
-      <div class="section-sub">다른 화면으로 바로 이동</div>
-    </div>
-
-    <div class="section-body">
-      <div class="quick-grid">
-        <a href="./index.html" class="quick-card">
-          <div class="quick-icon">🏠</div>
-          <div>
-            <div class="quick-title">메인</div>
-            <div class="quick-desc">전체 허브 메인 화면</div>
-          </div>
-        </a>
-
-        <a href="./raid-now.html" class="quick-card">
-          <div class="quick-icon">⚔️</div>
-          <div>
-            <div class="quick-title">지금 레이드</div>
-            <div class="quick-desc">현재 진행 중인 보스 카드형 보기</div>
-          </div>
-        </a>
-
-        <a href="./monthly.html" class="quick-card">
-          <div class="quick-icon">📆</div>
-          <div>
-            <div class="quick-title">월간 일정</div>
-            <div class="quick-desc">한 달 전체 흐름 확인</div>
-          </div>
-        </a>
-      </div>
     </div>
   </section>
 
@@ -544,135 +373,135 @@
 </nav>
 
 <script>
-  const DEFAULT_START = '06:00 AM';
-  const DEFAULT_END = '10:00 PM';
+  const STORAGE_KEY = 'pogoRaidAdminData';
 
-  const IMG = {
-    regieleki:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/894.png',
-    regidrago:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
-    kyogre:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png',
-    groudon:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png',
-    tapuKoko:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/785.png',
-    tapuLele:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/786.png',
-    latias:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png',
-    latios:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png',
-    houndoom:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/229.png',
-    manectric:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png',
-    aerodactyl:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png',
-    alakazam:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png',
-    sharpedo:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/319.png',
-    banette:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/354.png',
-    pikachu:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
-    tinkatink:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/957.png'
-  };
+  function getKoreaNow(){
+    const now = new Date();
+    const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+    return new Date(koreaString);
+  }
 
-  const raidRanges = [
-    { name:'레지에레키', label:'5성 레이드', type:'blue', image:IMG.regieleki, startDate:'2026-03-25', endDate:'2026-03-31' },
-    { name:'메가 헬가', label:'메가 레이드', type:'purple', image:IMG.houndoom, startDate:'2026-03-25', endDate:'2026-03-31' },
+  function getKoreaToday(){
+    const koreaNow = getKoreaNow();
+    koreaNow.setHours(0, 0, 0, 0);
+    return koreaNow;
+  }
 
-    { name:'레지드래고', label:'5성 레이드', type:'blue', image:IMG.regidrago, startDate:'2026-04-01', endDate:'2026-04-07' },
-    { name:'메가썬더볼트', label:'메가 레이드', type:'purple', image:IMG.manectric, startDate:'2026-04-01', endDate:'2026-04-07' },
-
-    { name:'가이오가', label:'5성 레이드', type:'blue', image:IMG.kyogre, startDate:'2026-04-08', endDate:'2026-04-14' },
-    { name:'메가프테라', label:'메가 레이드', type:'purple', image:IMG.aerodactyl, startDate:'2026-04-08', endDate:'2026-04-14' },
-
-    { name:'그란돈', label:'5성 레이드', type:'blue', image:IMG.groudon, startDate:'2026-04-15', endDate:'2026-04-21' },
-    { name:'메가후딘', label:'메가 레이드', type:'purple', image:IMG.alakazam, startDate:'2026-04-15', endDate:'2026-04-21' },
-
-    { name:'카푸꼬꼬꼭', label:'5성 레이드', type:'blue', image:IMG.tapuKoko, startDate:'2026-04-22', endDate:'2026-04-28' },
-    { name:'메가샤크니아', label:'메가 레이드', type:'purple', image:IMG.sharpedo, startDate:'2026-04-22', endDate:'2026-04-28' },
-
-    { name:'카푸나비나', label:'5성 레이드', type:'blue', image:IMG.tapuLele, startDate:'2026-04-29', endDate:'2026-04-30' },
-    { name:'메가다크펫', label:'메가 레이드', type:'purple', image:IMG.banette, startDate:'2026-04-29', endDate:'2026-04-30' }
-  ];
-
-  const oneDayEvents = [
-    { name:'레지에레키', label:'레이드 아워', type:'yellow', image:IMG.regieleki, date:'2026-03-25', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'전기 타입 이벤트', label:'이벤트', type:'green', image:IMG.manectric, date:'2026-03-31', startTime:'10:00 AM', endTime:'08:00 PM' },
-
-    { name:'레지드래고', label:'레이드 아워', type:'yellow', image:IMG.regidrago, date:'2026-04-01', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'패션 레이드 데이', label:'레이드 데이', type:'yellow', image:IMG.pikachu, date:'2026-04-04', startTime:'02:00 PM', endTime:'05:00 PM' },
-
-    { name:'가이오가', label:'레이드 아워', type:'yellow', image:IMG.kyogre, date:'2026-04-08', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'두드리짱', label:'커뮤니티 데이', type:'green', image:IMG.tinkatink, date:'2026-04-11', startTime:'02:00 PM', endTime:'05:00 PM' },
-
-    { name:'지속가능성 위크', label:'이벤트', type:'green', image:IMG.aerodactyl, date:'2026-04-14', startTime:'10:00 AM', endTime:'08:00 PM' },
-    { name:'그란돈', label:'레이드 아워', type:'yellow', image:IMG.groudon, date:'2026-04-15', startTime:'06:00 PM', endTime:'07:00 PM' },
-
-    { name:'카푸꼬꼬꼭', label:'레이드 아워', type:'yellow', image:IMG.tapuKoko, date:'2026-04-22', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'강철의 의지', label:'이벤트', type:'green', image:IMG.banette, date:'2026-04-28', startTime:'10:00 AM', endTime:'08:00 PM' },
-    { name:'카푸나비나', label:'레이드 아워', type:'yellow', image:IMG.tapuLele, date:'2026-04-29', startTime:'06:00 PM', endTime:'07:00 PM' }
-  ];
-
-  const weekendShadow = [
-    { name:'그림자 라티아스', label:'그림자', type:'pink', image:IMG.latias, startDate:'2026-03-29', endDate:'2026-03-31' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-01', endDate:'2026-04-05' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-11', endDate:'2026-04-12' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-18', endDate:'2026-04-19' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-25', endDate:'2026-04-26' }
-  ];
-
-  const today = new Date('2026-04-01T00:00:00');
-  // 실제 운영시에는 아래 한 줄만 쓰면 됩니다.
-  // const today = new Date();
-
-  function pad(n){ return String(n).padStart(2,'0'); }
+  function pad(n){
+    return String(n).padStart(2, '0');
+  }
 
   function toDate(str){
-    const [y,m,d] = str.split('-').map(Number);
+    if(!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
   function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   }
 
   function getDayKor(day){
     return ['일','월','화','수','목','금','토'][day];
   }
 
-  function inRange(date, startStr, endStr){
-    const t = toDate(toKey(date)).getTime();
-    const s = toDate(startStr).getTime();
-    const e = toDate(endStr).getTime();
-    return t >= s && t <= e;
+  function toAmpm(time24){
+    if(!time24) return '';
+    const [hh, mm] = time24.split(':').map(Number);
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return `${String(h12).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${suffix}`;
   }
 
   function getDisplayTime(item){
-    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
+    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
+    return `${start} ~ ${end}`;
   }
 
-  function getAllItemsForDate(date){
-    return [
-      ...raidRanges.filter(item => inRange(date, item.startDate, item.endDate)),
-      ...weekendShadow.filter(item => inRange(date, item.startDate, item.endDate)),
-      ...oneDayEvents.filter(item => item.date === toKey(date))
-    ];
+  function inRange(date, startStr, endStr){
+    const start = toDate(startStr);
+    const end = toDate(endStr);
+    if(!start || !end) return false;
+    const t = toDate(toKey(date)).getTime();
+    return t >= start.getTime() && t <= end.getTime();
   }
 
-  function formatWeekRange(start, end){
+  function loadRecords(){
+    try{
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  function isWeeklyAllowed(item){
+    return Array.isArray(item.showPages) && item.showPages.includes('weekly');
+  }
+
+  function getItemsForDate(records, date){
+    return records
+      .filter(item =>
+        isWeeklyAllowed(item) &&
+        item.startDate &&
+        item.endDate &&
+        inRange(date, item.startDate, item.endDate)
+      )
+      .sort((a, b) => {
+        const order = {
+          '전설': 0,
+          '메가': 1,
+          '그림자': 2,
+          '레이드 아워': 3,
+          '레이드 데이': 4,
+          '이벤트': 5,
+          '커뮤니티 데이': 6
+        };
+        const aOrder = order[a.label] ?? 99;
+        const bOrder = order[b.label] ?? 99;
+        if(aOrder !== bOrder) return aOrder - bOrder;
+        return (a.name || '').localeCompare(b.name || '', 'ko');
+      });
+  }
+
+  function chipClass(item){
+    return item.type || (
+      item.label === '전설' ? 'blue' :
+      item.label === '메가' ? 'purple' :
+      item.label === '그림자' ? 'pink' :
+      item.label === '레이드 아워' || item.label === '레이드 데이' ? 'yellow' :
+      item.label === '이벤트' || item.label === '커뮤니티 데이' ? 'green' : 'gray'
+    );
+  }
+
+  function formatRangeText(start, end){
     return `${start.getFullYear()}.${pad(start.getMonth()+1)}.${pad(start.getDate())} - ${end.getFullYear()}.${pad(end.getMonth()+1)}.${pad(end.getDate())}`;
   }
 
-  function renderWeekRangeText(){
-    const start = new Date(today);
+  function renderWeekRangeText(today){
     const end = new Date(today);
     end.setDate(today.getDate() + 6);
-    document.getElementById('weekRangeText').textContent = `기준 날짜: ${formatWeekRange(start, end)}`;
+    document.getElementById('weekRangeText').textContent = `한국 시간 기준 ${formatRangeText(today, end)}`;
   }
 
   function renderWeekGrid(){
     const wrap = document.getElementById('weekGrid');
-    const days = [];
+    const records = loadRecords();
+    const today = getKoreaToday();
 
-    for(let i=0;i<7;i++){
+    renderWeekRangeText(today);
+
+    const days = [];
+    for(let i = 0; i < 7; i++){
       const d = new Date(today);
       d.setDate(today.getDate() + i);
       days.push(d);
     }
 
     wrap.innerHTML = days.map(date => {
-      const items = getAllItemsForDate(date);
+      const items = getItemsForDate(records, date);
       const isToday = toKey(date) === toKey(today);
       const dayClass = date.getDay() === 0 ? 'sun' : date.getDay() === 6 ? 'sat' : '';
 
@@ -693,13 +522,20 @@
                   <div class="timeline-item">
                     <div class="timeline-top">
                       <div class="timeline-thumb">
-                        <img src="${item.image}" alt="${item.name}">
+                        ${
+                          item.image
+                            ? `<img src="${item.image}" alt="${item.name || ''}">`
+                            : `<span style="font-size:14px;">🖼️</span>`
+                        }
                       </div>
-                      <div class="timeline-name">${item.name}</div>
+                      <div class="timeline-name">${item.name || '-'}</div>
                     </div>
+
                     <div class="timeline-time">${getDisplayTime(item)}</div>
+
                     <div class="timeline-meta">
-                      <span class="chip ${item.type}">${item.label}</span>
+                      <span class="chip ${chipClass(item)}">${item.label || '-'}</span>
+                      ${item.boostWeather ? `<span class="chip gray">${item.boostWeather}</span>` : ``}
                     </div>
                   </div>
                 `).join('')
@@ -711,7 +547,6 @@
     }).join('');
   }
 
-  renderWeekRangeText();
   renderWeekGrid();
 </script>
 </body>
