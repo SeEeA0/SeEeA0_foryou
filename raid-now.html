@@ -81,6 +81,49 @@
     padding:18px;
   }
 
+  .group-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+
+  .raid-group{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .group-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:0 4px;
+  }
+
+  .group-title{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .group-count{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:30px;
+    padding:0 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:900;
+    background:#f3f7ff;
+    border:1px solid #dce6f4;
+    color:#617799;
+  }
+
   .raid-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -205,11 +248,22 @@
     letter-spacing:-.02em;
   }
 
-  .boost-box{
+  .boost-list{
     display:flex;
-    align-items:center;
+    flex-wrap:wrap;
     gap:10px;
     margin-top:6px;
+  }
+
+  .boost-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:36px;
+    padding:6px 12px 6px 6px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
   }
 
   .boost-icon{
@@ -231,24 +285,11 @@
     object-fit:contain;
   }
 
-  .boost-text{
-    min-width:0;
-    flex:1;
-  }
-
   .boost-name{
-    font-size:12px;
-    color:#7386a3;
-    font-weight:900;
-    line-height:1.2;
-  }
-
-  .boost-cp{
-    margin-top:4px;
-    font-size:15px;
+    font-size:13px;
     color:#31435d;
     font-weight:900;
-    line-height:1.2;
+    line-height:1;
   }
 
   .strategy-box{
@@ -395,6 +436,11 @@
       font-size:22px;
     }
 
+    .group-head{
+      align-items:flex-start;
+      flex-direction:column;
+    }
+
     .raid-card-top{
       flex-direction:column;
       align-items:flex-start;
@@ -430,7 +476,7 @@
     </div>
 
     <div class="section-body">
-      <div class="raid-grid" id="raidGrid"></div>
+      <div class="group-wrap" id="raidGroupWrap"></div>
     </div>
   </section>
 
@@ -521,7 +567,7 @@
   }
 
   function isRaidNowType(item){
-    return ['전설', '메가', '그림자'].includes(item.label);
+    return ['1성', '3성', '5성', '메가', '그림자'].includes(item.label);
   }
 
   function getCurrentItems(records, today){
@@ -532,21 +578,16 @@
         item.startDate &&
         item.endDate &&
         inRange(today, item.startDate, item.endDate)
-      )
-      .sort((a, b) => {
-        const order = { '전설': 0, '메가': 1, '그림자': 2 };
-        const aOrder = order[a.label] ?? 99;
-        const bOrder = order[b.label] ?? 99;
-        if(aOrder !== bOrder) return aOrder - bOrder;
-        return (a.name || '').localeCompare(b.name || '', 'ko');
-      });
+      );
   }
 
   function chipClass(item){
     return item.type || (
-      item.label === '전설' ? 'blue' :
+      item.label === '5성' ? 'blue' :
       item.label === '메가' ? 'purple' :
-      item.label === '그림자' ? 'pink' : 'gray'
+      item.label === '그림자' ? 'pink' :
+      item.label === '3성' ? 'yellow' :
+      item.label === '1성' ? 'green' : 'gray'
     );
   }
 
@@ -564,25 +605,67 @@
     el.textContent = `한국 시간 기준 ${todayKey.replaceAll('-', '.')} · 현재 구간 ${starts[0].replaceAll('-', '.')} - ${ends[ends.length - 1].replaceAll('-', '.')}`;
   }
 
-  function renderCards(){
-    const grid = document.getElementById('raidGrid');
-    const records = loadRecords();
-    const today = getKoreaToday();
-    const items = getCurrentItems(records, today);
+  function getGroupedItems(items){
+    const groupOrder = ['1성', '3성', '5성', '메가', '그림자'];
+    const grouped = {};
 
-    renderRangeText(items, today);
+    groupOrder.forEach(label => grouped[label] = []);
 
-    if(!items.length){
-      grid.innerHTML = `
-        <div class="empty-state">
-          현재 진행 중인 레이드가 없습니다.<br>
-          admin.html에서 일정 저장 후 다시 확인해 주세요.
-        </div>
-      `;
-      return;
+    items.forEach(item => {
+      if(grouped[item.label]){
+        grouped[item.label].push(item);
+      }
+    });
+
+    groupOrder.forEach(label => {
+      grouped[label].sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'));
+    });
+
+    return { groupOrder, grouped };
+  }
+
+  function renderBoosts(item){
+    const boosts = Array.isArray(item.boosts) ? item.boosts : [];
+
+    if(!boosts.length){
+      return `<div class="strategy-type-name" style="color:#8a98af;">부스트 날씨 없음</div>`;
     }
 
-    grid.innerHTML = items.map(item => `
+    return boosts.map(boost => `
+      <div class="boost-pill">
+        <div class="boost-icon">
+          ${
+            boost.icon
+              ? `<img src="${boost.icon}" alt="${boost.weather || ''}">`
+              : `<span style="font-size:11px;">☁️</span>`
+          }
+        </div>
+        <div class="boost-name">${boost.weather || '날씨'}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderStrategies(item){
+    if(!(Array.isArray(item.strategyTypes) && item.strategyTypes.length)){
+      return `<div class="strategy-type-name" style="color:#8a98af;">공략 타입 없음</div>`;
+    }
+
+    return item.strategyTypes.map(type => `
+      <div class="strategy-item">
+        <div class="strategy-type-icon">
+          ${
+            type.icon
+              ? `<img src="${type.icon}" alt="${type.name || ''}">`
+              : `<span style="font-size:10px;">?</span>`
+          }
+        </div>
+        <div class="strategy-type-name">${type.name || '타입'}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderCard(item){
+    return `
       <article class="raid-card">
         <div class="raid-card-top">
           <span class="chip ${chipClass(item)}">LIVE · ${item.label}</span>
@@ -610,42 +693,22 @@
                 </div>
 
                 <div class="stat-box">
-                  <div class="stat-label">부스트</div>
-                  <div class="boost-box">
-                    <div class="boost-icon">
-                      ${
-                        item.boostIcon
-                          ? `<img src="${item.boostIcon}" alt="${item.boostWeather || ''}">`
-                          : `<span style="font-size:11px;">?</span>`
-                      }
-                    </div>
-                    <div class="boost-text">
-                      <div class="boost-name">${item.boostWeather || '미입력'}</div>
-                      <div class="boost-cp">${item.boostCp || '-'}</div>
-                    </div>
-                  </div>
+                  <div class="stat-label">부스트 CP</div>
+                  <div class="stat-value">${item.boostCp || '-'}</div>
+                </div>
+              </div>
+
+              <div class="strategy-box">
+                <div class="strategy-label">부스트 날씨</div>
+                <div class="boost-list">
+                  ${renderBoosts(item)}
                 </div>
               </div>
 
               <div class="strategy-box">
                 <div class="strategy-label">공략</div>
                 <div class="strategy-types">
-                  ${
-                    Array.isArray(item.strategyTypes) && item.strategyTypes.length
-                      ? item.strategyTypes.map(type => `
-                        <div class="strategy-item">
-                          <div class="strategy-type-icon">
-                            ${
-                              type.icon
-                                ? `<img src="${type.icon}" alt="${type.name || ''}">`
-                                : `<span style="font-size:10px;">?</span>`
-                            }
-                          </div>
-                          <div class="strategy-type-name">${type.name || '타입'}</div>
-                        </div>
-                      `).join('')
-                      : `<div class="strategy-type-name" style="color:#8a98af;">공략 타입 없음</div>`
-                  }
+                  ${renderStrategies(item)}
                 </div>
               </div>
 
@@ -655,7 +718,44 @@
           </div>
         </div>
       </article>
-    `).join('');
+    `;
+  }
+
+  function renderCards(){
+    const wrap = document.getElementById('raidGroupWrap');
+    const records = loadRecords();
+    const today = getKoreaToday();
+    const items = getCurrentItems(records, today);
+
+    renderRangeText(items, today);
+
+    if(!items.length){
+      wrap.innerHTML = `
+        <div class="empty-state">
+          현재 진행 중인 레이드가 없습니다.<br>
+          admin.html에서 일정 저장 후 다시 확인해 주세요.
+        </div>
+      `;
+      return;
+    }
+
+    const { groupOrder, grouped } = getGroupedItems(items);
+
+    wrap.innerHTML = groupOrder
+      .filter(label => grouped[label].length)
+      .map(label => `
+        <section class="raid-group">
+          <div class="group-head">
+            <div class="group-title">${label} 레이드</div>
+            <div class="group-count">${grouped[label].length}마리</div>
+          </div>
+
+          <div class="raid-grid">
+            ${grouped[label].map(renderCard).join('')}
+          </div>
+        </section>
+      `)
+      .join('');
   }
 
   renderCards();
