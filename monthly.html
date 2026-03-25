@@ -227,7 +227,7 @@
 
   .legend-wrap{
     display:grid;
-    grid-template-columns:repeat(5,minmax(0,1fr));
+    grid-template-columns:repeat(6,minmax(0,1fr));
     gap:10px;
   }
 
@@ -243,6 +243,37 @@
     font-size:14px;
     font-weight:900;
     color:#415676;
+  }
+
+  .legend-filter{
+    width:100%;
+    cursor:pointer;
+    appearance:none;
+    -webkit-appearance:none;
+    font:inherit;
+    transition:.16s ease;
+  }
+
+  .legend-filter:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 18px rgba(45,65,110,.08);
+  }
+
+  .legend-filter.active{
+    border-color:#8aa9df;
+    background:#edf4ff;
+    box-shadow:0 0 0 3px rgba(76,123,224,.10);
+  }
+
+  .legend-filter.active.legend-all{
+    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 14px 26px rgba(87,102,210,.20);
+  }
+
+  .legend-filter.active.legend-all .legend-dot{
+    background:#fff !important;
   }
 
   .legend-dot{
@@ -658,7 +689,7 @@
 
   @media (max-width:920px){
     .legend-wrap{
-      grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-columns:repeat(3,minmax(0,1fr));
     }
 
     .day-cell{
@@ -796,19 +827,13 @@
     <div class="section-head">
       <div>
         <div class="section-title">구분 색상</div>
-        <div class="section-sub">월간 일정에서 쓰이는 레이드 등급 색상입니다.</div>
+        <div class="section-sub">버튼을 누르면 해당 레이드 등급만 필터됩니다.</div>
       </div>
-      <div class="tiny-badge">LEGEND</div>
+      <div class="tiny-badge" id="legendBadge">전체 보기</div>
     </div>
 
     <div class="section-body">
-      <div class="legend-wrap">
-        <div class="legend-item"><span class="legend-dot" style="background:#2f9f63;"></span>1성</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#b88818;"></span>3성</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#3567d7;"></span>5성</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#7c58e9;"></span>메가</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#d85b85;"></span>그림자</div>
-      </div>
+      <div class="legend-wrap" id="legendFilters"></div>
     </div>
   </section>
 
@@ -847,7 +872,6 @@
       <span class="nav-icon">📆</span>
       <span>월간</span>
     </a>
-
   </div>
 </nav>
 
@@ -873,12 +897,24 @@
     { year: 2026, month: 6 }
   ];
 
+  const RAID_FILTERS = [
+    { key: 'all', label: '전체', color: '#58719a' },
+    { key: '1성', label: '1성', color: '#2f9f63' },
+    { key: '3성', label: '3성', color: '#b88818' },
+    { key: '5성', label: '5성', color: '#3567d7' },
+    { key: '메가', label: '메가', color: '#7c58e9' },
+    { key: '그림자', label: '그림자', color: '#d85b85' }
+  ];
+
   let currentMonthIndex = 1;
+  let activeRaidFilter = 'all';
 
   const monthTabs = document.getElementById('monthTabs');
   const calendarGrid = document.getElementById('calendarGrid');
   const calendarTitle = document.getElementById('calendarTitle');
   const monthSummaryBadge = document.getElementById('monthSummaryBadge');
+  const legendFilters = document.getElementById('legendFilters');
+  const legendBadge = document.getElementById('legendBadge');
 
   const detailModal = document.getElementById('detailModal');
   const modalBody = document.getElementById('modalBody');
@@ -979,6 +1015,12 @@
     return loadRaidData().filter(item => (item.showPages || []).includes('monthly'));
   }
 
+  function getFilteredMonthlyRaids(){
+    const allRaids = getVisibleMonthlyRaids();
+    if(activeRaidFilter === 'all') return allRaids;
+    return allRaids.filter(item => item.label === activeRaidFilter);
+  }
+
   function getMonthStartEnd(year, month){
     const start = new Date(year, month - 1, 1);
     const end = new Date(year, month, 0);
@@ -994,11 +1036,11 @@
   }
 
   function getMonthRaids(year, month){
-    return getVisibleMonthlyRaids().filter(item => doesRaidTouchMonth(item, year, month));
+    return getFilteredMonthlyRaids().filter(item => doesRaidTouchMonth(item, year, month));
   }
 
   function getRaidsForDate(dateStr) {
-    return getVisibleMonthlyRaids()
+    return getFilteredMonthlyRaids()
       .filter(item => isDateInRange(dateStr, item.startDate, item.endDate))
       .sort((a,b) => {
         const order = ['1성','3성','5성','메가','그림자'];
@@ -1007,6 +1049,33 @@
         if(ai !== bi) return ai - bi;
         return (a.name || '').localeCompare(b.name || '', 'ko');
       });
+  }
+
+  function getFilterBadgeText(){
+    return activeRaidFilter === 'all' ? '전체 보기' : `${activeRaidFilter}만 표시`;
+  }
+
+  function renderLegendFilters(){
+    legendFilters.innerHTML = RAID_FILTERS.map(filter => `
+      <button
+        class="legend-item legend-filter ${filter.key === activeRaidFilter ? 'active' : ''} ${filter.key === 'all' ? 'legend-all' : ''}"
+        type="button"
+        data-filter="${escapeHtml(filter.key)}"
+      >
+        <span class="legend-dot" style="background:${escapeHtml(filter.color)};"></span>
+        <span>${escapeHtml(filter.label)}</span>
+      </button>
+    `).join('');
+
+    legendBadge.textContent = getFilterBadgeText();
+
+    Array.from(legendFilters.querySelectorAll('.legend-filter')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeRaidFilter = btn.dataset.filter || 'all';
+        renderLegendFilters();
+        renderCalendar();
+      });
+    });
   }
 
   function renderMonthTabs(){
@@ -1093,8 +1162,8 @@
     Array.from(calendarGrid.querySelectorAll('.month-raid-item')).forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.dataset.id;
-        const all = getVisibleMonthlyRaids();
-        const item = all.find(v => v.id === id);
+        const all = getFilteredMonthlyRaids();
+        const item = all.find(v => String(v.id) === String(id));
         if(item) openDetailModal(item);
       });
     });
@@ -1210,6 +1279,7 @@
 
   function renderAll(){
     renderMonthTabs();
+    renderLegendFilters();
     renderCalendar();
   }
 
