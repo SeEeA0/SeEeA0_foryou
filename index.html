@@ -18,7 +18,6 @@
     --card:#ffffff;
     --card-soft:#f8fbff;
     --line:#d8e3f2;
-    --line-strong:#c9d8eb;
     --text:#1f2f46;
     --muted:#7486a3;
 
@@ -37,7 +36,9 @@
     --green:#49a66b;
     --green-soft:#e7f5eb;
 
-    --navy:#31435d;
+    --gray:#67768f;
+    --gray-soft:#f2f5fa;
+
     --shadow:0 18px 40px rgba(43,67,110,.08);
   }
 
@@ -122,13 +123,12 @@
   }
 
   .section{
-    background:rgba(255,255,255,.8);
+    background:rgba(255,255,255,.84);
     border:1px solid var(--line);
     border-radius:30px;
     overflow:hidden;
     box-shadow:var(--shadow);
     margin-bottom:18px;
-    backdrop-filter:blur(8px);
   }
 
   .section-head{
@@ -186,11 +186,13 @@
     line-height:1;
     white-space:nowrap;
   }
+
   .chip.blue{background:var(--blue-soft);color:var(--blue)}
   .chip.purple{background:var(--purple-soft);color:var(--purple)}
   .chip.pink{background:var(--pink-soft);color:var(--pink)}
   .chip.yellow{background:var(--yellow-soft);color:var(--yellow)}
   .chip.green{background:var(--green-soft);color:var(--green)}
+  .chip.gray{background:var(--gray-soft);color:var(--gray)}
 
   .now-grid{
     display:grid;
@@ -261,13 +263,6 @@
     font-weight:700;
   }
 
-  .raid-types{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:12px;
-  }
-
   .stat-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -296,18 +291,50 @@
     line-height:1.2;
   }
 
-  .weather-pill{
-    display:inline-flex;
+  .boost-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:6px;
+  }
+
+  .boost-icon{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#eef3ff;
+    border:1px solid #d9e4f3;
+    display:flex;
     align-items:center;
     justify-content:center;
-    min-height:30px;
-    padding:0 12px;
-    border-radius:999px;
-    background:#f2f4f8;
-    color:#6f7787;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  .boost-icon img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+  }
+
+  .boost-text{
+    min-width:0;
+    flex:1;
+  }
+
+  .boost-name{
     font-size:12px;
+    color:#7386a3;
     font-weight:900;
-    margin-top:12px;
+    line-height:1.2;
+  }
+
+  .boost-cp{
+    margin-top:4px;
+    font-size:14px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1.2;
   }
 
   .quick-grid{
@@ -429,7 +456,7 @@
 
   .week-pill{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap:8px;
     min-height:42px;
     padding:9px 10px;
@@ -446,6 +473,7 @@
   .week-pill.pink{background:var(--pink-soft);color:var(--pink)}
   .week-pill.yellow{background:var(--yellow-soft);color:var(--yellow)}
   .week-pill.green{background:var(--green-soft);color:var(--green)}
+  .week-pill.gray{background:var(--gray-soft);color:var(--gray)}
 
   .week-pill img{
     width:18px;
@@ -494,7 +522,7 @@
 
   .mini-pill{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap:7px;
     min-height:34px;
     padding:8px 10px;
@@ -511,6 +539,7 @@
   .mini-pill.pink{background:var(--pink-soft);color:var(--pink)}
   .mini-pill.yellow{background:var(--yellow-soft);color:var(--yellow)}
   .mini-pill.green{background:var(--green-soft);color:var(--green)}
+  .mini-pill.gray{background:var(--gray-soft);color:var(--gray)}
 
   .mini-pill img{
     width:16px;
@@ -632,6 +661,11 @@
     .section-head{
       flex-direction:column;
       align-items:flex-start;
+      padding:22px 20px 16px;
+    }
+
+    .section-body{
+      padding:16px;
     }
 
     .raid-main{
@@ -651,11 +685,11 @@
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-kicker">⚡ Pokémon GO Raid Planner</div>
-      <div class="hero-title">3월 마지막 주 + 4월 레이드 일정</div>
+      <div class="hero-title">포켓몬고 레이드 일정</div>
       <div class="hero-sub">
-        메인 허브 페이지입니다. 현재 진행 중 보스 요약, 오늘부터 7일 미리보기, 월간 일정 바로가기를 한 번에 확인할 수 있습니다.
+        어드민에서 저장한 데이터를 기준으로 현재 진행 중 레이드, 주간 일정표, 월간 일정 미리보기를 자동으로 불러오는 메인 허브 페이지입니다.
       </div>
-      <div class="hero-updated">마지막 수정일 : 2026.03.25</div>
+      <div class="hero-updated" id="heroUpdated">한국 시간 기준 로딩 중...</div>
     </div>
   </section>
 
@@ -663,9 +697,9 @@
     <div class="section-head">
       <div>
         <div class="section-title">현재 진행 중 레이드</div>
-        <div class="section-sub">메인에서는 현재 구간의 핵심 보스만 간단하게 보여주고, 상세는 지금 레이드 페이지에서 확인합니다.</div>
+        <div class="section-sub" id="nowSectionSub">한국 시간 기준 오늘 진행 중인 전설 / 메가 / 그림자 일정만 요약 표시합니다.</div>
       </div>
-      <div class="tiny-badge" id="nowRangeLabel">현재 구간</div>
+      <a class="tiny-badge" href="./raid-now.html">지금 레이드 전체 보기</a>
     </div>
     <div class="section-body">
       <div class="now-grid" id="nowGrid"></div>
@@ -676,9 +710,9 @@
     <div class="section-head">
       <div>
         <div class="section-title">주간 일정표 미리보기</div>
-        <div class="section-sub">오늘부터 7일간의 일정이 날짜별로 자동 표시됩니다.</div>
+        <div class="section-sub" id="weekSectionSub">한국 시간 기준 오늘부터 7일 일정입니다.</div>
       </div>
-      <a class="tiny-badge" href="./weekly.html" style="text-decoration:none;">주간 일정표 전체 보기</a>
+      <a class="tiny-badge" href="./weekly.html">주간 일정표 전체 보기</a>
     </div>
     <div class="section-body">
       <div class="week-preview" id="weekPreview"></div>
@@ -689,9 +723,9 @@
     <div class="section-head">
       <div>
         <div class="section-title">월간 일정 바로가기</div>
-        <div class="section-sub">한 달 전체 흐름은 월간 일정 페이지에서 자세히 확인할 수 있습니다.</div>
+        <div class="section-sub" id="monthSectionSub">이번 달 월간 일정 미리보기입니다.</div>
       </div>
-      <a class="tiny-badge" href="./monthly.html" style="text-decoration:none;">월간 일정 전체 보기</a>
+      <a class="tiny-badge" href="./monthly.html">월간 일정 전체 보기</a>
     </div>
     <div class="section-body">
       <div class="quick-grid" style="margin-bottom:16px;">
@@ -699,7 +733,7 @@
           <div class="quick-icon">⚔️</div>
           <div>
             <div class="quick-title">지금 레이드</div>
-            <div class="quick-desc">현재 진행 중인 5성 / 메가 / 그림자 레이드를 카드형으로 확인</div>
+            <div class="quick-desc">현재 진행 중인 전설 / 메가 / 그림자 레이드를 카드형으로 확인</div>
           </div>
         </a>
 
@@ -715,7 +749,7 @@
           <div class="quick-icon">📆</div>
           <div>
             <div class="quick-title">월간 일정</div>
-            <div class="quick-desc">4월 전체 일정 캘린더와 날짜별 상세 페이지로 이동</div>
+            <div class="quick-desc">한 달 전체 일정과 날짜별 상세 페이지로 이동</div>
           </div>
         </a>
       </div>
@@ -746,223 +780,215 @@
 </nav>
 
 <script>
-  const DEFAULT_START = '06:00 AM';
-  const DEFAULT_END = '10:00 PM';
+  const STORAGE_KEY = 'pogoRaidAdminData';
 
-  const IMG = {
-    regieleki:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/894.png',
-    regidrago:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
-    kyogre:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png',
-    groudon:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png',
-    tapuKoko:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/785.png',
-    tapuLele:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/786.png',
-    latias:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png',
-    latios:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png',
-    houndoom:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/229.png',
-    manectric:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png',
-    aerodactyl:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png',
-    alakazam:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png',
-    sharpedo:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/319.png',
-    banette:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/354.png',
-    pikachu:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
-    tinkatink:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/957.png'
-  };
+  function getKoreaNow(){
+    const now = new Date();
+    const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+    return new Date(koreaString);
+  }
 
-  const raidRanges = [
-    { name:'레지에레키', label:'5성 레이드', type:'blue', image:IMG.regieleki, startDate:'2026-03-25', endDate:'2026-03-31', cp:'1939 - 2015', boostCp:'2424 - 2519', weather:'Windy', desc:'현재 5성 레이드 메인 보스' },
-    { name:'메가 헬가', label:'메가 레이드', type:'purple', image:IMG.houndoom, startDate:'2026-03-25', endDate:'2026-03-31', cp:'1888 - 1973', boostCp:'2360 - 2466', weather:'Fog', desc:'현재 메가 레이드 보스' },
+  function getKoreaToday(){
+    const koreaNow = getKoreaNow();
+    koreaNow.setHours(0, 0, 0, 0);
+    return koreaNow;
+  }
 
-    { name:'레지드래고', label:'5성 레이드', type:'blue', image:IMG.regidrago, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1656 - 1736', boostCp:'2070 - 2170', weather:'Windy', desc:'현재 5성 레이드 메인 보스' },
-    { name:'메가 썬더볼트', label:'메가 레이드', type:'purple', image:IMG.manectric, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1267 - 1337', boostCp:'1585 - 1672', weather:'Rainy', desc:'현재 메가 레이드 보스' },
-
-    { name:'가이오가', label:'5성 레이드', type:'blue', image:IMG.kyogre, startDate:'2026-04-08', endDate:'2026-04-14', cp:'2260 - 2351', boostCp:'2825 - 2939', weather:'Rainy', desc:'현재 5성 레이드 메인 보스' },
-    { name:'메가 프테라', label:'메가 레이드', type:'purple', image:IMG.aerodactyl, startDate:'2026-04-08', endDate:'2026-04-14', cp:'1801 - 1888', boostCp:'2251 - 2360', weather:'Windy', desc:'현재 메가 레이드 보스' },
-
-    { name:'그란돈', label:'5성 레이드', type:'blue', image:IMG.groudon, startDate:'2026-04-15', endDate:'2026-04-21', cp:'2260 - 2351', boostCp:'2825 - 2939', weather:'Sunny', desc:'현재 5성 레이드 메인 보스' },
-    { name:'메가 후딘', label:'메가 레이드', type:'purple', image:IMG.alakazam, startDate:'2026-04-15', endDate:'2026-04-21', cp:'1843 - 1938', boostCp:'2304 - 2423', weather:'Windy', desc:'현재 메가 레이드 보스' },
-
-    { name:'카푸꼬꼬꼭', label:'5성 레이드', type:'blue', image:IMG.tapuKoko, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1730 - 1810', boostCp:'2162 - 2262', weather:'Rainy', desc:'현재 5성 레이드 메인 보스' },
-    { name:'메가 샤크니아', label:'메가 레이드', type:'purple', image:IMG.sharpedo, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1817 - 1907', boostCp:'2271 - 2384', weather:'Rainy', desc:'현재 메가 레이드 보스' },
-
-    { name:'카푸나비나', label:'5성 레이드', type:'blue', image:IMG.tapuLele, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1730 - 1810', boostCp:'2162 - 2262', weather:'Windy', desc:'현재 5성 레이드 메인 보스' },
-    { name:'메가 다크펫', label:'메가 레이드', type:'purple', image:IMG.banette, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1794 - 1886', boostCp:'2243 - 2358', weather:'Fog', desc:'현재 메가 레이드 보스' }
-  ];
-
-  const oneDayEvents = [
-    { name:'레지에레키', label:'레이드 아워', type:'yellow', image:IMG.regieleki, date:'2026-03-25', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'전기 타입 이벤트', label:'이벤트', type:'green', image:IMG.manectric, date:'2026-03-31', startTime:'10:00 AM', endTime:'08:00 PM' },
-
-    { name:'레지드래고', label:'레이드 아워', type:'yellow', image:IMG.regidrago, date:'2026-04-01', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'패션 레이드 데이', label:'레이드 데이', type:'yellow', image:IMG.pikachu, date:'2026-04-04', startTime:'02:00 PM', endTime:'05:00 PM' },
-
-    { name:'가이오가', label:'레이드 아워', type:'yellow', image:IMG.kyogre, date:'2026-04-08', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'두드리짱', label:'커뮤니티 데이', type:'green', image:IMG.tinkatink, date:'2026-04-11', startTime:'02:00 PM', endTime:'05:00 PM' },
-
-    { name:'지속가능성 위크', label:'이벤트', type:'green', image:IMG.aerodactyl, date:'2026-04-14', startTime:'10:00 AM', endTime:'08:00 PM' },
-    { name:'그란돈', label:'레이드 아워', type:'yellow', image:IMG.groudon, date:'2026-04-15', startTime:'06:00 PM', endTime:'07:00 PM' },
-
-    { name:'카푸꼬꼬꼭', label:'레이드 아워', type:'yellow', image:IMG.tapuKoko, date:'2026-04-22', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'강철의 의지', label:'이벤트', type:'green', image:IMG.banette, date:'2026-04-28', startTime:'10:00 AM', endTime:'08:00 PM' },
-    { name:'카푸나비나', label:'레이드 아워', type:'yellow', image:IMG.tapuLele, date:'2026-04-29', startTime:'06:00 PM', endTime:'07:00 PM' }
-  ];
-
-  const weekendShadow = [
-    { name:'그림자 라티아스', label:'그림자', type:'pink', image:IMG.latias, startDate:'2026-03-29', endDate:'2026-03-31', weather:'Windy', desc:'그림자 5성 레이드 진행 중' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-04', endDate:'2026-04-05', weather:'Windy', desc:'그림자 5성 레이드 진행 중' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-11', endDate:'2026-04-12', weather:'Windy', desc:'그림자 5성 레이드 진행 중' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-18', endDate:'2026-04-19', weather:'Windy', desc:'그림자 5성 레이드 진행 중' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-25', endDate:'2026-04-26', weather:'Windy', desc:'그림자 5성 레이드 진행 중' }
-  ];
-
-  const today = new Date('2026-04-01T00:00:00');
-  // 실제 운영시에는 아래 한 줄만 쓰면 됩니다.
-  // const today = new Date();
-
-  function pad(n){ return String(n).padStart(2,'0'); }
+  function pad(n){
+    return String(n).padStart(2, '0');
+  }
 
   function toDate(str){
-    const [y,m,d] = str.split('-').map(Number);
+    if(!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
   function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   }
 
   function getDayKor(day){
     return ['일','월','화','수','목','금','토'][day];
   }
 
+  function formatKoreanDate(date){
+    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${getDayKor(date.getDay())}요일`;
+  }
+
+  function toAmpm(time24){
+    if(!time24) return '';
+    const [hh, mm] = time24.split(':').map(Number);
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return `${String(h12).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${suffix}`;
+  }
+
   function getDisplayTime(item){
-    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
+    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
+    return `${start} ~ ${end}`;
   }
 
   function inRange(date, startStr, endStr){
+    const start = toDate(startStr);
+    const end = toDate(endStr);
+    if(!start || !end) return false;
     const t = toDate(toKey(date)).getTime();
-    const s = toDate(startStr).getTime();
-    const e = toDate(endStr).getTime();
-    return t >= s && t <= e;
+    return t >= start.getTime() && t <= end.getTime();
   }
 
-  function getRangeItemsForDate(date){
-    return raidRanges.filter(item => inRange(date, item.startDate, item.endDate));
-  }
-
-  function getShadowItemsForDate(date){
-    return weekendShadow.filter(item => inRange(date, item.startDate, item.endDate));
-  }
-
-  function getEventItemsForDate(date){
-    return oneDayEvents.filter(item => item.date === toKey(date));
-  }
-
-  function getAllItemsForDate(date){
-    return [
-      ...getRangeItemsForDate(date),
-      ...getShadowItemsForDate(date),
-      ...getEventItemsForDate(date)
-    ];
-  }
-
-  function formatDateRange(startDate, endDate){
-    return `${startDate.replaceAll('-','.')} - ${endDate.replaceAll('-','.')}`;
-  }
-
-  function renderNowRange(){
-    const ranges = getRangeItemsForDate(today);
-    const shadows = getShadowItemsForDate(today);
-    const all = [...ranges, ...shadows];
-
-    if(all.length){
-      const first = all[0];
-      document.getElementById('nowRangeLabel').textContent = `${first.startDate.replaceAll('-','.')} - ${first.endDate.replaceAll('-','.')}`;
+  function loadRecords(){
+    try{
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){
+      return [];
     }
   }
 
-  function renderNowGrid(){
+  function isAllowed(item, page){
+    return Array.isArray(item.showPages) && item.showPages.includes(page);
+  }
+
+  function chipClass(item){
+    return item.type || (
+      item.label === '전설' ? 'blue' :
+      item.label === '메가' ? 'purple' :
+      item.label === '그림자' ? 'pink' :
+      item.label === '레이드 아워' || item.label === '레이드 데이' ? 'yellow' :
+      item.label === '이벤트' || item.label === '커뮤니티 데이' ? 'green' : 'gray'
+    );
+  }
+
+  function typeClass(item){
+    const map = {
+      '전설': 0,
+      '메가': 1,
+      '그림자': 2,
+      '레이드 아워': 3,
+      '레이드 데이': 4,
+      '이벤트': 5,
+      '커뮤니티 데이': 6
+    };
+    return map[item.label] ?? 99;
+  }
+
+  function sortItems(items){
+    return items.sort((a, b) => {
+      const diff = typeClass(a) - typeClass(b);
+      if(diff !== 0) return diff;
+      return (a.name || '').localeCompare(b.name || '', 'ko');
+    });
+  }
+
+  function getIndexItemsForDate(records, date){
+    return sortItems(
+      records.filter(item =>
+        isAllowed(item, 'index') &&
+        item.startDate &&
+        item.endDate &&
+        inRange(date, item.startDate, item.endDate)
+      )
+    );
+  }
+
+  function getRaidNowItems(records, today){
+    return sortItems(
+      records.filter(item =>
+        isAllowed(item, 'index') &&
+        ['전설','메가','그림자'].includes(item.label) &&
+        item.startDate &&
+        item.endDate &&
+        inRange(today, item.startDate, item.endDate)
+      )
+    );
+  }
+
+  function formatRange(start, end){
+    return `${start.getFullYear()}.${pad(start.getMonth()+1)}.${pad(start.getDate())} - ${end.getFullYear()}.${pad(end.getMonth()+1)}.${pad(end.getDate())}`;
+  }
+
+  function renderHero(today){
+    document.getElementById('heroUpdated').textContent = `한국 시간 기준 ${formatKoreanDate(today)} 로딩`;
+  }
+
+  function renderNowSection(records, today){
     const wrap = document.getElementById('nowGrid');
-    const rangeItems = getRangeItemsForDate(today);
-    const shadowItems = getShadowItemsForDate(today);
-    const items = [...rangeItems, ...shadowItems];
+    const items = getRaidNowItems(records, today);
 
     if(!items.length){
       wrap.innerHTML = `<div class="empty-box">현재 진행 중인 레이드가 없습니다.</div>`;
       return;
     }
 
-    wrap.innerHTML = items.slice(0,3).map(item => `
+    wrap.innerHTML = items.slice(0, 3).map(item => `
       <div class="raid-card">
         <div class="raid-card-top">
-          <span class="chip ${item.type}">LIVE · ${item.label}</span>
-          <div class="raid-date">${formatDateRange(item.startDate, item.endDate)}</div>
+          <span class="chip ${chipClass(item)}">LIVE · ${item.label || '-'}</span>
+          <div class="raid-date">${(item.startDate || '').replaceAll('-', '.')} - ${(item.endDate || '').replaceAll('-', '.')}</div>
         </div>
 
         <div class="raid-main">
           <div class="raid-thumb">
-            <img src="${item.image}" alt="${item.name}">
+            ${
+              item.image
+                ? `<img src="${item.image}" alt="${item.name || ''}">`
+                : `<span style="font-size:34px;">🖼️</span>`
+            }
           </div>
 
           <div>
-            <div class="raid-name">${item.name}</div>
+            <div class="raid-name">${item.name || '-'}</div>
             <div class="raid-desc">${item.desc || '현재 진행 중인 일정'}</div>
 
-            <div class="raid-types">
-              ${item.name.includes('레지') || item.name.includes('라티') ? `<span class="chip ${item.type === 'pink' ? 'pink' : 'purple'}">Dragon</span>` : ``}
-              ${item.name.includes('라티') ? `<span class="chip pink">Psychic</span>` : ``}
-              ${item.name.includes('썬더볼트') ? `<span class="chip yellow">Electric</span>` : ``}
-            </div>
-
             <div class="stat-grid">
-              ${
-                item.cp
-                ? `
-                  <div class="stat-box">
-                    <div class="stat-label">일반 CP</div>
-                    <div class="stat-value">${item.cp}</div>
-                  </div>
-                ` : `
-                  <div class="stat-box">
-                    <div class="stat-label">진행 구간</div>
-                    <div class="stat-value">${item.startDate.slice(5).replace('-','.')} - ${item.endDate.slice(5).replace('-','.')}</div>
-                  </div>
-                `
-              }
+              <div class="stat-box">
+                <div class="stat-label">일반 CP</div>
+                <div class="stat-value">${item.cp || '-'}</div>
+              </div>
 
-              ${
-                item.boostCp
-                ? `
-                  <div class="stat-box">
-                    <div class="stat-label">부스트 CP</div>
-                    <div class="stat-value">${item.boostCp}</div>
+              <div class="stat-box">
+                <div class="stat-label">부스트</div>
+                <div class="boost-box">
+                  <div class="boost-icon">
+                    ${
+                      item.boostIcon
+                        ? `<img src="${item.boostIcon}" alt="${item.boostWeather || ''}">`
+                        : `<span style="font-size:10px;">?</span>`
+                    }
                   </div>
-                ` : `
-                  <div class="stat-box">
-                    <div class="stat-label">레이드 등급</div>
-                    <div class="stat-value">5-Star</div>
+                  <div class="boost-text">
+                    <div class="boost-name">${item.boostWeather || '미입력'}</div>
+                    <div class="boost-cp">${item.boostCp || '-'}</div>
                   </div>
-                `
-              }
+                </div>
+              </div>
             </div>
 
-            <div class="weather-pill">${item.weather || 'Windy'}</div>
+            <div class="raid-desc" style="margin-top:10px;">${getDisplayTime(item)}</div>
           </div>
         </div>
       </div>
     `).join('');
   }
 
-  function renderWeekPreview(){
+  function renderWeekSection(records, today){
     const wrap = document.getElementById('weekPreview');
-    const days = [];
+    const end = new Date(today);
+    end.setDate(today.getDate() + 6);
+    document.getElementById('weekSectionSub').textContent = `한국 시간 기준 ${formatRange(today, end)}`;
 
-    for(let i=0;i<7;i++){
+    const days = [];
+    for(let i = 0; i < 7; i++){
       const d = new Date(today);
-      d.setDate(today.getDate()+i);
+      d.setDate(today.getDate() + i);
       days.push(d);
     }
 
     wrap.innerHTML = days.map(date => {
-      const items = getAllItemsForDate(date);
+      const items = getIndexItemsForDate(records, date);
       const dayClass = date.getDay() === 0 ? 'sun' : date.getDay() === 6 ? 'sat' : '';
       const isToday = toKey(date) === toKey(today);
 
@@ -979,10 +1005,14 @@
           <div class="week-items">
             ${
               items.length
-                ? items.slice(0,3).map(item => `
-                  <div class="week-pill ${item.type}">
-                    <img src="${item.image}" alt="${item.name}">
-                    <span>${item.label}${item.label === '5성 레이드' || item.label === '메가 레이드' ? ' · ' + item.name : ''}</span>
+                ? items.slice(0, 3).map(item => `
+                  <div class="week-pill ${chipClass(item)}">
+                    ${
+                      item.image
+                        ? `<img src="${item.image}" alt="${item.name || ''}">`
+                        : `<span style="width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;">🖼️</span>`
+                    }
+                    <span>${item.label === '전설' || item.label === '메가' || item.label === '그림자' ? item.name : item.label}</span>
                   </div>
                 `).join('')
                 : `<div class="empty-box">일정 없음</div>`
@@ -993,50 +1023,64 @@
     }).join('');
   }
 
-  function renderMiniCalendar(){
+  function renderMonthSection(records, today){
     const wrap = document.getElementById('miniCalendar');
-    const previewDates = [
-      new Date('2026-04-01'),
-      new Date('2026-04-02'),
-      new Date('2026-04-03'),
-      new Date('2026-04-04'),
-      new Date('2026-04-05'),
-      new Date('2026-04-06'),
-      new Date('2026-04-07')
-    ];
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+
+    document.getElementById('monthSectionSub').textContent = `${year}년 ${month}월 월간 일정 미리보기입니다.`;
+
+    const previewDates = [];
+    const lastDate = new Date(year, month, 0).getDate();
+    const previewEnd = Math.min(lastDate, 7);
+
+    for(let day = 1; day <= previewEnd; day++){
+      previewDates.push(new Date(year, month - 1, day));
+    }
 
     wrap.innerHTML = previewDates.map(date => {
-      const items = getAllItemsForDate(date);
+      const items = getIndexItemsForDate(records, date);
 
       return `
-        <a href="./monthly.html" class="mini-day">
+        <a href="./detail.html?date=${toKey(date)}" class="mini-day">
           <div class="mini-day-num">${date.getDate()}</div>
           <div class="mini-day-items">
             ${
               items.length
-                ? items.slice(0,2).map(item => `
-                  <div class="mini-pill ${item.type}">
-                    <img src="${item.image}" alt="${item.name}">
-                    <span>${item.label === '5성 레이드' || item.label === '메가 레이드' ? item.name : item.label}</span>
+                ? items.slice(0, 2).map(item => `
+                  <div class="mini-pill ${chipClass(item)}">
+                    ${
+                      item.image
+                        ? `<img src="${item.image}" alt="${item.name || ''}">`
+                        : `<span style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;">🖼️</span>`
+                    }
+                    <span>${item.label === '전설' || item.label === '메가' || item.label === '그림자' ? item.name : item.label}</span>
                   </div>
                 `).join('')
                 : `<div class="empty-box">일정 없음</div>`
             }
           </div>
           ${
-            items[0]
-            ? `<div class="mini-avatar"><img src="${items[0].image}" alt="${items[0].name}"></div>`
-            : ``
+            items[0] && items[0].image
+              ? `<div class="mini-avatar"><img src="${items[0].image}" alt="${items[0].name || ''}"></div>`
+              : ``
           }
         </a>
       `;
     }).join('');
   }
 
-  renderNowRange();
-  renderNowGrid();
-  renderWeekPreview();
-  renderMiniCalendar();
+  function init(){
+    const records = loadRecords();
+    const today = getKoreaToday();
+
+    renderHero(today);
+    renderNowSection(records, today);
+    renderWeekSection(records, today);
+    renderMonthSection(records, today);
+  }
+
+  init();
 </script>
 </body>
 </html>
