@@ -49,63 +49,6 @@
     padding:20px 16px 110px;
   }
 
-  .hero{
-    background:rgba(255,255,255,.82);
-    border:1px solid var(--line);
-    border-radius:30px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    margin-bottom:18px;
-  }
-
-  .hero-head{
-    padding:26px 28px 18px;
-    border-bottom:1px solid #e4edf8;
-    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
-  }
-
-  .hero-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .hero-sub{
-    margin-top:10px;
-    font-size:14px;
-    line-height:1.55;
-    color:var(--muted);
-    font-weight:700;
-  }
-
-  .hero-tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:18px;
-  }
-
-  .hero-tag{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:40px;
-    padding:0 16px;
-    border-radius:999px;
-    background:#f3f7ff;
-    border:1px solid var(--line);
-    color:#58719a;
-    font-size:13px;
-    font-weight:900;
-    white-space:nowrap;
-  }
-
-  .hero-tag.active{
-    background:#eaf2ff;
-    color:#3567d7;
-    border-color:#cfe0f6;
-  }
-
   .section{
     background:rgba(255,255,255,.82);
     border:1px solid var(--line);
@@ -269,64 +212,108 @@
     letter-spacing:-.02em;
   }
 
-  .weather-row{
+  .boost-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:6px;
+  }
+
+  .boost-icon{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#eef3ff;
+    border:1px solid #d9e4f3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  .boost-icon img{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+  }
+
+  .boost-text{
+    min-width:0;
+    flex:1;
+  }
+
+  .boost-name{
+    font-size:12px;
+    color:#7386a3;
+    font-weight:900;
+    line-height:1.2;
+  }
+
+  .boost-cp{
+    margin-top:4px;
+    font-size:15px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1.2;
+  }
+
+  .strategy-box{
+    margin-top:12px;
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    border-radius:18px;
+    padding:12px 14px;
+  }
+
+  .strategy-label{
+    font-size:12px;
+    color:#7386a3;
+    font-weight:900;
+  }
+
+  .strategy-types{
     display:flex;
     flex-wrap:wrap;
     gap:10px;
-    margin-top:12px;
+    margin-top:10px;
   }
 
-  .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:14px;
-  }
-
-  .quick-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:22px;
-    padding:14px 16px;
-    display:flex;
+  .strategy-item{
+    display:inline-flex;
     align-items:center;
-    gap:14px;
-    text-decoration:none;
-    color:inherit;
-    transition:.18s ease;
-    min-height:96px;
+    gap:8px;
+    min-height:36px;
+    padding:6px 10px 6px 6px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
   }
 
-  .quick-card:hover{
-    transform:translateY(-2px);
-    border-color:#bfd1ea;
-    box-shadow:0 12px 28px rgba(62,85,131,.08);
-  }
-
-  .quick-icon{
-    width:52px;
-    height:52px;
-    border-radius:16px;
+  .strategy-type-icon{
+    width:26px;
+    height:26px;
+    border-radius:50%;
     background:#f3f7ff;
     border:1px solid #dce6f4;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:24px;
+    overflow:hidden;
     flex-shrink:0;
   }
 
-  .quick-title{
-    font-size:16px;
-    font-weight:900;
-    letter-spacing:-.02em;
+  .strategy-type-icon img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
   }
 
-  .quick-desc{
-    margin-top:5px;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.45;
-    font-weight:700;
+  .strategy-type-name{
+    font-size:13px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1;
   }
 
   .bottom-nav{
@@ -382,8 +369,7 @@
   }
 
   @media (max-width:1100px){
-    .raid-grid,
-    .quick-grid{
+    .raid-grid{
       grid-template-columns:1fr;
     }
   }
@@ -393,17 +379,12 @@
       padding-bottom:120px;
     }
 
-    .hero-head,
     .section-head{
       padding:22px 20px 16px;
     }
 
     .section-body{
       padding:16px;
-    }
-
-    .hero-title{
-      font-size:26px;
     }
 
     .section-title{
@@ -438,20 +419,6 @@
 <body>
 <div class="wrap">
 
-  <section class="hero">
-    <div class="hero-head">
-      <div class="hero-title">현재 진행 중인 레이드</div>
-      <div class="hero-sub">
-        메인에서 너무 많은 보스를 한 번에 보여주지 않고, 현재 진행 중인 구간만 깔끔하게 집중해서 확인하는 페이지입니다.
-      </div>
-      <div class="hero-tags">
-        <span class="hero-tag active">현재 구간만 표시</span>
-        <span class="hero-tag">PNG 이미지 적용</span>
-        <span class="hero-tag">5성 / 메가 / 그림자</span>
-      </div>
-    </div>
-  </section>
-
   <section class="section">
     <div class="section-head">
       <div class="section-title">현재 진행 중 보스</div>
@@ -460,41 +427,6 @@
 
     <div class="section-body">
       <div class="raid-grid" id="raidGrid"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <div class="section-title">빠른 이동</div>
-      <div class="section-sub">다른 화면으로 바로 이동</div>
-    </div>
-
-    <div class="section-body">
-      <div class="quick-grid">
-        <a href="./index.html" class="quick-card">
-          <div class="quick-icon">🏠</div>
-          <div>
-            <div class="quick-title">메인</div>
-            <div class="quick-desc">날짜 클릭형 메인 캘린더</div>
-          </div>
-        </a>
-
-        <a href="./weekly.html" class="quick-card">
-          <div class="quick-icon">🗓️</div>
-          <div>
-            <div class="quick-title">주간 일정표</div>
-            <div class="quick-desc">주간 흐름 빠르게 보기</div>
-          </div>
-        </a>
-
-        <a href="./monthly.html" class="quick-card">
-          <div class="quick-icon">📆</div>
-          <div>
-            <div class="quick-title">월간 일정</div>
-            <div class="quick-desc">한 달 전체 흐름 확인</div>
-          </div>
-        </a>
-      </div>
     </div>
   </section>
 
@@ -537,32 +469,313 @@
     banette:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/354.png'
   };
 
+  /* 부스트 아이콘 경로 - 직접 업로드 후 경로만 바꾸시면 됩니다 */
+  const BOOST_ICONS = {
+    '맑음':'./icons/weather-sunny.png',
+    '비':'./icons/weather-rainy.png',
+    '약간구름':'./icons/weather-partly-cloudy.png',
+    '흐림':'./icons/weather-cloudy.png',
+    '바람':'./icons/weather-windy.png',
+    '눈':'./icons/weather-snow.png',
+    '안개':'./icons/weather-fog.png'
+  };
+
   const raidRanges = [
-    { name:'레지에레키', label:'5성', type:'blue', image:IMG.regieleki, startDate:'2026-03-25', endDate:'2026-03-31', cp:'1939 - 2015', boostCp:'2424 - 2519', weather:'Windy', desc:'현재 5성 레이드 메인 보스', types:['Electric'] },
-    { name:'메가 헬가', label:'메가', type:'purple', image:IMG.houndoom, startDate:'2026-03-25', endDate:'2026-03-31', cp:'1888 - 1973', boostCp:'2360 - 2466', weather:'Fog', desc:'현재 메가 레이드 보스', types:['Dark','Fire'] },
+    {
+      name:'레지에레키',
+      label:'전설',
+      type:'blue',
+      image:IMG.regieleki,
+      startDate:'2026-03-25',
+      endDate:'2026-03-31',
+      cp:'1939 - 2015',
+      boostCp:'2424 - 2519',
+      boostWeather:'비',
+      desc:'현재 전설 레이드 메인 보스',
+      strategyTypes:[
+        { name:'땅', icon:'./icons/type-ground.png' }
+      ]
+    },
+    {
+      name:'메가 헬가',
+      label:'메가',
+      type:'purple',
+      image:IMG.houndoom,
+      startDate:'2026-03-25',
+      endDate:'2026-03-31',
+      cp:'1888 - 1973',
+      boostCp:'2360 - 2466',
+      boostWeather:'안개',
+      desc:'현재 메가 레이드 보스',
+      strategyTypes:[
+        { name:'격투', icon:'./icons/type-fighting.png' },
+        { name:'땅', icon:'./icons/type-ground.png' },
+        { name:'바위', icon:'./icons/type-rock.png' },
+        { name:'물', icon:'./icons/type-water.png' }
+      ]
+    },
 
-    { name:'레지드래고', label:'5성', type:'blue', image:IMG.regidrago, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1614 - 1699', boostCp:'2017 - 2124', weather:'Windy', desc:'현재 5성 레이드 메인 보스', types:['Dragon'] },
-    { name:'메가썬더볼트', label:'메가', type:'purple', image:IMG.manectric, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1267 - 1337', boostCp:'1585 - 1672', weather:'Rainy', desc:'현재 메가 레이드 보스', types:['Electric'] },
+    {
+      name:'레지드래고',
+      label:'전설',
+      type:'blue',
+      image:IMG.regidrago,
+      startDate:'2026-04-01',
+      endDate:'2026-04-07',
+      cp:'1614 - 1699',
+      boostCp:'2017 - 2124',
+      boostWeather:'바람',
+      desc:'현재 전설 레이드 메인 보스',
+      strategyTypes:[
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'드래곤', icon:'./icons/type-dragon.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' }
+      ]
+    },
+    {
+      name:'메가썬더볼트',
+      label:'메가',
+      type:'purple',
+      image:IMG.manectric,
+      startDate:'2026-04-01',
+      endDate:'2026-04-07',
+      cp:'1267 - 1337',
+      boostCp:'1585 - 1672',
+      boostWeather:'비',
+      desc:'현재 메가 레이드 보스',
+      strategyTypes:[
+        { name:'땅', icon:'./icons/type-ground.png' }
+      ]
+    },
 
-    { name:'가이오가', label:'5성', type:'blue', image:IMG.kyogre, startDate:'2026-04-08', endDate:'2026-04-14', cp:'2260 - 2351', boostCp:'2825 - 2939', weather:'Rainy', desc:'현재 5성 레이드 메인 보스', types:['Water'] },
-    { name:'메가프테라', label:'메가', type:'purple', image:IMG.aerodactyl, startDate:'2026-04-08', endDate:'2026-04-14', cp:'1801 - 1888', boostCp:'2251 - 2360', weather:'Windy', desc:'현재 메가 레이드 보스', types:['Rock','Flying'] },
+    {
+      name:'가이오가',
+      label:'전설',
+      type:'blue',
+      image:IMG.kyogre,
+      startDate:'2026-04-08',
+      endDate:'2026-04-14',
+      cp:'2260 - 2351',
+      boostCp:'2825 - 2939',
+      boostWeather:'비',
+      desc:'현재 전설 레이드 메인 보스',
+      strategyTypes:[
+        { name:'전기', icon:'./icons/type-electric.png' },
+        { name:'풀', icon:'./icons/type-grass.png' }
+      ]
+    },
+    {
+      name:'메가프테라',
+      label:'메가',
+      type:'purple',
+      image:IMG.aerodactyl,
+      startDate:'2026-04-08',
+      endDate:'2026-04-14',
+      cp:'1801 - 1888',
+      boostCp:'2251 - 2360',
+      boostWeather:'바람',
+      desc:'현재 메가 레이드 보스',
+      strategyTypes:[
+        { name:'물', icon:'./icons/type-water.png' },
+        { name:'전기', icon:'./icons/type-electric.png' },
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'강철', icon:'./icons/type-steel.png' },
+        { name:'바위', icon:'./icons/type-rock.png' }
+      ]
+    },
 
-    { name:'그란돈', label:'5성', type:'blue', image:IMG.groudon, startDate:'2026-04-15', endDate:'2026-04-21', cp:'2260 - 2351', boostCp:'2825 - 2939', weather:'Sunny', desc:'현재 5성 레이드 메인 보스', types:['Ground'] },
-    { name:'메가후딘', label:'메가', type:'purple', image:IMG.alakazam, startDate:'2026-04-15', endDate:'2026-04-21', cp:'1843 - 1938', boostCp:'2304 - 2423', weather:'Windy', desc:'현재 메가 레이드 보스', types:['Psychic'] },
+    {
+      name:'그란돈',
+      label:'전설',
+      type:'blue',
+      image:IMG.groudon,
+      startDate:'2026-04-15',
+      endDate:'2026-04-21',
+      cp:'2260 - 2351',
+      boostCp:'2825 - 2939',
+      boostWeather:'맑음',
+      desc:'현재 전설 레이드 메인 보스',
+      strategyTypes:[
+        { name:'물', icon:'./icons/type-water.png' },
+        { name:'풀', icon:'./icons/type-grass.png' },
+        { name:'얼음', icon:'./icons/type-ice.png' }
+      ]
+    },
+    {
+      name:'메가후딘',
+      label:'메가',
+      type:'purple',
+      image:IMG.alakazam,
+      startDate:'2026-04-15',
+      endDate:'2026-04-21',
+      cp:'1843 - 1938',
+      boostCp:'2304 - 2423',
+      boostWeather:'바람',
+      desc:'현재 메가 레이드 보스',
+      strategyTypes:[
+        { name:'벌레', icon:'./icons/type-bug.png' },
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'악', icon:'./icons/type-dark.png' }
+      ]
+    },
 
-    { name:'카푸꼬꼬꼭', label:'5성', type:'blue', image:IMG.tapuKoko, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1730 - 1810', boostCp:'2162 - 2262', weather:'Rainy', desc:'현재 5성 레이드 메인 보스', types:['Electric','Fairy'] },
-    { name:'메가샤크니아', label:'메가', type:'purple', image:IMG.sharpedo, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1817 - 1907', boostCp:'2271 - 2384', weather:'Rainy', desc:'현재 메가 레이드 보스', types:['Water','Dark'] },
+    {
+      name:'카푸꼬꼬꼭',
+      label:'전설',
+      type:'blue',
+      image:IMG.tapuKoko,
+      startDate:'2026-04-22',
+      endDate:'2026-04-28',
+      cp:'1730 - 1810',
+      boostCp:'2162 - 2262',
+      boostWeather:'비',
+      desc:'현재 전설 레이드 메인 보스',
+      strategyTypes:[
+        { name:'땅', icon:'./icons/type-ground.png' },
+        { name:'독', icon:'./icons/type-poison.png' }
+      ]
+    },
+    {
+      name:'메가샤크니아',
+      label:'메가',
+      type:'purple',
+      image:IMG.sharpedo,
+      startDate:'2026-04-22',
+      endDate:'2026-04-28',
+      cp:'1817 - 1907',
+      boostCp:'2271 - 2384',
+      boostWeather:'비',
+      desc:'현재 메가 레이드 보스',
+      strategyTypes:[
+        { name:'전기', icon:'./icons/type-electric.png' },
+        { name:'풀', icon:'./icons/type-grass.png' },
+        { name:'격투', icon:'./icons/type-fighting.png' },
+        { name:'벌레', icon:'./icons/type-bug.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' }
+      ]
+    },
 
-    { name:'카푸나비나', label:'5성', type:'blue', image:IMG.tapuLele, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1730 - 1810', boostCp:'2162 - 2262', weather:'Windy', desc:'현재 5성 레이드 메인 보스', types:['Psychic','Fairy'] },
-    { name:'메가다크펫', label:'메가', type:'purple', image:IMG.banette, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1794 - 1886', boostCp:'2243 - 2358', weather:'Fog', desc:'현재 메가 레이드 보스', types:['Ghost'] }
+    {
+      name:'카푸나비나',
+      label:'전설',
+      type:'blue',
+      image:IMG.tapuLele,
+      startDate:'2026-04-29',
+      endDate:'2026-04-30',
+      cp:'1730 - 1810',
+      boostCp:'2162 - 2262',
+      boostWeather:'바람',
+      desc:'현재 전설 레이드 메인 보스',
+      strategyTypes:[
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'강철', icon:'./icons/type-steel.png' },
+        { name:'독', icon:'./icons/type-poison.png' }
+      ]
+    },
+    {
+      name:'메가다크펫',
+      label:'메가',
+      type:'purple',
+      image:IMG.banette,
+      startDate:'2026-04-29',
+      endDate:'2026-04-30',
+      cp:'1794 - 1886',
+      boostCp:'2243 - 2358',
+      boostWeather:'안개',
+      desc:'현재 메가 레이드 보스',
+      strategyTypes:[
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'악', icon:'./icons/type-dark.png' }
+      ]
+    }
   ];
 
   const weekendShadow = [
-    { name:'그림자 라티아스', label:'그림자', type:'pink', image:IMG.latias, startDate:'2026-03-29', endDate:'2026-03-31', weather:'Windy', desc:'그림자 5성 레이드 진행 중', types:['Dragon','Psychic'] },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-01', endDate:'2026-04-05', weather:'Windy', desc:'그림자 5성 레이드 진행 중', types:['Dragon','Psychic'] },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-11', endDate:'2026-04-12', weather:'Windy', desc:'그림자 5성 레이드 진행 중', types:['Dragon','Psychic'] },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-18', endDate:'2026-04-19', weather:'Windy', desc:'그림자 5성 레이드 진행 중', types:['Dragon','Psychic'] },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-25', endDate:'2026-04-26', weather:'Windy', desc:'그림자 5성 레이드 진행 중', types:['Dragon','Psychic'] }
+    {
+      name:'그림자 라티아스',
+      label:'그림자',
+      type:'pink',
+      image:IMG.latias,
+      startDate:'2026-03-29',
+      endDate:'2026-03-31',
+      boostWeather:'바람',
+      desc:'그림자 5성 레이드 진행 중',
+      strategyTypes:[
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'드래곤', icon:'./icons/type-dragon.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' },
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'악', icon:'./icons/type-dark.png' }
+      ]
+    },
+    {
+      name:'그림자 라티오스',
+      label:'그림자',
+      type:'pink',
+      image:IMG.latios,
+      startDate:'2026-04-01',
+      endDate:'2026-04-05',
+      boostWeather:'바람',
+      desc:'그림자 5성 레이드 진행 중',
+      strategyTypes:[
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'드래곤', icon:'./icons/type-dragon.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' },
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'악', icon:'./icons/type-dark.png' }
+      ]
+    },
+    {
+      name:'그림자 라티오스',
+      label:'그림자',
+      type:'pink',
+      image:IMG.latios,
+      startDate:'2026-04-11',
+      endDate:'2026-04-12',
+      boostWeather:'바람',
+      desc:'그림자 5성 레이드 진행 중',
+      strategyTypes:[
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'드래곤', icon:'./icons/type-dragon.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' },
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'악', icon:'./icons/type-dark.png' }
+      ]
+    },
+    {
+      name:'그림자 라티오스',
+      label:'그림자',
+      type:'pink',
+      image:IMG.latios,
+      startDate:'2026-04-18',
+      endDate:'2026-04-19',
+      boostWeather:'바람',
+      desc:'그림자 5성 레이드 진행 중',
+      strategyTypes:[
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'드래곤', icon:'./icons/type-dragon.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' },
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'악', icon:'./icons/type-dark.png' }
+      ]
+    },
+    {
+      name:'그림자 라티오스',
+      label:'그림자',
+      type:'pink',
+      image:IMG.latios,
+      startDate:'2026-04-25',
+      endDate:'2026-04-26',
+      boostWeather:'바람',
+      desc:'그림자 5성 레이드 진행 중',
+      strategyTypes:[
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'드래곤', icon:'./icons/type-dragon.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' },
+        { name:'고스트', icon:'./icons/type-ghost.png' },
+        { name:'악', icon:'./icons/type-dark.png' }
+      ]
+    }
   ];
 
   const today = new Date('2026-04-01T00:00:00');
@@ -598,15 +811,6 @@
     ];
   }
 
-  function typeChipClass(typeName){
-    const lower = typeName.toLowerCase();
-    if(lower.includes('dragon') || lower.includes('water') || lower.includes('ground')) return 'blue';
-    if(lower.includes('psychic') || lower.includes('fairy') || lower.includes('ghost')) return 'pink';
-    if(lower.includes('electric') || lower.includes('rock') || lower.includes('fire')) return 'yellow';
-    if(lower.includes('dark')) return 'gray';
-    return 'green';
-  }
-
   function renderRangeText(items){
     const el = document.getElementById('rangeText');
     if(!items.length){
@@ -620,6 +824,10 @@
     const end = ends[ends.length - 1];
 
     el.textContent = `예시 기준: ${start.replaceAll('-','.')} - ${end.replaceAll('-','.')}`;
+  }
+
+  function getBoostIcon(weather){
+    return BOOST_ICONS[weather] || './icons/weather-default.png';
   }
 
   function renderCards(){
@@ -650,12 +858,6 @@
             </div>
 
             <div>
-              <div class="raid-types">
-                ${(item.types || []).map(typeName => `
-                  <span class="chip ${typeChipClass(typeName)}">${typeName}</span>
-                `).join('')}
-              </div>
-
               <div class="stat-grid">
                 ${
                   item.cp
@@ -665,8 +867,16 @@
                       <div class="stat-value">${item.cp}</div>
                     </div>
                     <div class="stat-box">
-                      <div class="stat-label">부스트 CP</div>
-                      <div class="stat-value">${item.boostCp}</div>
+                      <div class="stat-label">부스트</div>
+                      <div class="boost-box">
+                        <div class="boost-icon">
+                          <img src="${getBoostIcon(item.boostWeather)}" alt="${item.boostWeather}">
+                        </div>
+                        <div class="boost-text">
+                          <div class="boost-name">${item.boostWeather}</div>
+                          <div class="boost-cp">${item.boostCp}</div>
+                        </div>
+                      </div>
                     </div>
                   `
                   : `
@@ -675,15 +885,33 @@
                       <div class="stat-value">${item.startDate.slice(5).replace('-','.')} - ${item.endDate.slice(5).replace('-','.')}</div>
                     </div>
                     <div class="stat-box">
-                      <div class="stat-label">레이드 등급</div>
-                      <div class="stat-value">5-Star</div>
+                      <div class="stat-label">부스트</div>
+                      <div class="boost-box">
+                        <div class="boost-icon">
+                          <img src="${getBoostIcon(item.boostWeather)}" alt="${item.boostWeather}">
+                        </div>
+                        <div class="boost-text">
+                          <div class="boost-name">${item.boostWeather}</div>
+                          <div class="boost-cp">기본 적용</div>
+                        </div>
+                      </div>
                     </div>
                   `
                 }
               </div>
 
-              <div class="weather-row">
-                <span class="chip gray">${item.weather || 'Windy'}</span>
+              <div class="strategy-box">
+                <div class="strategy-label">공략</div>
+                <div class="strategy-types">
+                  ${(item.strategyTypes || []).map(type => `
+                    <div class="strategy-item">
+                      <div class="strategy-type-icon">
+                        <img src="${type.icon}" alt="${type.name}">
+                      </div>
+                      <div class="strategy-type-name">${type.name}</div>
+                    </div>
+                  `).join('')}
+                </div>
               </div>
             </div>
           </div>
