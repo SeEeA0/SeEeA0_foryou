@@ -3,39 +3,45 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pokémon GO Calendar</title>
+<title>Pokémon GO Raid Calendar</title>
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
     background:#eef3f8;
     color:#243147;
   }
 
   :root{
     --bg:#f7f9fc;
-    --card:#f9fbff;
+    --card:#fbfdff;
     --line:#d8e2ef;
     --muted:#7b88a1;
-    --blue:#3567d7;
-    --blue-bg:#dfe8f8;
-    --purple:#7c58e9;
-    --purple-bg:#ece2fa;
-    --yellow:#8a6a00;
-    --yellow-bg:#f7e9be;
-    --green:#698814;
-    --green-bg:#e4edc8;
-    --pink:#d85b85;
-    --pink-bg:#f8dfe7;
+    --text:#243147;
     --sun:#ef6b7a;
     --sat:#4b7cf0;
+
+    --blue:#3567d7;
+    --blue-bg:#dfe8f8;
+
+    --purple:#7c58e9;
+    --purple-bg:#ece2fa;
+
+    --yellow:#8a6a00;
+    --yellow-bg:#f7e9be;
+
+    --green:#698814;
+    --green-bg:#e4edc8;
+
+    --pink:#d85b85;
+    --pink-bg:#f8dfe7;
   }
 
   .wrap{
     max-width:1320px;
     margin:24px auto;
-    padding:0 14px 30px;
+    padding:0 14px 34px;
   }
 
   .section{
@@ -78,6 +84,7 @@
     font-size:14px;
     font-weight:900;
     white-space:nowrap;
+    line-height:1;
   }
   .chip.blue{background:var(--blue-bg);color:var(--blue)}
   .chip.purple{background:var(--purple-bg);color:var(--purple)}
@@ -110,6 +117,7 @@
     background:#f3f6fb;
     border:1px solid var(--line);
     padding:6px;
+    flex-shrink:0;
   }
 
   .raid-name{
@@ -139,7 +147,6 @@
     display:grid;
     grid-template-columns:repeat(7, minmax(160px,1fr));
     gap:14px;
-    overflow-x:auto;
   }
 
   .week-day{
@@ -194,6 +201,7 @@
     background:#f4f7fb;
     border:1px solid var(--line);
     padding:4px;
+    flex-shrink:0;
   }
 
   .time-item-name{
@@ -237,6 +245,9 @@
     background:#fbfdff;
     cursor:pointer;
     transition:.18s ease;
+    text-decoration:none;
+    color:inherit;
+    display:block;
   }
 
   .day-cell:hover{
@@ -248,6 +259,7 @@
     background:transparent;
     border:none;
     cursor:default;
+    pointer-events:none;
   }
 
   .day-number{
@@ -265,6 +277,12 @@
     flex-direction:column;
     gap:8px;
     padding-right:40px;
+  }
+
+  .day-empty{
+    font-size:13px;
+    color:#94a1b6;
+    font-weight:800;
   }
 
   .day-icon{
@@ -289,11 +307,11 @@
   }
 
   @media (max-width:1100px){
-    .weekly-table,.calendar-head-row,.calendar-grid{
-      min-width:1100px;
-    }
     .section-body{
       overflow-x:auto;
+    }
+    .weekly-table,.calendar-head-row,.calendar-grid{
+      min-width:1100px;
     }
   }
 </style>
@@ -323,8 +341,8 @@
 
   <section class="section">
     <div class="section-head">
-      <div class="section-title">2026년 4월 캘린더</div>
-      <div class="section-sub">날짜를 누르면 해당 일자 상세 페이지로 이동할 수 있게 연결하면 됩니다.</div>
+      <div class="section-title" id="monthTitle">2026년 4월 캘린더</div>
+      <div class="section-sub">날짜를 누르면 상세 페이지로 이동합니다.</div>
     </div>
     <div class="section-body">
       <div class="calendar-head-row">
@@ -346,7 +364,7 @@
   const DEFAULT_START = '06:00 AM';
   const DEFAULT_END = '10:00 PM';
 
-  const raids = [
+  const raidData = [
     {
       name:'레지드래고',
       type:'blue',
@@ -360,6 +378,15 @@
       image:'./images/latios-shadow.png',
       startDate:'2026-04-01',
       endDate:'2026-04-06'
+    },
+    {
+      name:'패션 레이드 데이',
+      type:'yellow',
+      image:'./images/event-fashion.png',
+      startDate:'2026-04-04',
+      endDate:'2026-04-04',
+      startTime:'02:00 PM',
+      endTime:'05:00 PM'
     },
     {
       name:'가이오가',
@@ -418,15 +445,6 @@
       image:'./images/banette-mega.png',
       startDate:'2026-04-29',
       endDate:'2026-04-30'
-    },
-    {
-      name:'패션 레이드 데이',
-      type:'yellow',
-      image:'./images/event-fashion.png',
-      startDate:'2026-04-04',
-      endDate:'2026-04-04',
-      startTime:'02:00 PM',
-      endTime:'05:00 PM'
     }
   ];
 
@@ -436,39 +454,39 @@
 
   function parseDate(str){
     const [y,m,d] = str.split('-').map(Number);
-    return new Date(y, m-1, d, 0, 0, 0, 0);
+    return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
   function formatDateKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   }
 
-  function formatTimeRange(raid){
-    return `${raid.startTime || DEFAULT_START} ~ ${raid.endTime || DEFAULT_END}`;
+  function formatDateKor(date){
+    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
   }
 
-  function isDateInRange(target, start, end){
-    const t = parseDate(formatDateKey(target)).getTime();
-    const s = parseDate(start).getTime();
-    const e = parseDate(end).getTime();
+  function getDayNameKor(day){
+    return ['일','월','화','수','목','금','토'][day];
+  }
+
+  function getTimeRange(item){
+    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+  }
+
+  function isSameOrBetween(targetDate, startDate, endDate){
+    const t = parseDate(formatDateKey(targetDate)).getTime();
+    const s = parseDate(startDate).getTime();
+    const e = parseDate(endDate).getTime();
     return t >= s && t <= e;
   }
 
   function getRaidsForDate(date){
-    return raids.filter(raid => isDateInRange(date, raid.startDate, raid.endDate));
+    return raidData.filter(item => isSameOrBetween(date, item.startDate, item.endDate));
   }
 
-  function getTypeClass(type){
-    return type || 'blue';
-  }
-
-  function getWeekdayKor(idx){
-    return ['일','월','화','수','목','금','토'][idx];
-  }
-
-  function renderNowRaids(baseDate){
+  function renderNowRaids(today){
     const wrap = document.getElementById('raidNowList');
-    const items = getRaidsForDate(baseDate);
+    const items = getRaidsForDate(today);
 
     if(!items.length){
       wrap.innerHTML = `<div class="empty-box">오늘 진행 중인 레이드가 없습니다.</div>`;
@@ -479,41 +497,42 @@
       <div class="raid-card">
         <img src="${item.image}" alt="${item.name}">
         <div>
-          <div class="chip ${getTypeClass(item.type)}">${item.name}</div>
-          <div class="raid-time">${formatTimeRange(item)}</div>
+          <div class="raid-name">${item.name}</div>
+          <div class="raid-time">${getTimeRange(item)}</div>
         </div>
       </div>
     `).join('');
   }
 
-  function renderWeeklyTable(baseDate){
+  function renderWeeklyTable(today){
     const wrap = document.getElementById('weeklyTable');
     const days = [];
 
-    for(let i=0;i<7;i++){
-      const d = new Date(baseDate);
-      d.setDate(baseDate.getDate()+i);
+    for(let i = 0; i < 7; i++){
+      const d = new Date(today);
+      d.setHours(0,0,0,0);
+      d.setDate(today.getDate() + i);
       days.push(d);
     }
 
     wrap.innerHTML = days.map(date => {
-      const raidsToday = getRaidsForDate(date);
+      const items = getRaidsForDate(date);
       const dayClass = date.getDay() === 0 ? 'sun' : date.getDay() === 6 ? 'sat' : '';
 
       return `
         <div class="week-day">
-          <div class="week-date ${dayClass}">${date.getMonth()+1}.${date.getDate()}</div>
-          <div class="week-dayname">${getWeekdayKor(date.getDay())}요일</div>
+          <div class="week-date ${dayClass}">${date.getMonth() + 1}.${date.getDate()}</div>
+          <div class="week-dayname">${getDayNameKor(date.getDay())}요일</div>
           <div class="week-events">
             ${
-              raidsToday.length
-                ? raidsToday.map(item => `
+              items.length
+                ? items.map(item => `
                   <div class="time-item">
                     <div class="time-item-top">
                       <img src="${item.image}" alt="${item.name}">
                       <div class="time-item-name">${item.name}</div>
                     </div>
-                    <div class="time-item-time">${formatTimeRange(item)}</div>
+                    <div class="time-item-time">${getTimeRange(item)}</div>
                   </div>
                 `).join('')
                 : `<div class="empty-box" style="padding:14px;font-size:13px;">일정 없음</div>`
@@ -524,28 +543,38 @@
     }).join('');
   }
 
-  function renderMonthlyCalendar(year, month){
-    const grid = document.getElementById('calendarGrid');
-    const firstDay = new Date(year, month-1, 1).getDay();
+  function renderMonthlyCalendar(today){
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+
+    document.getElementById('monthTitle').textContent = `${year}년 ${month}월 캘린더`;
+
+    const firstDay = new Date(year, month - 1, 1).getDay();
     const lastDate = new Date(year, month, 0).getDate();
+    const grid = document.getElementById('calendarGrid');
+
     let html = '';
 
-    for(let i=0;i<firstDay;i++){
+    for(let i = 0; i < firstDay; i++){
       html += `<div class="day-cell empty"></div>`;
     }
 
-    for(let day=1; day<=lastDate; day++){
-      const date = new Date(year, month-1, day);
+    for(let day = 1; day <= lastDate; day++){
+      const date = new Date(year, month - 1, day);
       const items = getRaidsForDate(date);
       const dayClass = date.getDay() === 0 ? 'sun' : date.getDay() === 6 ? 'sat' : '';
-      const preview = items.slice(0,2);
+      const preview = items.slice(0, 2);
+      const queryDate = formatDateKey(date);
 
       html += `
-        <a class="day-cell" href="./detail-${year}-${pad(month)}-${pad(day)}.html" style="text-decoration:none;color:inherit;">
+        <a class="day-cell" href="./detail.html?date=${queryDate}">
           <div class="day-number ${dayClass}">${day}</div>
           <div class="day-events">
-            ${preview.map(item => `<span class="chip ${getTypeClass(item.type)}">${item.name}</span>`).join('')}
-            ${!preview.length ? `<span style="font-size:13px;color:#94a1b6;font-weight:800;">일정 없음</span>` : ''}
+            ${
+              preview.length
+                ? preview.map(item => `<span class="chip ${item.type || 'blue'}">${item.name}</span>`).join('')
+                : `<span class="day-empty">일정 없음</span>`
+            }
           </div>
           ${
             items[0]
@@ -559,15 +588,12 @@
     grid.innerHTML = html;
   }
 
-  // 테스트용 기준 날짜
-  // 실제 자동으로 오늘 기준 쓰려면 아래 한 줄만 사용
-  // const today = new Date();
-
   const today = new Date();
+  today.setHours(0,0,0,0);
 
   renderNowRaids(today);
   renderWeeklyTable(today);
-  renderMonthlyCalendar(2026, 4);
+  renderMonthlyCalendar(today);
 </script>
 </body>
 </html>
