@@ -18,7 +18,6 @@
     --card:#ffffff;
     --card-soft:#f8fbff;
     --line:#d8e3f2;
-    --line-strong:#c9d8eb;
     --text:#1f2f46;
     --muted:#7486a3;
 
@@ -49,65 +48,8 @@
     padding:20px 16px 110px;
   }
 
-  .hero{
-    background:rgba(255,255,255,.82);
-    border:1px solid var(--line);
-    border-radius:30px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    margin-bottom:18px;
-  }
-
-  .hero-head{
-    padding:26px 28px 18px;
-    border-bottom:1px solid #e4edf8;
-    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
-  }
-
-  .hero-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .hero-sub{
-    margin-top:10px;
-    font-size:14px;
-    line-height:1.55;
-    color:var(--muted);
-    font-weight:700;
-  }
-
-  .hero-tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:18px;
-  }
-
-  .hero-tag{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:40px;
-    padding:0 16px;
-    border-radius:999px;
-    background:#f3f7ff;
-    border:1px solid var(--line);
-    color:#58719a;
-    font-size:13px;
-    font-weight:900;
-    white-space:nowrap;
-  }
-
-  .hero-tag.active{
-    background:#eaf2ff;
-    color:#3567d7;
-    border-color:#cfe0f6;
-  }
-
   .section{
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.84);
     border:1px solid var(--line);
     border-radius:30px;
     overflow:hidden;
@@ -262,6 +204,90 @@
     word-break:keep-all;
   }
 
+  .boost-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:6px;
+  }
+
+  .boost-icon{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#eef3ff;
+    border:1px solid #d9e4f3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  .boost-icon img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+  }
+
+  .strategy-box{
+    margin-top:14px;
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    border-radius:18px;
+    padding:12px 14px;
+  }
+
+  .strategy-label{
+    font-size:12px;
+    color:#7386a3;
+    font-weight:900;
+  }
+
+  .strategy-types{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+  }
+
+  .strategy-item{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:36px;
+    padding:6px 10px 6px 6px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
+  }
+
+  .strategy-type-icon{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#f3f7ff;
+    border:1px solid #dce6f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  .strategy-type-icon img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+  }
+
+  .strategy-type-name{
+    font-size:13px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1;
+  }
+
   .detail-note{
     margin-top:12px;
     color:#8a98af;
@@ -270,68 +296,15 @@
     line-height:1.5;
   }
 
-  .empty-box{
-    border:1px dashed #d9e4f2;
+  .empty-state{
     background:#fbfdff;
-    border-radius:18px;
-    padding:24px 16px;
+    border:1px dashed #dce7f4;
+    border-radius:20px;
+    padding:28px 18px;
     text-align:center;
-    color:#97a5ba;
+    color:#8293ad;
     font-size:14px;
     font-weight:800;
-  }
-
-  .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:14px;
-  }
-
-  .quick-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:22px;
-    padding:14px 16px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    text-decoration:none;
-    color:inherit;
-    transition:.18s ease;
-    min-height:96px;
-  }
-
-  .quick-card:hover{
-    transform:translateY(-2px);
-    border-color:#bfd1ea;
-    box-shadow:0 12px 28px rgba(62,85,131,.08);
-  }
-
-  .quick-icon{
-    width:52px;
-    height:52px;
-    border-radius:16px;
-    background:#f3f7ff;
-    border:1px solid #dce6f4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-    flex-shrink:0;
-  }
-
-  .quick-title{
-    font-size:16px;
-    font-weight:900;
-    letter-spacing:-.02em;
-  }
-
-  .quick-desc{
-    margin-top:5px;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.45;
-    font-weight:700;
   }
 
   .bottom-nav{
@@ -386,37 +359,23 @@
     line-height:1;
   }
 
-  @media (max-width:1100px){
-    .quick-grid{
-      grid-template-columns:1fr;
-    }
-  }
-
   @media (max-width:768px){
     .wrap{
       padding-bottom:120px;
     }
 
-    .hero-head,
     .section-head{
       padding:22px 20px 16px;
+      flex-direction:column;
+      align-items:flex-start;
     }
 
     .section-body{
       padding:16px;
     }
 
-    .hero-title{
-      font-size:26px;
-    }
-
     .section-title{
       font-size:22px;
-    }
-
-    .section-head{
-      flex-direction:column;
-      align-items:flex-start;
     }
 
     .detail-card{
@@ -442,66 +401,17 @@
 <body>
 <div class="wrap">
 
-  <section class="hero">
-    <div class="hero-head">
-      <div class="hero-title" id="pageTitle">상세 일정</div>
-      <div class="hero-sub" id="pageSub">
-        선택한 날짜의 레이드, 레이드 아워, 이벤트, 커뮤니티 데이, 그림자 일정을 자세히 확인하는 페이지입니다.
-      </div>
-      <div class="hero-tags">
-        <span class="hero-tag active">날짜별 상세 보기</span>
-        <span class="hero-tag">시간 기본값 적용</span>
-        <span class="hero-tag">CP / 부스트 CP 표시</span>
-      </div>
-    </div>
-  </section>
-
   <section class="section">
     <div class="section-head">
       <div>
-        <div class="section-title" id="detailTitle">날짜 상세</div>
-        <div class="section-sub">해당 날짜에 포함되는 모든 일정을 아래 카드로 확인할 수 있습니다.</div>
+        <div class="section-title" id="pageTitle">상세 일정</div>
+        <div class="section-sub" id="pageSub">선택한 날짜의 일정만 자세히 확인합니다.</div>
       </div>
-      <div class="tiny-badge" id="detailBadge">DETAIL</div>
+      <div class="tiny-badge" id="pageBadge">DETAIL</div>
     </div>
 
     <div class="section-body">
       <div class="detail-list" id="detailList"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <div class="section-title">빠른 이동</div>
-      <div class="section-sub">다른 화면으로 바로 이동</div>
-    </div>
-
-    <div class="section-body">
-      <div class="quick-grid">
-        <a href="./index.html" class="quick-card">
-          <div class="quick-icon">🏠</div>
-          <div>
-            <div class="quick-title">메인</div>
-            <div class="quick-desc">전체 허브 메인 화면</div>
-          </div>
-        </a>
-
-        <a href="./raid-now.html" class="quick-card">
-          <div class="quick-icon">⚔️</div>
-          <div>
-            <div class="quick-title">지금 레이드</div>
-            <div class="quick-desc">현재 진행 중인 보스 카드형 보기</div>
-          </div>
-        </a>
-
-        <a href="./weekly.html" class="quick-card">
-          <div class="quick-icon">🗓️</div>
-          <div>
-            <div class="quick-title">주간 일정표</div>
-            <div class="quick-desc">오늘부터 7일 흐름 보기</div>
-          </div>
-        </a>
-      </div>
     </div>
   </section>
 
@@ -527,76 +437,26 @@
 </nav>
 
 <script>
-  const DEFAULT_START = '06:00 AM';
-  const DEFAULT_END = '10:00 PM';
+  const STORAGE_KEY = 'pogoRaidAdminData';
 
-  const IMG = {
-    regieleki:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/894.png',
-    regidrago:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
-    kyogre:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png',
-    groudon:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png',
-    tapuKoko:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/785.png',
-    tapuLele:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/786.png',
-    latias:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png',
-    latios:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png',
-    houndoom:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/229.png',
-    manectric:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/310.png',
-    aerodactyl:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/142.png',
-    alakazam:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png',
-    sharpedo:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/319.png',
-    banette:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/354.png',
-    pikachu:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
-    tinkatink:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/957.png'
-  };
+  function getKoreaNow(){
+    const now = new Date();
+    const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+    return new Date(koreaString);
+  }
 
-  const raidRanges = [
-    { name:'레지드래고', label:'5성 레이드', type:'blue', image:IMG.regidrago, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1614 - 1699', boostCp:'2017 - 2124', weather:'Windy', note:'현재 5성 레이드 메인 보스' },
-    { name:'메가썬더볼트', label:'메가 레이드', type:'purple', image:IMG.manectric, startDate:'2026-04-01', endDate:'2026-04-07', cp:'1267 - 1337', boostCp:'1585 - 1672', weather:'Rainy', note:'현재 메가 레이드 보스' },
-
-    { name:'가이오가', label:'5성 레이드', type:'blue', image:IMG.kyogre, startDate:'2026-04-08', endDate:'2026-04-14', cp:'2260 - 2351', boostCp:'2825 - 2939', weather:'Rainy', note:'현재 5성 레이드 메인 보스' },
-    { name:'메가프테라', label:'메가 레이드', type:'purple', image:IMG.aerodactyl, startDate:'2026-04-08', endDate:'2026-04-14', cp:'1801 - 1888', boostCp:'2251 - 2360', weather:'Windy', note:'현재 메가 레이드 보스' },
-
-    { name:'그란돈', label:'5성 레이드', type:'blue', image:IMG.groudon, startDate:'2026-04-15', endDate:'2026-04-21', cp:'2260 - 2351', boostCp:'2825 - 2939', weather:'Sunny', note:'현재 5성 레이드 메인 보스' },
-    { name:'메가후딘', label:'메가 레이드', type:'purple', image:IMG.alakazam, startDate:'2026-04-15', endDate:'2026-04-21', cp:'1843 - 1938', boostCp:'2304 - 2423', weather:'Windy', note:'현재 메가 레이드 보스' },
-
-    { name:'카푸꼬꼬꼭', label:'5성 레이드', type:'blue', image:IMG.tapuKoko, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1730 - 1810', boostCp:'2162 - 2262', weather:'Rainy', note:'현재 5성 레이드 메인 보스' },
-    { name:'메가샤크니아', label:'메가 레이드', type:'purple', image:IMG.sharpedo, startDate:'2026-04-22', endDate:'2026-04-28', cp:'1817 - 1907', boostCp:'2271 - 2384', weather:'Rainy', note:'현재 메가 레이드 보스' },
-
-    { name:'카푸나비나', label:'5성 레이드', type:'blue', image:IMG.tapuLele, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1730 - 1810', boostCp:'2162 - 2262', weather:'Windy', note:'현재 5성 레이드 메인 보스' },
-    { name:'메가다크펫', label:'메가 레이드', type:'purple', image:IMG.banette, startDate:'2026-04-29', endDate:'2026-04-30', cp:'1794 - 1886', boostCp:'2243 - 2358', weather:'Fog', note:'현재 메가 레이드 보스' }
-  ];
-
-  const oneDayEvents = [
-    { name:'레지드래고', label:'레이드 아워', type:'yellow', image:IMG.regidrago, date:'2026-04-01', startTime:'06:00 PM', endTime:'07:00 PM', note:'수요일 한정 진행' },
-    { name:'패션 레이드 데이', label:'레이드 데이', type:'yellow', image:IMG.pikachu, date:'2026-04-04', startTime:'02:00 PM', endTime:'05:00 PM', note:'특별 레이드 데이 일정' },
-
-    { name:'가이오가', label:'레이드 아워', type:'yellow', image:IMG.kyogre, date:'2026-04-08', startTime:'06:00 PM', endTime:'07:00 PM', note:'수요일 한정 진행' },
-    { name:'두드리짱', label:'커뮤니티 데이', type:'green', image:IMG.tinkatink, date:'2026-04-11', startTime:'02:00 PM', endTime:'05:00 PM', note:'주말 커뮤니티 데이 일정' },
-
-    { name:'지속가능성 위크', label:'이벤트', type:'green', image:IMG.aerodactyl, date:'2026-04-14', startTime:'10:00 AM', endTime:'08:00 PM', note:'이벤트 시작일' },
-    { name:'그란돈', label:'레이드 아워', type:'yellow', image:IMG.groudon, date:'2026-04-15', startTime:'06:00 PM', endTime:'07:00 PM', note:'수요일 한정 진행' },
-
-    { name:'카푸꼬꼬꼭', label:'레이드 아워', type:'yellow', image:IMG.tapuKoko, date:'2026-04-22', startTime:'06:00 PM', endTime:'07:00 PM', note:'수요일 한정 진행' },
-    { name:'강철의 의지', label:'이벤트', type:'green', image:IMG.banette, date:'2026-04-28', startTime:'10:00 AM', endTime:'08:00 PM', note:'이벤트 시작일' },
-    { name:'카푸나비나', label:'레이드 아워', type:'yellow', image:IMG.tapuLele, date:'2026-04-29', startTime:'06:00 PM', endTime:'07:00 PM', note:'수요일 한정 진행' }
-  ];
-
-  const weekendShadow = [
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-01', endDate:'2026-04-05', weather:'Windy', note:'주말 그림자 일정 포함' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-11', endDate:'2026-04-12', weather:'Windy', note:'주말 그림자 일정 포함' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-18', endDate:'2026-04-19', weather:'Windy', note:'주말 그림자 일정 포함' },
-    { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-25', endDate:'2026-04-26', weather:'Windy', note:'주말 그림자 일정 포함' }
-  ];
-
-  function pad(n){ return String(n).padStart(2,'0'); }
+  function pad(n){
+    return String(n).padStart(2, '0');
+  }
 
   function toDate(str){
-    const [y,m,d] = str.split('-').map(Number);
+    if(!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
   function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   }
 
   function getDayKor(day){
@@ -607,61 +467,125 @@
     return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${getDayKor(date.getDay())}요일`;
   }
 
+  function toAmpm(time24){
+    if(!time24) return '';
+    const [hh, mm] = time24.split(':').map(Number);
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return `${String(h12).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${suffix}`;
+  }
+
   function getDisplayTime(item){
-    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
+    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
+    return `${start} ~ ${end}`;
   }
 
   function inRange(date, startStr, endStr){
+    const start = toDate(startStr);
+    const end = toDate(endStr);
+    if(!start || !end) return false;
     const t = toDate(toKey(date)).getTime();
-    const s = toDate(startStr).getTime();
-    const e = toDate(endStr).getTime();
-    return t >= s && t <= e;
+    return t >= start.getTime() && t <= end.getTime();
   }
 
-  function getItemsForDate(date){
-    return [
-      ...raidRanges.filter(item => inRange(date, item.startDate, item.endDate)),
-      ...weekendShadow.filter(item => inRange(date, item.startDate, item.endDate)),
-      ...oneDayEvents.filter(item => item.date === toKey(date))
-    ];
+  function loadRecords(){
+    try{
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){
+      return [];
+    }
   }
 
-  function getQueryDate(){
+  function isDetailAllowed(item){
+    return Array.isArray(item.showPages) && item.showPages.includes('detail');
+  }
+
+  function chipClass(item){
+    return item.type || (
+      item.label === '전설' ? 'blue' :
+      item.label === '메가' ? 'purple' :
+      item.label === '그림자' ? 'pink' :
+      item.label === '레이드 아워' || item.label === '레이드 데이' ? 'yellow' :
+      item.label === '이벤트' || item.label === '커뮤니티 데이' ? 'green' : 'gray'
+    );
+  }
+
+  function getTargetDate(){
     const params = new URLSearchParams(location.search);
-    const dateStr = params.get('date');
-    if(!dateStr) return '2026-04-01';
-    return dateStr;
+    const queryDate = params.get('date');
+    if(queryDate && /^\d{4}-\d{2}-\d{2}$/.test(queryDate)){
+      return toDate(queryDate);
+    }
+    const koreaNow = getKoreaNow();
+    koreaNow.setHours(0, 0, 0, 0);
+    return koreaNow;
+  }
+
+  function getItemsForDate(records, date){
+    return records
+      .filter(item =>
+        isDetailAllowed(item) &&
+        item.startDate &&
+        item.endDate &&
+        inRange(date, item.startDate, item.endDate)
+      )
+      .sort((a, b) => {
+        const order = {
+          '전설': 0,
+          '메가': 1,
+          '그림자': 2,
+          '레이드 아워': 3,
+          '레이드 데이': 4,
+          '이벤트': 5,
+          '커뮤니티 데이': 6
+        };
+        const aOrder = order[a.label] ?? 99;
+        const bOrder = order[b.label] ?? 99;
+        if(aOrder !== bOrder) return aOrder - bOrder;
+        return (a.name || '').localeCompare(b.name || '', 'ko');
+      });
   }
 
   function renderDetailPage(){
-    const dateStr = getQueryDate();
-    const date = toDate(dateStr);
-    const items = getItemsForDate(date);
+    const records = loadRecords();
+    const targetDate = getTargetDate();
+    const items = getItemsForDate(records, targetDate);
 
-    document.getElementById('pageTitle').textContent = `${formatKoreanDate(date)} 상세 일정`;
-    document.getElementById('detailTitle').textContent = `${date.getMonth()+1}월 ${date.getDate()}일 일정`;
-    document.getElementById('detailBadge').textContent = `${date.getMonth()+1}.${date.getDate()}`;
-    document.getElementById('pageSub').textContent = `${formatKoreanDate(date)} 기준으로 포함되는 레이드, 레이드 아워, 이벤트, 커뮤니티 데이, 그림자 일정을 자세히 보여줍니다.`;
+    document.getElementById('pageTitle').textContent = `${formatKoreanDate(targetDate)} 상세 일정`;
+    document.getElementById('pageSub').textContent = `어드민에서 저장한 일정 중 상세 페이지(detail)에 표시되는 데이터만 불러옵니다.`;
+    document.getElementById('pageBadge').textContent = `${targetDate.getMonth()+1}.${targetDate.getDate()}`;
 
     const list = document.getElementById('detailList');
 
     if(!items.length){
-      list.innerHTML = `<div class="empty-box">해당 날짜에는 등록된 일정이 없습니다.</div>`;
+      list.innerHTML = `
+        <div class="empty-state">
+          해당 날짜에는 등록된 일정이 없습니다.<br>
+          admin.html에서 detail 노출 체크 후 저장해 주세요.
+        </div>
+      `;
       return;
     }
 
     list.innerHTML = items.map(item => `
       <article class="detail-card">
         <div class="detail-thumb">
-          <img src="${item.image}" alt="${item.name}">
+          ${
+            item.image
+              ? `<img src="${item.image}" alt="${item.name || ''}">`
+              : `<span style="font-size:30px;">🖼️</span>`
+          }
         </div>
 
         <div class="detail-main">
-          <div class="detail-name">${item.name}</div>
+          <div class="detail-name">${item.name || '-'}</div>
 
           <div class="detail-meta">
-            <span class="chip ${item.type}">${item.label}</span>
-            ${item.weather ? `<span class="chip gray">${item.weather}</span>` : ``}
+            <span class="chip ${chipClass(item)}">${item.label || '-'}</span>
+            ${item.boostWeather ? `<span class="chip gray">${item.boostWeather}</span>` : ``}
           </div>
 
           <div class="info-grid">
@@ -672,38 +596,51 @@
 
             <div class="info-box">
               <div class="info-label">일정 구간</div>
-              <div class="info-value">
-                ${
-                  item.date
-                    ? item.date.replaceAll('-','.')
-                    : `${item.startDate.replaceAll('-','.')} ~ ${item.endDate.replaceAll('-','.')}`
-                }
-              </div>
+              <div class="info-value">${item.startDate} ~ ${item.endDate}</div>
             </div>
 
-            ${
-              item.cp
-                ? `
-                  <div class="info-box">
-                    <div class="info-label">일반 CP</div>
-                    <div class="info-value">${item.cp}</div>
-                  </div>
-                  <div class="info-box">
-                    <div class="info-label">날씨부스트 CP</div>
-                    <div class="info-value">${item.boostCp}</div>
-                  </div>
-                `
-                : `
-                  <div class="info-box">
-                    <div class="info-label">표시 기준</div>
-                    <div class="info-value">이벤트 / 특별 일정</div>
-                  </div>
-                  <div class="info-box">
-                    <div class="info-label">기본 시간 규칙</div>
-                    <div class="info-value">${DEFAULT_START} ~ ${DEFAULT_END}</div>
-                  </div>
-                `
-            }
+            <div class="info-box">
+              <div class="info-label">일반 CP</div>
+              <div class="info-value">${item.cp || '-'}</div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-label">부스트</div>
+              <div class="boost-row">
+                <div class="boost-icon">
+                  ${
+                    item.boostIcon
+                      ? `<img src="${item.boostIcon}" alt="${item.boostWeather || ''}">`
+                      : `<span style="font-size:10px;">?</span>`
+                  }
+                </div>
+                <div class="info-value" style="margin:0;">
+                  ${item.boostWeather || '미입력'} / ${item.boostCp || '-'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="strategy-box">
+            <div class="strategy-label">공략</div>
+            <div class="strategy-types">
+              ${
+                Array.isArray(item.strategyTypes) && item.strategyTypes.length
+                  ? item.strategyTypes.map(type => `
+                    <div class="strategy-item">
+                      <div class="strategy-type-icon">
+                        ${
+                          type.icon
+                            ? `<img src="${type.icon}" alt="${type.name || ''}">`
+                            : `<span style="font-size:10px;">?</span>`
+                        }
+                      </div>
+                      <div class="strategy-type-name">${type.name || '타입'}</div>
+                    </div>
+                  `).join('')
+                  : `<div class="strategy-type-name" style="color:#8a98af;">공략 타입 없음</div>`
+              }
+            </div>
           </div>
 
           <div class="detail-note">${item.note || '시간이 따로 없는 항목은 기본적으로 06:00 AM ~ 10:00 PM 으로 표시됩니다.'}</div>
