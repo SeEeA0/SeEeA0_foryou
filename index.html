@@ -1,19 +1,492 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <title>Pokémon GO Schedule</title>
-    <meta
-      name="description"
-      content="포켓몬고 레이드 및 이벤트 일정 캘린더"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>포켓몬고 일정 메인</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:#08111f;
+      color:#fff;
+    }
+    .page{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(61,191,255,.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(129,90,255,.14), transparent 24%),
+        linear-gradient(180deg,#08111f 0%,#0d1830 100%);
+    }
+    .wrap{
+      max-width:1380px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+    .hero{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:32px;
+      background:linear-gradient(135deg, rgba(15,23,42,.94), rgba(9,15,28,.94));
+      box-shadow:0 20px 50px rgba(0,0,0,.28);
+      overflow:hidden;
+    }
+    .hero-inner{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:24px;
+      padding:34px;
+    }
+    .eyebrow{
+      display:inline-flex;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(54,209,220,.12);
+      border:1px solid rgba(54,209,220,.24);
+      color:#a6f2ff;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:16px;
+    }
+    h1{
+      margin:0;
+      font-size:46px;
+      line-height:1.18;
+      letter-spacing:-0.02em;
+    }
+    .accent{color:#8ee6ff}
+    .hero-desc{
+      margin:16px 0 0;
+      color:#b8c7e3;
+      font-size:15px;
+      line-height:1.8;
+      max-width:760px;
+    }
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:28px;
+    }
+    .stat-card,.summary-card,.raid-card,.calendar-panel{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.05);
+      backdrop-filter:blur(10px);
+    }
+    .stat-card{
+      border-radius:24px;
+      padding:18px;
+    }
+    .stat-label{
+      font-size:12px;
+      color:#8ca1c7;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+    }
+    .stat-value{
+      margin-top:10px;
+      font-size:29px;
+      font-weight:800;
+    }
+    .stat-sub{
+      margin-top:8px;
+      color:#c5d3ea;
+      font-size:13px;
+    }
+    .summary-card{
+      border-radius:28px;
+      padding:22px;
+    }
+    .summary-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .live{
+      padding:9px 14px;
+      border-radius:999px;
+      background:rgba(116,233,255,.14);
+      color:#b0f2ff;
+      font-size:12px;
+      font-weight:700;
+    }
+    .summary-title{margin:0;font-size:28px}
+    .summary-sub{margin:6px 0 0;color:#a2badc;font-size:14px}
+    .event-list{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+    .event-item{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(10,18,36,.75);
+      border-radius:20px;
+      padding:16px;
+    }
+    .event-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
+    .event-title{font-size:18px;font-weight:700}
+    .event-time{margin-top:4px;font-size:13px;color:#9defff}
+    .event-tag{
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(133,101,255,.16);
+      color:#d8ceff;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .event-desc{margin:10px 0 0;color:#b6c5de;font-size:14px;line-height:1.7}
+    .main-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:22px;
+      margin-top:22px;
+    }
+    .section-box{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:30px;
+      background:rgba(10,18,36,.8);
+      box-shadow:0 18px 44px rgba(0,0,0,.22);
+      padding:24px;
+    }
+    .section-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .section-label{
+      font-size:13px;
+      color:#9defff;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .section-title{margin:0;font-size:31px}
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:#b8c7df;
+      font-size:13px;
+    }
+    .raid-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    .raid-card{
+      border-radius:26px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(20,30,56,.98), rgba(10,16,28,.98));
+    }
+    .raid-thumb{
+      height:146px;
+      background:linear-gradient(135deg, rgba(71,217,255,.28), rgba(123,92,255,.20), rgba(255,90,154,.18));
+    }
+    .raid-body{padding:16px}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(71,217,255,.10);
+      color:#a8ecff;
+      font-size:12px;
+      font-weight:700;
+    }
+    .raid-name{margin:12px 0 4px;font-size:25px;font-weight:800}
+    .raid-period{font-size:13px;color:#8ea7c9}
+    .raid-stats{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .mini-stat{
+      padding:12px;
+      border-radius:18px;
+      background:rgba(255,255,255,.05);
+    }
+    .mini-stat .label{font-size:11px;color:#879bc0}
+    .mini-stat .value{margin-top:6px;font-size:16px;font-weight:700}
+    .calendar-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:18px;
+    }
+    .calendar-actions{display:flex;gap:8px}
+    .calendar-btn{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.05);
+      color:#d5e1f4;
+      border-radius:16px;
+      padding:10px 14px;
+      font-size:13px;
+    }
+    .weekday-row,.calendar-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:8px;
+    }
+    .weekday-row{
+      margin-bottom:8px;
+      color:#879bc0;
+      font-size:13px;
+      text-align:center;
+    }
+    .weekday-row div{padding:8px 0}
+    .day-cell{
+      min-height:98px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      padding:10px;
+    }
+    .day-cell.empty{
+      background:transparent;
+      border-color:transparent;
+    }
+    .day-cell.today{
+      background:rgba(54,209,220,.10);
+      border-color:rgba(132,239,255,.5);
+    }
+    .day-num{
+      font-size:14px;
+      font-weight:700;
+    }
+    .tags{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+    .small-tag{
+      display:inline-block;
+      width:fit-content;
+      max-width:100%;
+      padding:5px 8px;
+      border-radius:10px;
+      font-size:11px;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+    }
+    .small-tag.raid{background:rgba(129,90,255,.18);color:#dbceff}
+    .small-tag.event{background:rgba(54,209,220,.14);color:#a6f2ff}
+    @media (max-width: 1180px){
+      .hero-inner,.main-grid{grid-template-columns:1fr}
+      .raid-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 760px){
+      .wrap{padding:18px 14px 30px}
+      .hero-inner,.section-box{padding:18px}
+      h1{font-size:32px}
+      .hero-stats,.raid-grid{grid-template-columns:1fr}
+      .section-title{font-size:24px}
+      .calendar-grid{gap:6px}
+      .day-cell{min-height:84px;padding:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="wrap">
+      <section class="hero">
+        <div class="hero-inner">
+          <div>
+            <div class="eyebrow">Pokémon GO Global Schedule</div>
+            <h1>한눈에 보는 <span class="accent">포켓몬고 일정 메인</span></h1>
+            <p class="hero-desc">
+              이번 주 레이드 보스, 진행 중 이벤트, 월간 캘린더까지 메인 한 화면에서 확인할 수 있는 앱형 첫 화면입니다.
+              실제 서비스용으로 상단 요약 + 하단 캘린더 구조로 설계했습니다.
+            </p>
+
+            <div class="hero-stats">
+              <div class="stat-card">
+                <div class="stat-label">이번 주 보스</div>
+                <div class="stat-value">3종</div>
+                <div class="stat-sub">전설 / 메가 레이드 진행</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">이벤트</div>
+                <div class="stat-value">3건</div>
+                <div class="stat-sub">주간 핵심 이벤트 요약</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">선택 날짜</div>
+                <div class="stat-value">03.09</div>
+                <div class="stat-sub">커뮤니티 데이 진행</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-top">
+              <div>
+                <h2 class="summary-title">오늘의 포인트</h2>
+                <p class="summary-sub">레이드 + 이벤트 요약</p>
+              </div>
+              <div class="live">LIVE</div>
+            </div>
+
+            <div class="event-list">
+              <div class="event-item">
+                <div class="event-row">
+                  <div>
+                    <div class="event-title">커뮤니티 데이</div>
+                    <div class="event-time">03.09 14:00 - 17:00</div>
+                  </div>
+                  <div class="event-tag">Event</div>
+                </div>
+                <p class="event-desc">특정 포켓몬 대량 출현 + 특별 기술</p>
+              </div>
+
+              <div class="event-item">
+                <div class="event-row">
+                  <div>
+                    <div class="event-title">레이드 아워</div>
+                    <div class="event-time">03.11 18:00 - 19:00</div>
+                  </div>
+                  <div class="event-tag">Event</div>
+                </div>
+                <p class="event-desc">이번 주 전설 레이드 집중 출현</p>
+              </div>
+
+              <div class="event-item">
+                <div class="event-row">
+                  <div>
+                    <div class="event-title">스포트라이트 아워</div>
+                    <div class="event-time">03.17 18:00 - 19:00</div>
+                  </div>
+                  <div class="event-tag">Event</div>
+                </div>
+                <p class="event-desc">특정 포켓몬 + 추가 보너스 진행</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="main-grid">
+        <div class="section-box">
+          <div class="section-top">
+            <div>
+              <div class="section-label">Weekly Raid Boss</div>
+              <h2 class="section-title">이번 주 레이드 보스</h2>
+            </div>
+            <div class="pill">03.01 - 03.21 기준</div>
+          </div>
+
+          <div class="raid-grid">
+            <article class="raid-card">
+              <div class="raid-thumb"></div>
+              <div class="raid-body">
+                <div class="badge">전설 레이드</div>
+                <div class="raid-name">뮤츠</div>
+                <div class="raid-period">기간 3.01 - 3.07</div>
+                <div class="raid-stats">
+                  <div class="mini-stat"><div class="label">일반 CP</div><div class="value">54,148</div></div>
+                  <div class="mini-stat"><div class="label">부스트 CP</div><div class="value">67,685</div></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="raid-card">
+              <div class="raid-thumb"></div>
+              <div class="raid-body">
+                <div class="badge">메가 / 전설</div>
+                <div class="raid-name">레쿠쟈</div>
+                <div class="raid-period">기간 3.08 - 3.14</div>
+                <div class="raid-stats">
+                  <div class="mini-stat"><div class="label">일반 CP</div><div class="value">49,808</div></div>
+                  <div class="mini-stat"><div class="label">부스트 CP</div><div class="value">62,260</div></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="raid-card">
+              <div class="raid-thumb"></div>
+              <div class="raid-body">
+                <div class="badge">전설 레이드</div>
+                <div class="raid-name">가이오가</div>
+                <div class="raid-period">기간 3.15 - 3.21</div>
+                <div class="raid-stats">
+                  <div class="mini-stat"><div class="label">일반 CP</div><div class="value">54,411</div></div>
+                  <div class="mini-stat"><div class="label">부스트 CP</div><div class="value">68,014</div></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="section-box calendar-panel">
+          <div class="calendar-top">
+            <div>
+              <div class="section-label">Monthly Calendar</div>
+              <h2 class="section-title">2026년 3월 일정표</h2>
+            </div>
+            <div class="calendar-actions">
+              <button class="calendar-btn">이전</button>
+              <button class="calendar-btn">다음</button>
+            </div>
+          </div>
+
+          <div class="weekday-row">
+            <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+          </div>
+
+          <div class="calendar-grid">
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell"><div class="day-num">1</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">2</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+
+            <div class="day-cell"><div class="day-num">3</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">4</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">5</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">6</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">7</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">8</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell today"><div class="day-num">9</div><div class="tags"><span class="small-tag raid">레이드</span><span class="small-tag event">이벤트</span></div></div>
+
+            <div class="day-cell"><div class="day-num">10</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">11</div><div class="tags"><span class="small-tag raid">레이드</span><span class="small-tag event">이벤트</span></div></div>
+            <div class="day-cell"><div class="day-num">12</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">13</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">14</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">15</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">16</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+
+            <div class="day-cell"><div class="day-num">17</div><div class="tags"><span class="small-tag raid">레이드</span><span class="small-tag event">이벤트</span></div></div>
+            <div class="day-cell"><div class="day-num">18</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">19</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">20</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">21</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+            <div class="day-cell"><div class="day-num">22</div></div>
+            <div class="day-cell"><div class="day-num">23</div><div class="tags"><span class="small-tag event">이벤트</span></div></div>
+
+            <div class="day-cell"><div class="day-num">24</div></div>
+            <div class="day-cell"><div class="day-num">25</div></div>
+            <div class="day-cell"><div class="day-num">26</div></div>
+            <div class="day-cell"><div class="day-num">27</div></div>
+            <div class="day-cell"><div class="day-num">28</div></div>
+            <div class="day-cell"><div class="day-num">29</div></div>
+            <div class="day-cell"><div class="day-num">30</div></div>
+
+            <div class="day-cell"><div class="day-num">31</div></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+            <div class="day-cell empty"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
 </html>
