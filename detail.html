@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Raid Detail</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:#eef3f8;
+    color:#243147;
+  }
+
+  :root{
+    --bg:#f7f9fc;
+    --card:#ffffff;
+    --line:#d8e2ef;
+    --muted:#7b88a1;
+
+    --blue:#3567d7;
+    --blue-bg:#dfe8f8;
+
+    --purple:#7c58e9;
+    --purple-bg:#ece2fa;
+
+    --yellow:#8a6a00;
+    --yellow-bg:#f7e9be;
+
+    --green:#698814;
+    --green-bg:#e4edc8;
+
+    --pink:#d85b85;
+    --pink-bg:#f8dfe7;
+  }
+
+  .wrap{
+    max-width:980px;
+    margin:24px auto;
+    padding:0 14px 34px;
+  }
+
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:46px;
+    padding:0 18px;
+    border-radius:999px;
+    background:#f8fbff;
+    border:1px solid var(--line);
+    color:#31435d;
+    text-decoration:none;
+    font-weight:900;
+  }
+
+  .page{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:28px;
+    overflow:hidden;
+  }
+
+  .page-head{
+    padding:28px 28px 20px;
+    border-bottom:1px solid var(--line);
+    background:#f8fbff;
+  }
+
+  .title{
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:-0.3px;
+  }
+
+  .sub{
+    margin-top:8px;
+    font-size:14px;
+    color:var(--muted);
+    font-weight:700;
+  }
+
+  .page-body{
+    padding:20px;
+  }
+
+  .detail-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .detail-item{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:16px;
+    border:1.5px solid var(--line);
+    border-radius:22px;
+    background:var(--card);
+  }
+
+  .detail-thumb{
+    width:72px;
+    height:72px;
+    border-radius:18px;
+    background:#f3f6fb;
+    border:1px solid var(--line);
+    object-fit:contain;
+    padding:6px;
+    flex-shrink:0;
+  }
+
+  .detail-content{
+    flex:1;
+    min-width:0;
+  }
+
+  .detail-name{
+    font-size:20px;
+    font-weight:900;
+    line-height:1.2;
+  }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:900;
+    line-height:1;
+    margin-top:10px;
+  }
+  .chip.blue{background:var(--blue-bg);color:var(--blue)}
+  .chip.purple{background:var(--purple-bg);color:var(--purple)}
+  .chip.yellow{background:var(--yellow-bg);color:var(--yellow)}
+  .chip.green{background:var(--green-bg);color:var(--green)}
+  .chip.pink{background:var(--pink-bg);color:var(--pink)}
+
+  .detail-time{
+    margin-top:10px;
+    font-size:15px;
+    font-weight:900;
+    color:#4e627f;
+  }
+
+  .detail-period{
+    margin-top:6px;
+    font-size:13px;
+    color:#7a8aa3;
+    font-weight:700;
+  }
+
+  .note{
+    margin-top:18px;
+    padding:16px 18px;
+    border-radius:18px;
+    background:#fbfdff;
+    border:1px dashed var(--line);
+    color:#70829f;
+    font-size:13px;
+    font-weight:700;
+  }
+
+  .empty-box{
+    border:1.5px dashed var(--line);
+    background:#fbfdff;
+    border-radius:20px;
+    padding:26px;
+    text-align:center;
+    color:#7b88a1;
+    font-weight:800;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a href="./index.html" class="back-btn">← 캘린더로 돌아가기</a>
+  </div>
+
+  <section class="page">
+    <div class="page-head">
+      <div class="title" id="pageTitle">상세 일정</div>
+      <div class="sub">해당 날짜의 레이드 일정이 자동으로 표시됩니다.</div>
+    </div>
+    <div class="page-body">
+      <div class="detail-list" id="detailList"></div>
+      <div class="note">시간이 없는 포켓몬은 기본적으로 06:00 AM ~ 10:00 PM 으로 표시됩니다.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const DEFAULT_START = '06:00 AM';
+  const DEFAULT_END = '10:00 PM';
+
+  const raidData = [
+    {
+      name:'레지드래고',
+      type:'blue',
+      image:'./images/regidrago.png',
+      startDate:'2026-04-01',
+      endDate:'2026-04-07'
+    },
+    {
+      name:'그림자 라티오스',
+      type:'pink',
+      image:'./images/latios-shadow.png',
+      startDate:'2026-04-01',
+      endDate:'2026-04-06'
+    },
+    {
+      name:'패션 레이드 데이',
+      type:'yellow',
+      image:'./images/event-fashion.png',
+      startDate:'2026-04-04',
+      endDate:'2026-04-04',
+      startTime:'02:00 PM',
+      endTime:'05:00 PM'
+    },
+    {
+      name:'가이오가',
+      type:'blue',
+      image:'./images/kyogre.png',
+      startDate:'2026-04-08',
+      endDate:'2026-04-14'
+    },
+    {
+      name:'메가프테라',
+      type:'purple',
+      image:'./images/aerodactyl-mega.png',
+      startDate:'2026-04-08',
+      endDate:'2026-04-13'
+    },
+    {
+      name:'그란돈',
+      type:'blue',
+      image:'./images/groudon.png',
+      startDate:'2026-04-15',
+      endDate:'2026-04-21'
+    },
+    {
+      name:'메가후딘',
+      type:'purple',
+      image:'./images/alakazam-mega.png',
+      startDate:'2026-04-15',
+      endDate:'2026-04-19',
+      startTime:'11:00 AM',
+      endTime:'08:00 PM'
+    },
+    {
+      name:'카푸꼬꼬꼭',
+      type:'blue',
+      image:'./images/tapu-koko.png',
+      startDate:'2026-04-22',
+      endDate:'2026-04-28'
+    },
+    {
+      name:'메가샤크니아',
+      type:'purple',
+      image:'./images/sharpedo-mega.png',
+      startDate:'2026-04-22',
+      endDate:'2026-04-27'
+    },
+    {
+      name:'카푸나비나',
+      type:'blue',
+      image:'./images/tapu-lele.png',
+      startDate:'2026-04-29',
+      endDate:'2026-04-30'
+    },
+    {
+      name:'메가다크펫',
+      type:'purple',
+      image:'./images/banette-mega.png',
+      startDate:'2026-04-29',
+      endDate:'2026-04-30'
+    }
+  ];
+
+  function pad(n){
+    return String(n).padStart(2,'0');
+  }
+
+  function parseDate(str){
+    const [y,m,d] = str.split('-').map(Number);
+    return new Date(y, m - 1, d, 0, 0, 0, 0);
+  }
+
+  function formatDateKey(date){
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
+
+  function formatDateKor(date){
+    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  }
+
+  function getTimeRange(item){
+    return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+  }
+
+  function isDateInRange(targetDate, startDate, endDate){
+    const t = parseDate(formatDateKey(targetDate)).getTime();
+    const s = parseDate(startDate).getTime();
+    const e = parseDate(endDate).getTime();
+    return t >= s && t <= e;
+  }
+
+  function getRaidsForDate(date){
+    return raidData.filter(item => isDateInRange(date, item.startDate, item.endDate));
+  }
+
+  function getQueryDate(){
+    const params = new URLSearchParams(location.search);
+    return params.get('date');
+  }
+
+  function renderPage(){
+    const dateStr = getQueryDate();
+    const title = document.getElementById('pageTitle');
+    const list = document.getElementById('detailList');
+
+    if(!dateStr){
+      title.textContent = '날짜 정보 없음';
+      list.innerHTML = `<div class="empty-box">잘못된 접근입니다. 날짜 파라미터가 없습니다.</div>`;
+      return;
+    }
+
+    const selectedDate = parseDate(dateStr);
+    title.textContent = `${formatDateKor(selectedDate)} 상세 일정`;
+
+    const items = getRaidsForDate(selectedDate);
+
+    if(!items.length){
+      list.innerHTML = `<div class="empty-box">해당 날짜에는 등록된 레이드 일정이 없습니다.</div>`;
+      return;
+    }
+
+    list.innerHTML = items.map(item => `
+      <div class="detail-item">
+        <img class="detail-thumb" src="${item.image}" alt="${item.name}">
+        <div class="detail-content">
+          <div class="detail-name">${item.name}</div>
+          <div class="chip ${item.type || 'blue'}">${item.type || 'raid'}</div>
+          <div class="detail-time">${getTimeRange(item)}</div>
+          <div class="detail-period">${item.startDate} ~ ${item.endDate}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderPage();
+</script>
+</body>
+</html>
