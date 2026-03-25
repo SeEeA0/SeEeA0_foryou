@@ -3,288 +3,340 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>포켓몬고 일정 메인</title>
+  <title>4월 레이드 일정</title>
   <style>
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
       font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-      background:#08111f;
-      color:#fff;
+      background:#f4f6fb;
+      color:#222;
     }
     .page{
       min-height:100vh;
-      background:
-        radial-gradient(circle at top left, rgba(61,191,255,.16), transparent 28%),
-        radial-gradient(circle at top right, rgba(129,90,255,.14), transparent 24%),
-        linear-gradient(180deg,#08111f 0%,#0d1830 100%);
+      background:linear-gradient(180deg,#f7f8fc 0%,#eef2f8 100%);
     }
     .wrap{
-      max-width:1380px;
+      max-width:1400px;
       margin:0 auto;
-      padding:28px 18px 42px;
+      padding:26px 18px 40px;
     }
     .hero{
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:32px;
-      background:linear-gradient(135deg, rgba(15,23,42,.94), rgba(9,15,28,.94));
-      box-shadow:0 20px 50px rgba(0,0,0,.28);
-      overflow:hidden;
-    }
-    .hero-inner{
-      display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:24px;
-      padding:34px;
+      border-radius:30px;
+      border:1px solid #dde4ef;
+      background:linear-gradient(135deg,#ffffff 0%,#f7f9fd 100%);
+      box-shadow:0 16px 40px rgba(34,52,84,.08);
+      padding:28px;
     }
     .eyebrow{
       display:inline-flex;
+      align-items:center;
+      gap:8px;
       padding:8px 14px;
       border-radius:999px;
-      background:rgba(54,209,220,.12);
-      border:1px solid rgba(54,209,220,.24);
-      color:#a6f2ff;
+      background:#edf4ff;
+      color:#2f6fe4;
       font-size:13px;
-      font-weight:700;
-      margin-bottom:16px;
+      font-weight:800;
+      border:1px solid #d9e7ff;
     }
     h1{
-      margin:0;
-      font-size:46px;
-      line-height:1.18;
-      letter-spacing:-0.02em;
-    }
-    .accent{color:#8ee6ff}
-    .hero-desc{
       margin:16px 0 0;
-      color:#b8c7e3;
+      font-size:42px;
+      line-height:1.18;
+      letter-spacing:-.02em;
+      color:#1e2634;
+    }
+    .hero-sub{
+      margin:14px 0 0;
+      max-width:960px;
+      color:#66758f;
       font-size:15px;
       line-height:1.8;
-      max-width:760px;
     }
-    .hero-stats{
+    .stat-grid{
+      margin-top:24px;
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+      grid-template-columns:repeat(4,1fr);
       gap:14px;
-      margin-top:28px;
-    }
-    .stat-card,.summary-card,.raid-card,.calendar-panel{
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.05);
-      backdrop-filter:blur(10px);
     }
     .stat-card{
-      border-radius:24px;
+      border-radius:22px;
+      border:1px solid #e4ebf5;
+      background:#fff;
       padding:18px;
     }
     .stat-label{
+      color:#7b8aa5;
       font-size:12px;
-      color:#8ca1c7;
       text-transform:uppercase;
       letter-spacing:.16em;
     }
     .stat-value{
       margin-top:10px;
-      font-size:29px;
+      font-size:28px;
       font-weight:800;
+      color:#1f2838;
     }
     .stat-sub{
       margin-top:8px;
-      color:#c5d3ea;
+      color:#75829b;
       font-size:13px;
+      line-height:1.6;
     }
-    .summary-card{
-      border-radius:28px;
-      padding:22px;
-    }
-    .summary-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
-    }
-    .live{
-      padding:9px 14px;
-      border-radius:999px;
-      background:rgba(116,233,255,.14);
-      color:#b0f2ff;
-      font-size:12px;
-      font-weight:700;
-    }
-    .summary-title{margin:0;font-size:28px}
-    .summary-sub{margin:6px 0 0;color:#a2badc;font-size:14px}
-    .event-list{margin-top:18px;display:flex;flex-direction:column;gap:12px}
-    .event-item{
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(10,18,36,.75);
-      border-radius:20px;
-      padding:16px;
-    }
-    .event-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-    }
-    .event-title{font-size:18px;font-weight:700}
-    .event-time{margin-top:4px;font-size:13px;color:#9defff}
-    .event-tag{
-      padding:7px 12px;
-      border-radius:999px;
-      background:rgba(133,101,255,.16);
-      color:#d8ceff;
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .event-desc{margin:10px 0 0;color:#b6c5de;font-size:14px;line-height:1.7}
-    .main-grid{
-      display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:22px;
+    .section{
       margin-top:22px;
+      border-radius:28px;
+      border:1px solid #dde4ef;
+      background:#fff;
+      box-shadow:0 14px 34px rgba(34,52,84,.07);
+      overflow:hidden;
     }
-    .section-box{
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:30px;
-      background:rgba(10,18,36,.8);
-      box-shadow:0 18px 44px rgba(0,0,0,.22);
-      padding:24px;
-    }
-    .section-top{
+    .section-head{
       display:flex;
       justify-content:space-between;
-      align-items:center;
+      align-items:flex-start;
       gap:16px;
-      margin-bottom:18px;
+      padding:22px 24px;
+      border-bottom:1px solid #e7edf6;
     }
     .section-label{
       font-size:13px;
-      color:#9defff;
-      font-weight:700;
+      font-weight:800;
+      color:#5c6f92;
       margin-bottom:6px;
     }
-    .section-title{margin:0;font-size:31px}
+    .section-title{
+      margin:0;
+      font-size:32px;
+      line-height:1.2;
+      color:#202938;
+    }
+    .section-desc{
+      margin:8px 0 0;
+      color:#6f7d95;
+      font-size:14px;
+      line-height:1.7;
+    }
+    .date-box{
+      min-width:290px;
+      border-radius:22px;
+      padding:16px 18px;
+      background:#f7f9fc;
+      border:1px solid #e4ebf5;
+      text-align:right;
+    }
+    .date-box .label{
+      color:#7b8aa5;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-weight:800;
+    }
+    .date-box .value{
+      margin-top:6px;
+      color:#202938;
+      font-size:15px;
+      font-weight:800;
+    }
+    .body{
+      padding:22px 24px 26px;
+    }
+    .pill-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
     .pill{
       padding:10px 14px;
       border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      color:#b8c7df;
+      border:1px solid #e0e7f2;
+      background:#f6f8fc;
+      color:#53647f;
       font-size:13px;
+      font-weight:700;
     }
+    .pill.active{background:#edf4ff;color:#2f6fe4;border-color:#d7e6ff}
+    .group{
+      margin-top:18px;
+      border-radius:24px;
+      border:1px solid #e4ebf5;
+      overflow:hidden;
+      background:#fcfdff;
+    }
+    .group-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:16px 18px;
+      font-size:18px;
+      font-weight:800;
+      color:#2a3342;
+    }
+    .group-head.five{background:linear-gradient(90deg,#eef2f8 0%,#e8edf6 100%);border-top:4px solid #273a63}
+    .group-head.mega{background:linear-gradient(90deg,#f1e7d4 0%,#e7d4ef 45%,#d0dcff 72%,#c9ebc9 100%);border-top:4px solid #c4a76f}
+    .group-head.shadow{background:linear-gradient(90deg,#f6f1f3 0%,#f3eef6 100%);border-top:4px solid #d76b84}
+    .group-title{display:flex;align-items:center;gap:10px}
     .raid-grid{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:16px;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      padding:16px;
     }
     .raid-card{
-      border-radius:26px;
+      border-radius:22px;
+      border:1px solid #e1e7f1;
+      background:#fff;
+      box-shadow:0 8px 18px rgba(26,42,70,.05);
       overflow:hidden;
-      background:linear-gradient(180deg, rgba(20,30,56,.98), rgba(10,16,28,.98));
     }
-    .raid-thumb{
-      height:146px;
-      background:linear-gradient(135deg, rgba(71,217,255,.28), rgba(123,92,255,.20), rgba(255,90,154,.18));
-    }
-    .raid-body{padding:16px}
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      padding:7px 12px;
-      border-radius:999px;
-      background:rgba(71,217,255,.10);
-      color:#a8ecff;
-      font-size:12px;
-      font-weight:700;
-    }
-    .raid-name{margin:12px 0 4px;font-size:25px;font-weight:800}
-    .raid-period{font-size:13px;color:#8ea7c9}
-    .raid-stats{
-      margin-top:14px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-    .mini-stat{
-      padding:12px;
-      border-radius:18px;
-      background:rgba(255,255,255,.05);
-    }
-    .mini-stat .label{font-size:11px;color:#879bc0}
-    .mini-stat .value{margin-top:6px;font-size:16px;font-weight:700}
-    .calendar-top{
+    .raid-image{
+      height:148px;
+      background:linear-gradient(180deg,#f5f7fb 0%,#eef2f8 100%);
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      gap:14px;
-      margin-bottom:18px;
-    }
-    .calendar-actions{display:flex;gap:8px}
-    .calendar-btn{
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.05);
-      color:#d5e1f4;
-      border-radius:16px;
-      padding:10px 14px;
-      font-size:13px;
-    }
-    .weekday-row,.calendar-grid{
-      display:grid;
-      grid-template-columns:repeat(7,1fr);
-      gap:8px;
-    }
-    .weekday-row{
-      margin-bottom:8px;
-      color:#879bc0;
-      font-size:13px;
-      text-align:center;
-    }
-    .weekday-row div{padding:8px 0}
-    .day-cell{
-      min-height:98px;
-      border-radius:20px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.04);
-      padding:10px;
-    }
-    .day-cell.empty{
-      background:transparent;
-      border-color:transparent;
-    }
-    .day-cell.today{
-      background:rgba(54,209,220,.10);
-      border-color:rgba(132,239,255,.5);
-    }
-    .day-num{
+      justify-content:center;
+      color:#9aa8c0;
       font-size:14px;
       font-weight:700;
+      position:relative;
     }
-    .tags{margin-top:8px;display:flex;flex-direction:column;gap:5px}
-    .small-tag{
-      display:inline-block;
-      width:fit-content;
-      max-width:100%;
+    .raid-image.shadow::after{
+      content:'SHADOW';
+      position:absolute;
+      top:10px;
+      right:10px;
+      font-size:10px;
+      font-weight:800;
+      color:#7147b8;
+      background:#efe7ff;
       padding:5px 8px;
-      border-radius:10px;
-      font-size:11px;
-      overflow:hidden;
-      white-space:nowrap;
-      text-overflow:ellipsis;
+      border-radius:999px;
     }
-    .small-tag.raid{background:rgba(129,90,255,.18);color:#dbceff}
-    .small-tag.event{background:rgba(54,209,220,.14);color:#a6f2ff}
-    @media (max-width: 1180px){
-      .hero-inner,.main-grid{grid-template-columns:1fr}
+    .raid-body{
+      padding:16px;
+    }
+    .raid-name{
+      font-size:20px;
+      font-weight:800;
+      color:#242d3d;
+      line-height:1.3;
+    }
+    .badge-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:10px;
+      padding-bottom:12px;
+      border-bottom:1px solid #e7edf6;
+    }
+    .type-badge,.weather-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      min-height:30px;
+      padding:0 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+    }
+    .type-badge{background:#eef3fb;color:#5c6f92}
+    .weather-badge{background:#f1f3f7;color:#5b6577}
+    .cp-main{
+      margin-top:14px;
+      font-size:16px;
+      color:#3f495a;
+      font-weight:700;
+    }
+    .cp-main strong{
+      font-size:26px;
+      color:#232b39;
+      letter-spacing:-.02em;
+    }
+    .cp-boost{
+      margin-top:12px;
+      display:inline-flex;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:999px;
+      background:#f3f5f8;
+      color:#616d80;
+      font-size:15px;
+      font-weight:800;
+    }
+    .weather-row{
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .note-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:18px;
+    }
+    .note-box{
+      border-radius:24px;
+      border:1px solid #e4ebf5;
+      background:#fff;
+      padding:18px;
+    }
+    .note-box h3{
+      margin:0;
+      font-size:20px;
+      color:#263042;
+    }
+    .note-box p{
+      margin:10px 0 0;
+      color:#6f7d95;
+      font-size:14px;
+      line-height:1.8;
+    }
+    .event-highlight{
+      margin-top:16px;
+      padding:18px;
+      border-radius:22px;
+      background:linear-gradient(135deg,#fff7e8 0%,#fff2fb 100%);
+      border:1px solid #f1dfc7;
+    }
+    .event-highlight .tag{
+      display:inline-flex;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#6d4cc9;
+      color:#fff;
+      font-size:12px;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+    .event-highlight h3{
+      margin:0;
+      font-size:24px;
+      color:#252d3d;
+    }
+    .event-highlight p{
+      margin:10px 0 0;
+      color:#6b7891;
+      font-size:14px;
+      line-height:1.8;
+    }
+    @media (max-width:1180px){
+      .stat-grid{grid-template-columns:1fr 1fr}
       .raid-grid{grid-template-columns:1fr 1fr}
+      .note-grid{grid-template-columns:1fr}
+      .section-head{flex-direction:column;align-items:flex-start}
+      .date-box{text-align:left;min-width:auto;width:100%}
     }
-    @media (max-width: 760px){
+    @media (max-width:760px){
       .wrap{padding:18px 14px 30px}
-      .hero-inner,.section-box{padding:18px}
+      .hero,.body,.section-head{padding:18px}
       h1{font-size:32px}
-      .hero-stats,.raid-grid{grid-template-columns:1fr}
-      .section-title{font-size:24px}
-      .calendar-grid{gap:6px}
-      .day-cell{min-height:84px;padding:8px}
+      .section-title{font-size:26px}
+      .stat-grid,.raid-grid{grid-template-columns:1fr}
+      .group-head{padding:14px 16px}
     }
   </style>
 </head>
@@ -292,197 +344,132 @@
   <div class="page">
     <div class="wrap">
       <section class="hero">
-        <div class="hero-inner">
-          <div>
-            <div class="eyebrow">Pokémon GO Global Schedule</div>
-            <h1>한눈에 보는 <span class="accent">포켓몬고 일정 메인</span></h1>
-            <p class="hero-desc">
-              이번 주 레이드 보스, 진행 중 이벤트, 월간 캘린더까지 메인 한 화면에서 확인할 수 있는 앱형 첫 화면입니다.
-              실제 서비스용으로 상단 요약 + 하단 캘린더 구조로 설계했습니다.
-            </p>
-
-            <div class="hero-stats">
-              <div class="stat-card">
-                <div class="stat-label">이번 주 보스</div>
-                <div class="stat-value">3종</div>
-                <div class="stat-sub">전설 / 메가 레이드 진행</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-label">이벤트</div>
-                <div class="stat-value">3건</div>
-                <div class="stat-sub">주간 핵심 이벤트 요약</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-label">선택 날짜</div>
-                <div class="stat-value">03.09</div>
-                <div class="stat-sub">커뮤니티 데이 진행</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-top">
-              <div>
-                <h2 class="summary-title">오늘의 포인트</h2>
-                <p class="summary-sub">레이드 + 이벤트 요약</p>
-              </div>
-              <div class="live">LIVE</div>
-            </div>
-
-            <div class="event-list">
-              <div class="event-item">
-                <div class="event-row">
-                  <div>
-                    <div class="event-title">커뮤니티 데이</div>
-                    <div class="event-time">03.09 14:00 - 17:00</div>
-                  </div>
-                  <div class="event-tag">Event</div>
-                </div>
-                <p class="event-desc">특정 포켓몬 대량 출현 + 특별 기술</p>
-              </div>
-
-              <div class="event-item">
-                <div class="event-row">
-                  <div>
-                    <div class="event-title">레이드 아워</div>
-                    <div class="event-time">03.11 18:00 - 19:00</div>
-                  </div>
-                  <div class="event-tag">Event</div>
-                </div>
-                <p class="event-desc">이번 주 전설 레이드 집중 출현</p>
-              </div>
-
-              <div class="event-item">
-                <div class="event-row">
-                  <div>
-                    <div class="event-title">스포트라이트 아워</div>
-                    <div class="event-time">03.17 18:00 - 19:00</div>
-                  </div>
-                  <div class="event-tag">Event</div>
-                </div>
-                <p class="event-desc">특정 포켓몬 + 추가 보너스 진행</p>
-              </div>
-            </div>
-          </div>
+        <div class="eyebrow">April Raid Schedule</div>
+        <h1>업데이트된 <span style="color:#2f6fe4">4월 레이드 일정 페이지</span></h1>
+        <p class="hero-sub">
+          주신 캡처 기준으로 4월 초 5성 레이드, 메가 레이드, 4월 4일 이벤트, 그리고 3월 4일 ~ 3월 31일 / 4월 1일 ~ 5월 5일 그림자 레이드 흐름까지 한 화면에서 보이도록 다시 정리한 페이지입니다.
+        </p>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">4월 1일 - 10일</div><div class="stat-value">2종</div><div class="stat-sub">레지드래고 · 메가썬더볼트</div></div>
+          <div class="stat-card"><div class="stat-label">단일 이벤트</div><div class="stat-value">04.04</div><div class="stat-sub">에이프릴 4일 이벤트</div></div>
+          <div class="stat-card"><div class="stat-label">그림자 5성</div><div class="stat-value">라티오스</div><div class="stat-sub">4.01 - 5.05 진행</div></div>
+          <div class="stat-card"><div class="stat-label">이전 그림자 기간</div><div class="stat-value">03.04 - 03.31</div><div class="stat-sub">그림자 레이드 시즌 구간</div></div>
         </div>
       </section>
 
-      <section class="main-grid">
-        <div class="section-box">
-          <div class="section-top">
-            <div>
-              <div class="section-label">Weekly Raid Boss</div>
-              <h2 class="section-title">이번 주 레이드 보스</h2>
-            </div>
-            <div class="pill">03.01 - 03.21 기준</div>
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="section-label">APRIL RAID LINEUP</div>
+            <h2 class="section-title">4월 1일 - 4월 10일 레이드 정리</h2>
+            <p class="section-desc">요청하신 텍스트 기준으로 5성 / 메가 / 이벤트 / 그림자 레이드를 다시 정리한 버전입니다.</p>
           </div>
-
-          <div class="raid-grid">
-            <article class="raid-card">
-              <div class="raid-thumb"></div>
-              <div class="raid-body">
-                <div class="badge">전설 레이드</div>
-                <div class="raid-name">뮤츠</div>
-                <div class="raid-period">기간 3.01 - 3.07</div>
-                <div class="raid-stats">
-                  <div class="mini-stat"><div class="label">일반 CP</div><div class="value">54,148</div></div>
-                  <div class="mini-stat"><div class="label">부스트 CP</div><div class="value">67,685</div></div>
-                </div>
-              </div>
-            </article>
-
-            <article class="raid-card">
-              <div class="raid-thumb"></div>
-              <div class="raid-body">
-                <div class="badge">메가 / 전설</div>
-                <div class="raid-name">레쿠쟈</div>
-                <div class="raid-period">기간 3.08 - 3.14</div>
-                <div class="raid-stats">
-                  <div class="mini-stat"><div class="label">일반 CP</div><div class="value">49,808</div></div>
-                  <div class="mini-stat"><div class="label">부스트 CP</div><div class="value">62,260</div></div>
-                </div>
-              </div>
-            </article>
-
-            <article class="raid-card">
-              <div class="raid-thumb"></div>
-              <div class="raid-body">
-                <div class="badge">전설 레이드</div>
-                <div class="raid-name">가이오가</div>
-                <div class="raid-period">기간 3.15 - 3.21</div>
-                <div class="raid-stats">
-                  <div class="mini-stat"><div class="label">일반 CP</div><div class="value">54,411</div></div>
-                  <div class="mini-stat"><div class="label">부스트 CP</div><div class="value">68,014</div></div>
-                </div>
-              </div>
-            </article>
+          <div class="date-box">
+            <div class="label">메인 구간</div>
+            <div class="value">2026.04.01 - 2026.04.10</div>
+            <div class="value" style="margin-top:10px">에이프릴 4일 이벤트: 2026.04.04</div>
           </div>
         </div>
 
-        <div class="section-box calendar-panel">
-          <div class="calendar-top">
-            <div>
-              <div class="section-label">Monthly Calendar</div>
-              <h2 class="section-title">2026년 3월 일정표</h2>
+        <div class="body">
+          <div class="pill-row">
+            <span class="pill active">전체 보기</span>
+            <span class="pill">5성 레이드</span>
+            <span class="pill">메가 레이드</span>
+            <span class="pill">그림자 레이드</span>
+          </div>
+
+          <div class="group">
+            <div class="group-head five">
+              <div class="group-title">5-Star Raids (5성)</div>
             </div>
-            <div class="calendar-actions">
-              <button class="calendar-btn">이전</button>
-              <button class="calendar-btn">다음</button>
+            <div class="raid-grid">
+              <article class="raid-card">
+                <div class="raid-image">레지드래고 이미지 영역</div>
+                <div class="raid-body">
+                  <div class="raid-name">레지드래고</div>
+                  <div class="badge-row">
+                    <span class="type-badge">Dragon</span>
+                  </div>
+                  <div class="cp-main">CP <strong>1614 - 1699</strong></div>
+                  <div class="cp-boost">Windy · CP 2017 - 2124</div>
+                  <div class="weather-row">
+                    <span class="weather-badge">Windy</span>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
 
-          <div class="weekday-row">
-            <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+          <div class="group">
+            <div class="group-head mega">
+              <div class="group-title">Mega Raids (4성)</div>
+            </div>
+            <div class="raid-grid">
+              <article class="raid-card">
+                <div class="raid-image">메가썬더볼트 이미지 영역</div>
+                <div class="raid-body">
+                  <div class="raid-name">메가썬더볼트</div>
+                  <div class="badge-row">
+                    <span class="type-badge">Electric</span>
+                  </div>
+                  <div class="cp-main">CP <strong>1267 - 1337</strong></div>
+                  <div class="cp-boost">Rainy · CP 1585 - 1672</div>
+                  <div class="weather-row">
+                    <span class="weather-badge">Rainy</span>
+                  </div>
+                </div>
+              </article>
+            </div>
           </div>
 
-          <div class="calendar-grid">
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell"><div class="day-num">1</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">2</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
+          <div class="event-highlight">
+            <div class="tag">SPECIAL EVENT</div>
+            <h3>4월 4일 - 4월 4일 에이프릴 4일 이벤트</h3>
+            <p>
+              별도 강조 영역으로 보이게 구성했습니다. 실제 서비스에서는 이 박스 안에 이벤트 설명, 보너스 내용,
+              한정 레이드 출현 여부, 커뮤니티성 안내 문구를 추가하면 좋습니다.
+            </p>
+          </div>
 
-            <div class="day-cell"><div class="day-num">3</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">4</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">5</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">6</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">7</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">8</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell today"><div class="day-num">9</div><div class="tags"><span class="small-tag raid">레이드</span><span class="small-tag event">이벤트</span></div></div>
+          <div class="group">
+            <div class="group-head shadow">
+              <div class="group-title">그림자 레이드</div>
+            </div>
+            <div class="raid-grid">
+              <article class="raid-card">
+                <div class="raid-image shadow">그림자 라티오스 이미지 영역</div>
+                <div class="raid-body">
+                  <div class="raid-name">그림자 라티오스</div>
+                  <div class="badge-row">
+                    <span class="type-badge">Dragon</span>
+                    <span class="type-badge">Psychic</span>
+                  </div>
+                  <div class="cp-main">기간 <strong>4.01 - 5.05</strong></div>
+                  <div class="cp-boost">5-Star Raids</div>
+                  <div class="weather-row">
+                    <span class="weather-badge">Windy</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
 
-            <div class="day-cell"><div class="day-num">10</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">11</div><div class="tags"><span class="small-tag raid">레이드</span><span class="small-tag event">이벤트</span></div></div>
-            <div class="day-cell"><div class="day-num">12</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">13</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">14</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">15</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">16</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-
-            <div class="day-cell"><div class="day-num">17</div><div class="tags"><span class="small-tag raid">레이드</span><span class="small-tag event">이벤트</span></div></div>
-            <div class="day-cell"><div class="day-num">18</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">19</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">20</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">21</div><div class="tags"><span class="small-tag raid">레이드</span></div></div>
-            <div class="day-cell"><div class="day-num">22</div></div>
-            <div class="day-cell"><div class="day-num">23</div><div class="tags"><span class="small-tag event">이벤트</span></div></div>
-
-            <div class="day-cell"><div class="day-num">24</div></div>
-            <div class="day-cell"><div class="day-num">25</div></div>
-            <div class="day-cell"><div class="day-num">26</div></div>
-            <div class="day-cell"><div class="day-num">27</div></div>
-            <div class="day-cell"><div class="day-num">28</div></div>
-            <div class="day-cell"><div class="day-num">29</div></div>
-            <div class="day-cell"><div class="day-num">30</div></div>
-
-            <div class="day-cell"><div class="day-num">31</div></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
-            <div class="day-cell empty"></div>
+          <div class="note-grid">
+            <div class="note-box">
+              <h3>현재 적용한 일정 기준</h3>
+              <p>
+                4월 1일 - 10일: 5성 레이드는 레지드래고, 메가 레이드는 메가썬더볼트 기준으로 반영했습니다.
+                또 4월 4일 하루짜리 에이프릴 4일 이벤트를 별도 강조 영역으로 분리했습니다.
+              </p>
+            </div>
+            <div class="note-box">
+              <h3>그림자 레이드 정리</h3>
+              <p>
+                4월 1일 ~ 5월 5일은 그림자 라티오스 5성 레이드로 분리했고,
+                이전 시즌으로 보이는 3월 4일 ~ 3월 31일 그림자 레이드 구간은 하단 설명용 기준 기간으로 따로 남겼습니다.
+              </p>
+            </div>
           </div>
         </div>
       </section>
