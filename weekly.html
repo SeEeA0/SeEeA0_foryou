@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>주간 일정표</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>주간 일정</title>
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -37,73 +37,13 @@
     --green:#49a66b;
     --green-soft:#e7f5eb;
 
-    --gray:#67768f;
-    --gray-soft:#f2f5fa;
-
     --shadow:0 18px 40px rgba(43,67,110,.08);
   }
 
   .wrap{
-    max-width:1320px;
+    max-width:1600px;
     margin:0 auto;
-    padding:20px 16px 110px;
-  }
-
-  .hero{
-    background:rgba(255,255,255,.82);
-    border:1px solid var(--line);
-    border-radius:30px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    margin-bottom:18px;
-  }
-
-  .hero-head{
-    padding:26px 28px 18px;
-    border-bottom:1px solid #e4edf8;
-    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
-  }
-
-  .hero-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .hero-sub{
-    margin-top:10px;
-    font-size:14px;
-    line-height:1.55;
-    color:var(--muted);
-    font-weight:700;
-  }
-
-  .hero-tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:18px;
-  }
-
-  .hero-tag{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:40px;
-    padding:0 16px;
-    border-radius:999px;
-    background:#f3f7ff;
-    border:1px solid var(--line);
-    color:#58719a;
-    font-size:13px;
-    font-weight:900;
-    white-space:nowrap;
-  }
-
-  .hero-tag.active{
-    background:#eaf2ff;
-    color:#3567d7;
-    border-color:#cfe0f6;
+    padding:20px 0 112px;
   }
 
   .section{
@@ -112,72 +52,74 @@
     border-radius:30px;
     overflow:hidden;
     box-shadow:var(--shadow);
-    margin-bottom:18px;
+    margin:0 16px;
   }
 
   .section-head{
     display:flex;
     justify-content:space-between;
-    align-items:flex-end;
-    gap:18px;
-    padding:24px 26px 18px;
+    align-items:flex-start;
+    gap:16px;
+    padding:24px 28px 18px;
     border-bottom:1px solid #e4edf8;
     background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
   }
 
   .section-title{
-    font-size:26px;
+    font-size:30px;
     font-weight:900;
-    letter-spacing:-.03em;
+    letter-spacing:-.04em;
   }
 
   .section-sub{
-    margin-top:8px;
+    margin-top:10px;
     font-size:14px;
     color:var(--muted);
-    font-weight:700;
-    line-height:1.5;
+    font-weight:800;
+    line-height:1.45;
   }
 
-  .section-body{
-    padding:18px;
+  .week-scroller{
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:18px 18px 22px;
+    -webkit-overflow-scrolling:touch;
+    cursor:grab;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
   }
 
-  .tiny-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:42px;
-    padding:0 14px;
-    border-radius:999px;
-    background:#f1f6ff;
-    border:1px solid var(--line);
-    color:#58719a;
-    font-size:13px;
-    font-weight:900;
-    white-space:nowrap;
+  .week-scroller::-webkit-scrollbar{
+    display:none;
+  }
+
+  .week-scroller.dragging{
+    cursor:grabbing;
+    user-select:none;
   }
 
   .week-grid{
     display:grid;
-    grid-template-columns:repeat(7,minmax(0,1fr));
+    grid-auto-flow:column;
+    grid-auto-columns:minmax(230px, 230px);
     gap:14px;
+    min-width:max-content;
   }
 
   .week-card{
-    min-height:420px;
+    min-height:650px;
     background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:24px;
-    padding:14px;
+    border:2px solid #d9e4f3;
+    border-radius:34px;
+    padding:18px 14px 16px;
     display:flex;
     flex-direction:column;
+    scroll-snap-align:start;
   }
 
   .week-card.today{
-    border-color:#a8c1ff;
-    box-shadow:0 12px 28px rgba(90,124,220,.10);
-    background:linear-gradient(180deg,#ffffff 0%, #f4f8ff 100%);
+    border-color:#9db8ff;
+    box-shadow:0 14px 30px rgba(90,124,220,.12);
   }
 
   .week-top{
@@ -185,35 +127,39 @@
     justify-content:space-between;
     align-items:flex-start;
     gap:10px;
-    margin-bottom:12px;
+    margin-bottom:14px;
+    padding:2px 2px 0;
   }
 
   .week-date{
-    font-size:24px;
+    font-size:38px;
     font-weight:900;
-    letter-spacing:-.03em;
+    line-height:1;
+    letter-spacing:-.05em;
+    color:#20314b;
   }
 
-  .week-date.sun{color:#ef6b7a}
-  .week-date.sat{color:#4b7cf0}
+  .week-date.sun{color:#ec6d7c}
+  .week-date.sat{color:#4d7cf0}
 
   .week-dayname{
-    margin-top:4px;
-    font-size:13px;
+    margin-top:10px;
+    font-size:15px;
     color:#7f8faa;
-    font-weight:800;
+    font-weight:900;
+    letter-spacing:-.02em;
   }
 
   .today-pill{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:28px;
-    padding:0 10px;
+    min-height:42px;
+    padding:0 18px;
     border-radius:999px;
-    background:#e9f1ff;
-    color:#4e7deb;
-    font-size:11px;
+    background:#eaf1ff;
+    color:#4f7ded;
+    font-size:16px;
     font-weight:900;
     white-space:nowrap;
   }
@@ -221,28 +167,30 @@
   .week-items{
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:14px;
+    flex:1;
   }
 
   .timeline-item{
     background:#fff;
-    border:1px solid #e3ebf7;
-    border-radius:18px;
-    padding:11px;
+    border:1.5px solid #dfe8f5;
+    border-radius:28px;
+    padding:18px 14px 16px;
+    min-height:162px;
   }
 
   .timeline-top{
     display:flex;
-    align-items:center;
-    gap:8px;
+    align-items:flex-start;
+    gap:12px;
   }
 
   .timeline-thumb{
-    width:34px;
-    height:34px;
-    border-radius:12px;
+    width:58px;
+    height:58px;
+    border-radius:18px;
     background:#f3f7ff;
-    border:1px solid #dde7f5;
+    border:1px solid #dce6f4;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -251,46 +199,50 @@
   }
 
   .timeline-thumb img{
-    width:24px;
-    height:24px;
+    width:38px;
+    height:38px;
     object-fit:contain;
   }
 
   .timeline-name{
     min-width:0;
     flex:1;
-    font-size:13px;
+    font-size:18px;
     font-weight:900;
-    line-height:1.25;
+    line-height:1.2;
+    letter-spacing:-.03em;
+    color:#20314b;
     word-break:keep-all;
   }
 
   .timeline-time{
-    margin-top:8px;
-    font-size:12px;
+    margin-top:14px;
+    font-size:16px;
     color:#6f809a;
-    font-weight:800;
-    line-height:1.4;
+    font-weight:900;
+    line-height:1.35;
+    letter-spacing:-.02em;
   }
 
   .timeline-meta{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
-    margin-top:8px;
+    margin-top:14px;
   }
 
   .chip{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:30px;
-    padding:0 12px;
+    min-height:40px;
+    padding:0 16px;
     border-radius:999px;
-    font-size:11px;
+    font-size:14px;
     font-weight:900;
     line-height:1;
     white-space:nowrap;
+    letter-spacing:-.02em;
   }
 
   .chip.blue{background:var(--blue-soft);color:var(--blue)}
@@ -298,70 +250,16 @@
   .chip.pink{background:var(--pink-soft);color:var(--pink)}
   .chip.yellow{background:var(--yellow-soft);color:var(--yellow)}
   .chip.green{background:var(--green-soft);color:var(--green)}
-  .chip.gray{background:var(--gray-soft);color:var(--gray)}
 
   .empty-box{
     border:1px dashed #d9e4f2;
     background:#fbfdff;
-    border-radius:18px;
-    padding:18px 12px;
+    border-radius:22px;
+    padding:24px 12px;
     text-align:center;
     color:#97a5ba;
-    font-size:13px;
+    font-size:14px;
     font-weight:800;
-  }
-
-  .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:14px;
-  }
-
-  .quick-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:22px;
-    padding:14px 16px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    text-decoration:none;
-    color:inherit;
-    transition:.18s ease;
-    min-height:96px;
-  }
-
-  .quick-card:hover{
-    transform:translateY(-2px);
-    border-color:#bfd1ea;
-    box-shadow:0 12px 28px rgba(62,85,131,.08);
-  }
-
-  .quick-icon{
-    width:52px;
-    height:52px;
-    border-radius:16px;
-    background:#f3f7ff;
-    border:1px solid #dce6f4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-    flex-shrink:0;
-  }
-
-  .quick-title{
-    font-size:16px;
-    font-weight:900;
-    letter-spacing:-.02em;
-  }
-
-  .quick-desc{
-    margin-top:5px;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.45;
-    font-weight:700;
   }
 
   .bottom-nav{
@@ -416,42 +314,70 @@
     line-height:1;
   }
 
-  @media (max-width:1180px){
-    .week-grid,
-    .quick-grid{
-      min-width:1100px;
-    }
-
-    .section-body{
-      overflow-x:auto;
-    }
-  }
-
   @media (max-width:768px){
     .wrap{
       padding-bottom:120px;
     }
 
-    .hero-head,
+    .section{
+      border-radius:26px;
+      margin:0 10px;
+    }
+
     .section-head{
-      padding:22px 20px 16px;
-    }
-
-    .section-body{
-      padding:16px;
-    }
-
-    .hero-title{
-      font-size:26px;
+      padding:20px 20px 14px;
     }
 
     .section-title{
-      font-size:22px;
+      font-size:24px;
     }
 
-    .section-head{
-      flex-direction:column;
-      align-items:flex-start;
+    .section-sub{
+      font-size:13px;
+    }
+
+    .week-scroller{
+      padding:14px 14px 18px;
+    }
+
+    .week-grid{
+      grid-auto-columns:minmax(210px, 210px);
+    }
+
+    .week-card{
+      min-height:600px;
+      border-radius:30px;
+      padding:16px 12px 14px;
+    }
+
+    .week-date{
+      font-size:32px;
+    }
+
+    .today-pill{
+      min-height:36px;
+      padding:0 14px;
+      font-size:14px;
+    }
+
+    .timeline-item{
+      min-height:152px;
+      border-radius:24px;
+      padding:16px 12px 14px;
+    }
+
+    .timeline-name{
+      font-size:16px;
+    }
+
+    .timeline-time{
+      font-size:15px;
+    }
+
+    .chip{
+      min-height:36px;
+      padding:0 14px;
+      font-size:13px;
     }
   }
 </style>
@@ -459,66 +385,16 @@
 <body>
 <div class="wrap">
 
-  <section class="hero">
-    <div class="hero-head">
-      <div class="hero-title">주간 일정표</div>
-      <div class="hero-sub">
-        오늘부터 7일간의 레이드, 레이드 아워, 이벤트, 커뮤니티 데이, 그림자 일정을 날짜별로 빠르게 확인하는 페이지입니다.
-      </div>
-      <div class="hero-tags">
-        <span class="hero-tag active">오늘부터 7일 자동 반영</span>
-        <span class="hero-tag">시간 기본값 적용</span>
-        <span class="hero-tag">레이드 / 이벤트 통합 표시</span>
-      </div>
-    </div>
-  </section>
-
   <section class="section">
     <div class="section-head">
       <div>
         <div class="section-title">이번 주 일정</div>
-        <div class="section-sub" id="weekRangeText">기준 날짜 범위</div>
+        <div class="section-sub" id="weekRangeText">기준 날짜: 2026.04.01 - 2026.04.07</div>
       </div>
-      <div class="tiny-badge">7 DAYS</div>
     </div>
 
-    <div class="section-body">
+    <div class="week-scroller" id="weekScroller">
       <div class="week-grid" id="weekGrid"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <div class="section-title">빠른 이동</div>
-      <div class="section-sub">다른 화면으로 바로 이동</div>
-    </div>
-
-    <div class="section-body">
-      <div class="quick-grid">
-        <a href="./index.html" class="quick-card">
-          <div class="quick-icon">🏠</div>
-          <div>
-            <div class="quick-title">메인</div>
-            <div class="quick-desc">전체 허브 메인 화면</div>
-          </div>
-        </a>
-
-        <a href="./raid-now.html" class="quick-card">
-          <div class="quick-icon">⚔️</div>
-          <div>
-            <div class="quick-title">지금 레이드</div>
-            <div class="quick-desc">현재 진행 중인 보스 카드형 보기</div>
-          </div>
-        </a>
-
-        <a href="./monthly.html" class="quick-card">
-          <div class="quick-icon">📆</div>
-          <div>
-            <div class="quick-title">월간 일정</div>
-            <div class="quick-desc">한 달 전체 흐름 확인</div>
-          </div>
-        </a>
-      </div>
     </div>
   </section>
 
@@ -567,9 +443,6 @@
   };
 
   const raidRanges = [
-    { name:'레지에레키', label:'5성 레이드', type:'blue', image:IMG.regieleki, startDate:'2026-03-25', endDate:'2026-03-31' },
-    { name:'메가 헬가', label:'메가 레이드', type:'purple', image:IMG.houndoom, startDate:'2026-03-25', endDate:'2026-03-31' },
-
     { name:'레지드래고', label:'5성 레이드', type:'blue', image:IMG.regidrago, startDate:'2026-04-01', endDate:'2026-04-07' },
     { name:'메가썬더볼트', label:'메가 레이드', type:'purple', image:IMG.manectric, startDate:'2026-04-01', endDate:'2026-04-07' },
 
@@ -587,9 +460,6 @@
   ];
 
   const oneDayEvents = [
-    { name:'레지에레키', label:'레이드 아워', type:'yellow', image:IMG.regieleki, date:'2026-03-25', startTime:'06:00 PM', endTime:'07:00 PM' },
-    { name:'전기 타입 이벤트', label:'이벤트', type:'green', image:IMG.manectric, date:'2026-03-31', startTime:'10:00 AM', endTime:'08:00 PM' },
-
     { name:'레지드래고', label:'레이드 아워', type:'yellow', image:IMG.regidrago, date:'2026-04-01', startTime:'06:00 PM', endTime:'07:00 PM' },
     { name:'패션 레이드 데이', label:'레이드 데이', type:'yellow', image:IMG.pikachu, date:'2026-04-04', startTime:'02:00 PM', endTime:'05:00 PM' },
 
@@ -605,7 +475,6 @@
   ];
 
   const weekendShadow = [
-    { name:'그림자 라티아스', label:'그림자', type:'pink', image:IMG.latias, startDate:'2026-03-29', endDate:'2026-03-31' },
     { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-01', endDate:'2026-04-05' },
     { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-11', endDate:'2026-04-12' },
     { name:'그림자 라티오스', label:'그림자', type:'pink', image:IMG.latios, startDate:'2026-04-18', endDate:'2026-04-19' },
@@ -640,6 +509,27 @@
 
   function getDisplayTime(item){
     return `${item.startTime || DEFAULT_START} ~ ${item.endTime || DEFAULT_END}`;
+  }
+
+  function breakName(name){
+    const custom = {
+      '레지드래고':'레지<br>드래고',
+      '메가썬더볼트':'메가<br>썬더볼트',
+      '그림자 라티오스':'그림자<br>라티오스',
+      '패션 레이드 데이':'패션<br>레이드<br>데이',
+      '가이오가':'가이오가',
+      '메가프테라':'메가<br>프테라',
+      '그란돈':'그란돈',
+      '메가후딘':'메가<br>후딘',
+      '카푸꼬꼬꼭':'카푸<br>꼬꼬꼭',
+      '메가샤크니아':'메가<br>샤크니아',
+      '카푸나비나':'카푸<br>나비나',
+      '메가다크펫':'메가<br>다크펫',
+      '두드리짱':'두드리짱',
+      '지속가능성 위크':'지속가능성<br>위크',
+      '강철의 의지':'강철의<br>의지'
+    };
+    return custom[name] || name;
   }
 
   function getAllItemsForDate(date){
@@ -695,7 +585,7 @@
                       <div class="timeline-thumb">
                         <img src="${item.image}" alt="${item.name}">
                       </div>
-                      <div class="timeline-name">${item.name}</div>
+                      <div class="timeline-name">${breakName(item.name)}</div>
                     </div>
                     <div class="timeline-time">${getDisplayTime(item)}</div>
                     <div class="timeline-meta">
@@ -711,8 +601,41 @@
     }).join('');
   }
 
+  function enableDragScroll(){
+    const scroller = document.getElementById('weekScroller');
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    scroller.addEventListener('mousedown', (e) => {
+      isDown = true;
+      scroller.classList.add('dragging');
+      startX = e.pageX - scroller.offsetLeft;
+      scrollLeft = scroller.scrollLeft;
+    });
+
+    scroller.addEventListener('mouseleave', () => {
+      isDown = false;
+      scroller.classList.remove('dragging');
+    });
+
+    scroller.addEventListener('mouseup', () => {
+      isDown = false;
+      scroller.classList.remove('dragging');
+    });
+
+    scroller.addEventListener('mousemove', (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - scroller.offsetLeft;
+      const walk = (x - startX) * 1.2;
+      scroller.scrollLeft = scrollLeft - walk;
+    });
+  }
+
   renderWeekRangeText();
   renderWeekGrid();
+  enableDragScroll();
 </script>
 </body>
 </html>
