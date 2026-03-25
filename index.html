@@ -137,6 +137,8 @@ export default function PokemonGoScheduleDashboard() {
 
   const weeklyRaid = filteredRaid.filter((item) => getWeekId(item.start) === selectedWeek);
   const weeklyCommunity = communityData.filter((item) => getWeekId(item.date) === selectedWeek);
+  const ongoingRaid = raidData.slice(0, 2);
+  const ongoingEvents = communityData.slice(0, 2);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#f5f7ff,_#eef3ff_35%,_#f9fbff_70%)] p-4 md:p-8 text-slate-800">
@@ -172,11 +174,82 @@ export default function PokemonGoScheduleDashboard() {
           </div>
         </motion.div>
 
-        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          <Card className="overflow-hidden rounded-[28px] border-white/70 bg-white/85 shadow-[0_18px_50px_rgba(90,112,180,0.10)]">
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <Card className="overflow-hidden rounded-[28px] border-white/70 bg-white/90 shadow-[0_18px_50px_rgba(90,112,180,0.10)] lg:col-span-2">
+            <CardContent className="p-5 md:p-6">
+              <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+                <div className="rounded-[26px] bg-[linear-gradient(135deg,#111827_0%,#1e3a8a_45%,#312e81_100%)] p-5 text-white shadow-xl">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.24em] text-blue-200">This Week Raid Boss</div>
+                      <h2 className="mt-2 text-2xl font-bold">이번 주 레이드 보스</h2>
+                    </div>
+                    <Badge className="rounded-full bg-white/12 text-white hover:bg-white/12">핵심 요약</Badge>
+                  </div>
+
+                  <div className="space-y-3">
+                    {ongoingRaid.map((raid) => (
+                      <div key={raid.id} className="grid grid-cols-[84px_1fr] gap-3 rounded-[22px] bg-white/10 p-3 ring-1 ring-white/10">
+                        <img src={raid.image} alt={raid.name} className="h-24 w-full rounded-2xl object-cover" />
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge className="rounded-full bg-violet-400/20 text-violet-100 hover:bg-violet-400/20">{raid.tier}</Badge>
+                            {raid.bossType.map((type) => (
+                              <Badge key={type} variant="secondary" className="rounded-full border-0 bg-white/10 text-white">{type}</Badge>
+                            ))}
+                          </div>
+                          <div className="mt-2 text-xl font-bold">{raid.name}</div>
+                          <div className="mt-1 text-sm text-blue-100">{raid.start} ~ {raid.end}</div>
+                          <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                            <div className="rounded-2xl bg-white/8 p-2.5">
+                              <div className="text-blue-100">기본 CP</div>
+                              <div className="mt-1 font-bold">{raid.cp}</div>
+                            </div>
+                            <div className="rounded-2xl bg-white/8 p-2.5">
+                              <div className="text-blue-100">부스트 CP</div>
+                              <div className="mt-1 font-bold">{raid.boostedCp}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-[26px] border border-slate-100 bg-gradient-to-b from-sky-50 to-white p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.24em] text-sky-500">Live Event</div>
+                      <h2 className="mt-2 text-2xl font-bold text-slate-800">진행 중 이벤트</h2>
+                    </div>
+                    <Badge className="rounded-full bg-sky-100 text-sky-700 hover:bg-sky-100">실사용 추천</Badge>
+                  </div>
+
+                  <div className="space-y-3">
+                    {ongoingEvents.map((event) => (
+                      <div key={event.id} className="flex items-center gap-3 rounded-[22px] border border-slate-100 bg-white p-3 shadow-sm">
+                        <img src={event.image} alt={event.title} className="h-20 w-20 rounded-2xl object-cover" />
+                        <div className="min-w-0 flex-1">
+                          <div className="line-clamp-2 font-semibold text-slate-800">{event.title}</div>
+                          <div className="mt-1 text-sm text-slate-500">{event.date}</div>
+                          <div className="mt-1 text-sm text-sky-600">{event.time}</div>
+                          <div className="mt-1 line-clamp-2 text-sm text-slate-600">{event.bonus}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="overflow-hidden rounded-[28px] border-white/70 bg-white/85 shadow-[0_18px_50px_rgba(90,112,180,0.10)] lg:col-span-2">
             <CardHeader className="border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-sky-50 to-violet-50">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-xl">한달 전체 캘린더</CardTitle>
+                <div>
+                  <CardTitle className="text-xl">월간 캘린더</CardTitle>
+                  <p className="mt-1 text-sm text-slate-500">하단에서 한 달 전체 레이드 / 커뮤니티 일정을 한눈에 확인할 수 있습니다.</p>
+                </div>
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="icon" className="rounded-2xl"><ChevronLeft className="h-4 w-4" /></Button>
                   <Button variant="outline" size="icon" className="rounded-2xl"><ChevronRight className="h-4 w-4" /></Button>
@@ -207,10 +280,7 @@ export default function PokemonGoScheduleDashboard() {
                         <motion.div
                           key={i}
                           whileHover={{ y: -2 }}
-                          className={`min-h-[120px] rounded-2xl border p-2 text-left transition ${{
-                            true: "bg-white",
-                            false: "bg-transparent opacity-0",
-                          }[Boolean(date)]}`}
+                          className={`min-h-[120px] rounded-2xl border p-2 text-left transition ${Boolean(date) ? "bg-white" : "bg-transparent opacity-0"}`}
                         >
                           {date && (
                             <>
@@ -227,7 +297,7 @@ export default function PokemonGoScheduleDashboard() {
                                 {dayRaid.slice(0, 2).map((raid) => (
                                   <div
                                     key={raid.id}
-                                    className="rounded-xl bg-gradient-to-r px-2 py-1.5 text-[11px] font-medium shadow-sm ring-1 ring-inset ring-white/60 ${raid.color}"
+                                    className={`rounded-xl bg-gradient-to-r px-2 py-1.5 text-[11px] font-medium shadow-sm ring-1 ring-inset ring-white/60 ${raid.color}`}
                                   >
                                     <div className="truncate">{raid.name}</div>
                                     <div className="truncate text-slate-500">{raid.tier}</div>
@@ -343,9 +413,8 @@ export default function PokemonGoScheduleDashboard() {
               </Tabs>
             </CardContent>
           </Card>
-        </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3 lg:col-span-2">
           <Card className="rounded-[24px] border-white/70 bg-white/85 shadow-[0_14px_40px_rgba(90,112,180,0.08)]">
             <CardContent className="p-5">
               <div className="mb-3 flex items-center gap-2 text-slate-500"><Swords className="h-4 w-4" /> 필수 노출 정보</div>
