@@ -14,8 +14,6 @@
   }
 
   :root{
-    --bg:#edf3fb;
-    --card:#ffffff;
     --line:#d9e4f3;
     --line-strong:#c7d6ea;
     --text:#1f2f46;
@@ -41,12 +39,13 @@
 
     --shadow:0 20px 48px rgba(43,67,110,.08);
     --shadow-soft:0 12px 30px rgba(43,67,110,.06);
+    --nav-height:84px;
   }
 
   .wrap{
     max-width:1520px;
     margin:0 auto;
-    padding:20px 16px 48px;
+    padding:20px 16px calc(var(--nav-height) + 24px);
   }
 
   .hero{
@@ -131,20 +130,14 @@
     font-weight:900;
   }
 
-  .layout{
-    display:grid;
-    grid-template-columns:1fr 320px;
-    gap:18px;
-    align-items:start;
-  }
-
   .section{
-    background:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.92);
     border:1px solid var(--line);
     border-radius:28px;
     overflow:hidden;
     box-shadow:var(--shadow);
     backdrop-filter:blur(8px);
+    margin-bottom:18px;
   }
 
   .section-head{
@@ -232,6 +225,33 @@
     box-shadow:0 14px 30px rgba(87,102,210,.22);
   }
 
+  .legend-wrap{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-height:54px;
+    padding:0 16px;
+    border-radius:16px;
+    background:#f8fbff;
+    border:1px solid #dfe8f6;
+    font-size:14px;
+    font-weight:900;
+    color:#415676;
+  }
+
+  .legend-dot{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+
   .calendar-head{
     display:grid;
     grid-template-columns:repeat(7,minmax(0,1fr));
@@ -259,7 +279,7 @@
   }
 
   .day-cell{
-    min-height:170px;
+    min-height:180px;
     padding:10px;
     border-radius:20px;
     background:#fff;
@@ -272,7 +292,7 @@
 
   .day-cell.is-outside{
     background:#f9fbfe;
-    opacity:.55;
+    opacity:.5;
   }
 
   .day-cell.is-today{
@@ -342,17 +362,6 @@
     -webkit-box-orient:vertical;
   }
 
-  .month-raid-boost{
-    margin-top:4px;
-    font-size:11px;
-    font-weight:800;
-    opacity:.85;
-    line-height:1.3;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-
   .raid-tier-1{
     background:#e7f5eb;
     color:#2f9f63;
@@ -383,123 +392,6 @@
     color:#67768f;
   }
 
-  .legend{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .legend-item{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:10px 12px;
-    border-radius:14px;
-    background:#f8fbff;
-    border:1px solid #dfe8f6;
-    font-size:12px;
-    font-weight:900;
-    color:#415676;
-  }
-
-  .legend-dot{
-    width:14px;
-    height:14px;
-    border-radius:50%;
-    flex-shrink:0;
-  }
-
-  .summary-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .summary-card{
-    background:#f8fbff;
-    border:1px solid #dfe8f6;
-    border-radius:18px;
-    padding:14px;
-  }
-
-  .summary-label{
-    font-size:11px;
-    color:#7d8ea9;
-    font-weight:900;
-  }
-
-  .summary-value{
-    margin-top:6px;
-    font-size:22px;
-    color:#2f405c;
-    font-weight:900;
-    letter-spacing:-.02em;
-  }
-
-  .summary-desc{
-    margin-top:6px;
-    font-size:12px;
-    color:#7f91ab;
-    font-weight:700;
-    line-height:1.5;
-  }
-
-  .sidebar-stack{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-  }
-
-  .mini-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .mini-raid{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    padding:12px;
-    border-radius:16px;
-    background:#f8fbff;
-    border:1px solid #dfe8f6;
-  }
-
-  .mini-raid-thumb{
-    width:52px;
-    height:52px;
-    border-radius:14px;
-    background:#fff;
-    border:1px solid #dce6f5;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
-  }
-
-  .mini-raid-thumb img{
-    width:40px;
-    height:40px;
-    object-fit:contain;
-  }
-
-  .mini-raid-name{
-    font-size:13px;
-    font-weight:900;
-    color:#32455f;
-    line-height:1.35;
-  }
-
-  .mini-raid-meta{
-    margin-top:4px;
-    font-size:11px;
-    color:#7f91ab;
-    font-weight:800;
-    line-height:1.45;
-  }
-
   .empty-state{
     background:#fbfdff;
     border:1px dashed #dce7f4;
@@ -509,6 +401,58 @@
     color:#8293ad;
     font-size:14px;
     font-weight:800;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    width:min(920px, calc(100% - 24px));
+    z-index:100;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(14px);
+    border:1px solid #dce6f5;
+    box-shadow:0 18px 40px rgba(30,48,88,.14);
+    border-radius:24px;
+    padding:10px;
+  }
+
+  .bottom-nav-list{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .bottom-nav a{
+    min-height:60px;
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    text-decoration:none;
+    color:#6d7f9c;
+    font-size:11px;
+    font-weight:900;
+    transition:.16s ease;
+  }
+
+  .bottom-nav a:hover{
+    background:#f3f7ff;
+    color:#3d5ea8;
+  }
+
+  .bottom-nav a.active{
+    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
+    color:#fff;
+    box-shadow:0 10px 24px rgba(87,102,210,.24);
+  }
+
+  .nav-icon{
+    font-size:18px;
+    line-height:1;
   }
 
   .modal{
@@ -712,15 +656,9 @@
     line-height:1.6;
   }
 
-  @media (max-width:1220px){
-    .layout{
-      grid-template-columns:1fr;
-    }
-  }
-
   @media (max-width:920px){
-    .calendar-grid{
-      gap:8px;
+    .legend-wrap{
+      grid-template-columns:repeat(2,minmax(0,1fr));
     }
 
     .day-cell{
@@ -740,7 +678,7 @@
 
   @media (max-width:768px){
     .wrap{
-      padding:16px 12px 40px;
+      padding:16px 12px calc(var(--nav-height) + 20px);
     }
 
     .hero{
@@ -791,12 +729,32 @@
       font-size:11px;
     }
 
-    .month-raid-boost{
+    .legend-wrap{
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .legend-item{
+      min-height:48px;
+      padding:0 12px;
+      font-size:13px;
+    }
+
+    .bottom-nav{
+      bottom:10px;
+      width:calc(100% - 16px);
+      border-radius:20px;
+      padding:8px;
+    }
+
+    .bottom-nav a{
+      min-height:54px;
+      border-radius:14px;
       font-size:10px;
     }
 
-    .legend{
-      grid-template-columns:1fr;
+    .nav-icon{
+      font-size:16px;
     }
   }
 </style>
@@ -810,113 +768,91 @@
       <div class="hero-title">월간 레이드 캘린더</div>
       <div class="hero-sub">
         어드민에서 저장한 레이드 데이터를 기준으로 월간 일정이 자동으로 표시됩니다.
-        <b>1성 / 3성 / 5성 / 메가 / 그림자</b> 구조와 <b>부스트 2개</b>까지 반영됩니다.
       </div>
       <div class="hero-meta">
-        <span class="hero-pill">저장키 : pogoRaidAdminData</span>
         <span class="hero-pill">monthly 체크 데이터만 표시</span>
-        <span class="hero-pill">상세 팝업 지원</span>
+        <span class="hero-pill">1성 / 3성 / 5성 / 메가 / 그림자</span>
       </div>
     </div>
   </section>
 
-  <div class="layout">
-    <main class="main-col">
-      <section class="section">
-        <div class="section-head">
-          <div>
-            <div class="section-title" id="calendarTitle">2026년 4월 레이드 일정</div>
-            <div class="section-sub">월 탭을 누르면 해당 월의 레이드 일정만 달력에 표시됩니다.</div>
-          </div>
-          <div class="tiny-badge" id="monthSummaryBadge">0건</div>
-        </div>
-
-        <div class="section-body">
-          <div class="top-toolbar">
-            <div class="month-tabs" id="monthTabs"></div>
-          </div>
-
-          <div class="calendar-head">
-            <div class="weekday">일</div>
-            <div class="weekday">월</div>
-            <div class="weekday">화</div>
-            <div class="weekday">수</div>
-            <div class="weekday">목</div>
-            <div class="weekday">금</div>
-            <div class="weekday">토</div>
-          </div>
-
-          <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
-      </section>
-    </main>
-
-    <aside class="sidebar-col">
-      <div class="sidebar-stack">
-
-        <section class="section">
-          <div class="section-head">
-            <div>
-              <div class="section-title">구분 색상</div>
-              <div class="section-sub">월간 일정에서 쓰이는 레이드 등급 색상입니다.</div>
-            </div>
-            <div class="tiny-badge">LEGEND</div>
-          </div>
-
-          <div class="section-body">
-            <div class="legend">
-              <div class="legend-item"><span class="legend-dot" style="background:#2f9f63;"></span>1성</div>
-              <div class="legend-item"><span class="legend-dot" style="background:#b88818;"></span>3성</div>
-              <div class="legend-item"><span class="legend-dot" style="background:#3567d7;"></span>5성</div>
-              <div class="legend-item"><span class="legend-dot" style="background:#7c58e9;"></span>메가</div>
-              <div class="legend-item"><span class="legend-dot" style="background:#d85b85;"></span>그림자</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <div>
-              <div class="section-title">이번 달 요약</div>
-              <div class="section-sub">현재 선택된 달 기준 집계입니다.</div>
-            </div>
-            <div class="tiny-badge">SUMMARY</div>
-          </div>
-
-          <div class="section-body">
-            <div class="summary-list">
-              <div class="summary-card">
-                <div class="summary-label">총 일정 수</div>
-                <div class="summary-value" id="summaryTotal">0</div>
-                <div class="summary-desc">해당 월에 노출되는 전체 일정 수</div>
-              </div>
-
-              <div class="summary-card">
-                <div class="summary-label">등급 분포</div>
-                <div class="summary-desc" id="summaryTypes">1성 0 / 3성 0 / 5성 0 / 메가 0 / 그림자 0</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head">
-            <div>
-              <div class="section-title">이번 달 주요 일정</div>
-              <div class="section-sub">선택 월에 걸치는 일정 목록입니다.</div>
-            </div>
-            <div class="tiny-badge">LIST</div>
-          </div>
-
-          <div class="section-body">
-            <div class="mini-list" id="monthlyList"></div>
-          </div>
-        </section>
-
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title" id="calendarTitle">2026년 4월 레이드 일정</div>
+        <div class="section-sub">월 탭을 누르면 해당 월 일정만 표시됩니다.</div>
       </div>
-    </aside>
-  </div>
+      <div class="tiny-badge" id="monthSummaryBadge">0건</div>
+    </div>
+
+    <div class="section-body">
+      <div class="top-toolbar">
+        <div class="month-tabs" id="monthTabs"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">구분 색상</div>
+        <div class="section-sub">월간 일정에서 쓰이는 레이드 등급 색상입니다.</div>
+      </div>
+      <div class="tiny-badge">LEGEND</div>
+    </div>
+
+    <div class="section-body">
+      <div class="legend-wrap">
+        <div class="legend-item"><span class="legend-dot" style="background:#2f9f63;"></span>1성</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#b88818;"></span>3성</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#3567d7;"></span>5성</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#7c58e9;"></span>메가</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#d85b85;"></span>그림자</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-body">
+      <div class="calendar-head">
+        <div class="weekday">일</div>
+        <div class="weekday">월</div>
+        <div class="weekday">화</div>
+        <div class="weekday">수</div>
+        <div class="weekday">목</div>
+        <div class="weekday">금</div>
+        <div class="weekday">토</div>
+      </div>
+
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+  </section>
 </div>
+
+<nav class="bottom-nav" aria-label="하단 메뉴">
+  <div class="bottom-nav-list">
+    <a href="./index.html">
+      <span class="nav-icon">🏠</span>
+      <span>홈</span>
+    </a>
+    <a href="./raid-now.html">
+      <span class="nav-icon">⚔️</span>
+      <span>지금 레이드</span>
+    </a>
+    <a href="./weekly.html">
+      <span class="nav-icon">🗓️</span>
+      <span>주간</span>
+    </a>
+    <a href="./monthly.html" class="active">
+      <span class="nav-icon">📆</span>
+      <span>월간</span>
+    </a>
+    <a href="./admin.html">
+      <span class="nav-icon">🛠️</span>
+      <span>어드민</span>
+    </a>
+  </div>
+</nav>
 
 <div class="modal" id="detailModal" aria-hidden="true">
   <div class="modal-card">
@@ -940,15 +876,12 @@
     { year: 2026, month: 6 }
   ];
 
-  let currentMonthIndex = 1; // 기본 2026년 4월
+  let currentMonthIndex = 1;
 
   const monthTabs = document.getElementById('monthTabs');
   const calendarGrid = document.getElementById('calendarGrid');
   const calendarTitle = document.getElementById('calendarTitle');
   const monthSummaryBadge = document.getElementById('monthSummaryBadge');
-  const monthlyList = document.getElementById('monthlyList');
-  const summaryTotal = document.getElementById('summaryTotal');
-  const summaryTypes = document.getElementById('summaryTypes');
 
   const detailModal = document.getElementById('detailModal');
   const modalBody = document.getElementById('modalBody');
@@ -1014,14 +947,6 @@
   function isDateInRange(targetDate, startDate, endDate) {
     if (!targetDate || !startDate || !endDate) return false;
     return targetDate >= startDate && targetDate <= endDate;
-  }
-
-  function getBoostText(item) {
-    if (!item.boosts || !item.boosts.length) return '';
-    return item.boosts
-      .map(v => v.weather)
-      .filter(Boolean)
-      .join(', ');
   }
 
   function toAmpm(time24){
@@ -1148,13 +1073,11 @@
     }
 
     const todayStr = formatDateStr(new Date());
+    const monthRaids = getMonthRaids(year, month);
+    monthSummaryBadge.textContent = `${monthRaids.length}건`;
 
     calendarGrid.innerHTML = cells.map(cell => {
-      const dayRaids = getRaidsForDate(cell.dateStr).filter(item => {
-        const cellMonth = cell.date.getMonth() + 1;
-        const cellYear = cell.date.getFullYear();
-        return cellYear === cell.date.getFullYear() && cellMonth === cell.date.getMonth() + 1;
-      });
+      const dayRaids = cell.outside ? [] : getRaidsForDate(cell.dateStr);
 
       return `
         <div class="day-cell ${cell.outside ? 'is-outside' : ''} ${cell.dateStr === todayStr ? 'is-today' : ''}">
@@ -1164,11 +1087,7 @@
           </div>
 
           <div class="day-events">
-            ${
-              !cell.outside
-                ? renderDayRaids(cell.dateStr)
-                : ''
-            }
+            ${!cell.outside ? renderDayRaids(cell.dateStr) : ''}
           </div>
         </div>
       `;
@@ -1193,67 +1112,12 @@
 
     return dayRaids.map(item => {
       const colorClass = getRaidColorClass(item.label);
-      const boostText = getBoostText(item);
-
       return `
         <button class="month-raid-item ${colorClass}" data-id="${escapeHtml(item.id)}" type="button">
           <div class="month-raid-name">${escapeHtml(item.name || '')}</div>
-          ${boostText ? `<div class="month-raid-boost">${escapeHtml(boostText)}</div>` : ''}
         </button>
       `;
     }).join('');
-  }
-
-  function renderSidebar(){
-    const { year, month } = getCurrentMonthConfig();
-    const monthRaids = getMonthRaids(year, month);
-
-    monthSummaryBadge.textContent = `${monthRaids.length}건`;
-    summaryTotal.textContent = String(monthRaids.length);
-
-    const counts = {
-      '1성': 0,
-      '3성': 0,
-      '5성': 0,
-      '메가': 0,
-      '그림자': 0
-    };
-
-    monthRaids.forEach(item => {
-      if(counts[item.label] !== undefined) counts[item.label] += 1;
-    });
-
-    summaryTypes.textContent = `1성 ${counts['1성']} / 3성 ${counts['3성']} / 5성 ${counts['5성']} / 메가 ${counts['메가']} / 그림자 ${counts['그림자']}`;
-
-    if(!monthRaids.length){
-      monthlyList.innerHTML = `<div class="empty-state">선택한 달에 표시할 레이드가 없습니다.</div>`;
-      return;
-    }
-
-    monthlyList.innerHTML = monthRaids
-      .sort((a,b) => (a.startDate || '').localeCompare(b.startDate || ''))
-      .map(item => `
-        <button class="mini-raid" data-id="${escapeHtml(item.id)}" type="button" style="border:none;cursor:pointer;text-align:left;font:inherit;">
-          <div class="mini-raid-thumb">
-            ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : `<span style="font-size:22px;">🖼️</span>`}
-          </div>
-          <div style="min-width:0;">
-            <div class="mini-raid-name">${escapeHtml(item.name || '')}</div>
-            <div class="mini-raid-meta">
-              ${escapeHtml(item.label || '-')} · ${escapeHtml(item.startDate || '-')} ~ ${escapeHtml(item.endDate || '-')}<br>
-              ${escapeHtml(getBoostText(item) || '부스트 없음')}
-            </div>
-          </div>
-        </button>
-      `).join('');
-
-    Array.from(monthlyList.querySelectorAll('.mini-raid')).forEach(btn => {
-      btn.addEventListener('click', () => {
-        const all = getVisibleMonthlyRaids();
-        const item = all.find(v => v.id === btn.dataset.id);
-        if(item) openDetailModal(item);
-      });
-    });
   }
 
   function openDetailModal(item){
@@ -1350,7 +1214,6 @@
   function renderAll(){
     renderMonthTabs();
     renderCalendar();
-    renderSidebar();
   }
 
   modalCloseBtn.addEventListener('click', closeDetailModal);
