@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Pokémon GO Global | 내타입 포켓몬 확인하기</title>
+<link rel="icon" href="/images/favicon.png" />
+
+<meta name="description" content="Trainer Test" />
+<meta property="og:title" content="Pokémon GO Global | Trainer Test" />
+<meta property="og:description" content="나와 같은타입의 포켓몬을 확인해보세요." />
+<meta property="og:image" content="https://pokemon-global.pages.dev/og2.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://pokemon-global.pages.dev/" />
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+:root{
+  --bg:#eef2f8;
+  --bg-soft:#f6f8fc;
+  --card:#ffffff;
+  --text:#243746;
+  --text-soft:#6f7f90;
+  --line:#dde5ee;
+
+  --primary-1:#8e7dff;
+  --primary-2:#5f69ff;
+  --primary-3:#3a48be;
+
+  --space-1:#131a46;
+  --space-2:#1d2b6d;
+  --space-3:#3a3f96;
+  --space-4:#6c58c8;
+  --space-5:#9f83e8;
+
+  --mint:#78f0d0;
+  --mint-soft:#dbfff4;
+
+  --shadow-soft:0 12px 30px rgba(22,31,63,.08);
+  --shadow-card:0 20px 40px rgba(18,26,60,.10);
+  --shadow-cta:0 14px 28px rgba(83,92,222,.28);
+
+  --radius-card:24px;
+  --radius-soft:18px;
+  --radius-pill:999px;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+body{
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top, rgba(160,170,255,.16), transparent 26%),
+    linear-gradient(180deg,#eef2f8 0%, #edf1f7 100%);
+  -webkit-text-size-adjust:100%;
+}
+.hidden{display:none!important}
+
+.wrap{
+  max-width:560px;
+  margin:0 auto;
+  padding:22px 16px 80px;
+}
+
+.card{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:var(--radius-card);
+  box-shadow:var(--shadow-soft);
+  padding:22px;
+  margin-bottom:16px;
+}
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:28px 22px 24px;
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,.20), transparent 28%),
+    radial-gradient(circle at 84% 18%, rgba(163,132,255,.36), transparent 22%),
+    radial-gradient(circle at 14% 22%, rgba(107,164,255,.16), transparent 18%),
+    linear-gradient(180deg,#121842 0%, #1c2a6b 38%, #3d4299 68%, #7459d2 100%);
+  color:#fff;
+  box-shadow:0 16px 34px rgba(21,29,72,.22);
+  margin-bottom:16px;
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:-40% auto auto -10%;
+  width:220px;
+  height:220px;
+  background:radial-gradient(circle, rgba(255,255,255,.10), transparent 68%);
+  pointer-events:none;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  right:18px;
+  top:18px;
+  width:84px;
+  height:84px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,.85) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 22%, rgba(255,255,255,.5) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 72% 62%, rgba(255,255,255,.35) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 28% 74%, rgba(255,255,255,.4) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle, rgba(255,255,255,.12), transparent 72%);
+  opacity:.9;
+  pointer-events:none;
+}
+.hero h1{
+  position:relative;
+  margin:0 0 8px;
+  font-size:30px;
+  line-height:1.18;
+  letter-spacing:-.03em;
+  font-weight:800;
+}
+.hero p{
+  position:relative;
+  margin:0;
+  opacity:.92;
+  font-size:14px;
+  line-height:1.55;
+}
+
+.label{
+  display:block;
+  margin:14px 0 8px;
+  font-size:14px;
+  font-weight:800;
+  color:#1e2e4e;
+}
+.input{
+  width:100%;
+  height:54px;
+  border-radius:15px;
+  border:1px solid #d7e0ee;
+  background:#fbfcff;
+  padding:0 16px;
+  font-size:16px;
+  outline:none;
+  color:#22364b;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  -webkit-appearance:none;
+  appearance:none;
+  transform:translateZ(0);
+}
+.input::placeholder{
+  color:#9aa7b6;
+}
+.input:focus{
+  border-color:#7d84ff;
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(114,122,255,.12);
+}
+.input-error{
+  border-color:#ff6b7f!important;
+  box-shadow:0 0 0 4px rgba(255,107,127,.12)!important;
+}
+.helper{
+  margin-top:8px;
+  color:#7a8792;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.btn-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.btn{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  min-height:52px;
+  padding:0 18px;
+  border-radius:15px;
+  font-size:15px;
+  font-weight:800;
+  transition:transform .18s var(--ease), box-shadow .18s var(--ease), opacity .18s ease, background .18s ease;
+}
+.btn:hover{
+  transform:translateY(-1px);
+}
+.btn:active{
+  transform:translateY(0);
+}
+.btn-primary{
+  color:#fff;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,0) 34%),
+    linear-gradient(135deg,#7b78ff 0%, #5b66ff 42%, #3e4dc8 100%);
+  box-shadow:var(--shadow-cta);
+}
+.btn-secondary{
+  background:#edf2fb;
+  color:#25365c;
+  box-shadow:0 8px 18px rgba(44,58,119,.08);
+}
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.progress-box{
+  margin-bottom:16px;
+}
+.progress-meta{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:8px;
+  font-size:13px;
+  color:#647482;
+  font-weight:700;
+}
+.progress-bar{
+  height:8px;
+  border-radius:999px;
+  background:#e8edf5;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#8d85ff 0%, #72dfff 55%, #7ef0cb 100%);
+  transition:width .35s ease;
+}
+
+.question-page-head{
+  margin-bottom:12px;
+}
+.question-page-head strong{
+  display:block;
+  font-size:18px;
+  margin-bottom:6px;
+  color:#1c2b4c;
+}
+.question-page-head p{
+  margin:0;
+  color:#7a8792;
+  font-size:13px;
+}
+
+.question-card{
+  background:linear-gradient(180deg,#ffffff 0%, #fbfcff 100%);
+  border:1px solid #edf1f7;
+  border-radius:20px;
+  box-shadow:0 10px 24px rgba(31,42,68,.05);
+  padding:14px;
+  margin-bottom:12px;
+}
+.q-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+.q-badge{
+  min-width:44px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#eef2ff 0%, #edf7ff 100%);
+  color:#4957b8;
+  font-size:12px;
+  font-weight:900;
+  border:1px solid #dde5ff;
+  text-align:center;
+}
+.q-title{
+  font-size:15px;
+  font-weight:800;
+  margin:0 0 14px;
+  line-height:1.45;
+  color:#213351;
+  letter-spacing:-.01em;
+}
+
+.scale-text-row{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  margin-bottom:10px;
+}
+.scale-text-row div{
+  font-size:10px;
+  line-height:1.25;
+  color:#7b88a0;
+  font-weight:800;
+  text-align:center;
+  letter-spacing:-.02em;
+}
+.scale-text-row div:nth-child(1),
+.scale-text-row div:nth-child(5){
+  font-size:9px;
+}
+
+.options{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  align-items:center;
+  gap:0;
+  padding:8px 0 2px;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:none;
+}
+.scale-track{
+  position:absolute;
+  left:12%;
+  right:12%;
+  top:50%;
+  height:6px;
+  transform:translateY(-50%);
+  border-radius:999px;
+  background:linear-gradient(90deg,#e3e9f6 0%, #dfe6f4 100%);
+  z-index:0;
+}
+.scale-track-fill{
+  position:absolute;
+  left:12%;
+  width:0%;
+  top:50%;
+  height:6px;
+  transform:translateY(-50%);
+  border-radius:999px;
+  background:linear-gradient(90deg,#8d85ff 0%, #72dfff 55%, #7ef0cb 100%);
+  z-index:1;
+  transition:width .22s ease;
+}
+.circle{
+  position:relative;
+  z-index:2;
+  width:42px;
+  height:42px;
+  margin:0 auto;
+  border-radius:50%;
+  border:2px solid #dbe3f0;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:900;
+  color:#61718b;
+  cursor:pointer;
+  transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  box-shadow:0 4px 10px rgba(21,31,63,.04);
+}
+.circle:hover{
+  transform:translateY(-1px);
+  border-color:#bfcaff;
+}
+.circle.active{
+  background:linear-gradient(135deg,#7b78ff 0%, #5b66ff 42%, #3e4dc8 100%);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 10px 18px rgba(83,92,222,.24);
+}
+.circle span{
+  pointer-events:none;
+}
+
+.divider,
+.item-grid{
+  display:none;
+}
+
+.result-screen{
+  position:relative;
+  overflow:hidden;
+  min-height:980px;
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255,255,255,.16), transparent 18%),
+    radial-gradient(circle at 18% 18%, rgba(129,161,255,.22), transparent 18%),
+    radial-gradient(circle at 82% 16%, rgba(178,128,255,.22), transparent 18%),
+    linear-gradient(180deg,#121842 0%, #1d2b6c 34%, #3a3f96 67%, #6d58c8 100%);
+  color:#fff;
+  box-shadow:0 18px 36px rgba(20,28,73,.24);
+}
+.result-screen:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255,255,255,.9) 0 1.2px, transparent 1.8px),
+    radial-gradient(circle at 22% 10%, rgba(255,255,255,.6) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 38% 14%, rgba(255,255,255,.85) 0 1.3px, transparent 1.8px),
+    radial-gradient(circle at 61% 8%, rgba(255,255,255,.65) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 78% 18%, rgba(255,255,255,.8) 0 1.2px, transparent 1.8px),
+    radial-gradient(circle at 88% 9%, rgba(255,255,255,.55) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 72% 28%, rgba(255,255,255,.55) 0 1px, transparent 1.5px);
+  opacity:.55;
+  pointer-events:none;
+}
+.result-top{
+  position:relative;
+  padding:4px 18px 0;
+  min-height:220px;
+  z-index:1;
+}
+
+.lv-text{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
+  margin-top:16px;
+  min-height:52px;
+  color:#fff;
+}
+.lv-prefix{
+  font-size:18px;
+  line-height:1;
+  font-weight:300;
+  opacity:.92;
+  letter-spacing:-.01em;
+  transform:translateY(-4px);
+}
+#resultLevel{
+  display:inline-block;
+  min-width:2ch;
+  font-size:48px;
+  line-height:1;
+  font-weight:300;
+  letter-spacing:-.04em;
+}
+
+.arc{
+  width:100%;
+  max-width:430px;
+  margin:8px auto 0;
+  display:block;
+}
+
+.pogo-wrap{
+  position:absolute;
+  left:50%;
+  top:110px;
+  transform:translateX(-50%);
+  width:220px;
+  z-index:3;
+}
+.pogo-wrap img{
+  width:100%;
+  display:block;
+  filter:none;
+}
+
+.result-card{
+  position:relative;
+  margin:10px 14px 0;
+  background:linear-gradient(180deg,#f9fbff 0%, #f3f7fe 100%);
+  border-radius:26px 26px 0 0;
+  min-height:700px;
+  color:#3c6670;
+  padding:80px 22px 220px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+.nickname{
+  text-align:center;
+  font-size:32px;
+  font-weight:700;
+  letter-spacing:-.03em;
+  color:#2c3b74;
+}
+.hp-line{
+  width:72%;
+  height:10px;
+  border-radius:999px;
+  background:#e8e8ff;
+  margin:18px auto 6px;
+  position:relative;
+  overflow:hidden;
+}
+.hp-fill{
+  width:100%;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#87ffd9 0%, #70f0d8 45%, #7cd0ff 100%);
+}
+.hp-text{
+  text-align:center;
+  font-size:14px;
+  font-weight:700;
+  color:#617091;
+}
+
+.info-3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:0;
+  align-items:start;
+  margin-top:20px;
+  text-align:center;
+}
+.info-col{
+  position:relative;
+  padding:0 6px;
+}
+.info-col:not(:last-child):after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:6px;
+  width:1px;
+  height:46px;
+  background:#d8deee;
+}
+.info-value{
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:-.02em;
+  color:#33447f;
+  white-space:nowrap;
+}
+.info-label{
+  margin-top:10px;
+  font-size:13px;
+  color:#8996aa;
+  font-weight:600;
+  letter-spacing:-0.01em;
+}
+  
+.info-icon{
+  width:36px;
+  height:36px;
+  object-fit:contain;
+  display:block;
+  margin:-6px auto 4px;
+}
+
+.appraisal-badge{
+  position:absolute;
+  left:8px;
+  top:560px;
+  width:120px;
+  height:140px;
+  z-index:6;
+}
+.badge-ring{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 8px 14px rgba(21,18,64,.22));
+}
+.badge-stars{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.badge-star{
+  font-size:26px;
+  line-height:1;
+  color:#ffd36f;
+  text-shadow:0 2px 6px rgba(0,0,0,.16);
+  opacity:0;
+  transform:scale(.5);
+}
+.badge-star.show{
+  opacity:1;
+  transform:scale(1);
+  transition:all .28s cubic-bezier(.22,.61,.36,1);
+}
+.badge-star.red-star{
+  color:#ff7ea8;
+  text-shadow:0 2px 6px rgba(0,0,0,.18), 0 0 10px rgba(255,126,168,.34);
+}
+.badge-star.outline{
+  opacity:1;
+  transform:scale(1);
+  color:transparent;
+  -webkit-text-stroke:1.6px #ffe5b2;
+  text-shadow:none;
+}
+
+.appraisal-panel{
+  position:absolute;
+  left:38px;
+  right:134px;
+  top:650px;
+  background:rgba(255,255,255,.97);
+  border-radius:14px;
+  padding:18px 18px 16px;
+  z-index:5;
+  box-shadow:0 12px 24px rgba(20,24,58,.10);
+}
+.stat-row{
+  margin-bottom:18px;
+}
+.stat-row:last-child{margin-bottom:0}
+.stat-label{
+  font-size:14px;
+  font-weight:800;
+  color:#7464d6;
+  margin-bottom:8px;
+}
+.stat-bar{
+  height:16px;
+  border-radius:999px;
+  background:#eceffd;
+  overflow:hidden;
+  position:relative;
+}
+.stat-fill{
+  width:0%;
+  height:100%;
+  border-radius:999px;
+  transition:width 1s cubic-bezier(.22,.61,.36,1);
+  will-change:width;
+  transform:translateZ(0);
+}
+.stat-bar.orange .stat-fill{
+  background:linear-gradient(90deg,#7f87ff 0%, #6ca8ff 48%, #77f0d2 100%);
+}
+.stat-bar.red .stat-fill{
+  background:linear-gradient(90deg,#ff7ba9 0%, #b38bff 52%, #7bd8ff 100%);
+}
+.segment-line{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:#fff;
+  opacity:.95;
+}
+.segment-line.one{left:33.333%}
+.segment-line.two{left:66.666%}
+
+.result-character{
+  position:absolute;
+  right:-8px;
+  bottom:10px;
+  width:200px;
+  z-index:6;
+  pointer-events:none;
+}
+.result-character img{
+  width:100%;
+  display:block;
+  filter:drop-shadow(0 14px 18px rgba(0,0,0,.18));
+}
+
+.speech-box{
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:14px;
+  background:rgba(255,255,255,.97);
+  color:#556481;
+  border-radius:14px;
+  padding:20px 16px;
+  box-shadow:0 10px 20px rgba(18,26,60,.08);
+  z-index:7;
+  font-size:18px;
+  line-height:1.55;
+  font-weight:600;
+  white-space:pre-line;
+}
+.speech-box:before{
+  content:"";
+  position:absolute;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-bottom:10px solid rgba(255,255,255,.97);
+}
+
+.result-actions{
+  margin-top:16px;
+}
+.share-preview{
+  margin-top:14px;
+  font-size:12px;
+  color:#7e8b95;
+  line-height:1.5;
+}
+
+#analyzingOverlay{
+  position:absolute;
+  inset:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(18,24,66,.28);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  border-radius:32px;
+}
+.analyzing-box{
+  min-width:220px;
+  padding:22px 20px;
+  border-radius:20px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 18px 34px rgba(17,24,58,.16);
+  text-align:center;
+}
+.analyzing-spinner{
+  width:34px;
+  height:34px;
+  margin:0 auto 12px;
+  border-radius:50%;
+  border:3px solid #dfe5ff;
+  border-top-color:#6e78ff;
+  animation:spinAnalyzing .9s linear infinite;
+}
+.analyzing-text{
+  font-size:15px;
+  font-weight:800;
+  color:#44557d;
+  letter-spacing:-.01em;
+}
+@keyframes spinAnalyzing{
+  to{ transform:rotate(360deg); }
+}
+
+@media (max-width:480px){
+  .wrap{padding:18px 14px 72px}
+  .hero h1{font-size:28px}
+  .btn{font-size:14px}
+  .input{font-size:16px}
+  .q-title{font-size:14px}
+  .circle{
+    width:40px;
+    height:40px;
+    font-size:12px;
+  }
+  .scale-text-row div{
+    font-size:9px;
+  }
+}
+
+.info-type-value{
+  margin:24px auto 0;
+  font-size:16px;
+  font-weight:600;
+  color:#33447f;
+  line-height:1.2;
+}
+
+.type-detail-box{
+  margin:8px auto 0;
+  width:100%;
+  max-width:360px;
+  text-align:center;
+  padding:18px 16px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(126,122,255,.10) 0%, rgba(111,210,255,.08) 100%);
+  border:1px solid rgba(112,120,255,.14);
+}
+.type-maincopy{
+  font-size:18px;
+  line-height:1.45;
+  font-weight:800;
+  color:#2f3f7b;
+  letter-spacing:-.02em;
+}
+.type-playstyle{
+  margin-top:8px;
+  font-size:13px;
+  line-height:1.5;
+  font-weight:700;
+  color:#7382a0;
+}
+
+.capture-fix .appraisal-badge,
+.capture-fix .badge-ring,
+.capture-fix .badge-stars,
+.capture-fix .badge-star{
+  transform: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  will-change: auto !important;
+}
+
+.capture-fix .badge-star{
+  font-size: 22px !important;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <section class="hero">
+    <h1>Pokémon GO Global 🌏</h1>
+    <p>만들다가 세아잡겠네</p>
+  </section>
+
+  <section class="card" id="introSection">
+    <label class="label" for="trainerLevel">트레이너 레벨 (1~80)</label>
+    <input
+      class="input"
+      type="text"
+      id="trainerLevel"
+      inputmode="numeric"
+      maxlength="2"
+      placeholder="1 - 80"
+      autocomplete="off"
+    >
+
+    <label class="label" for="nickname">닉네임 (글로벌 톡방의 한글 닉네임)</label>
+    <input class="input" type="text" id="nickname" placeholder="한글 닉네임 입력" autocomplete="off">
+    <div class="helper">한글만 입력되며 공백은 자동 제거됩니다.</div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" type="button" id="startBtn">테스트 시작하기</button>
+    </div>
+  </section>
+
+  <section class="hidden" id="quizSection">
+    <div class="card">
+      <div class="progress-box">
+        <div class="progress-meta">
+          <span id="pageRangeText">1 - 4 / 20</span>
+          <span id="pageStepText">1 / 5</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="question-page-head">
+        <strong>테스트 진행 중</strong>
+        <p>각 페이지마다 4문항씩, 가장 가까운 정도를 선택해 주세요.</p>
+      </div>
+
+      <form id="quizForm">
+        <div id="questionArea"></div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" type="button" id="prevBtn">이전</button>
+          <button class="btn btn-primary" type="button" id="nextBtn">다음</button>
+          <button class="btn btn-primary hidden" type="submit" id="submitBtn">결과 보기</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="resultSection" class="hidden">
+    <div class="result-screen" id="captureTarget">
+      <div id="analyzingOverlay" class="hidden">
+        <div class="analyzing-box">
+          <div class="analyzing-spinner"></div>
+          <div class="analyzing-text">결과 분석 중입니다...</div>
+        </div>
+      </div>
+
+      <div class="result-top">
+        <div class="lv-text">
+          <span class="lv-prefix">Trainer Lv.</span>
+          <span id="resultLevel">15</span>
+        </div>
+
+        <svg class="arc" viewBox="0 0 500 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 190 Q250 20 450 190" stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+
+        <div class="pogo-wrap">
+          <img id="resultPogo" src="" alt="pogo character">
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="nickname" id="resultNickname">닉네임</div>
+
+        <div class="hp-line"><div class="hp-fill"></div></div>
+        <div class="hp-text" id="resultHpText">121 / 121 HP</div>
+
+        <div class="info-3">
+          <div class="info-col">
+            <img class="info-icon" id="resultDefenseIcon" src="" alt="defense icon">
+            <div class="info-label">방어</div>
+          </div>
+
+          <div class="info-col">
+            <img class="info-icon" id="resultIcon" src="" alt="icon">
+            <div class="info-label">내 타입</div>
+          </div>
+
+          <div class="info-col">
+            <img class="info-icon" id="resultAttackIcon" src="" alt="attack icon">
+            <div class="info-label">공격</div>
+          </div>
+        </div>
+
+        <div class="type-detail-box">
+          <div class="type-maincopy" id="resultMainCopy">꾸준히 강해지는 플레이어</div>
+          <div class="type-playstyle" id="resultPlayStyle">꾸준함 / 회복 / 지속력</div>
+        </div>
+      </div>
+
+      <div class="appraisal-badge">
+        <img src="./images/badge-ring.png" class="badge-ring" alt="badge ring">
+        <div class="badge-stars" id="badgeStars">
+          <span class="badge-star">★</span>
+          <span class="badge-star">★</span>
+          <span class="badge-star">★</span>
+        </div>
+      </div>
+
+      <div class="appraisal-panel">
+        <div class="stat-row">
+          <div class="stat-label">추진력</div>
+          <div class="stat-bar orange" id="hostBar">
+            <div class="stat-fill" id="hostFill"></div>
+            <span class="segment-line one"></span>
+            <span class="segment-line two"></span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">전략력</div>
+          <div class="stat-bar orange" id="participantBar">
+            <div class="stat-fill" id="participantFill"></div>
+            <span class="segment-line one"></span>
+            <span class="segment-line two"></span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label">팀워크</div>
+          <div class="stat-bar orange" id="chatBar">
+            <div class="stat-fill" id="chatFill"></div>
+            <span class="segment-line one"></span>
+            <span class="segment-line two"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-character">
+        <img id="resultCharacter" src="" alt="character">
+      </div>
+
+      <div class="speech-box" id="speechText">
+        결과 분석 중입니다.
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <div class="btn-row">
+        <button class="btn btn-primary hidden" type="button" id="shareBtn">카카오톡 공유하기</button>
+        <button class="btn btn-secondary" type="button" id="downloadBtn">결과 이미지 저장</button>
+        <button class="btn btn-secondary" type="button" id="retryBtn">다시 테스트하기</button>
+      </div>
+      <div class="share-preview">
+        카카오 공유용 이미지는 결과 카드 영역을 캡처해 자동 생성하는 구조입니다.
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
+
+<script>
+const KAKAO_JS_KEY = 'a9b34626a97035962f44ebb33091147d';
+
+if (window.Kakao && !window.Kakao.isInitialized()) {
+  try {
+    window.Kakao.init(KAKAO_JS_KEY);
+  } catch (e) {
+    console.error('Kakao init failed:', e);
+  }
+}
+
+const SCALE_LABELS = ['매우 그렇다', '그렇다', '보통', '아니다', '매우 아니다'];
+
+const questionBank = [
+  { no: 1, question: '레이드가 열리면 내가 먼저 사람을 모으고 흐름을 만드는 편이다.', effects: { 전기: 2, 비행: 1, 격투: 1 } },
+  { no: 2, question: '배틀 전에 상성, 기술, 순서를 먼저 계산해두는 편이다.', effects: { 에스퍼: 2, 강철: 1, 얼음: 1 } },
+  { no: 3, question: '이벤트에서는 순간 판단과 속도로 움직이는 편이다.', effects: { 전기: 2, 불: 1, 비행: 1 } },
+  { no: 4, question: '나는 꾸준히 플레이하면서 천천히 강해지는 스타일에 가깝다.', effects: { 풀: 2, 물: 1, 노말: 1 } },
+  { no: 5, question: '정면 승부가 필요한 상황에서는 망설이지 않고 밀어붙인다.', effects: { 격투: 2, 불: 1, 드래곤: 1 } },
+  { no: 6, question: '무너지지 않는 안정감과 버티는 운영이 더 편하다.', effects: { 강철: 2, 바위: 1, 땅: 1 } },
+  { no: 7, question: '상황에 따라 흐름을 바꾸고 유연하게 대응하는 편이다.', effects: { 물: 2, 비행: 1, 페어리: 1 } },
+  { no: 8, question: '상대가 예상하지 못한 변수와 기습을 만드는 플레이를 좋아한다.', effects: { 고스트: 2, 악: 1, 전기: 1 } },
+  { no: 9, question: '강한 힘과 존재감으로 판 전체를 장악하고 싶다.', effects: { 드래곤: 2, 불: 1, 격투: 1 } },
+  { no: 10, question: '기본기와 밸런스가 좋은 플레이가 가장 오래 간다고 생각한다.', effects: { 노말: 2, 물: 1, 땅: 1 } },
+  { no: 11, question: '상대의 빈틈을 보고 카운터를 치는 방식이 잘 맞는다.', effects: { 악: 2, 에스퍼: 1, 고스트: 1 } },
+  { no: 12, question: '복잡한 상황에서도 감정보다 냉정한 판단이 먼저다.', effects: { 얼음: 2, 강철: 1, 에스퍼: 1 } },
+  { no: 13, question: '내 플레이는 자유롭고 얽매이지 않는 편이라고 느낀다.', effects: { 비행: 2, 페어리: 1, 전기: 1 } },
+  { no: 14, question: '레이드나 이벤트에서는 주변 사람들과 호흡을 맞추는 게 중요하다.', effects: { 페어리: 2, 풀: 1, 물: 1 } },
+  { no: 15, question: '배틀은 결국 실전 감각과 현실적인 판단이 중요하다고 본다.', effects: { 땅: 2, 바위: 1, 노말: 1 } },
+  { no: 16, question: '상대의 다음 움직임을 먼저 읽고 한 수 앞서 가는 편이다.', effects: { 에스퍼: 2, 얼음: 1, 고스트: 1 } },
+  { no: 17, question: '느리더라도 묵직한 한 방이 있는 플레이가 더 좋다.', effects: { 바위: 2, 강철: 1, 드래곤: 1 } },
+  { no: 18, question: '전장의 중심을 잡아주고 팀 전체를 안정시키는 역할이 잘 맞는다.', effects: { 물: 2, 풀: 1, 페어리: 1 } },
+  { no: 19, question: '결정적인 순간에는 빠르게 치고 빠지는 움직임이 잘 맞는다.', effects: { 전기: 2, 비행: 1, 고스트: 1 } },
+  { no: 20, question: '나는 화려함보다 꾸준한 완성도와 신뢰감을 더 중요하게 본다.', effects: { 노말: 2, 강철: 1, 땅: 1 } }
+];
+
+const typeProfiles = {
+  풀: { iconNo: 1, type: '풀', best: '물', worst: '불', mainCopy: '천천히 강해지는 플레이어', playStyle: '꾸준함 / 회복 / 지속력', story: '당신은 꾸준히 성장하는 타입입니다.\n빠르게 앞서가진 않지만, 끝까지 남는 힘이 있습니다.', drive: 70, strategy: 75, team: 90 },
+  얼음: { iconNo: 2, type: '얼음', best: '드래곤', worst: '불', mainCopy: '차분하게 흐름을 제어하는 플레이어', playStyle: '냉정함 / 분석 / 제어', story: '당신은 감정에 휘둘리지 않는 타입입니다.\n차분한 판단으로 흐름을 통제합니다.', drive: 65, strategy: 85, team: 60 },
+  강철: { iconNo: 3, type: '강철', best: '페어리', worst: '불', mainCopy: '무너지지 않는 구조를 만드는 플레이어', playStyle: '안정감 / 방어 / 완성도', story: '당신은 쉽게 무너지지 않는 타입입니다.\n어떤 상황에서도 버텨내며 기회를 만듭니다.', drive: 60, strategy: 90, team: 75 },
+  드래곤: { iconNo: 4, type: '드래곤', best: '드래곤', worst: '페어리', mainCopy: '압도적인 존재감으로 판을 지배하는 플레이어', playStyle: '지배력 / 스케일 / 돌파력', story: '당신은 전장을 지배하는 타입입니다.\n강한 존재감으로 흐름 자체를 바꿔버립니다.', drive: 90, strategy: 85, team: 60 },
+  불: { iconNo: 5, type: '불', best: '풀', worst: '물', mainCopy: '순간 폭발력으로 판을 뒤집는 플레이어', playStyle: '직진 / 열정 / 폭발력', story: '당신은 망설임 없이 밀어붙이는 타입입니다.\n결정적인 순간, 불꽃처럼 분위기를 바꿉니다.', drive: 95, strategy: 70, team: 55 },
+  바위: { iconNo: 6, type: '바위', best: '불', worst: '물', mainCopy: '묵직한 한 방으로 승부하는 플레이어', playStyle: '중량감 / 버티기 / 한방', story: '당신은 느리더라도 강한 한 방을 믿는 타입입니다.\n천천히, 그러나 확실하게 상대를 압박합니다.', drive: 80, strategy: 75, team: 65 },
+  물: { iconNo: 7, type: '물', best: '불', worst: '전기', mainCopy: '흐름을 읽고 안정적으로 대응하는 플레이어', playStyle: '유연함 / 균형 / 대응력', story: '당신은 흐름을 읽고 움직이는 타입입니다.\n상황에 맞춰 유연하게 대응하며 안정적으로 승리를 만듭니다.', drive: 75, strategy: 85, team: 85 },
+  전기: { iconNo: 8, type: '전기', best: '물', worst: '땅', mainCopy: '순간 판단으로 승부를 결정하는 플레이어', playStyle: '속도 / 기습 / 민첩함', story: '당신은 번개처럼 빠르게 움직이는 타입입니다.\n짧은 순간의 판단이 승부를 갈라놓습니다.', drive: 90, strategy: 80, team: 65 },
+  고스트: { iconNo: 9, type: '고스트', best: '에스퍼', worst: '악', mainCopy: '보이지 않는 틈을 파고드는 플레이어', playStyle: '변수 / 기습 / 심리전', story: '당신은 보이지 않는 곳에서 흐름을 흔드는 타입입니다.\n예상치 못한 순간에 판을 뒤집습니다.', drive: 75, strategy: 90, team: 55 },
+  격투: { iconNo: 10, type: '격투', best: '노말', worst: '페어리', mainCopy: '정면 승부를 두려워하지 않는 플레이어', playStyle: '근성 / 돌파 / 압박', story: '당신은 정면 승부를 두려워하지 않는 타입입니다.\n끝까지 밀어붙여 결국 결과를 만들어냅니다.', drive: 95, strategy: 75, team: 60 },
+  노말: { iconNo: 11, type: '노말', best: '노말', worst: '격투', mainCopy: '기본기가 탄탄한 안정형 플레이어', playStyle: '균형 / 기본기 / 신뢰감', story: '당신은 기본기에 충실한 타입입니다.\n큰 흔들림 없이 안정적인 흐름을 만들어냅니다.', drive: 70, strategy: 70, team: 80 },
+  에스퍼: { iconNo: 12, type: '에스퍼', best: '격투', worst: '악', mainCopy: '한 수 앞을 읽고 움직이는 플레이어', playStyle: '예측 / 통찰 / 설계', story: '당신은 흐름을 미리 읽는 타입입니다.\n상대보다 한 발 먼저 움직이며 판을 설계합니다.', drive: 65, strategy: 95, team: 70 },
+  땅: { iconNo: 13, type: '땅', best: '전기', worst: '물', mainCopy: '현실적인 판단으로 승리를 쌓는 플레이어', playStyle: '실전감 / 기반 / 안정감', story: '당신은 흔들리지 않는 기반을 가진 타입입니다.\n현실적인 판단으로 차근차근 승리를 쌓아갑니다.', drive: 80, strategy: 80, team: 75 },
+  악: { iconNo: 14, type: '악', best: '에스퍼', worst: '격투', mainCopy: '상대의 빈틈을 노리는 플레이어', playStyle: '교란 / 카운터 / 혼란', story: '당신은 예측을 깨는 타입입니다.\n상대를 흔들고 빈틈을 만들어 흐름을 뒤집습니다.', drive: 85, strategy: 80, team: 55 },
+  페어리: { iconNo: 15, type: '페어리', best: '드래곤', worst: '강철', mainCopy: '균형과 호흡을 만드는 플레이어', playStyle: '조화 / 지원 / 팀플레이', story: '당신은 균형을 만드는 타입입니다.\n혼자보다 함께일 때 더 큰 힘을 발휘합니다.', drive: 65, strategy: 75, team: 95 },
+  비행: { iconNo: 16, type: '비행', best: '격투', worst: '전기', mainCopy: '자유로운 움직임으로 흐름을 바꾸는 플레이어', playStyle: '기동성 / 자유 / 회피', story: '당신은 자유롭게 전장을 누비는 타입입니다.\n틀에 얽매이지 않는 움직임으로 기회를 만듭니다.', drive: 85, strategy: 75, team: 80 }
+};
+
+let shuffledQuestions = [];
+let answers = {};
+let currentPage = 0;
+let currentRendered = null;
+let draggingScale = null;
+
+const QUESTIONS_PER_PAGE = 4;
+const TOTAL_PAGES = Math.ceil(questionBank.length / QUESTIONS_PER_PAGE);
+
+const introSection = document.getElementById('introSection');
+const quizSection = document.getElementById('quizSection');
+const resultSection = document.getElementById('resultSection');
+
+const trainerLevel = document.getElementById('trainerLevel');
+const nickname = document.getElementById('nickname');
+const questionArea = document.getElementById('questionArea');
+const progressFill = document.getElementById('progressFill');
+const pageRangeText = document.getElementById('pageRangeText');
+const pageStepText = document.getElementById('pageStepText');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+const quizForm = document.getElementById('quizForm');
+const analyzingOverlay = document.getElementById('analyzingOverlay');
+
+nickname.addEventListener('input', () => {
+  nickname.value = nickname.value.replace(/\s+/g, '').replace(/[^ㄱ-ㅎ가-힣ㅏ-ㅣ]/g, '');
+  if (/^[ㄱ-ㅎ가-힣ㅏ-ㅣ]{0,8}$/.test(nickname.value)) {
+    nickname.classList.remove('input-error');
+  } else {
+    nickname.classList.add('input-error');
+  }
+});
+
+trainerLevel.addEventListener('input', () => {
+  trainerLevel.value = trainerLevel.value.replace(/[^0-9]/g, '');
+  if (trainerLevel.value === '') return;
+  let v = Number(trainerLevel.value);
+  if (v < 1) trainerLevel.value = '1';
+  if (v > 80) trainerLevel.value = '80';
+});
+
+function validateTrainerLevel() {
+  const v = Number(trainerLevel.value);
+  if (!Number.isInteger(v) || v < 1 || v > 80) {
+    alert('트레이너 레벨은 1부터 80까지만 입력 가능합니다.');
+    trainerLevel.focus();
+    return false;
+  }
+  return true;
+}
+
+function validateNickname() {
+  const value = nickname.value.trim();
+  if (!value) {
+    alert('닉네임을 입력해주세요.');
+    nickname.focus();
+    return false;
+  }
+  if (!/^[ㄱ-ㅎ가-힣ㅏ-ㅣ]{2,8}$/.test(value)) {
+    alert('닉네임은 한글만 가능하며 2~8글자여야 합니다.');
+    nickname.focus();
+    return false;
+  }
+  return true;
+}
+
+function showIntro() {
+  introSection.classList.remove('hidden');
+  quizSection.classList.add('hidden');
+  resultSection.classList.add('hidden');
+}
+function showQuiz() {
+  introSection.classList.add('hidden');
+  quizSection.classList.remove('hidden');
+  resultSection.classList.add('hidden');
+}
+function showResult() {
+  introSection.classList.add('hidden');
+  quizSection.classList.add('hidden');
+  resultSection.classList.remove('hidden');
+}
+
+function getRandomHp() {
+  return Math.floor(Math.random() * (400 - 20 + 1)) + 20;
+}
+
+function choiceValueToScore(value) {
+  if (value === 1) return 2;
+  if (value === 2) return 1;
+  if (value === 3) return 0;
+  if (value === 4) return -1;
+  if (value === 5) return -2;
+  return 0;
+}
+
+function getRandomPogoByType(typeName) {
+  const iconNo = typeProfiles[typeName].iconNo;
+  const pool = [
+    `./images/pogo-${iconNo}.png`,
+    `./images/pogo-${iconNo}-2.png`,
+    `./images/pogo-${iconNo}-3.png`
+  ];
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function getTypeIconPath(typeName) {
+  return `./images/icon-${typeProfiles[typeName].iconNo}.png`;
+}
+
+function getShareImageUrl(profile) {
+  return `${window.location.origin}/images/${profile.iconNo}.png`;
+}
+
+function getTrackFillPercent(value) {
+  if (!value) return 0;
+  return ((value - 1) / 4) * 76;
+}
+
+function renderCurrentPage() {
+  const start = currentPage * QUESTIONS_PER_PAGE;
+  const end = start + QUESTIONS_PER_PAGE;
+  const pageQuestions = shuffledQuestions.slice(start, end);
+
+  pageRangeText.textContent = `${start + 1} - ${Math.min(end, questionBank.length)} / ${questionBank.length}`;
+  pageStepText.textContent = `${currentPage + 1} / ${TOTAL_PAGES}`;
+  progressFill.style.width = `${((currentPage + 1) / TOTAL_PAGES) * 100}%`;
+
+  questionArea.innerHTML = pageQuestions.map((item, idx) => {
+    const absoluteIndex = start + idx;
+    const savedValue = answers[item.no] || 0;
+    return `
+      <div class="question-card">
+        <div class="q-top">
+          <div class="q-badge">${String(absoluteIndex + 1).padStart(2, '0')}</div>
+        </div>
+        <h3 class="q-title">${item.question}</h3>
+
+        <div class="scale-text-row">
+          ${SCALE_LABELS.map(label => `<div>${label}</div>`).join('')}
+        </div>
+
+        <div class="options scale-circle" data-q="${item.no}" data-value="${savedValue}">
+          <div class="scale-track"></div>
+          <div class="scale-track-fill" style="width:${getTrackFillPercent(savedValue)}%;"></div>
+          ${[1,2,3,4,5].map(num => `
+            <button type="button" class="circle ${savedValue === num ? 'active' : ''}" data-value="${num}" aria-label="${num} 선택">
+              <span>${num}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  prevBtn.disabled = currentPage === 0;
+  if (currentPage === TOTAL_PAGES - 1) {
+    nextBtn.classList.add('hidden');
+    submitBtn.classList.remove('hidden');
+  } else {
+    nextBtn.classList.remove('hidden');
+    submitBtn.classList.add('hidden');
+  }
+}
+
+function pageAnsweredCount() {
+  const start = currentPage * QUESTIONS_PER_PAGE;
+  const end = start + QUESTIONS_PER_PAGE;
+  const pageQuestions = shuffledQuestions.slice(start, end);
+  let count = 0;
+  pageQuestions.forEach((q) => {
+    if (answers[q.no]) count++;
+  });
+  return count;
+}
+
+function calculateTypeScores() {
+  const scores = {};
+  Object.keys(typeProfiles).forEach((type) => {
+    scores[type] = 0;
+  });
+
+  shuffledQuestions.forEach((q) => {
+    const answer = answers[q.no];
+    if (!answer) return;
+    const baseScore = choiceValueToScore(answer);
+    Object.entries(q.effects).forEach(([typeName, weight]) => {
+      scores[typeName] += baseScore * weight;
+    });
+  });
+
+  return scores;
+}
+
+function getResultType() {
+  const scores = calculateTypeScores();
+  return Object.keys(scores).sort((a, b) => scores[b] - scores[a])[0];
+}
+
+function getStarDataByStats(profile) {
+  const avg = Math.round((profile.drive + profile.strategy + profile.team) / 3);
+  if (avg >= 85) return { stars: 3, theme: 'red', redStars: true };
+  if (avg >= 78) return { stars: 3, theme: 'orange', redStars: false };
+  if (avg >= 70) return { stars: 2, theme: 'orange', redStars: false };
+  return { stars: 1, theme: 'orange', redStars: false };
+}
+
+function animateLevelUp(targetLevel) {
+  const el = document.getElementById('resultLevel');
+  const startLevel = 15;
+  const endLevel = Number(targetLevel);
+
+  if (!el || Number.isNaN(endLevel)) return;
+
+  if (endLevel <= startLevel) {
+    el.textContent = endLevel;
+    return;
+  }
+
+  const duration = 900;
+  const startTime = performance.now();
+
+  function tick(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(startLevel + (endLevel - startLevel) * eased);
+    el.textContent = current;
+
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      el.textContent = endLevel;
+    }
+  }
+
+  el.textContent = startLevel;
+  requestAnimationFrame(tick);
+}
+
+function animateStatBars(drive, strategy, team) {
+  const hostFill = document.getElementById('hostFill');
+  const participantFill = document.getElementById('participantFill');
+  const chatFill = document.getElementById('chatFill');
+
+  [hostFill, participantFill, chatFill].forEach(el => {
+    el.style.transition = 'none';
+    el.style.width = '0%';
+    void el.offsetWidth;
+  });
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      hostFill.style.transition = 'width 1s cubic-bezier(.22,.61,.36,1)';
+      participantFill.style.transition = 'width 1s cubic-bezier(.22,.61,.36,1)';
+      chatFill.style.transition = 'width 1s cubic-bezier(.22,.61,.36,1)';
+
+      hostFill.style.width = `${drive}%`;
+      participantFill.style.width = `${strategy}%`;
+      chatFill.style.width = `${team}%`;
+    });
+  });
+}
+
+function setScaleAnswer(qNo, value, container) {
+  answers[qNo] = value;
+  container.dataset.value = String(value);
+
+  const fill = container.querySelector('.scale-track-fill');
+  if (fill) {
+    fill.style.width = `${getTrackFillPercent(value)}%`;
+  }
+
+  container.querySelectorAll('.circle').forEach(circle => {
+    circle.classList.toggle('active', Number(circle.dataset.value) === value);
+  });
+}
+
+function getValueFromPointer(container, clientX) {
+  const rect = container.getBoundingClientRect();
+  const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+  const ratio = x / rect.width;
+  if (ratio < 0.2) return 1;
+  if (ratio < 0.4) return 2;
+  if (ratio < 0.6) return 3;
+  if (ratio < 0.8) return 4;
+  return 5;
+}
+
+questionArea.addEventListener('click', (e) => {
+  const circle = e.target.closest('.circle');
+  if (!circle) return;
+  const container = circle.closest('.scale-circle');
+  const qNo = Number(container.dataset.q);
+  const value = Number(circle.dataset.value);
+  setScaleAnswer(qNo, value, container);
+});
+
+questionArea.addEventListener('pointerdown', (e) => {
+  const container = e.target.closest('.scale-circle');
+  if (!container) return;
+  draggingScale = container;
+  const qNo = Number(container.dataset.q);
+  const value = getValueFromPointer(container, e.clientX);
+  setScaleAnswer(qNo, value, container);
+  container.setPointerCapture?.(e.pointerId);
+});
+
+questionArea.addEventListener('pointermove', (e) => {
+  if (!draggingScale) return;
+  const value = getValueFromPointer(draggingScale, e.clientX);
+  const qNo = Number(draggingScale.dataset.q);
+  setScaleAnswer(qNo, value, draggingScale);
+});
+
+window.addEventListener('pointerup', () => {
+  draggingScale = null;
+});
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  if (!validateTrainerLevel()) return;
+  if (!validateNickname()) return;
+
+  shuffledQuestions = [...questionBank];
+  answers = {};
+  currentPage = 0;
+
+  showQuiz();
+  renderCurrentPage();
+  window.scrollTo({ top:0, behavior:'smooth' });
+});
+
+prevBtn.addEventListener('click', () => {
+  if (currentPage > 0) {
+    currentPage--;
+    renderCurrentPage();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (pageAnsweredCount() < QUESTIONS_PER_PAGE) {
+    alert('현재 페이지의 4문항을 모두 선택해 주세요.');
+    return;
+  }
+  if (currentPage < TOTAL_PAGES - 1) {
+    currentPage++;
+    renderCurrentPage();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+});
+
+quizForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  if (Object.keys(answers).length < questionBank.length) {
+    alert('모든 문항에 답변해 주세요.');
+    return;
+  }
+
+  const resultType = getResultType();
+  const profile = typeProfiles[resultType];
+  const bestType = profile.best || '노말';
+  const worstType = profile.worst;
+  const starData = getStarDataByStats(profile);
+  const randomHp = getRandomHp();
+  const shareImageUrl = getShareImageUrl(profile);
+  const pogoPath = getRandomPogoByType(resultType);
+
+  currentRendered = {
+    profileResult: profile,
+    resultType,
+    shareImageUrl,
+    pogoPath,
+    starData,
+    randomHp
+  };
+
+  showResult();
+  window.scrollTo({ top:0, behavior:'smooth' });
+
+  analyzingOverlay.classList.remove('hidden');
+
+  document.getElementById('resultLevel').textContent = '15';
+  document.getElementById('hostFill').style.width = '0%';
+  document.getElementById('participantFill').style.width = '0%';
+  document.getElementById('chatFill').style.width = '0%';
+
+  const badgeStars = document.querySelectorAll('.badge-star');
+  badgeStars.forEach(star => {
+    star.classList.remove('show', 'red-star', 'outline');
+  });
+
+  setTimeout(() => {
+    document.getElementById('resultNickname').textContent = nickname.value;
+    document.getElementById('resultHpText').textContent = `${randomHp} / ${randomHp} HP`;
+
+    document.getElementById('resultMainCopy').textContent = profile.mainCopy;
+    document.getElementById('resultPlayStyle').textContent = profile.playStyle;
+
+    document.getElementById('resultPogo').src = pogoPath;
+    document.getElementById('resultIcon').src = getTypeIconPath(resultType);
+    document.getElementById('resultDefenseIcon').src = getTypeIconPath(worstType);
+    document.getElementById('resultAttackIcon').src = getTypeIconPath(bestType);
+    document.getElementById('resultCharacter').src = './images/advisor-1.png';
+
+    document.getElementById('speechText').textContent = profile.story;
+
+    document.getElementById('hostBar').className = `stat-bar ${starData.theme}`;
+    document.getElementById('participantBar').className = `stat-bar ${starData.theme}`;
+    document.getElementById('chatBar').className = `stat-bar ${starData.theme}`;
+
+    analyzingOverlay.classList.add('hidden');
+
+    setTimeout(() => {
+      animateStatBars(profile.drive, profile.strategy, profile.team);
+    }, 120);
+
+    setTimeout(() => {
+      if (starData.stars === 0) {
+        badgeStars.forEach(star => {
+          star.classList.add('outline');
+        });
+      } else {
+        for (let i = 0; i < badgeStars.length; i++) {
+          if (i < starData.stars) {
+            setTimeout(() => {
+              badgeStars[i].classList.add('show');
+              if (starData.redStars) {
+                badgeStars[i].classList.add('red-star');
+              }
+            }, i * 180);
+          } else {
+            badgeStars[i].classList.add('outline');
+          }
+        }
+      }
+    }, 260);
+
+    setTimeout(() => {
+      animateLevelUp(trainerLevel.value);
+    }, 500);
+
+  }, 2400);
+});
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  answers = {};
+  currentPage = 0;
+  trainerLevel.value = '';
+  nickname.value = '';
+  document.getElementById('resultLevel').textContent = '15';
+  analyzingOverlay.classList.add('hidden');
+  showIntro();
+  window.scrollTo({ top:0, behavior:'smooth' });
+});
+
+async function makeShareImageDataUrl() {
+  const target = document.getElementById('captureTarget');
+  target.classList.add('capture-fix');
+
+  try {
+    const images = Array.from(target.querySelectorAll('img'));
+    await Promise.all(
+      images.map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      })
+    );
+
+    await new Promise(resolve =>
+      requestAnimationFrame(() => requestAnimationFrame(resolve))
+    );
+
+    const rect = target.getBoundingClientRect();
+
+    const canvas = await html2canvas(target, {
+      useCORS: true,
+      backgroundColor: null,
+      scale: 2,
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
+      windowWidth: document.documentElement.clientWidth,
+      windowHeight: document.documentElement.clientHeight
+    });
+
+    return canvas.toDataURL('image/png');
+  } finally {
+    target.classList.remove('capture-fix');
+  }
+}
+
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  try {
+    const dataUrl = await makeShareImageDataUrl();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `trainer-result-${Date.now()}.png`;
+    a.click();
+  } catch (error) {
+    console.error(error);
+    alert('이미지 저장 중 오류가 발생했습니다.');
+  }
+});
+
+document.getElementById('shareBtn').addEventListener('click', () => {
+  if (!currentRendered) return;
+
+  const profile = currentRendered.profileResult;
+  const shareImageUrl = currentRendered.shareImageUrl;
+
+  if (!window.Kakao) {
+    alert('카카오 SDK가 로드되지 않았습니다.');
+    return;
+  }
+
+  if (!window.Kakao.isInitialized()) {
+    alert('카카오 JavaScript 키 또는 도메인 설정을 확인해주세요.');
+    return;
+  }
+
+  window.Kakao.Share.sendCustom({
+    templateId: 1409816,
+    templateArgs: {
+      TYPE: profile.type,
+      MAINCOPY: profile.mainCopy,
+      PLAYSTYLE: profile.playStyle,
+      DESC: profile.story.replace(/\n/g, ' '),
+      THU: shareImageUrl
+    }
+  });
+});
+</script>
+</body>
+</html>
