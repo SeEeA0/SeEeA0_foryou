@@ -3,685 +3,953 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>포켓몬고 일정 메인</title>
+  <title>April 2026 Raid Schedule</title>
   <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-      background:#eef2f8;
-      color:#232b39;
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f3f5f8;
+      color: #2c2f36;
     }
-    .page{
-      min-height:100vh;
-      background:linear-gradient(180deg,#f7f9fc 0%,#edf2f8 100%);
+
+    html {
+      scroll-behavior: smooth;
     }
-    .wrap{
-      max-width:1180px;
-      margin:0 auto;
-      padding:14px 10px 96px;
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
     }
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:40;
-      background:#ffde00;
-      border:1px solid #e3c600;
-      border-radius:14px 14px 0 0;
-      padding:10px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:13px;
-      font-weight:800;
-      color:#272727;
-      box-shadow:0 8px 20px rgba(28,34,45,.08);
+
+    .top-title {
+      font-size: 30px;
+      font-weight: 800;
+      margin: 8px 4px 22px;
+      color: #262b33;
     }
-    .hero{
-      background:#fff;
-      border:1px solid #dfe6f1;
-      border-top:0;
-      border-radius:0 0 20px 20px;
-      box-shadow:0 12px 28px rgba(28,34,45,.05);
-      padding:16px;
+
+    .period {
+      background: #fff;
+      border: 1px solid #dfe3ea;
+      border-radius: 22px;
+      box-shadow: 0 4px 12px rgba(31, 41, 55, 0.05);
+      overflow: hidden;
+      margin-bottom: 28px;
+      scroll-margin-top: 24px;
     }
-    .hero h1{
-      margin:0;
-      font-size:22px;
-      line-height:1.28;
-      letter-spacing:-.03em;
-      word-break:keep-all;
+
+    .period-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      align-items: flex-start;
     }
-    .hero p{
-      margin:8px 0 0;
-      color:#68778f;
-      font-size:13px;
-      line-height:1.7;
+
+    .period-left h2 {
+      margin: 10px 0 0;
+      font-size: 24px;
+      line-height: 1.2;
     }
-    .hero-chips{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:14px;
+
+    .period-left p {
+      margin: 8px 0 0;
+      color: #6e7480;
+      font-size: 14px;
+      line-height: 1.6;
     }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      padding:8px 12px;
-      border-radius:999px;
-      background:#f6f8fc;
-      border:1px solid #dfe6f1;
-      color:#5d6c84;
-      font-size:12px;
-      font-weight:800;
+
+    .period-right {
+      min-width: 260px;
+      text-align: right;
+      color: #666b75;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.7;
     }
-    .chip.primary{
-      background:#edf4ff;
-      border-color:#d7e6ff;
-      color:#296be2;
+
+    .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
-    .section{
-      margin-top:16px;
-      background:#fff;
-      border:1px solid #dfe6f1;
-      border-radius:20px;
-      box-shadow:0 12px 28px rgba(28,34,45,.05);
-      overflow:hidden;
+
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 14px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
     }
-    .section-head{
-      padding:14px;
-      border-bottom:1px solid #e7edf5;
-      background:#f9fbff;
+
+    .tag-upcoming { background: #6c4cc8; }
+    .tag-ongoing { background: #2f77ff; }
+    .tag-raidday { background: #98052b; }
+
+    .tier-section {
+      margin: 0 14px 16px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #dfe3ea;
+      background: #fff;
     }
-    .section-title{
-      margin:0;
-      font-size:18px;
-      font-weight:800;
-      color:#253041;
+
+    .tier-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      font-size: 19px;
+      font-weight: 800;
+      color: #222831;
+      border-top: 4px solid transparent;
     }
-    .section-sub{
-      margin:4px 0 0;
-      color:#7a88a1;
-      font-size:12px;
-      line-height:1.6;
+
+    .tier-head.five {
+      background: #dfe3ea;
+      border-top-color: #183963;
     }
-    .calendar-wrap{
-      padding:12px;
-      overflow-x:auto;
-      -webkit-overflow-scrolling:touch;
+
+    .tier-head.mega {
+      background: linear-gradient(90deg, #ecdcb7 0%, #edd8eb 45%, #bfcdf6 75%, #bfe7c3 100%);
+      border-top-color: #c39558;
     }
-    .calendar-board{
-      min-width:860px;
+
+    .tier-head.one {
+      background: #f5e7eb;
+      border-top-color: #df6b7d;
     }
-    .calendar-head{
-      display:grid;
-      grid-template-columns:90px repeat(7,1fr);
-      gap:10px;
-      margin-bottom:8px;
+
+    .tier-head.three {
+      background: #f0f0e3;
+      border-top-color: #b8ba1f;
     }
-    .calendar-head div{
-      text-align:center;
-      font-size:11px;
-      font-weight:800;
-      color:#7d8aa0;
-      padding:6px 0;
+
+    .tier-head.shadow {
+      background: #f4f5f8;
+      border-top-color: #5a5d68;
     }
-    .calendar-grid{
-      display:grid;
-      grid-template-columns:90px repeat(7,1fr);
-      gap:10px;
+
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      padding: 16px;
+      background: #f7f8fb;
     }
-    .week-pill{
-      min-height:122px;
-      border:2px solid #d8e2f0;
-      border-radius:26px;
-      background:#f4f7fc;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:18px;
-      font-weight:800;
-      color:#667790;
+
+    .card {
+      background: #fff;
+      border: 1px solid #dde2ea;
+      border-radius: 18px;
+      box-shadow: 0 3px 8px rgba(31, 41, 55, 0.04);
+      padding: 14px;
     }
-    .day-card{
-      position:relative;
-      min-height:122px;
-      border:2px solid #d8e2f0;
-      border-radius:26px;
-      background:#f9fbff;
-      padding:12px 10px 10px;
-      text-decoration:none;
-      color:inherit;
-      display:block;
-      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+
+    .img-box {
+      height: 132px;
+      border: 1px solid #dfe3ea;
+      border-radius: 14px;
+      background: #f6f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
     }
-    .day-card:hover{
-      transform:translateY(-2px);
-      border-color:#bfd4f5;
-      box-shadow:0 10px 18px rgba(31,41,55,.08);
+
+    .img-box img {
+      max-width: 92%;
+      max-height: 112px;
+      object-fit: contain;
+      display: block;
     }
-    .day-card.empty{
-      background:transparent;
-      border-color:transparent;
-      box-shadow:none;
-      pointer-events:none;
+
+    .sparkle {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      font-size: 18px;
+      color: #111;
+      opacity: 0.9;
+      z-index: 2;
     }
-    .day-card.today{
-      background:#edf4ff;
-      border-color:#cfe0ff;
+
+    .name {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.35;
+      text-align: center;
+      margin-bottom: 8px;
+      word-break: keep-all;
     }
-    .day-num{
-      font-size:14px;
-      font-weight:900;
-      color:#6f7d93;
-      margin-bottom:8px;
+
+    .types {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
-    .day-card.sat .day-num{color:#4c82e8}
-    .day-card.sun .day-num{color:#ea7281}
-    .day-mon{
-      position:absolute;
-      right:10px;
-      bottom:10px;
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:#f3f6fb;
-      border:2px solid #d8e2f0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:24px;
-      box-shadow:0 4px 10px rgba(31,41,55,.06);
+
+    .type {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 999px;
+      line-height: 1;
+      border: 1px solid rgba(0,0,0,0.03);
     }
-    .day-title{
-      display:none;
+
+    .type.dragon { background: #ddd7ff; color: #4b4fb4; }
+    .type.psychic { background: #ffd9de; color: #d45467; }
+    .type.electric { background: #f7e7ad; color: #9b7a00; }
+    .type.water { background: #d9e7ff; color: #4d7dd6; }
+    .type.rock { background: #dfd4af; color: #7e6940; }
+    .type.flying { background: #dde0ff; color: #6d79cd; }
+    .type.ground { background: #f0d7bf; color: #b06d34; }
+    .type.fairy { background: #f5d8f6; color: #b46bc1; }
+    .type.ghost { background: #ced6ff; color: #5467b0; }
+    .type.dark { background: #d9d7df; color: #575162; }
+    .type.ice { background: #d7f2ee; color: #4c9c97; }
+    .type.normal { background: #e7e7e7; color: #737373; }
+    .type.bug { background: #e3eaa4; color: #869300; }
+    .type.poison { background: #e5cff8; color: #8552b7; }
+    .type.fighting { background: #f2cad2; color: #b55066; }
+    .type.grass { background: #d5f0c7; color: #529249; }
+    .type.fire { background: #ffd8c2; color: #c96c2f; }
+
+    .divider {
+      height: 1px;
+      background: #d6dbe3;
+      margin: 10px 0 12px;
     }
-    .stack-bars{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      padding-right:46px;
+
+    .cp-main {
+      text-align: center;
+      font-size: 16px;
+      color: #464c57;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
-    .stack-bar{
-      min-height:40px;
-      border-radius:16px;
-      display:flex;
-      align-items:center;
-      padding:0 14px;
-      font-size:12px;
-      line-height:1.2;
-      font-weight:900;
-      color:#fff;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      box-shadow:0 6px 14px rgba(31,41,55,.08);
+
+    .cp-main strong {
+      font-size: 24px;
+      color: #383d46;
+      letter-spacing: -0.03em;
     }
-    .stack-bar.blue{background:linear-gradient(90deg,#59aaf6 0%,#4898ef 100%)}
-    .stack-bar.purple{background:linear-gradient(90deg,#a06cff 0%,#8c5af1 100%)}
-    .stack-bar.pink{background:linear-gradient(90deg,#ff7aa0 0%,#f2628d 100%)}
-    .stack-bar.yellow{background:linear-gradient(90deg,#ffd452 0%,#ffbf2f 100%);color:#6a5600}
-    .day-badge{display:none}
-    .content-grid{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:16px;
-      margin-top:16px;
+
+    .cp-boost {
+      width: fit-content;
+      margin: 0 auto 10px;
+      background: #f0f1f4;
+      color: #666b75;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 800;
     }
-    .panel{
-      background:#fff;
-      border:1px solid #dfe6f1;
-      border-radius:20px;
-      box-shadow:0 12px 28px rgba(28,34,45,.05);
-      overflow:hidden;
+
+    .weather-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
     }
-    .panel-head{
-      padding:14px;
-      border-bottom:1px solid #e7edf5;
-      background:#f9fbff;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
+
+    .weather {
+      background: #f1f2f5;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 11px;
+      color: #636973;
+      font-weight: 800;
+      line-height: 1;
     }
-    .panel-title{
-      margin:0;
-      font-size:18px;
-      font-weight:800;
-      color:#253041;
+
+    @media (max-width: 900px) {
+      .period-head {
+        flex-direction: column;
+      }
+
+      .period-right {
+        text-align: left;
+        min-width: auto;
+      }
     }
-    .panel-sub{
-      margin:4px 0 0;
-      color:#7a88a1;
-      font-size:12px;
-      line-height:1.6;
+
+    @media (max-width: 640px) {
+      .top-title {
+        font-size: 24px;
+      }
+
+      .period-left h2 {
+        font-size: 20px;
+      }
+
+      .tier-head {
+        font-size: 17px;
+      }
+
+      .tier-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
-    .panel-body{padding:14px}
-    .boss-card{
-      border:1px solid #e3e9f4;
-      border-radius:18px;
-      background:#fbfcff;
-      padding:14px;
-    }
-    .boss-top{
-      display:flex;
-      gap:12px;
-      align-items:center;
-    }
-    .boss-mon{
-      width:64px;
-      height:64px;
-      border-radius:20px;
-      background:#f3f6fb;
-      border:1px solid #dfe6f1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:30px;
-      flex:0 0 64px;
-    }
-    .boss-name{
-      font-size:20px;
-      font-weight:800;
-      line-height:1.2;
-      color:#253041;
-    }
-    .boss-meta{
-      margin-top:4px;
-      color:#73819a;
-      font-size:12px;
-      line-height:1.6;
-    }
-    .boss-tags{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .type{
-      font-size:11px;
-      font-weight:800;
-      padding:5px 10px;
-      border-radius:999px;
-      line-height:1;
-      border:1px solid rgba(0,0,0,.03);
-    }
-    .dragon{background:#ddd7ff;color:#4b4fb4}
-    .electric{background:#f7e7ad;color:#9b7a00}
-    .water{background:#d9e7ff;color:#4d7dd6}
-    .ground{background:#f0d7bf;color:#b06d34}
-    .psychic{background:#ffd9de;color:#d45467}
-    .rock{background:#dfd4af;color:#7e6940}
-    .flying{background:#dde0ff;color:#6d79cd}
-    .fairy{background:#f5d8f6;color:#b46bc1}
-    .ghost{background:#ced6ff;color:#5467b0}
-    .cp-boxes{
-      margin-top:14px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-    .cp-box{
-      background:#f4f7fb;
-      border:1px solid #e3e9f4;
-      border-radius:14px;
-      padding:12px;
-    }
-    .cp-label{
-      font-size:11px;
-      color:#7a88a1;
-      font-weight:800;
-    }
-    .cp-value{
-      margin-top:6px;
-      font-size:18px;
-      font-weight:800;
-      color:#334055;
-      letter-spacing:-.02em;
-    }
-    .small-link-grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-    .small-link{
-      text-decoration:none;
-      color:inherit;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      border:1px solid #e3e9f4;
-      border-radius:16px;
-      padding:12px;
-      background:#fbfcff;
-      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-    }
-    .small-link:hover{
-      transform:translateY(-2px);
-      border-color:#bfd4f5;
-      box-shadow:0 10px 18px rgba(31,41,55,.08);
-    }
-    .small-icon{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      background:#f3f6fb;
-      border:1px solid #dfe6f1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      flex:0 0 44px;
-    }
-    .small-link h4{
-      margin:0;
-      font-size:14px;
-      font-weight:800;
-      color:#253041;
-    }
-    .small-link p{
-      margin:4px 0 0;
-      font-size:11px;
-      color:#718099;
-      line-height:1.6;
-    }
-    .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:10px;
-      width:min(560px, calc(100% - 16px));
-      background:rgba(255,255,255,.94);
-      border:1px solid #dfe6f1;
-      box-shadow:0 16px 30px rgba(28,34,45,.12);
-      backdrop-filter:blur(12px);
-      border-radius:22px;
-      padding:8px;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:6px;
-      z-index:50;
-    }
-    .nav-btn{
-      border:0;
-      background:#f6f8fc;
-      border-radius:16px;
-      min-height:54px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:4px;
-      color:#6e7c93;
-      font-size:10px;
-      font-weight:800;
-      text-decoration:none;
-    }
-    .nav-btn.active{
-      background:#edf4ff;
-      color:#2f6fe4;
-      box-shadow:inset 0 0 0 1px #d7e6ff;
-    }
-    .nav-icon{font-size:17px}
-    @media (max-width:860px){
-      .content-grid{grid-template-columns:1fr}
-    }
-    @media (min-width:761px){
-      .wrap{padding:20px 14px 100px}
-      .hero h1{font-size:28px}
-      .calendar-wrap{padding:14px}
-      .calendar-board{min-width:100%}
-      .calendar-head{gap:6px}
-      .calendar-grid{gap:6px}
-      .day-card{min-height:112px;padding:8px;border-radius:16px}
-      .day-num{font-size:12px}
-      .day-mon{width:30px;height:30px;font-size:16px}
-      .day-title{font-size:11px}
-      .section-head,.panel-head{padding:16px 18px}
-      .panel-body{padding:16px 18px}
-      .bottom-nav{width:min(920px, calc(100% - 20px));padding:10px;gap:8px}
-      .nav-btn{min-height:56px;font-size:11px}
-      .nav-icon{font-size:18px}
-      .small-link-grid{grid-template-columns:repeat(3,1fr)}
+
+    @media (max-width: 480px) {
+      .tier-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <div class="wrap">
-      <div class="topbar">
-        <div>〈</div>
-        <div>공지사항</div>
-        <div>✕</div>
+    <div class="top-title">April 2026 Raid Schedule</div>
+
+    <!-- SHADOW LATIAS -->
+    <section class="period" id="shadow-latias-march">
+      <div class="period-head">
+        <div class="period-left">
+          <div class="tag-row">
+            <span class="status-tag tag-ongoing">ONGOING</span>
+          </div>
+          <h2>Shadow Latias March 2026</h2>
+          <p>Shadow Raid Bosses featuring Shadow Latias</p>
+        </div>
+        <div class="period-right">
+          STARTS: Mar 4, 2026, 6:00 AM<br>
+          ENDS: Mar 31, 2026, 10:00 PM
+        </div>
       </div>
 
-      <section class="hero">
-        <h1>포켓몬고 일정 메인</h1>
-        <p>메인에서는 캘린더에서 날짜를 누르면 각 일자별 진행 보스 페이지로 이동하고, 하단에는 지금 진행 중인 레이드만 간단하게 보이도록 정리했습니다.</p>
-        <div class="hero-chips">
-          <span class="chip primary">날짜 누르면 보스 이동</span>
-          <span class="chip">지금 레이드만 요약</span>
-          <span class="chip">주간 일정표 바로가기</span>
+      <div class="tier-section">
+        <div class="tier-head one">
+          <div>1-Star Raids</div>
+          <div>👿</div>
         </div>
-      </section>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-dratini.png" alt="Shadow Dratini">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Dratini</div>
+            <div class="types"><span class="type dragon">Dragon</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>495 - 574</strong></div>
+            <div class="cp-boost">CP 618 - 717</div>
+            <div class="weather-row"><span class="weather">Windy</span></div>
+          </article>
 
-      <section class="section">
-        <div class="section-head">
-          <h2 class="section-title">4월 일정 캘린더</h2>
-          <p class="section-sub">날짜를 누르면 해당 구간의 보스 / 이벤트 페이지로 이동</p>
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-gligar.png" alt="Shadow Gligar">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Gligar</div>
+            <div class="types">
+              <span class="type ground">Ground</span>
+              <span class="type flying">Flying</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>952 - 1061</strong></div>
+            <div class="cp-boost">CP 1191 - 1326</div>
+            <div class="weather-row">
+              <span class="weather">Sunny</span>
+              <span class="weather">Windy</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-cacnea.png" alt="Shadow Cacnea">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Cacnea</div>
+            <div class="types"><span class="type grass">Grass</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>618 - 709</strong></div>
+            <div class="cp-boost">CP 773 - 887</div>
+            <div class="weather-row"><span class="weather">Sunny</span></div>
+          </article>
+
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-joltik.png" alt="Shadow Joltik">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Joltik</div>
+            <div class="types">
+              <span class="type bug">Bug</span>
+              <span class="type electric">Electric</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>504 - 584</strong></div>
+            <div class="cp-boost">CP 631 - 730</div>
+            <div class="weather-row"><span class="weather">Rainy</span></div>
+          </article>
         </div>
-        <div class="calendar-wrap">
-          <div class="calendar-board">
-            <div class="calendar-head">
-              <div></div>
-              <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
-            </div>
-            <div class="calendar-grid">
-              <div class="week-pill">1주차</div>
-
-              <div class="day-card empty"></div>
-              <div class="day-card empty"></div>
-              <div class="day-card empty"></div>
-
-              <a class="day-card wed" href="april-raids.html#apr1-7">
-                <div class="day-num">1</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">레지드래고 · 메가썬더볼트</div>
-                  <div class="stack-bar purple">그림자 라티오스 시작</div>
-                </div>
-                <div class="day-mon">🐉</div>
-              </a>
-              <a class="day-card" href="april-raids.html#apr1-7">
-                <div class="day-num">2</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">레지드래고 진행</div>
-                  <div class="stack-bar purple">그림자 라티오스</div>
-                </div>
-                <div class="day-mon">⚡</div>
-              </a>
-              <a class="day-card" href="april-raids.html#apr1-7">
-                <div class="day-num">3</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">레지드래고 진행</div>
-                  <div class="stack-bars"></div>
-                  <div class="stack-bar purple">그림자 라티오스</div>
-                </div>
-                <div class="day-mon">🪽</div>
-              </a>
-              <a class="day-card sat" href="april-raids.html#apr4-fashion">
-                <div class="day-num">4</div>
-                <div class="stack-bars">
-                  <div class="stack-bar yellow">패션 레이드 데이</div>
-                  <div class="stack-bar pink">1성 / 3성 이벤트</div>
-                </div>
-                <div class="day-mon">🎩</div>
-              </a>
-
-              <div class="week-pill">2주차</div>
-
-              <a class="day-card sun" href="april-raids.html#apr1-7">
-                <div class="day-num">5</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">레지드래고 진행</div>
-                </div>
-                <div class="day-mon">🌑</div>
-              </a>
-              <a class="day-card" href="april-raids.html#apr1-7">
-                <div class="day-num">6</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">CP 1614 - 1699</div>
-                  <div class="stack-bar purple">CP 2017 - 2124</div>
-                </div>
-                <div class="day-mon">🐉</div>
-              </a>
-              <a class="day-card" href="april-raids.html#apr1-7">
-                <div class="day-num">7</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">레지드래고 마지막 날</div>
-                </div>
-                <div class="day-mon">📍</div>
-              </a>
-              <a class="day-card" href="april-raids.html#apr8-14">
-                <div class="day-num">8</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">가이오가 · 메가프테라 시작</div>
-                </div>
-                <div class="day-mon">🐋</div>
-              </a>
-              <a class="day-card" href="april-raids.html#apr8-14">
-                <div class="day-num">9</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">가이오가 진행</div>
-                </div>
-                <div class="day-mon">🪨</div>
-              </a>
-              <a class="day-card" href="april-raids.html#apr8-14">
-                <div class="day-num">10</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">가이오가 진행</div>
-                </div>
-                <div class="day-mon">💧</div>
-              </a>
-              <a class="day-card sat" href="april-raids.html#apr8-14">
-                <div class="day-num">11</div>
-                <div class="stack-bars">
-                  <div class="stack-bar blue">메가프테라 진행</div>
-                </div>
-                <div class="day-mon">🦖</div>
-              </a>
-
-              <div class="week-pill">3주차</div>
-
-              <a class="day-card sun" href="april-raids.html#apr8-14"><div class="day-num">12</div><div class="stack-bars"><div class="stack-bar blue">가이오가 진행</div></div><div class="day-mon">🐋</div></a>
-              <a class="day-card" href="april-raids.html#apr8-14"><div class="day-num">13</div><div class="stack-bars"><div class="stack-bar blue">메가프테라 진행</div></div><div class="day-mon">🪨</div></a>
-              <a class="day-card" href="april-raids.html#apr8-14"><div class="day-num">14</div><div class="stack-bars"><div class="stack-bar blue">가이오가 마지막 날</div></div><div class="day-mon">📍</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">15</div><div class="stack-bars"><div class="stack-bar blue">그란돈 · 메가후딘 시작</div></div><div class="day-mon">🌋</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">16</div><div class="stack-bars"><div class="stack-bar blue">메가후딘 진행</div></div><div class="day-mon">🔮</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">17</div><div class="stack-bars"><div class="stack-bar blue">그란돈 진행</div></div><div class="day-mon">☀️</div></a>
-              <a class="day-card sat" href="april-raids.html#apr15-21"><div class="day-num">18</div><div class="stack-bars"><div class="stack-bar blue">그란돈 진행</div></div><div class="day-mon">🌋</div></a>
-
-              <div class="week-pill">4주차</div>
-
-              <a class="day-card sun" href="april-raids.html#apr15-21"><div class="day-num">19</div><div class="stack-bars"><div class="stack-bar blue">메가후딘 진행</div></div><div class="day-mon">🔮</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">20</div><div class="stack-bars"><div class="stack-bar blue">그란돈 진행</div></div><div class="day-mon">☀️</div></a>
-              <a class="day-card" href="april-raids.html#apr15-21"><div class="day-num">21</div><div class="stack-bars"><div class="stack-bar blue">그란돈 마지막 날</div></div><div class="day-mon">📍</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">22</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 · 메가샤크니아 시작</div></div><div class="day-mon">⚡</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">23</div><div class="stack-bars"><div class="stack-bar blue">메가샤크니아 진행</div></div><div class="day-mon">🦈</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">24</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 진행</div></div><div class="day-mon">⚡</div></a>
-              <a class="day-card sat" href="april-raids.html#apr22-28"><div class="day-num">25</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 진행</div></div><div class="day-mon">✨</div></a>
-
-              <div class="week-pill">5주차</div>
-
-              <a class="day-card sun" href="april-raids.html#apr22-28"><div class="day-num">26</div><div class="stack-bars"><div class="stack-bar blue">비 / 흐림 부스트 확인</div></div><div class="day-mon">🌧</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">27</div><div class="stack-bars"><div class="stack-bar blue">메가샤크니아 진행</div></div><div class="day-mon">🦈</div></a>
-              <a class="day-card" href="april-raids.html#apr22-28"><div class="day-num">28</div><div class="stack-bars"><div class="stack-bar blue">카푸꼬꼬꼭 마지막 날</div></div><div class="day-mon">📍</div></a>
-              <a class="day-card" href="april-raids.html#apr29-may5"><div class="day-num">29</div><div class="stack-bars"><div class="stack-bar blue">카푸나비나 · 메가다크펫 시작</div></div><div class="day-mon">🧚</div></a>
-              <a class="day-card" href="april-raids.html#apr29-may5"><div class="day-num">30</div><div class="stack-bars"><div class="stack-bar blue">메가다크펫 진행</div></div><div class="day-mon">👻</div></a>
-              <div class="day-card empty"></div>
-              <div class="day-card empty"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="content-grid">
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h2 class="panel-title">지금 진행 중</h2>
-              <p class="panel-sub">메인에서는 현재 진행 중인 보스만 크게 노출</p>
-            </div>
-            <a class="chip primary" href="april-raids.html#apr1-7">전체 보기</a>
-          </div>
-          <div class="panel-body">
-            <div class="boss-card">
-              <div class="boss-top">
-                <div class="boss-mon">🐉</div>
-                <div>
-                  <div class="boss-name">레지드래고</div>
-                  <div class="boss-meta">2026.04.01 - 2026.04.07 · 5성 레이드</div>
-                </div>
-              </div>
-              <div class="boss-tags">
-                <span class="type dragon">Dragon</span>
-              </div>
-              <div class="cp-boxes">
-                <div class="cp-box">
-                  <div class="cp-label">일반 CP</div>
-                  <div class="cp-value">1614 - 1699</div>
-                </div>
-                <div class="cp-box">
-                  <div class="cp-label">부스트 CP</div>
-                  <div class="cp-value">2017 - 2124</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h2 class="panel-title">빠른 이동</h2>
-              <p class="panel-sub">정신없지 않게 필요한 페이지만 바로 이동</p>
-            </div>
-          </div>
-          <div class="panel-body">
-            <div class="small-link-grid">
-              <a class="small-link" href="april-raids.html#apr1-7">
-                <div class="small-icon">🔥</div>
-                <div>
-                  <h4>지금 레이드</h4>
-                  <p>현재 구간 보스만 보기</p>
-                </div>
-              </a>
-              <a class="small-link" href="weekly.html">
-                <div class="small-icon">🗓</div>
-                <div>
-                  <h4>주간 일정표</h4>
-                  <p>주간 흐름 빠르게 확인</p>
-                </div>
-              </a>
-              <a class="small-link" href="monthly.html">
-                <div class="small-icon">📆</div>
-                <div>
-                  <h4>월간 일정</h4>
-                  <p>한 달 전체 캘린더</p>
-                </div>
-              </a>
-            </div>
-          </div>
-        </section>
       </div>
-    </div>
 
-    <nav class="bottom-nav">
-      <a class="nav-btn active" href="index.html"><span class="nav-icon">🏠</span><span>메인</span></a>
-      <a class="nav-btn" href="april-raids.html#apr1-7"><span class="nav-icon">🔥</span><span>지금 레이드</span></a>
-      <a class="nav-btn" href="weekly.html"><span class="nav-icon">🗓</span><span>주간 일정표</span></a>
-      <a class="nav-btn" href="monthly.html"><span class="nav-icon">✨</span><span>월간 일정</span></a>
-    </nav>
+      <div class="tier-section">
+        <div class="tier-head three">
+          <div>3-Star Raids</div>
+          <div>👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-alolan-marowak.png" alt="Shadow Alolan Marowak">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Alolan Marowak</div>
+            <div class="types">
+              <span class="type fire">Fire</span>
+              <span class="type ghost">Ghost</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>941 - 1048</strong></div>
+            <div class="cp-boost">CP 1176 - 1311</div>
+            <div class="weather-row">
+              <span class="weather">Sunny</span>
+              <span class="weather">Fog</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-lapras.png" alt="Shadow Lapras">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Lapras</div>
+            <div class="types">
+              <span class="type water">Water</span>
+              <span class="type ice">Ice</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1377 - 1509</strong></div>
+            <div class="cp-boost">CP 1721 - 1886</div>
+            <div class="weather-row">
+              <span class="weather">Rainy</span>
+              <span class="weather">Snow</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-stantler.png" alt="Shadow Stantler">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Stantler</div>
+            <div class="types"><span class="type normal">Normal</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1118 - 1236</strong></div>
+            <div class="cp-boost">CP 1398 - 1546</div>
+            <div class="weather-row"><span class="weather">Partly Cloudy</span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head five">
+          <div>5-Star Raids</div>
+          <div>👿 👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box">
+              <img src="images/shadow-latias.png" alt="Shadow Latias">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Shadow Latias</div>
+            <div class="types">
+              <span class="type dragon">Dragon</span>
+              <span class="type psychic">Psychic</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1855 - 2006</strong></div>
+            <div class="cp-boost">CP 2320 - 2507</div>
+            <div class="weather-row"><span class="weather">Windy</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- APR 1-7 -->
+    <section class="period" id="apr1-7">
+      <div class="period-head">
+        <div class="period-left">
+          <div class="tag-row">
+            <span class="status-tag tag-upcoming">UPCOMING</span>
+          </div>
+          <h2>Regidrago and Mega Manectric in Raids</h2>
+          <p>Regidrago in 5-star raids; Mega Manectric in Mega raids</p>
+        </div>
+        <div class="period-right">
+          STARTS: Apr 1, 2026, 6:00 AM<br>
+          ENDS: Apr 7, 2026, 10:00 PM
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head five">
+          <div>5-Star Raids</div>
+          <div>👿 👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box">
+              <img src="images/regidrago.png" alt="Regidrago">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Regidrago</div>
+            <div class="types"><span class="type dragon">Dragon</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1614 - 1699</strong></div>
+            <div class="cp-boost">CP 2017 - 2124</div>
+            <div class="weather-row"><span class="weather">Windy</span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head mega">
+          <div>Mega Raids</div>
+          <div>👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box">
+              <img src="images/mega-manectric.png" alt="Mega Manectric">
+              <span class="sparkle">✦</span>
+            </div>
+            <div class="name">Mega Manectric</div>
+            <div class="types"><span class="type electric">Electric</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1267 - 1337</strong></div>
+            <div class="cp-boost">CP 1585 - 1672</div>
+            <div class="weather-row"><span class="weather">Rainy</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- APR 4 FASHION -->
+    <section class="period" id="apr4-fashion">
+      <div class="period-head">
+        <div class="period-left">
+          <div class="tag-row">
+            <span class="status-tag tag-upcoming">UPCOMING</span>
+            <span class="status-tag tag-raidday">RAID DAY</span>
+          </div>
+          <h2>Fashion Raid Day</h2>
+          <p>Costumed Pokémon in 1-star and 3-star raids. Tiers are a guess based on past Fashion Week events and are not confirmed.</p>
+        </div>
+        <div class="period-right">
+          STARTS: Apr 4, 2026, 2:00 PM<br>
+          ENDS: Apr 4, 2026, 5:00 PM
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head one">
+          <div>1-Star Raids</div>
+          <div>👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-diglett.png" alt="Diglett wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Diglett wearing a fashionable costume</div>
+            <div class="types"><span class="type ground">Ground</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>349 - 386</strong></div>
+            <div class="cp-boost">CP 437 - 483</div>
+            <div class="weather-row"><span class="weather">Sunny</span></div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-wooper.png" alt="Wooper wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Wooper wearing a fashionable costume</div>
+            <div class="types">
+              <span class="type water">Water</span>
+              <span class="type ground">Ground</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>330 - 366</strong></div>
+            <div class="cp-boost">CP 412 - 458</div>
+            <div class="weather-row">
+              <span class="weather">Rainy</span>
+              <span class="weather">Sunny</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-sneasel.png" alt="Sneasel wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Sneasel wearing a fashionable costume</div>
+            <div class="types">
+              <span class="type dark">Dark</span>
+              <span class="type ice">Ice</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1107 - 1172</strong></div>
+            <div class="cp-boost">CP 1384 - 1465</div>
+            <div class="weather-row">
+              <span class="weather">Fog</span>
+              <span class="weather">Snow</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-shinx.png" alt="Shinx wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Shinx wearing a fashionable costume</div>
+            <div class="types"><span class="type electric">Electric</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>458 - 500</strong></div>
+            <div class="cp-boost">CP 572 - 625</div>
+            <div class="weather-row"><span class="weather">Rainy</span></div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-minccino.png" alt="Minccino wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Minccino wearing a fashionable costume</div>
+            <div class="types"><span class="type normal">Normal</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>456 - 498</strong></div>
+            <div class="cp-boost">CP 570 - 623</div>
+            <div class="weather-row"><span class="weather">Partly Cloudy</span></div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-croagunk.png" alt="Croagunk wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Croagunk wearing a fashionable costume</div>
+            <div class="types">
+              <span class="type poison">Poison</span>
+              <span class="type fighting">Fighting</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>500 - 544</strong></div>
+            <div class="cp-boost">CP 625 - 680</div>
+            <div class="weather-row"><span class="weather">Cloudy</span></div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-blitzle.png" alt="Blitzle wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Blitzle wearing a fashionable costume</div>
+            <div class="types"><span class="type electric">Electric</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>461 - 504</strong></div>
+            <div class="cp-boost">CP 577 - 630</div>
+            <div class="weather-row"><span class="weather">Rainy</span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head three">
+          <div>3-Star Raids</div>
+          <div>👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-butterfree.png" alt="Butterfree wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Butterfree wearing a fashionable costume</div>
+            <div class="types">
+              <span class="type bug">Bug</span>
+              <span class="type flying">Flying</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>983 - 1044</strong></div>
+            <div class="cp-boost">CP 1229 - 1305</div>
+            <div class="weather-row">
+              <span class="weather">Rainy</span>
+              <span class="weather">Windy</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-kirlia.png" alt="Kirlia wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Kirlia wearing a fashionable costume</div>
+            <div class="types">
+              <span class="type psychic">Psychic</span>
+              <span class="type fairy">Fairy</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>508 - 552</strong></div>
+            <div class="cp-boost">CP 635 - 690</div>
+            <div class="weather-row">
+              <span class="weather">Windy</span>
+              <span class="weather">Cloudy</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-absol.png" alt="Absol wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Absol wearing a fashionable costume</div>
+            <div class="types"><span class="type dark">Dark</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1370 - 1443</strong></div>
+            <div class="cp-boost">CP 1712 - 1805</div>
+            <div class="weather-row"><span class="weather">Fog</span></div>
+          </article>
+
+          <article class="card">
+            <div class="img-box"><img src="images/fashion-dragonite.png" alt="Dragonite wearing a fashionable costume"><span class="sparkle">✦</span></div>
+            <div class="name">Dragonite wearing a fashionable costume</div>
+            <div class="types">
+              <span class="type dragon">Dragon</span>
+              <span class="type flying">Flying</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>2079 - 2167</strong></div>
+            <div class="cp-boost">CP 2599 - 2709</div>
+            <div class="weather-row"><span class="weather">Windy</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- APR 8-14 -->
+    <section class="period" id="apr8-14">
+      <div class="period-head">
+        <div class="period-left">
+          <div class="tag-row">
+            <span class="status-tag tag-upcoming">UPCOMING</span>
+          </div>
+          <h2>Kyogre and Mega Aerodactyl in Raids</h2>
+          <p>Kyogre in 5-star raids; Mega Aerodactyl in Mega raids</p>
+        </div>
+        <div class="period-right">
+          STARTS: Apr 8, 2026, 6:00 AM<br>
+          ENDS: Apr 14, 2026, 10:00 PM
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head five">
+          <div>5-Star Raids</div>
+          <div>👿 👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/kyogre.png" alt="Kyogre"><span class="sparkle">✦</span></div>
+            <div class="name">Kyogre</div>
+            <div class="types"><span class="type water">Water</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>2260 - 2351</strong></div>
+            <div class="cp-boost">CP 2825 - 2939</div>
+            <div class="weather-row"><span class="weather">Rainy</span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head mega">
+          <div>Mega Raids</div>
+          <div>👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/mega-aerodactyl.png" alt="Mega Aerodactyl"><span class="sparkle">✦</span></div>
+            <div class="name">Mega Aerodactyl</div>
+            <div class="types">
+              <span class="type rock">Rock</span>
+              <span class="type flying">Flying</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1515 - 1590</strong></div>
+            <div class="cp-boost">CP 1894 - 1988</div>
+            <div class="weather-row">
+              <span class="weather">Partly Cloudy</span>
+              <span class="weather">Windy</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- APR 15-21 -->
+    <section class="period" id="apr15-21">
+      <div class="period-head">
+        <div class="period-left">
+          <div class="tag-row">
+            <span class="status-tag tag-upcoming">UPCOMING</span>
+          </div>
+          <h2>Groudon and Mega Alakazam in Raids</h2>
+          <p>Groudon in 5-star raids; Mega Alakazam in Mega raids</p>
+        </div>
+        <div class="period-right">
+          STARTS: Apr 15, 2026, 6:00 AM<br>
+          ENDS: Apr 21, 2026, 10:00 PM
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head five">
+          <div>5-Star Raids</div>
+          <div>👿 👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/groudon.png" alt="Groudon"><span class="sparkle">✦</span></div>
+            <div class="name">Groudon</div>
+            <div class="types"><span class="type ground">Ground</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>2260 - 2351</strong></div>
+            <div class="cp-boost">CP 2825 - 2939</div>
+            <div class="weather-row"><span class="weather">Sunny</span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head mega">
+          <div>Mega Raids</div>
+          <div>👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/mega-alakazam.png" alt="Mega Alakazam"><span class="sparkle">✦</span></div>
+            <div class="name">Mega Alakazam</div>
+            <div class="types"><span class="type psychic">Psychic</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1666 - 1747</strong></div>
+            <div class="cp-boost">CP 2083 - 2184</div>
+            <div class="weather-row"><span class="weather">Windy</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- APR 22-28 -->
+    <section class="period" id="apr22-28">
+      <div class="period-head">
+        <div class="period-left">
+          <div class="tag-row">
+            <span class="status-tag tag-upcoming">UPCOMING</span>
+          </div>
+          <h2>Tapu Koko and Mega Sharpedo in Raids</h2>
+          <p>Tapu Koko in 5-star raids; Mega Sharpedo in Mega raids</p>
+        </div>
+        <div class="period-right">
+          STARTS: Apr 22, 2026, 6:00 AM<br>
+          ENDS: Apr 28, 2026, 10:00 PM
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head five">
+          <div>5-Star Raids</div>
+          <div>👿 👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/tapu-koko.png" alt="Tapu Koko"><span class="sparkle">✦</span></div>
+            <div class="name">Tapu Koko</div>
+            <div class="types">
+              <span class="type electric">Electric</span>
+              <span class="type fairy">Fairy</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1730 - 1810</strong></div>
+            <div class="cp-boost">CP 2162 - 2263</div>
+            <div class="weather-row">
+              <span class="weather">Rainy</span>
+              <span class="weather">Cloudy</span>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head mega">
+          <div>Mega Raids</div>
+          <div>👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/mega-sharpedo.png" alt="Mega Sharpedo"><span class="sparkle">✦</span></div>
+            <div class="name">Mega Sharpedo</div>
+            <div class="types">
+              <span class="type water">Water</span>
+              <span class="type dark">Dark</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>?</strong></div>
+            <div class="cp-boost">CP ?</div>
+            <div class="weather-row">
+              <span class="weather">Rainy</span>
+              <span class="weather">Fog</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- APR 29 - MAY 5 -->
+    <section class="period" id="apr29-may5">
+      <div class="period-head">
+        <div class="period-left">
+          <div class="tag-row">
+            <span class="status-tag tag-upcoming">UPCOMING</span>
+          </div>
+          <h2>Tapu Lele and Mega Banette in Raids</h2>
+          <p>Tapu Lele in 5-star raids; Mega Banette in Mega raids</p>
+        </div>
+        <div class="period-right">
+          STARTS: Apr 29, 2026, 6:00 AM<br>
+          ENDS: May 5, 2026, 10:00 PM
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head five">
+          <div>5-Star Raids</div>
+          <div>👿 👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/tapu-lele.png" alt="Tapu Lele"><span class="sparkle">✦</span></div>
+            <div class="name">Tapu Lele</div>
+            <div class="types">
+              <span class="type psychic">Psychic</span>
+              <span class="type fairy">Fairy</span>
+            </div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1912 - 1996</strong></div>
+            <div class="cp-boost">CP 2390 - 2496</div>
+            <div class="weather-row">
+              <span class="weather">Windy</span>
+              <span class="weather">Cloudy</span>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier-section">
+        <div class="tier-head mega">
+          <div>Mega Raids</div>
+          <div>👿 👿 👿 👿</div>
+        </div>
+        <div class="tier-grid">
+          <article class="card">
+            <div class="img-box"><img src="images/mega-banette.png" alt="Mega Banette"><span class="sparkle">✦</span></div>
+            <div class="name">Mega Banette</div>
+            <div class="types"><span class="type ghost">Ghost</span></div>
+            <div class="divider"></div>
+            <div class="cp-main">CP <strong>1244 - 1313</strong></div>
+            <div class="cp-boost">CP 1555 - 1642</div>
+            <div class="weather-row"><span class="weather">Fog</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
   </div>
 </body>
 </html>
