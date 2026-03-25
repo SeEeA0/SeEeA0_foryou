@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>레이드 어드민 입력</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:#edf3fb;
+    color:#1f2f46;
+  }
+
+  :root{
+    --bg:#edf3fb;
+    --card:#ffffff;
+    --card-soft:#f8fbff;
+    --line:#d8e3f2;
+    --line-strong:#c9d8eb;
+    --text:#1f2f46;
+    --muted:#7486a3;
+
+    --blue:#3567d7;
+    --blue-soft:#e7f0ff;
+
+    --purple:#7c58e9;
+    --purple-soft:#efe7ff;
+
+    --pink:#d85b85;
+    --pink-soft:#ffe8f0;
+
+    --yellow:#b88818;
+    --yellow-soft:#fff1c9;
+
+    --green:#49a66b;
+    --green-soft:#e7f5eb;
+
+    --gray:#67768f;
+    --gray-soft:#f2f5fa;
+
+    --danger:#e15b76;
+    --danger-soft:#fff0f3;
+
+    --success:#2e9f63;
+    --success-soft:#ebfff4;
+
+    --shadow:0 18px 40px rgba(43,67,110,.08);
+  }
+
+  .wrap{
+    max-width:1480px;
+    margin:0 auto;
+    padding:20px 16px 48px;
+  }
+
+  .hero{
+    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
+    color:#fff;
+    border-radius:32px;
+    padding:30px 28px 26px;
+    box-shadow:0 24px 60px rgba(70,90,190,.22);
+    position:relative;
+    overflow:hidden;
+    margin-bottom:18px;
+  }
+
+  .hero:before,
+  .hero:after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.10);
+  }
+
+  .hero:before{
+    width:240px;height:240px;right:-40px;top:-40px;
+  }
+
+  .hero:after{
+    width:160px;height:160px;left:42%;bottom:-70px;
+  }
+
+  .hero-inner{
+    position:relative;z-index:1;
+  }
+
+  .hero-kicker{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    padding:0 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    font-size:13px;
+    font-weight:900;
+  }
+
+  .hero-title{
+    margin-top:16px;
+    font-size:38px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    line-height:1.08;
+  }
+
+  .hero-sub{
+    margin-top:12px;
+    max-width:920px;
+    font-size:15px;
+    line-height:1.6;
+    font-weight:700;
+    color:rgba(255,255,255,.92);
+  }
+
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:16px;
+  }
+
+  .hero-pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:36px;
+    padding:0 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    font-size:12px;
+    font-weight:900;
+  }
+
+  .app{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .section{
+    background:rgba(255,255,255,.84);
+    border:1px solid var(--line);
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(8px);
+    margin-bottom:18px;
+  }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:16px;
+    padding:22px 24px 16px;
+    border-bottom:1px solid #e4edf8;
+    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+  }
+
+  .section-title{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .section-sub{
+    margin-top:8px;
+    font-size:13px;
+    color:var(--muted);
+    font-weight:700;
+    line-height:1.5;
+  }
+
+  .section-body{
+    padding:18px;
+  }
+
+  .tiny-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    padding:0 14px;
+    border-radius:999px;
+    background:#f1f6ff;
+    border:1px solid var(--line);
+    color:#58719a;
+    font-size:12px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  button, .btn{
+    border:none;
+    cursor:pointer;
+    font:inherit;
+    text-decoration:none;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    padding:0 16px;
+    border-radius:14px;
+    background:#f5f9ff;
+    border:1px solid #d8e3f2;
+    color:#3d5578;
+    font-weight:900;
+    transition:.16s ease;
+  }
+
+  .btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 20px rgba(55,80,127,.08);
+  }
+
+  .btn.primary{
+    background:#3567d7;
+    border-color:#3567d7;
+    color:#fff;
+  }
+
+  .btn.purple{
+    background:#7c58e9;
+    border-color:#7c58e9;
+    color:#fff;
+  }
+
+  .btn.green{
+    background:#2f9f63;
+    border-color:#2f9f63;
+    color:#fff;
+  }
+
+  .btn.red{
+    background:#fff3f5;
+    border:1px solid #f2c8d2;
+    color:#d34d69;
+  }
+
+  .btn.gray{
+    background:#f4f7fb;
+    color:#556987;
+  }
+
+  .form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .form-grid.three{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .field.full{
+    grid-column:1 / -1;
+  }
+
+  .label{
+    font-size:13px;
+    font-weight:900;
+    color:#455976;
+  }
+
+  .hint{
+    font-size:11px;
+    color:#8797ae;
+    font-weight:700;
+    line-height:1.45;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="time"],
+  input[type="url"],
+  input[type="number"],
+  select,
+  textarea{
+    width:100%;
+    min-height:46px;
+    border-radius:14px;
+    border:1px solid #d8e3f2;
+    background:#fff;
+    padding:12px 14px;
+    font:inherit;
+    color:#1f2f46;
+    outline:none;
+  }
+
+  textarea{
+    min-height:88px;
+    resize:vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus{
+    border-color:#9fbbef;
+    box-shadow:0 0 0 4px rgba(76,123,224,.08);
+  }
+
+  .inline-checks{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 12px;
+    align-items:center;
+    min-height:46px;
+    padding:10px 12px;
+    border-radius:14px;
+    border:1px solid #d8e3f2;
+    background:#fff;
+  }
+
+  .inline-checks label{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    font-weight:800;
+    color:#425776;
+  }
+
+  .sub-card{
+    background:#f8fbff;
+    border:1px solid #dfe8f6;
+    border-radius:20px;
+    padding:14px;
+  }
+
+  .sub-card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+
+  .sub-card-title{
+    font-size:14px;
+    font-weight:900;
+    color:#30445f;
+  }
+
+  .repeat-list,
+  .record-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .mini-row{
+    display:grid;
+    grid-template-columns:1fr 1fr auto;
+    gap:10px;
+    align-items:end;
+  }
+
+  .mini-row.type{
+    grid-template-columns:1fr 1fr 110px;
+  }
+
+  .mini-box{
+    background:#fff;
+    border:1px solid #dde7f5;
+    border-radius:16px;
+    padding:12px;
+  }
+
+  .status{
+    display:none;
+    margin-top:14px;
+    padding:14px 16px;
+    border-radius:16px;
+    font-size:13px;
+    font-weight:900;
+    line-height:1.5;
+  }
+
+  .status.show{ display:block; }
+  .status.success{
+    background:var(--success-soft);
+    color:var(--success);
+    border:1px solid #c9f0d9;
+  }
+  .status.error{
+    background:var(--danger-soft);
+    color:var(--danger);
+    border:1px solid #f1c8d2;
+  }
+
+  .list-toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:14px;
+  }
+
+  .search{
+    width:100%;
+    min-height:46px;
+    border-radius:14px;
+    border:1px solid #d8e3f2;
+    background:#fff;
+    padding:12px 14px;
+    font:inherit;
+  }
+
+  .raid-item{
+    background:#fff;
+    border:1px solid #dce7f4;
+    border-radius:22px;
+    padding:14px;
+    display:grid;
+    grid-template-columns:90px 1fr auto;
+    gap:14px;
+    align-items:start;
+  }
+
+  .raid-item-thumb{
+    width:90px;
+    height:90px;
+    border-radius:20px;
+    background:#f3f7ff;
+    border:1px solid #dce6f5;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .raid-item-thumb img{
+    width:70px;
+    height:70px;
+    object-fit:contain;
+  }
+
+  .raid-item-main{
+    min-width:0;
+  }
+
+  .raid-item-name{
+    font-size:20px;
+    font-weight:900;
+    line-height:1.15;
+    letter-spacing:-.02em;
+  }
+
+  .raid-item-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:30px;
+    padding:0 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .pill.blue{background:#e7f0ff;color:#3567d7}
+  .pill.purple{background:#efe7ff;color:#7c58e9}
+  .pill.pink{background:#ffe8f0;color:#d85b85}
+  .pill.yellow{background:#fff1c9;color:#b88818}
+  .pill.green{background:#e7f5eb;color:#49a66b}
+  .pill.gray{background:#f2f5fa;color:#67768f}
+
+  .raid-item-desc{
+    margin-top:10px;
+    font-size:13px;
+    color:#7688a5;
+    line-height:1.5;
+    font-weight:700;
+  }
+
+  .raid-item-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+
+  .icon-preview{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-height:46px;
+    padding:10px 12px;
+    border-radius:14px;
+    border:1px solid #d8e3f2;
+    background:#fff;
+  }
+
+  .icon-preview img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    padding:3px;
+    flex-shrink:0;
+  }
+
+  .muted-box{
+    background:#f8fbff;
+    border:1px dashed #dbe6f4;
+    border-radius:18px;
+    padding:14px;
+    font-size:12px;
+    color:#7e90ab;
+    line-height:1.6;
+    font-weight:700;
+  }
+
+  .preview-card{
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
+    border:1.5px solid #dce7f4;
+    border-radius:24px;
+    padding:16px;
+  }
+
+  .preview-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+
+  .preview-title{
+    font-size:18px;
+    font-weight:900;
+  }
+
+  .preview-body{
+    display:grid;
+    grid-template-columns:86px 1fr;
+    gap:14px;
+  }
+
+  .preview-thumb{
+    width:86px;
+    height:86px;
+    border-radius:22px;
+    background:#f3f7ff;
+    border:1px solid #dce6f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .preview-thumb img{
+    width:66px;
+    height:66px;
+    object-fit:contain;
+  }
+
+  .preview-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  .preview-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:12px;
+  }
+
+  .preview-box{
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    border-radius:16px;
+    padding:10px 12px;
+  }
+
+  .preview-label{
+    font-size:11px;
+    color:#7386a3;
+    font-weight:900;
+  }
+
+  .preview-value{
+    margin-top:5px;
+    font-size:14px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1.3;
+  }
+
+  .preview-strategy{
+    margin-top:12px;
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    border-radius:16px;
+    padding:12px;
+  }
+
+  .strategy-items{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  .strategy-item{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    min-height:34px;
+    padding:5px 10px 5px 5px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
+  }
+
+  .strategy-item img{
+    width:22px;
+    height:22px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    padding:3px;
+  }
+
+  .empty-state{
+    background:#fbfdff;
+    border:1px dashed #dce7f4;
+    border-radius:20px;
+    padding:24px 16px;
+    text-align:center;
+    color:#8293ad;
+    font-size:14px;
+    font-weight:800;
+  }
+
+  .helper-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .small-table{
+    width:100%;
+    border-collapse:collapse;
+  }
+
+  .small-table th,
+  .small-table td{
+    padding:10px 8px;
+    border-bottom:1px solid #e6eef9;
+    text-align:left;
+    font-size:12px;
+    vertical-align:top;
+  }
+
+  .small-table th{
+    color:#6b7f9c;
+    font-weight:900;
+  }
+
+  .small-table td{
+    color:#31435d;
+    font-weight:700;
+    line-height:1.5;
+  }
+
+  @media (max-width:1200px){
+    .app{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media (max-width:920px){
+    .form-grid,
+    .form-grid.three,
+    .helper-grid{
+      grid-template-columns:1fr;
+    }
+
+    .mini-row,
+    .mini-row.type{
+      grid-template-columns:1fr;
+    }
+
+    .raid-item{
+      grid-template-columns:1fr;
+    }
+
+    .raid-item-actions{
+      justify-content:flex-start;
+    }
+
+    .preview-body{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media (max-width:768px){
+    .hero{
+      padding:24px 20px 22px;
+      border-radius:26px;
+    }
+
+    .hero-title{
+      font-size:30px;
+    }
+
+    .section-head{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .wrap{
+      padding:16px 12px 40px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">🛠️ Pokémon GO Admin</div>
+      <div class="hero-title">레이드 입력 어드민</div>
+      <div class="hero-sub">
+        여기서 입력한 정보를 저장하면 메인, 지금 레이드, 주간 일정표, 월간 일정, 상세 일정 페이지에서 공통으로 불러와서 표시할 수 있게 만드는 기준 페이지입니다.
+        현재 버전은 <b>localStorage 저장 방식</b>이라서 바로 테스트하기 좋습니다.
+      </div>
+      <div class="hero-meta">
+        <span class="hero-pill">저장키 : pogoRaidAdminData</span>
+        <span class="hero-pill">기본 방식 : 브라우저 저장</span>
+        <span class="hero-pill">나중에 JSON 방식으로 확장 가능</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="app">
+    <div class="left-col">
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="section-title">입력 폼</div>
+            <div class="section-sub">보스/이벤트 하나를 입력하거나 수정하는 영역입니다. 저장 후 오른쪽 목록과 미리보기에서 바로 확인됩니다.</div>
+          </div>
+          <div class="tiny-badge" id="modeBadge">새 일정 입력</div>
+        </div>
+
+        <div class="section-body">
+          <form id="raidForm">
+
+            <div class="form-grid">
+              <div class="field">
+                <label class="label" for="name">이름</label>
+                <input id="name" name="name" type="text" placeholder="예: 레지드래고 / 패션 레이드 데이" required />
+              </div>
+
+              <div class="field">
+                <label class="label" for="label">구분</label>
+                <select id="label" name="label" required>
+                  <option value="전설">전설</option>
+                  <option value="메가">메가</option>
+                  <option value="그림자">그림자</option>
+                  <option value="레이드 아워">레이드 아워</option>
+                  <option value="레이드 데이">레이드 데이</option>
+                  <option value="이벤트">이벤트</option>
+                  <option value="커뮤니티 데이">커뮤니티 데이</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="label" for="type">색상 타입</label>
+                <select id="type" name="type" required>
+                  <option value="blue">blue</option>
+                  <option value="purple">purple</option>
+                  <option value="pink">pink</option>
+                  <option value="yellow">yellow</option>
+                  <option value="green">green</option>
+                  <option value="gray">gray</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="label" for="image">포켓몬/이벤트 이미지 URL</label>
+                <input id="image" name="image" type="url" placeholder="./images/regidrago.png 또는 https://..." />
+              </div>
+
+              <div class="field">
+                <label class="label" for="startDate">시작일</label>
+                <input id="startDate" name="startDate" type="date" required />
+              </div>
+
+              <div class="field">
+                <label class="label" for="endDate">종료일</label>
+                <input id="endDate" name="endDate" type="date" required />
+              </div>
+
+              <div class="field">
+                <label class="label" for="startTime">시작 시간</label>
+                <input id="startTime" name="startTime" type="time" />
+                <div class="hint">비워두면 기본값 06:00 AM</div>
+              </div>
+
+              <div class="field">
+                <label class="label" for="endTime">종료 시간</label>
+                <input id="endTime" name="endTime" type="time" />
+                <div class="hint">비워두면 기본값 10:00 PM</div>
+              </div>
+
+              <div class="field">
+                <label class="label" for="cp">일반 CP</label>
+                <input id="cp" name="cp" type="text" placeholder="예: 1614 - 1699" />
+              </div>
+
+              <div class="field">
+                <label class="label" for="boostCp">부스트 CP</label>
+                <input id="boostCp" name="boostCp" type="text" placeholder="예: 2017 - 2124" />
+              </div>
+
+              <div class="field">
+                <label class="label" for="boostWeather">부스트 날씨</label>
+                <select id="boostWeather" name="boostWeather">
+                  <option value="">선택 안함</option>
+                  <option value="맑음">맑음</option>
+                  <option value="비">비</option>
+                  <option value="약간구름">약간구름</option>
+                  <option value="흐림">흐림</option>
+                  <option value="바람">바람</option>
+                  <option value="눈">눈</option>
+                  <option value="안개">안개</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="label" for="boostIcon">부스트 아이콘 URL</label>
+                <input id="boostIcon" name="boostIcon" type="url" placeholder="./icons/weather-windy.png" />
+              </div>
+
+              <div class="field full">
+                <label class="label" for="desc">설명</label>
+                <input id="desc" name="desc" type="text" placeholder="예: 현재 전설 레이드 메인 보스" />
+              </div>
+
+              <div class="field full">
+                <label class="label" for="note">메모 / 참고 문구</label>
+                <textarea id="note" name="note" placeholder="예: 수요일 한정 진행 / 주말 그림자 일정 포함"></textarea>
+              </div>
+
+              <div class="field full">
+                <label class="label">표시 페이지</label>
+                <div class="inline-checks">
+                  <label><input type="checkbox" name="showPages" value="index" checked> 메인</label>
+                  <label><input type="checkbox" name="showPages" value="raid-now" checked> 지금 레이드</label>
+                  <label><input type="checkbox" name="showPages" value="weekly" checked> 주간 일정표</label>
+                  <label><input type="checkbox" name="showPages" value="monthly" checked> 월간 일정</label>
+                  <label><input type="checkbox" name="showPages" value="detail" checked> 상세 일정</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="sub-card" style="margin-top:16px;">
+              <div class="sub-card-head">
+                <div class="sub-card-title">공략 타입 입력</div>
+                <button class="btn gray" type="button" id="addTypeBtn">+ 타입 추가</button>
+              </div>
+              <div class="hint" style="margin-bottom:10px;">
+                예: 얼음 / 드래곤 / 페어리, 그리고 원형 타입 아이콘 URL
+              </div>
+              <div class="repeat-list" id="strategyTypeList"></div>
+            </div>
+
+            <div class="toolbar" style="margin-top:16px;">
+              <button class="btn primary" type="submit" id="saveBtn">저장하기</button>
+              <button class="btn purple" type="button" id="resetBtn">새 일정으로 초기화</button>
+              <button class="btn green" type="button" id="duplicateBtn">현재 내용 복제</button>
+              <button class="btn gray" type="button" id="fillSampleBtn">샘플 넣기</button>
+            </div>
+
+            <div class="status" id="formStatus"></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="section-title">저장된 일정 목록</div>
+            <div class="section-sub">수정 / 삭제 / 복제 / 정렬을 여기서 할 수 있습니다.</div>
+          </div>
+          <div class="tiny-badge" id="recordCountBadge">0건</div>
+        </div>
+
+        <div class="section-body">
+          <div class="list-toolbar">
+            <input class="search" id="searchInput" type="text" placeholder="이름, 구분, 설명, 메모로 검색" />
+          </div>
+
+          <div class="toolbar" style="margin-bottom:14px;">
+            <button class="btn gray" type="button" id="sortDateBtn">날짜순 정렬</button>
+            <button class="btn gray" type="button" id="sortNameBtn">이름순 정렬</button>
+            <button class="btn gray" type="button" id="exportBtn">JSON 내보내기</button>
+            <button class="btn gray" type="button" id="importBtn">JSON 불러오기</button>
+            <button class="btn red" type="button" id="clearAllBtn">전체 삭제</button>
+            <input id="importFile" type="file" accept=".json,application/json" hidden />
+          </div>
+
+          <div class="record-list" id="recordList"></div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="right-col">
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="section-title">실시간 미리보기</div>
+            <div class="section-sub">지금 입력한 내용이 카드 형태에서 어떻게 보일지 확인하는 영역입니다.</div>
+          </div>
+          <div class="tiny-badge">PREVIEW</div>
+        </div>
+
+        <div class="section-body">
+          <div id="previewWrap"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="section-title">아이콘/경로 체크</div>
+            <div class="section-sub">부스트 아이콘과 타입 아이콘 경로가 맞는지 미리 확인할 수 있습니다.</div>
+          </div>
+          <div class="tiny-badge">ICON CHECK</div>
+        </div>
+
+        <div class="section-body">
+          <div class="form-grid">
+            <div class="field">
+              <label class="label" for="checkBoostIcon">부스트 아이콘 테스트</label>
+              <input id="checkBoostIcon" type="url" placeholder="./icons/weather-windy.png" />
+            </div>
+            <div class="field">
+              <label class="label" for="checkTypeIcon">타입 아이콘 테스트</label>
+              <input id="checkTypeIcon" type="url" placeholder="./icons/type-dragon.png" />
+            </div>
+          </div>
+
+          <div class="helper-grid" style="margin-top:14px;">
+            <div class="icon-preview" id="boostPreviewBox">
+              <img id="boostPreviewImg" alt="">
+              <span id="boostPreviewText">부스트 아이콘 미리보기</span>
+            </div>
+            <div class="icon-preview" id="typePreviewBox">
+              <img id="typePreviewImg" alt="">
+              <span id="typePreviewText">타입 아이콘 미리보기</span>
+            </div>
+          </div>
+
+          <div class="muted-box" style="margin-top:14px;">
+            아이콘은 예를 들어 아래처럼 넣으면 됩니다.<br>
+            <b>부스트:</b> <code>./icons/weather-windy.png</code><br>
+            <b>타입:</b> <code>./icons/type-dragon.png</code><br>
+            실제 페이지와 같은 경로 규칙을 맞춰야 정상적으로 보입니다.
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="section-title">연동 가이드</div>
+            <div class="section-sub">다른 페이지에서 이 저장 데이터를 불러올 때 쓸 핵심 구조입니다.</div>
+          </div>
+          <div class="tiny-badge">GUIDE</div>
+        </div>
+
+        <div class="section-body">
+          <div class="muted-box">
+            저장 키는 <b>pogoRaidAdminData</b> 입니다.<br>
+            다른 페이지에서 불러올 때 기본 코드는 아래 구조를 쓰면 됩니다.
+          </div>
+
+          <div class="sub-card" style="margin-top:14px;">
+            <div class="sub-card-title" style="margin-bottom:10px;">불러오기 예시</div>
+            <pre style="margin:0;white-space:pre-wrap;word-break:break-word;font-size:12px;line-height:1.6;color:#31435d;background:#fff;border:1px solid #dde7f5;border-radius:16px;padding:14px;">const saved = localStorage.getItem('pogoRaidAdminData');
+const raidData = saved ? JSON.parse(saved) : [];
+// 여기서 날짜 기준으로 필터링해서
+// index / raid-now / weekly / monthly / detail 페이지에 뿌리면 됩니다.</pre>
+          </div>
+
+          <div class="sub-card" style="margin-top:14px;">
+            <div class="sub-card-title" style="margin-bottom:10px;">저장 데이터 필드 설명</div>
+            <table class="small-table">
+              <thead>
+                <tr>
+                  <th>필드명</th>
+                  <th>설명</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>id</td><td>고유 식별값</td></tr>
+                <tr><td>name</td><td>이름</td></tr>
+                <tr><td>label</td><td>전설 / 메가 / 그림자 / 레이드 아워 / 레이드 데이 / 이벤트 / 커뮤니티 데이</td></tr>
+                <tr><td>type</td><td>blue / purple / pink / yellow / green / gray</td></tr>
+                <tr><td>image</td><td>메인 이미지 URL</td></tr>
+                <tr><td>startDate / endDate</td><td>일정 구간</td></tr>
+                <tr><td>startTime / endTime</td><td>시간</td></tr>
+                <tr><td>cp / boostCp</td><td>일반 CP / 부스트 CP</td></tr>
+                <tr><td>boostWeather / boostIcon</td><td>부스트 날씨명 / 아이콘 경로</td></tr>
+                <tr><td>strategyTypes</td><td>공략 타입 배열</td></tr>
+                <tr><td>showPages</td><td>노출할 페이지 목록</td></tr>
+                <tr><td>desc / note</td><td>설명 / 메모</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'pogoRaidAdminData';
+
+  let editingId = null;
+  let records = [];
+
+  const raidForm = document.getElementById('raidForm');
+  const strategyTypeList = document.getElementById('strategyTypeList');
+  const formStatus = document.getElementById('formStatus');
+  const recordList = document.getElementById('recordList');
+  const recordCountBadge = document.getElementById('recordCountBadge');
+  const modeBadge = document.getElementById('modeBadge');
+  const previewWrap = document.getElementById('previewWrap');
+  const searchInput = document.getElementById('searchInput');
+  const importFile = document.getElementById('importFile');
+
+  function uid(){
+    return `raid_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+  }
+
+  function escapeHtml(str=''){
+    return String(str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function loadRecords(){
+    try{
+      const saved = localStorage.getItem(STORAGE_KEY);
+      records = saved ? JSON.parse(saved) : [];
+      if(!Array.isArray(records)) records = [];
+    }catch(e){
+      records = [];
+    }
+  }
+
+  function saveRecords(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  }
+
+  function showStatus(message, type='success'){
+    formStatus.textContent = message;
+    formStatus.className = `status show ${type}`;
+    setTimeout(() => {
+      formStatus.classList.remove('show');
+    }, 2500);
+  }
+
+  function resetStatus(){
+    formStatus.className = 'status';
+    formStatus.textContent = '';
+  }
+
+  function toAmpm(time24){
+    if(!time24) return '';
+    const [hh, mm] = time24.split(':').map(Number);
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return `${String(h12).padStart(2,'0')}:${String(mm).padStart(2,'0')} ${suffix}`;
+  }
+
+  function getDisplayTime(item){
+    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
+    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
+    return `${start} ~ ${end}`;
+  }
+
+  function typeClassForLabel(label){
+    switch(label){
+      case '전설': return 'blue';
+      case '메가': return 'purple';
+      case '그림자': return 'pink';
+      case '레이드 아워':
+      case '레이드 데이': return 'yellow';
+      case '이벤트':
+      case '커뮤니티 데이': return 'green';
+      default: return 'gray';
+    }
+  }
+
+  function createTypeRow(data = {name:'', icon:''}){
+    const row = document.createElement('div');
+    row.className = 'mini-row type';
+    row.innerHTML = `
+      <div class="field" style="margin:0;">
+        <label class="label">타입명</label>
+        <input type="text" class="strategy-name" placeholder="예: 얼음" value="${escapeHtml(data.name)}">
+      </div>
+      <div class="field" style="margin:0;">
+        <label class="label">아이콘 URL</label>
+        <input type="url" class="strategy-icon" placeholder="./icons/type-ice.png" value="${escapeHtml(data.icon)}">
+      </div>
+      <button class="btn red remove-type-btn" type="button">삭제</button>
+    `;
+    row.querySelector('.remove-type-btn').addEventListener('click', () => {
+      row.remove();
+      renderPreview();
+    });
+    row.querySelector('.strategy-name').addEventListener('input', renderPreview);
+    row.querySelector('.strategy-icon').addEventListener('input', renderPreview);
+    return row;
+  }
+
+  function addTypeRow(data){
+    strategyTypeList.appendChild(createTypeRow(data));
+  }
+
+  function getCheckedShowPages(){
+    return Array.from(raidForm.querySelectorAll('input[name="showPages"]:checked')).map(el => el.value);
+  }
+
+  function getStrategyTypesFromForm(){
+    const rows = Array.from(strategyTypeList.children);
+    return rows.map(row => ({
+      name: row.querySelector('.strategy-name').value.trim(),
+      icon: row.querySelector('.strategy-icon').value.trim()
+    })).filter(item => item.name || item.icon);
+  }
+
+  function getFormData(){
+    const formData = new FormData(raidForm);
+    const label = formData.get('label')?.trim() || '';
+    return {
+      id: editingId || uid(),
+      name: formData.get('name')?.trim() || '',
+      label,
+      type: formData.get('type')?.trim() || typeClassForLabel(label),
+      image: formData.get('image')?.trim() || '',
+      startDate: formData.get('startDate')?.trim() || '',
+      endDate: formData.get('endDate')?.trim() || '',
+      startTime: formData.get('startTime')?.trim() || '',
+      endTime: formData.get('endTime')?.trim() || '',
+      cp: formData.get('cp')?.trim() || '',
+      boostCp: formData.get('boostCp')?.trim() || '',
+      boostWeather: formData.get('boostWeather')?.trim() || '',
+      boostIcon: formData.get('boostIcon')?.trim() || '',
+      desc: formData.get('desc')?.trim() || '',
+      note: formData.get('note')?.trim() || '',
+      showPages: getCheckedShowPages(),
+      strategyTypes: getStrategyTypesFromForm(),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  function validateData(item){
+    if(!item.name) return '이름을 입력해 주세요.';
+    if(!item.label) return '구분을 선택해 주세요.';
+    if(!item.startDate) return '시작일을 입력해 주세요.';
+    if(!item.endDate) return '종료일을 입력해 주세요.';
+    if(item.startDate > item.endDate) return '종료일은 시작일보다 빠를 수 없습니다.';
+    if(item.showPages.length === 0) return '표시 페이지를 1개 이상 선택해 주세요.';
+    return '';
+  }
+
+  function resetFormToNew(){
+    editingId = null;
+    raidForm.reset();
+    strategyTypeList.innerHTML = '';
+    addTypeRow();
+    modeBadge.textContent = '새 일정 입력';
+    resetStatus();
+    renderPreview();
+  }
+
+  function fillForm(item){
+    editingId = item.id;
+    raidForm.name.value = item.name || '';
+    raidForm.label.value = item.label || '전설';
+    raidForm.type.value = item.type || typeClassForLabel(item.label || '전설');
+    raidForm.image.value = item.image || '';
+    raidForm.startDate.value = item.startDate || '';
+    raidForm.endDate.value = item.endDate || '';
+    raidForm.startTime.value = item.startTime || '';
+    raidForm.endTime.value = item.endTime || '';
+    raidForm.cp.value = item.cp || '';
+    raidForm.boostCp.value = item.boostCp || '';
+    raidForm.boostWeather.value = item.boostWeather || '';
+    raidForm.boostIcon.value = item.boostIcon || '';
+    raidForm.desc.value = item.desc || '';
+    raidForm.note.value = item.note || '';
+
+    Array.from(raidForm.querySelectorAll('input[name="showPages"]')).forEach(el => {
+      el.checked = (item.showPages || []).includes(el.value);
+    });
+
+    strategyTypeList.innerHTML = '';
+    if(item.strategyTypes?.length){
+      item.strategyTypes.forEach(type => addTypeRow(type));
+    }else{
+      addTypeRow();
+    }
+
+    modeBadge.textContent = '일정 수정 중';
+    renderPreview();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderRecordList(){
+    const keyword = searchInput.value.trim().toLowerCase();
+    const filtered = records.filter(item => {
+      const target = [
+        item.name,
+        item.label,
+        item.desc,
+        item.note,
+        item.boostWeather,
+        ...(item.strategyTypes || []).map(v => v.name)
+      ].join(' ').toLowerCase();
+      return target.includes(keyword);
+    });
+
+    recordCountBadge.textContent = `${filtered.length}건`;
+
+    if(!filtered.length){
+      recordList.innerHTML = `<div class="empty-state">저장된 일정이 없습니다.</div>`;
+      return;
+    }
+
+    recordList.innerHTML = filtered.map(item => `
+      <article class="raid-item">
+        <div class="raid-item-thumb">
+          ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : `<span style="font-size:32px;">🖼️</span>`}
+        </div>
+
+        <div class="raid-item-main">
+          <div class="raid-item-name">${escapeHtml(item.name)}</div>
+          <div class="raid-item-meta">
+            <span class="pill ${escapeHtml(item.type || 'gray')}">${escapeHtml(item.label)}</span>
+            <span class="pill gray">${escapeHtml(item.startDate)} ~ ${escapeHtml(item.endDate)}</span>
+            ${item.boostWeather ? `<span class="pill gray">${escapeHtml(item.boostWeather)}</span>` : ``}
+          </div>
+          <div class="raid-item-desc">
+            ${escapeHtml(item.desc || '설명 없음')}<br>
+            ${item.cp ? `일반 CP: ${escapeHtml(item.cp)} / ` : ``}
+            ${item.boostCp ? `부스트 CP: ${escapeHtml(item.boostCp)} / ` : ``}
+            표시 페이지: ${(item.showPages || []).join(', ')}
+          </div>
+        </div>
+
+        <div class="raid-item-actions">
+          <button class="btn gray action-edit" data-id="${item.id}" type="button">수정</button>
+          <button class="btn gray action-duplicate" data-id="${item.id}" type="button">복제</button>
+          <button class="btn red action-delete" data-id="${item.id}" type="button">삭제</button>
+        </div>
+      </article>
+    `).join('');
+
+    Array.from(document.querySelectorAll('.action-edit')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = records.find(v => v.id === btn.dataset.id);
+        if(item) fillForm(item);
+      });
+    });
+
+    Array.from(document.querySelectorAll('.action-duplicate')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = records.find(v => v.id === btn.dataset.id);
+        if(!item) return;
+        const duplicated = JSON.parse(JSON.stringify(item));
+        duplicated.id = uid();
+        duplicated.name = `${duplicated.name} 복사본`;
+        duplicated.updatedAt = new Date().toISOString();
+        records.unshift(duplicated);
+        saveRecords();
+        renderRecordList();
+        showStatus('복제되었습니다.');
+      });
+    });
+
+    Array.from(document.querySelectorAll('.action-delete')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ok = confirm('이 일정을 삭제할까요?');
+        if(!ok) return;
+        records = records.filter(v => v.id !== btn.dataset.id);
+        saveRecords();
+        renderRecordList();
+        renderPreview();
+        showStatus('삭제되었습니다.');
+        if(editingId === btn.dataset.id) resetFormToNew();
+      });
+    });
+  }
+
+  function getPreviewData(){
+    return getFormData();
+  }
+
+  function renderPreview(){
+    const item = getPreviewData();
+
+    if(!item.name && !item.label && !item.startDate){
+      previewWrap.innerHTML = `<div class="empty-state">왼쪽 폼에 내용을 입력하면 여기에 카드 미리보기가 나타납니다.</div>`;
+      return;
+    }
+
+    previewWrap.innerHTML = `
+      <div class="preview-card">
+        <div class="preview-top">
+          <span class="pill ${escapeHtml(item.type || 'gray')}">${escapeHtml(item.label || '구분')}</span>
+          <span class="pill gray">${escapeHtml(item.startDate || '시작일')} ~ ${escapeHtml(item.endDate || '종료일')}</span>
+        </div>
+
+        <div class="preview-title">${escapeHtml(item.name || '이름')}</div>
+
+        <div class="preview-body" style="margin-top:14px;">
+          <div class="preview-thumb">
+            ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : `<span style="font-size:30px;">🖼️</span>`}
+          </div>
+
+          <div>
+            <div class="hint">${escapeHtml(item.desc || '설명')}</div>
+
+            <div class="preview-grid">
+              <div class="preview-box">
+                <div class="preview-label">일반 CP</div>
+                <div class="preview-value">${escapeHtml(item.cp || '-')}</div>
+              </div>
+
+              <div class="preview-box">
+                <div class="preview-label">부스트</div>
+                <div class="preview-value" style="display:flex;align-items:center;gap:8px;">
+                  ${item.boostIcon ? `<img src="${escapeHtml(item.boostIcon)}" alt="" style="width:20px;height:20px;object-fit:contain;border-radius:50%;background:#f4f8ff;border:1px solid #dce6f4;padding:2px;">` : ``}
+                  <span>${escapeHtml(item.boostWeather || '-')}</span>
+                </div>
+                <div class="preview-value" style="margin-top:6px;">${escapeHtml(item.boostCp || '-')}</div>
+              </div>
+
+              <div class="preview-box">
+                <div class="preview-label">시간</div>
+                <div class="preview-value">${escapeHtml(getDisplayTime(item))}</div>
+              </div>
+
+              <div class="preview-box">
+                <div class="preview-label">표시 페이지</div>
+                <div class="preview-value">${escapeHtml((item.showPages || []).join(', ') || '-')}</div>
+              </div>
+            </div>
+
+            <div class="preview-strategy">
+              <div class="preview-label">공략</div>
+              <div class="strategy-items">
+                ${
+                  item.strategyTypes?.length
+                    ? item.strategyTypes.map(type => `
+                      <span class="strategy-item">
+                        ${type.icon ? `<img src="${escapeHtml(type.icon)}" alt="${escapeHtml(type.name)}">` : `<span style="width:22px;height:22px;border-radius:50%;background:#f4f8ff;border:1px solid #dce6f4;display:inline-flex;align-items:center;justify-content:center;font-size:11px;">?</span>`}
+                        <span>${escapeHtml(type.name || '타입')}</span>
+                      </span>
+                    `).join('')
+                    : `<span class="hint">공략 타입 없음</span>`
+                }
+              </div>
+            </div>
+
+            <div class="detail-note" style="margin-top:10px;color:#8a98af;font-size:13px;font-weight:700;line-height:1.5;">
+              ${escapeHtml(item.note || '메모 없음')}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function collectSample(){
+    return {
+      id: uid(),
+      name:'레지드래고',
+      label:'전설',
+      type:'blue',
+      image:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/895.png',
+      startDate:'2026-04-01',
+      endDate:'2026-04-07',
+      startTime:'',
+      endTime:'',
+      cp:'1614 - 1699',
+      boostCp:'2017 - 2124',
+      boostWeather:'바람',
+      boostIcon:'./icons/weather-windy.png',
+      desc:'현재 전설 레이드 메인 보스',
+      note:'기본 시간 미입력 시 06:00 AM ~ 10:00 PM 적용',
+      showPages:['index','raid-now','weekly','monthly','detail'],
+      strategyTypes:[
+        { name:'얼음', icon:'./icons/type-ice.png' },
+        { name:'드래곤', icon:'./icons/type-dragon.png' },
+        { name:'페어리', icon:'./icons/type-fairy.png' }
+      ],
+      updatedAt:new Date().toISOString()
+    };
+  }
+
+  raidForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const item = getFormData();
+    const error = validateData(item);
+
+    if(error){
+      showStatus(error, 'error');
+      return;
+    }
+
+    const index = records.findIndex(v => v.id === item.id);
+    if(index > -1){
+      records[index] = item;
+      showStatus('수정 저장되었습니다.');
+    }else{
+      records.unshift(item);
+      showStatus('새 일정이 저장되었습니다.');
+    }
+
+    saveRecords();
+    renderRecordList();
+    renderPreview();
+    resetFormToNew();
+  });
+
+  document.getElementById('addTypeBtn').addEventListener('click', () => addTypeRow());
+
+  document.getElementById('resetBtn').addEventListener('click', resetFormToNew);
+
+  document.getElementById('duplicateBtn').addEventListener('click', () => {
+    const item = getFormData();
+    item.id = uid();
+    item.name = item.name ? `${item.name} 복사본` : '새 일정 복사본';
+    const error = validateData(item);
+    if(error){
+      showStatus(error, 'error');
+      return;
+    }
+    records.unshift(item);
+    saveRecords();
+    renderRecordList();
+    showStatus('복제 저장되었습니다.');
+  });
+
+  document.getElementById('fillSampleBtn').addEventListener('click', () => {
+    fillForm(collectSample());
+    showStatus('샘플 데이터가 입력되었습니다.');
+  });
+
+  document.getElementById('sortDateBtn').addEventListener('click', () => {
+    records.sort((a,b) => {
+      const aDate = `${a.startDate || ''}${a.endDate || ''}`;
+      const bDate = `${b.startDate || ''}${b.endDate || ''}`;
+      return aDate.localeCompare(bDate);
+    });
+    saveRecords();
+    renderRecordList();
+  });
+
+  document.getElementById('sortNameBtn').addEventListener('click', () => {
+    records.sort((a,b) => (a.name || '').localeCompare((b.name || ''), 'ko'));
+    saveRecords();
+    renderRecordList();
+  });
+
+  document.getElementById('clearAllBtn').addEventListener('click', () => {
+    const ok = confirm('저장된 모든 일정을 삭제할까요?');
+    if(!ok) return;
+    records = [];
+    saveRecords();
+    renderRecordList();
+    resetFormToNew();
+    showStatus('전체 삭제되었습니다.');
+  });
+
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'pogo-raid-admin-data.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('importBtn').addEventListener('click', () => {
+    importFile.click();
+  });
+
+  importFile.addEventListener('change', async (e) => {
+    const file = e.target.files?.[0];
+    if(!file) return;
+    try{
+      const text = await file.text();
+      const parsed = JSON.parse(text);
+      if(!Array.isArray(parsed)) throw new Error('배열 형식이 아닙니다.');
+      records = parsed;
+      saveRecords();
+      renderRecordList();
+      showStatus('JSON 데이터를 불러왔습니다.');
+    }catch(err){
+      showStatus('JSON 불러오기에 실패했습니다.', 'error');
+    }finally{
+      e.target.value = '';
+    }
+  });
+
+  searchInput.addEventListener('input', renderRecordList);
+
+  Array.from(raidForm.querySelectorAll('input, select, textarea')).forEach(el => {
+    el.addEventListener('input', renderPreview);
+    el.addEventListener('change', renderPreview);
+  });
+
+  document.getElementById('checkBoostIcon').addEventListener('input', (e) => {
+    const val = e.target.value.trim();
+    const img = document.getElementById('boostPreviewImg');
+    const text = document.getElementById('boostPreviewText');
+    img.src = val || '';
+    img.style.display = val ? 'block' : 'none';
+    text.textContent = val || '부스트 아이콘 미리보기';
+  });
+
+  document.getElementById('checkTypeIcon').addEventListener('input', (e) => {
+    const val = e.target.value.trim();
+    const img = document.getElementById('typePreviewImg');
+    const text = document.getElementById('typePreviewText');
+    img.src = val || '';
+    img.style.display = val ? 'block' : 'none';
+    text.textContent = val || '타입 아이콘 미리보기';
+  });
+
+  loadRecords();
+  if(records.length === 0){
+    records = [collectSample()];
+    saveRecords();
+  }
+
+  addTypeRow();
+  renderRecordList();
+  renderPreview();
+</script>
+</body>
+</html>
