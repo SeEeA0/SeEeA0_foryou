@@ -107,6 +107,9 @@
 
   .week-card{
     min-height:420px;
+    opacity:0;
+    transform:translateY(12px);
+    animation:fadeUp .55s ease forwards;
     background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
     border:1.5px solid var(--line);
     border-radius:24px;
@@ -167,6 +170,7 @@
 
   .timeline-item{
     background:#fff;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     border:1px solid #e3ebf7;
     border-radius:18px;
     padding:11px;
@@ -373,7 +377,17 @@
 </nav>
 
 <script>
-  const STORAGE_KEY = 'pogoRaidAdminData';
+  async function loadRaidData(){
+  try{
+    const res = await fetch('./raid-data.json?v=' + Date.now(), { cache:'no-store' });
+    if(!res.ok) throw new Error('raid-data.json load failed');
+    const parsed = await res.json();
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){
+    console.error('raid-data.json 로딩 실패', e);
+    return [];
+  }
+}
 
   function getKoreaNow(){
     const now = new Date();
@@ -427,15 +441,7 @@
     return t >= start.getTime() && t <= end.getTime();
   }
 
-  function loadRecords(){
-    try{
-      const saved = localStorage.getItem(STORAGE_KEY);
-      const parsed = saved ? JSON.parse(saved) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    }catch(e){
-      return [];
-    }
-  }
+  
 
   function isWeeklyAllowed(item){
     return Array.isArray(item.showPages) && item.showPages.includes('weekly');
@@ -488,7 +494,7 @@
 
   function renderWeekGrid(){
     const wrap = document.getElementById('weekGrid');
-    const records = loadRecords();
+    const records = await loadRaidData();
     const today = getKoreaToday();
 
     renderWeekRangeText(today);

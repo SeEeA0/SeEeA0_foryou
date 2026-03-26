@@ -563,7 +563,17 @@
 </nav>
 
 <script>
-  const STORAGE_KEY = 'pogoRaidAdminData';
+  async function loadRaidData(){
+  try{
+    const res = await fetch('./raid-data.json?v=' + Date.now(), { cache:'no-store' });
+    if(!res.ok) throw new Error('raid-data.json load failed');
+    const parsed = await res.json();
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){
+    console.error('raid-data.json 로딩 실패', e);
+    return [];
+  }
+}
 
   function getKoreaNow(){
     const now = new Date();
@@ -607,15 +617,7 @@
     return t >= start.getTime() && t <= end.getTime();
   }
 
-  function loadRecords(){
-    try{
-      const saved = localStorage.getItem(STORAGE_KEY);
-      const parsed = saved ? JSON.parse(saved) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    }catch(e){
-      return [];
-    }
-  }
+  
 
   function isDetailAllowed(item){
     return Array.isArray(item.showPages) && item.showPages.includes('detail');
@@ -796,8 +798,8 @@
     `;
   }
 
-  function renderDetailPage(){
-    const records = loadRecords();
+  async function renderDetailPage(){
+    const records = await loadRaidData();
     const targetDate = getTargetDate();
     const items = getItemsForDate(records, targetDate);
 

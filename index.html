@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pokémon GO Raid Planner</title>
+<title>현재 진행 중인 레이드</title>
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -16,6 +16,7 @@
   :root{
     --bg:#edf3fb;
     --card:#ffffff;
+    --card-soft:#f8fbff;
     --line:#d8e3f2;
     --text:#1f2f46;
     --muted:#7486a3;
@@ -38,394 +39,126 @@
     --gray:#67768f;
     --gray-soft:#f2f5fa;
 
-    --shadow:0 14px 32px rgba(43,67,110,.08);
-    --shadow-hover:0 18px 36px rgba(43,67,110,.14);
+    --shadow:0 18px 40px rgba(43,67,110,.08);
   }
 
   .wrap{
-    max-width:1180px;
+    max-width:1320px;
     margin:0 auto;
-    padding:16px 14px 110px;
-  }
-
-  .fade-up{
-    opacity:0;
-    transform:translateY(10px);
-    animation:fadeUp .55s ease forwards;
-  }
-
-  .delay-1{animation-delay:.05s}
-  .delay-2{animation-delay:.12s}
-  .delay-3{animation-delay:.19s}
-
-  @keyframes fadeUp{
-    from{
-      opacity:0;
-      transform:translateY(10px);
-    }
-    to{
-      opacity:1;
-      transform:translateY(0);
-    }
-  }
-
-  @keyframes softFloat{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-4px)}
-  }
-
-  @keyframes pulseRing{
-    0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
-    70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
-    100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
-  }
-
-  .topbar{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:16px;
-  }
-
-  .topbar-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.04em;
-    line-height:1.05;
-  }
-
-  .topbar-sub{
-    margin-top:8px;
-    color:var(--muted);
-    font-size:14px;
-    font-weight:800;
-  }
-
-  .topbar-date{
-    flex-shrink:0;
-    min-height:48px;
-    padding:0 16px;
-    border-radius:16px;
-    background:rgba(255,255,255,.92);
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:900;
-    color:#617899;
-    box-shadow:var(--shadow);
-  }
-
-  .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:12px;
-    margin-bottom:16px;
-  }
-
-  .quick-card{
-    background:rgba(255,255,255,.92);
-    border:1px solid var(--line);
-    border-radius:24px;
-    padding:18px;
-    box-shadow:var(--shadow);
-    text-decoration:none;
-    color:inherit;
-    min-height:122px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    position:relative;
-    overflow:hidden;
-  }
-
-  .quick-card::after{
-    content:"";
-    position:absolute;
-    inset:auto -30px -30px auto;
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    background:linear-gradient(135deg, rgba(120,148,255,.18), rgba(123,99,255,.05));
-    pointer-events:none;
-  }
-
-  .quick-card:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--shadow-hover);
-    border-color:#c7d7ec;
-  }
-
-  .quick-icon{
-    width:56px;
-    height:56px;
-    border-radius:18px;
-    background:#f3f7ff;
-    border:1px solid #dce6f4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    flex-shrink:0;
-    animation:softFloat 3.2s ease-in-out infinite;
-  }
-
-  .quick-title{
-    font-size:22px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .quick-desc{
-    margin-top:6px;
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.45;
-    font-weight:800;
+    padding:20px 16px 110px;
   }
 
   .section{
-    background:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.82);
     border:1px solid var(--line);
-    border-radius:26px;
-    box-shadow:var(--shadow);
+    border-radius:30px;
     overflow:hidden;
-    margin-bottom:16px;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
   }
 
   .section-head{
-    padding:18px 18px 14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    border-bottom:1px solid #e6eef8;
+    padding:24px 26px 18px;
+    border-bottom:1px solid #e4edf8;
+    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
   }
 
   .section-title{
-    font-size:20px;
+    font-size:26px;
     font-weight:900;
     letter-spacing:-.03em;
   }
 
   .section-sub{
-    margin-top:6px;
-    font-size:13px;
+    margin-top:8px;
+    font-size:14px;
     color:var(--muted);
-    font-weight:800;
-  }
-
-  .head-link{
-    min-height:38px;
-    padding:0 14px;
-    border-radius:999px;
-    background:#f3f7ff;
-    border:1px solid var(--line);
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:12px;
-    font-weight:900;
-    color:#5c7395;
-    text-decoration:none;
-    white-space:nowrap;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }
-
-  .head-link:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(43,67,110,.08);
-    border-color:#c7d7ec;
+    font-weight:700;
+    line-height:1.5;
   }
 
   .section-body{
-    padding:14px;
-  }
-
-  .weekday-card{
-    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:24px;
     padding:18px;
-    position:relative;
-    overflow:hidden;
   }
 
-  .weekday-card::before{
-    content:"";
-    position:absolute;
-    right:-30px;
-    top:-30px;
-    width:140px;
-    height:140px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(104,135,255,.18) 0%, rgba(104,135,255,0) 70%);
-    pointer-events:none;
-  }
-
-  .weekday-top{
+  .group-wrap{
     display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:16px;
+    flex-direction:column;
+    gap:24px;
   }
 
-  .weekday-day{
+  .raid-group{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .group-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:0 4px;
+  }
+
+  .group-title{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .group-count{
     display:inline-flex;
     align-items:center;
     justify-content:center;
     min-height:30px;
     padding:0 12px;
     border-radius:999px;
-    background:#edf4ff;
-    color:#3567d7;
     font-size:12px;
     font-weight:900;
-  }
-
-  .weekday-title{
-    margin-top:12px;
-    font-size:24px;
-    font-weight:900;
-    letter-spacing:-.03em;
-    line-height:1.15;
-  }
-
-  .weekday-summary{
-    margin-top:8px;
-    font-size:14px;
-    color:#6d7f9e;
-    line-height:1.55;
-    font-weight:800;
-  }
-
-  .weekday-visual{
-    width:128px;
-    height:128px;
-    border-radius:24px;
     background:#f3f7ff;
     border:1px solid #dce6f4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    flex-shrink:0;
-    box-shadow:0 10px 24px rgba(43,67,110,.08);
-    animation:softFloat 3.8s ease-in-out infinite;
+    color:#617799;
   }
 
-  .weekday-visual img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-  }
-
-  .weekday-points{
-    margin-top:14px;
+  .raid-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
+    gap:16px;
   }
 
-  .weekday-point{
-    background:#f6f9ff;
-    border:1px solid #dde7f5;
-    border-radius:16px;
-    padding:12px 14px;
-    font-size:13px;
-    line-height:1.45;
-    color:#33465f;
-    font-weight:800;
-    transition:transform .18s ease, box-shadow .18s ease;
-  }
-
-  .weekday-point:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 16px rgba(43,67,110,.06);
-  }
-
-  .weekday-note{
-    margin-top:12px;
-    padding:12px 14px;
-    border-radius:16px;
-    background:#fbfdff;
-    border:1px dashed #d7e2f1;
-    font-size:12px;
-    line-height:1.5;
-    color:#7a8ca8;
-    font-weight:800;
-  }
-
-  .weekday-tabs{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:14px;
-  }
-
-  .weekday-tab{
-    min-height:36px;
-    padding:0 14px;
-    border-radius:999px;
-    border:1px solid #d7e2f0;
-    background:#fff;
-    color:#6c7f9f;
-    font-size:12px;
-    font-weight:900;
-    cursor:pointer;
-    transition:.15s ease;
-  }
-
-  .weekday-tab:hover{
-    transform:translateY(-1px);
-    border-color:#c7d7ec;
-  }
-
-  .weekday-tab.active{
-    background:#edf4ff;
-    color:#3567d7;
-    border-color:#cdddf5;
-    animation:pulseRing 1.8s infinite;
-  }
-
-  .now-row{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:12px;
-  }
-
-  .now-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+  .raid-card{
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
     border:1.5px solid var(--line);
-    border-radius:22px;
-    padding:14px;
-    min-height:144px;
-    text-decoration:none;
-    color:inherit;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    position:relative;
+    border-radius:26px;
     overflow:hidden;
+    box-shadow:0 10px 28px rgba(52,74,119,.05);
   }
 
-  .now-card:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--shadow-hover);
-    border-color:#c7d7ec;
+  .raid-card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:18px 18px 16px;
+    border-bottom:1px solid #e5edf8;
+    background:#fbfdff;
   }
 
-  .now-chip{
+  .chip{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:28px;
-    padding:0 10px;
+    min-height:34px;
+    padding:0 14px;
     border-radius:999px;
-    font-size:11px;
+    font-size:12px;
     font-weight:900;
     line-height:1;
+    white-space:nowrap;
   }
 
   .chip.blue{background:var(--blue-soft);color:var(--blue)}
@@ -435,56 +168,196 @@
   .chip.green{background:var(--green-soft);color:var(--green)}
   .chip.gray{background:var(--gray-soft);color:var(--gray)}
 
-  .now-main{
-    display:grid;
-    grid-template-columns:64px 1fr;
-    gap:12px;
-    align-items:center;
-    margin-top:12px;
+  .raid-date{
+    font-size:13px;
+    font-weight:900;
+    color:#667a98;
+    white-space:nowrap;
   }
 
-  .now-thumb{
-    width:64px;
-    height:64px;
-    border-radius:18px;
+  .raid-card-body{
+    padding:18px;
+  }
+
+  .raid-name{
+    font-size:24px;
+    font-weight:900;
+    line-height:1.12;
+    letter-spacing:-.03em;
+  }
+
+  .raid-desc{
+    margin-top:8px;
+    font-size:14px;
+    color:#7b8ca8;
+    font-weight:700;
+  }
+
+  .raid-main{
+    margin-top:16px;
+    display:grid;
+    grid-template-columns:108px 1fr;
+    gap:16px;
+    align-items:start;
+  }
+
+  .raid-thumb{
+    width:108px;
+    height:108px;
+    border-radius:26px;
     background:#f3f7ff;
     border:1px solid #dce6f5;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    animation:softFloat 3.8s ease-in-out infinite;
   }
 
-  .now-thumb img{
-    width:50px;
-    height:50px;
+  .raid-thumb img{
+    width:86px;
+    height:86px;
     object-fit:contain;
   }
 
-  .now-name{
-    font-size:18px;
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:12px;
+  }
+
+  .stat-box{
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    border-radius:18px;
+    padding:12px 14px;
+  }
+
+  .stat-label{
+    font-size:12px;
+    color:#7386a3;
     font-weight:900;
-    line-height:1.12;
-    letter-spacing:-.03em;
   }
 
-  .now-meta{
+  .stat-value{
     margin-top:6px;
-    font-size:12px;
-    color:#7b8ca8;
-    font-weight:800;
-    line-height:1.35;
+    font-size:17px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1.2;
+    letter-spacing:-.02em;
   }
 
-  .empty-box{
-    border:1px dashed #d9e4f2;
-    background:#fbfdff;
-    border-radius:14px;
-    padding:14px 10px;
-    text-align:center;
-    color:#97a5ba;
+  .boost-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:6px;
+  }
+
+  .boost-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:36px;
+    padding:6px 12px 6px 6px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
+  }
+
+  .boost-icon{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#eef3ff;
+    border:1px solid #d9e4f3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  .boost-icon img{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+  }
+
+  .boost-name{
+    font-size:13px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1;
+  }
+
+  .strategy-box{
+    margin-top:12px;
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    border-radius:18px;
+    padding:12px 14px;
+  }
+
+  .strategy-label{
     font-size:12px;
+    color:#7386a3;
+    font-weight:900;
+  }
+
+  .strategy-types{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+  }
+
+  .strategy-item{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:36px;
+    padding:6px 10px 6px 6px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
+  }
+
+  .strategy-type-icon{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#f3f7ff;
+    border:1px solid #dce6f4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  .strategy-type-icon img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+  }
+
+  .strategy-type-name{
+    font-size:13px;
+    color:#31435d;
+    font-weight:900;
+    line-height:1;
+  }
+
+  .empty-state{
+    background:#fbfdff;
+    border:1px dashed #dce7f4;
+    border-radius:20px;
+    padding:28px 18px;
+    text-align:center;
+    color:#8293ad;
+    font-size:14px;
     font-weight:800;
   }
 
@@ -493,10 +366,10 @@
     left:50%;
     bottom:14px;
     transform:translateX(-50%);
-    width:min(980px, calc(100% - 24px));
-    background:rgba(255,255,255,.94);
+    width:min(1180px, calc(100% - 24px));
+    background:rgba(255,255,255,.92);
     border:1px solid var(--line);
-    border-radius:24px;
+    border-radius:26px;
     box-shadow:0 18px 36px rgba(42,59,97,.12);
     backdrop-filter:blur(10px);
     padding:10px;
@@ -507,8 +380,8 @@
   }
 
   .nav-item{
-    min-height:64px;
-    border-radius:16px;
+    min-height:68px;
+    border-radius:18px;
     text-decoration:none;
     color:#6f819e;
     display:flex;
@@ -516,7 +389,7 @@
     justify-content:center;
     flex-direction:column;
     gap:6px;
-    font-size:12px;
+    font-size:13px;
     font-weight:900;
     transition:.18s ease;
     background:#f8fbff;
@@ -527,7 +400,6 @@
     background:#f3f7ff;
     color:#486995;
     border-color:#d6e3f3;
-    transform:translateY(-1px);
   }
 
   .nav-item.active{
@@ -537,80 +409,59 @@
   }
 
   .nav-icon{
-    font-size:18px;
+    font-size:20px;
     line-height:1;
   }
 
   @media (max-width:1100px){
-    .quick-grid,
-    .now-row{
-      grid-template-columns:1fr;
-    }
-
-    .weekday-points{
+    .raid-grid{
       grid-template-columns:1fr;
     }
   }
 
   @media (max-width:768px){
     .wrap{
-      padding:14px 12px 120px;
-    }
-
-    .topbar{
-      flex-direction:column;
-      align-items:flex-start;
-    }
-
-    .topbar-title{
-      font-size:28px;
+      padding-bottom:120px;
     }
 
     .section-head{
-      padding:16px 16px 12px;
-      flex-direction:column;
-      align-items:flex-start;
+      padding:22px 20px 16px;
     }
 
     .section-body{
-      padding:12px;
+      padding:16px;
     }
 
-    .weekday-top{
+    .section-title{
+      font-size:22px;
+    }
+
+    .group-head{
+      align-items:flex-start;
+      flex-direction:column;
+    }
+
+    .raid-card-top{
       flex-direction:column;
       align-items:flex-start;
     }
 
-    .weekday-title{
-      font-size:22px;
+    .raid-main{
+      grid-template-columns:1fr;
     }
 
-    .weekday-visual{
-      width:100%;
-      height:180px;
-      border-radius:20px;
+    .raid-thumb{
+      width:92px;
+      height:92px;
     }
 
-    .now-main{
-      grid-template-columns:56px 1fr;
+    .raid-thumb img{
+      width:74px;
+      height:74px;
     }
 
-    .now-thumb{
-      width:56px;
-      height:56px;
-    }
-
-    .now-thumb img{
-      width:44px;
-      height:44px;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{
-      animation:none !important;
-      transition:none !important;
-      scroll-behavior:auto !important;
+    .stat-grid{
+      grid-template-columns:1fr;
     }
   }
 </style>
@@ -618,92 +469,25 @@
 <body>
 <div class="wrap">
 
-  <div class="topbar fade-up">
-    <div>
-      <div class="topbar-title">레이드 일정</div>
-      <div class="topbar-sub" id="topbarSub">한국 시간 기준 로딩 중...</div>
-    </div>
-    <div class="topbar-date" id="monthBadge">3월</div>
-  </div>
-
-  <section class="quick-grid fade-up delay-1">
-    <a class="quick-card" href="./raid-now.html">
-      <div class="quick-icon">⚔️</div>
-      <div>
-        <div class="quick-title">지금 레이드</div>
-        <div class="quick-desc">현재 진행 중인 보스를 바로 확인</div>
-      </div>
-    </a>
-
-    <a class="quick-card" href="./weekly.html">
-      <div class="quick-icon">🗓️</div>
-      <div>
-        <div class="quick-title">주간 일정</div>
-        <div class="quick-desc">이번 주 레이드와 이벤트 흐름 보기</div>
-      </div>
-    </a>
-
-    <a class="quick-card" href="./monthly.html">
-      <div class="quick-icon">📆</div>
-      <div>
-        <div class="quick-title">월간 일정</div>
-        <div class="quick-desc">한 달 전체 캘린더와 날짜별 상세 이동</div>
-      </div>
-    </a>
-  </section>
-
-  <section class="section fade-up delay-2">
+  <section class="section">
     <div class="section-head">
-      <div>
-        <div class="section-title">오늘의 요일 이벤트</div>
-        <div class="section-sub" id="weekdaySub">오늘 기준 자동 표시</div>
-      </div>
-      <span class="head-link" id="weekdayMiniLabel">DAY BONUS</span>
+      <div class="section-title">현재 진행 중 보스</div>
+      <div class="section-sub" id="rangeText">한국 시간 기준으로 오늘 진행 중인 일정만 표시됩니다.</div>
     </div>
+
     <div class="section-body">
-      <div class="weekday-card">
-        <div class="weekday-top">
-          <div>
-            <div class="weekday-day" id="weekdayDayBadge">월요일</div>
-            <div class="weekday-title" id="weekdayTitle">패스트패스 먼데이</div>
-            <div class="weekday-summary" id="weekdaySummary"></div>
-          </div>
-
-          <div class="weekday-visual">
-            <img id="weekdayImage" src="" alt="요일 이벤트 이미지">
-          </div>
-        </div>
-
-        <div class="weekday-points" id="weekdayPoints"></div>
-
-        <div class="weekday-note" id="weekdayNote" style="display:none;"></div>
-
-        <div class="weekday-tabs" id="weekdayTabs"></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section fade-up delay-3">
-    <div class="section-head">
-      <div>
-        <div class="section-title">지금 레이드</div>
-        <div class="section-sub">현재 진행 중인 보스만 간단히 표시</div>
-      </div>
-      <a class="head-link" href="./raid-now.html">전체 보기</a>
-    </div>
-    <div class="section-body">
-      <div class="now-row" id="nowGrid"></div>
+      <div class="group-wrap" id="raidGroupWrap"></div>
     </div>
   </section>
 
 </div>
 
 <nav class="bottom-nav">
-  <a href="./index.html" class="nav-item active">
+  <a href="./index.html" class="nav-item">
     <div class="nav-icon">🏠</div>
     <div>메인</div>
   </a>
-  <a href="./raid-now.html" class="nav-item">
+  <a href="./raid-now.html" class="nav-item active">
     <div class="nav-icon">⚔️</div>
     <div>지금 레이드</div>
   </a>
@@ -718,109 +502,24 @@
 </nav>
 
 <script>
-  const STORAGE_KEY = 'pogoRaidAdminData';
-
-  const WEEKDAY_EVENTS = {
-    0: {
-      day: '일요일',
-      title: '루어 선데이',
-      image: '/images/weekday/sunday.png',
-      summary: '일요일에는 향로와 여러 종류의 루어모듈 지속 시간이 최대 2배가 됩니다.',
-      points: [
-        '향로 지속 시간 증가',
-        '루어모듈 / 아이스 / 허브 / 마그네틱 / 레이니 루어모듈 지속 시간 최대 2배'
-      ],
-      note: ''
-    },
-    1: {
-      day: '월요일',
-      title: '패스트패스 먼데이 · 맥스 먼데이',
-      image: '/images/weekday/monday.png',
-      summary: 'GO패스 포인트 보너스와 파워스폿 관련 보너스가 적용되는 날입니다.',
-      points: [
-        'GO패스와 이벤트 GO패스 태스크 완료 시 GO포인트 2배',
-        '파워스폿 갱신 간격 단축 및 월요일에 더 많은 파워스폿 등장',
-        '맥스배틀 로테이션에 다른 다이맥스 포켓몬 등장',
-        '맥스배틀 이용 가능 시간: 한국시간 06:00 ~ 21:00'
-      ],
-      note: '파워스폿 수는 맥스 먼데이·맥스배틀 데이가 아닐 때 더 적어질 수 있습니다.'
-    },
-    2: {
-      day: '화요일',
-      title: '쇼케이스 투스데이',
-      image: '/images/weekday/tuesday.png',
-      summary: '화요일에는 다양한 포켓스톱 쇼케이스가 열립니다.',
-      points: [
-        '최대 20개 카테고리의 포켓스톱 쇼케이스 진행',
-        '매주 로그인해 어떤 포켓몬을 자랑할 수 있는지 확인',
-        '쇼케이스 진행 시간: 한국시간 10:00 ~ 20:00'
-      ],
-      note: ''
-    },
-    3: {
-      day: '수요일',
-      title: '레이드 아워 수요일',
-      image: '/images/weekday/wednesday.png',
-      summary: '전설 레이드배틀과 메가 레이드 보스가 돌아가며 바뀌는 핵심 요일입니다.',
-      points: [
-        '매주 하루 시작 시 전설 / 메가 레이드 보스 로테이션 변경',
-        '한국시간 18:00 ~ 19:00 레이드 아워 진행',
-        '레이드 아워에는 전설 레이드배틀 보스 포켓몬이 등장'
-      ],
-      note: ''
-    },
-    4: {
-      day: '목요일',
-      title: 'GO배틀리그 썰스데이',
-      image: '/images/weekday/thursday.png',
-      summary: '배틀리그 보상과 플레이 가능 횟수가 늘어나는 날입니다.',
-      points: [
-        '배틀 승리 리워드 별의모래 최대 4배 (세트 종료 시 리워드 제외)',
-        '하루 최대 플레이 횟수 5세트 → 10세트',
-        '총 50세트 플레이 가능'
-      ],
-      note: ''
-    },
-    5: {
-      day: '금요일',
-      title: '우정 프라이데이',
-      image: '/images/weekday/friday.png',
-      summary: '교환 관련 보너스가 집중되는 날입니다.',
-      points: [
-        '특별한 교환 최대 2회 가능',
-        '모든 교환이 반짝반짝 교환이 될 확률 증가',
-        '교환에 필요한 별의모래 최대 10% 감소',
-        '트레이너 레벨 31 이상: 교환 시 포켓몬의 사탕XL 2개 확정'
-      ],
-      note: '위 보너스는 대면 교환에만 적용됩니다.'
-    },
-    6: {
-      day: '토요일',
-      title: '정기 요일 이벤트 없음',
-      image: '/images/weekday/saturday.png',
-      summary: '토요일은 별도 고정 요일 이벤트 안내가 없습니다.',
-      points: [
-        '진행 중인 이벤트 / 레이드 일정 중심으로 확인해 주세요.'
-      ],
-      note: '단, 글로벌 Pokémon GO Fest / Pokémon GO 와일드 에리어 / Pokémon GO Tour 주간에는 데일리 디스커버리가 진행되지 않을 수 있습니다.'
-    }
-  };
-
-  function getKoreaNow(){
-    const now = new Date();
-    const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
-    return new Date(koreaString);
+  async function loadRaidData(){
+  try{
+    const res = await fetch('./raid-data.json?v=' + Date.now(), { cache:'no-store' });
+    if(!res.ok) throw new Error('raid-data.json load failed');
+    const parsed = await res.json();
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){
+    console.error('raid-data.json 로딩 실패', e);
+    return [];
   }
+}
 
   function getKoreaToday(){
-    const koreaNow = getKoreaNow();
+    const now = new Date();
+    const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+    const koreaNow = new Date(koreaString);
     koreaNow.setHours(0, 0, 0, 0);
     return koreaNow;
-  }
-
-  function formatKoreanDate(date){
-    const days = ['일','월','화','수','목','금','토'];
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
   }
 
   function pad(n){
@@ -829,12 +528,30 @@
 
   function toDate(str){
     if(!str) return null;
-    const [y,m,d] = str.split('-').map(Number);
+    const [y, m, d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
   function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
+
+  function formatDateRange(startDate, endDate){
+    return `${startDate.replaceAll('-', '.')} - ${endDate.replaceAll('-', '.')}`;
+  }
+
+  function toAmpm(time24){
+    if(!time24) return '';
+    const [hh, mm] = time24.split(':').map(Number);
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return `${String(h12).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${suffix}`;
+  }
+
+  function getDisplayTime(item){
+    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
+    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
+    return `${start} ~ ${end}`;
   }
 
   function inRange(date, startStr, endStr){
@@ -845,18 +562,25 @@
     return t >= start.getTime() && t <= end.getTime();
   }
 
-  function loadRecords(){
-    try{
-      const saved = localStorage.getItem(STORAGE_KEY);
-      const parsed = saved ? JSON.parse(saved) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    }catch(e){
-      return [];
-    }
+  
+
+  function isRaidNowAllowed(item){
+    return Array.isArray(item.showPages) && item.showPages.includes('raid-now');
   }
 
-  function isAllowed(item, page){
-    return Array.isArray(item.showPages) && item.showPages.includes(page);
+  function isRaidNowType(item){
+    return ['1성', '3성', '5성', '메가', '그림자'].includes(item.label);
+  }
+
+  function getCurrentItems(records, today){
+    return records
+      .filter(item =>
+        isRaidNowAllowed(item) &&
+        isRaidNowType(item) &&
+        item.startDate &&
+        item.endDate &&
+        inRange(today, item.startDate, item.endDate)
+      );
   }
 
   function chipClass(item){
@@ -869,125 +593,174 @@
     );
   }
 
-  function typeClass(item){
-    const map = {
-      '1성':0,
-      '3성':1,
-      '5성':2,
-      '메가':3,
-      '그림자':4
-    };
-    return map[item.label] ?? 99;
-  }
-
-  function sortItems(items){
-    return items.sort((a,b) => {
-      const diff = typeClass(a) - typeClass(b);
-      if(diff !== 0) return diff;
-      return (a.name || '').localeCompare(b.name || '', 'ko');
-    });
-  }
-
-  function getRaidNowItems(records, today){
-    return sortItems(
-      records.filter(item =>
-        (isAllowed(item, 'index') || isAllowed(item, 'raid-now')) &&
-        ['1성','3성','5성','메가','그림자'].includes(item.label) &&
-        item.startDate &&
-        item.endDate &&
-        inRange(today, item.startDate, item.endDate)
-      )
-    );
-  }
-
-  function renderTop(today){
-    document.getElementById('topbarSub').textContent = formatKoreanDate(today);
-    document.getElementById('monthBadge').textContent = `${today.getMonth()+1}월`;
-  }
-
-  function renderWeekdayTabs(selectedDay){
-    const wrap = document.getElementById('weekdayTabs');
-    const names = ['일','월','화','수','목','금','토'];
-
-    wrap.innerHTML = names.map((name, idx) => `
-      <button class="weekday-tab ${idx === selectedDay ? 'active' : ''}" data-day="${idx}">
-        ${name}요일
-      </button>
-    `).join('');
-
-    wrap.querySelectorAll('.weekday-tab').forEach(btn => {
-      btn.addEventListener('click', () => {
-        renderWeekdayCard(Number(btn.dataset.day));
-      });
-    });
-  }
-
-  function renderWeekdayCard(dayIndex){
-    const data = WEEKDAY_EVENTS[dayIndex] || WEEKDAY_EVENTS[6];
-
-    document.getElementById('weekdayDayBadge').textContent = data.day;
-    document.getElementById('weekdayTitle').textContent = data.title;
-    document.getElementById('weekdaySummary').textContent = data.summary;
-    document.getElementById('weekdaySub').textContent = `${data.day} 기준 반복 보너스 안내`;
-    document.getElementById('weekdayMiniLabel').textContent = data.day;
-    document.getElementById('weekdayImage').src = data.image || '';
-    document.getElementById('weekdayImage').alt = data.title || '요일 이벤트 이미지';
-
-    document.getElementById('weekdayPoints').innerHTML = (data.points || []).map(text => `
-      <div class="weekday-point">${text}</div>
-    `).join('');
-
-    const noteEl = document.getElementById('weekdayNote');
-    if(data.note){
-      noteEl.style.display = 'block';
-      noteEl.textContent = data.note;
-    }else{
-      noteEl.style.display = 'none';
-      noteEl.textContent = '';
-    }
-
-    renderWeekdayTabs(dayIndex);
-  }
-
-  function renderNowSection(records, today){
-    const wrap = document.getElementById('nowGrid');
-    const items = getRaidNowItems(records, today);
+  function renderRangeText(items, today){
+    const el = document.getElementById('rangeText');
+    const todayKey = toKey(today);
 
     if(!items.length){
-      wrap.innerHTML = `<div class="empty-box">현재 진행 중인 레이드가 없습니다.</div>`;
+      el.textContent = `한국 시간 기준 ${todayKey.replaceAll('-', '.')} 현재 진행 중인 일정이 없습니다.`;
       return;
     }
 
-    wrap.innerHTML = items.slice(0,3).map(item => `
-      <a href="./raid-now.html" class="now-card">
-        <span class="now-chip chip ${chipClass(item)}">${item.label || '-'}</span>
-        <div class="now-main">
-          <div class="now-thumb">
-            ${
-              item.image
-                ? `<img src="${item.image}" alt="${item.name || ''}">`
-                : `<span style="font-size:24px;">🖼️</span>`
-            }
-          </div>
-          <div>
-            <div class="now-name">${item.name || '-'}</div>
-            <div class="now-meta">${item.cp || '-'}<br>${(item.startDate || '').replaceAll('-', '.')} - ${(item.endDate || '').replaceAll('-', '.')}</div>
-          </div>
+    const starts = items.map(item => item.startDate).sort();
+    const ends = items.map(item => item.endDate).sort();
+    el.textContent = `한국 시간 기준 ${todayKey.replaceAll('-', '.')} · 현재 구간 ${starts[0].replaceAll('-', '.')} - ${ends[ends.length - 1].replaceAll('-', '.')}`;
+  }
+
+  function getGroupedItems(items){
+    const groupOrder = ['1성', '3성', '5성', '메가', '그림자'];
+    const grouped = {};
+
+    groupOrder.forEach(label => grouped[label] = []);
+
+    items.forEach(item => {
+      if(grouped[item.label]){
+        grouped[item.label].push(item);
+      }
+    });
+
+    groupOrder.forEach(label => {
+      grouped[label].sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'));
+    });
+
+    return { groupOrder, grouped };
+  }
+
+  function renderBoosts(item){
+    const boosts = Array.isArray(item.boosts) ? item.boosts : [];
+
+    if(!boosts.length){
+      return `<div class="strategy-type-name" style="color:#8a98af;">부스트 날씨 없음</div>`;
+    }
+
+    return boosts.map(boost => `
+      <div class="boost-pill">
+        <div class="boost-icon">
+          ${
+            boost.icon
+              ? `<img src="${boost.icon}" alt="${boost.weather || ''}">`
+              : `<span style="font-size:11px;">☁️</span>`
+          }
         </div>
-      </a>
+        <div class="boost-name">${boost.weather || '날씨'}</div>
+      </div>
     `).join('');
   }
 
-  function init(){
-    const records = loadRecords();
-    const today = getKoreaToday();
+  function renderStrategies(item){
+    if(!(Array.isArray(item.strategyTypes) && item.strategyTypes.length)){
+      return `<div class="strategy-type-name" style="color:#8a98af;">공략 타입 없음</div>`;
+    }
 
-    renderTop(today);
-    renderWeekdayCard(today.getDay());
-    renderNowSection(records, today);
+    return item.strategyTypes.map(type => `
+      <div class="strategy-item">
+        <div class="strategy-type-icon">
+          ${
+            type.icon
+              ? `<img src="${type.icon}" alt="${type.name || ''}">`
+              : `<span style="font-size:10px;">?</span>`
+          }
+        </div>
+        <div class="strategy-type-name">${type.name || '타입'}</div>
+      </div>
+    `).join('');
   }
 
-  init();
+  function renderCard(item){
+    return `
+      <article class="raid-card">
+        <div class="raid-card-top">
+          <span class="chip ${chipClass(item)}">LIVE · ${item.label}</span>
+          <div class="raid-date">${formatDateRange(item.startDate, item.endDate)}</div>
+        </div>
+
+        <div class="raid-card-body">
+          <div class="raid-name">${item.name || '-'}</div>
+          <div class="raid-desc">${item.desc || '현재 진행 중인 일정'}</div>
+
+          <div class="raid-main">
+            <div class="raid-thumb">
+              ${
+                item.image
+                  ? `<img src="${item.image}" alt="${item.name || ''}">`
+                  : `<span style="font-size:34px;">🖼️</span>`
+              }
+            </div>
+
+            <div>
+              <div class="stat-grid">
+                <div class="stat-box">
+                  <div class="stat-label">일반 CP</div>
+                  <div class="stat-value">${item.cp || '-'}</div>
+                </div>
+
+                <div class="stat-box">
+                  <div class="stat-label">부스트 CP</div>
+                  <div class="stat-value">${item.boostCp || '-'}</div>
+                </div>
+              </div>
+
+              <div class="strategy-box">
+                <div class="strategy-label">부스트 날씨</div>
+                <div class="boost-list">
+                  ${renderBoosts(item)}
+                </div>
+              </div>
+
+              <div class="strategy-box">
+                <div class="strategy-label">공략</div>
+                <div class="strategy-types">
+                  ${renderStrategies(item)}
+                </div>
+              </div>
+
+              <div class="raid-desc" style="margin-top:12px;">${getDisplayTime(item)}</div>
+              ${item.note ? `<div class="raid-desc" style="margin-top:6px;">${item.note}</div>` : ``}
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderCards(){
+    const wrap = document.getElementById('raidGroupWrap');
+    const records = await loadRaidData();
+    const today = getKoreaToday();
+    const items = getCurrentItems(records, today);
+
+    renderRangeText(items, today);
+
+    if(!items.length){
+      wrap.innerHTML = `
+        <div class="empty-state">
+          현재 진행 중인 레이드가 없습니다.<br>
+          admin.html에서 일정 저장 후 다시 확인해 주세요.
+        </div>
+      `;
+      return;
+    }
+
+    const { groupOrder, grouped } = getGroupedItems(items);
+
+    wrap.innerHTML = groupOrder
+      .filter(label => grouped[label].length)
+      .map(label => `
+        <section class="raid-group">
+          <div class="group-head">
+            <div class="group-title">${label} 레이드</div>
+            <div class="group-count">${grouped[label].length}마리</div>
+          </div>
+
+          <div class="raid-grid">
+            ${grouped[label].map(renderCard).join('')}
+          </div>
+        </section>
+      `)
+      .join('');
+  }
+
+  renderCards();
 </script>
 </body>
 </html>

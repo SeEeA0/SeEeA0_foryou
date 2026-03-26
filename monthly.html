@@ -499,6 +499,12 @@
 
   .modal.show{
     display:flex;
+    animation:modalFade .24s ease;
+  }
+
+  @keyframes modalFade{
+    from{opacity:0}
+    to{opacity:1}
   }
 
   .modal-card{
@@ -509,6 +515,12 @@
     border-radius:28px;
     border:1px solid #dce7f4;
     box-shadow:0 36px 90px rgba(15,25,48,.24);
+    animation:modalCardIn .28s ease;
+  }
+
+  @keyframes modalCardIn{
+    from{opacity:0;transform:translateY(18px) scale(.985)}
+    to{opacity:1;transform:translateY(0) scale(1)}
   }
 
   .modal-head{
@@ -875,7 +887,17 @@
 </div>
 
 <script>
-  const STORAGE_KEY = 'pogoRaidAdminData';
+  async function loadRaidData(){
+  try{
+    const res = await fetch('./raid-data.json?v=' + Date.now(), { cache:'no-store' });
+    if(!res.ok) throw new Error('raid-data.json load failed');
+    const parsed = await res.json();
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){
+    console.error('raid-data.json 로딩 실패', e);
+    return [];
+  }
+}
 
   const MONTHS = [
     { year: 2026, month: 3 },
