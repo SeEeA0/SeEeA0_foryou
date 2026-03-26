@@ -55,7 +55,6 @@
   }
   .delay-1{animation-delay:.05s}
   .delay-2{animation-delay:.12s}
-  .delay-3{animation-delay:.19s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -71,132 +70,6 @@
     0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
     70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
     100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
-  }
-
-  .topbar{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:16px;
-  }
-
-  .topbar-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.04em;
-    line-height:1.05;
-  }
-
-  .topbar-sub{
-    margin-top:8px;
-    color:var(--muted);
-    font-size:14px;
-    font-weight:800;
-  }
-
-  .topbar-date{
-    flex-shrink:0;
-    min-height:48px;
-    padding:0 16px;
-    border-radius:16px;
-    background:rgba(255,255,255,.92);
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:900;
-    color:#617899;
-    box-shadow:var(--shadow);
-  }
-
-  .hero{
-    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-    border:1px solid var(--line);
-    border-radius:28px;
-    box-shadow:var(--shadow);
-    padding:22px 20px;
-    position:relative;
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-
-  .hero::before{
-    content:"";
-    position:absolute;
-    right:-50px;
-    top:-50px;
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(104,135,255,.18) 0%, rgba(104,135,255,0) 70%);
-    pointer-events:none;
-  }
-
-  .hero-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:18px;
-  }
-
-  .hero-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:32px;
-    padding:0 12px;
-    border-radius:999px;
-    background:#edf4ff;
-    color:#3567d7;
-    font-size:12px;
-    font-weight:900;
-    margin-bottom:12px;
-  }
-
-  .hero-title{
-    font-size:28px;
-    line-height:1.12;
-    font-weight:900;
-    letter-spacing:-.04em;
-  }
-
-  .hero-desc{
-    margin-top:10px;
-    color:#6f819e;
-    font-size:14px;
-    line-height:1.6;
-    font-weight:800;
-  }
-
-  .hero-side{
-    min-width:170px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .mini-stat{
-    background:#fff;
-    border:1px solid #dde7f5;
-    border-radius:18px;
-    padding:14px;
-    box-shadow:0 10px 24px rgba(43,67,110,.06);
-  }
-
-  .mini-stat-label{
-    font-size:12px;
-    font-weight:900;
-    color:#7b8ca8;
-  }
-
-  .mini-stat-value{
-    margin-top:8px;
-    font-size:22px;
-    line-height:1;
-    font-weight:900;
-    color:#24374c;
   }
 
   .section{
@@ -279,7 +152,7 @@
     position:relative;
     overflow:hidden;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:220px;
+    min-height:255px;
   }
 
   .raid-card::after{
@@ -418,6 +291,41 @@
     border-color:#ddcffd;
   }
 
+  .boost-row{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .boost-badge{
+    min-height:34px;
+    padding:5px 12px 5px 8px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .boost-badge img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f7fd;
+    flex-shrink:0;
+  }
+
+  .raid-card.shadow-theme .boost-badge{
+    background:rgba(255,255,255,.82);
+    border-color:#ddcffd;
+  }
+
   .action-row{
     margin-top:14px;
     display:flex;
@@ -436,35 +344,16 @@
     font-weight:900;
     cursor:pointer;
     transition:.16s ease;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
   }
 
   .action-btn:hover{
     transform:translateY(-1px);
     border-color:#c7d7ec;
     box-shadow:0 10px 18px rgba(43,67,110,.07);
-  }
-
-  .cp-panel{
-    margin-top:12px;
-    display:none;
-    padding:14px;
-    border-radius:18px;
-    background:#fbfdff;
-    border:1px dashed #d7e2f1;
-    font-size:13px;
-    color:#405674;
-    line-height:1.6;
-    font-weight:800;
-  }
-
-  .cp-panel.show{
-    display:block;
-    animation:fadeUp .24s ease forwards;
-  }
-
-  .raid-card.shadow-theme .cp-panel{
-    background:rgba(255,255,255,.74);
-    border-color:#dacdfa;
   }
 
   .empty-box{
@@ -542,27 +431,6 @@
       padding:14px 12px 120px;
     }
 
-    .topbar{
-      flex-direction:column;
-      align-items:flex-start;
-    }
-
-    .topbar-title{
-      font-size:28px;
-    }
-
-    .hero-row{
-      flex-direction:column;
-    }
-
-    .hero-side{
-      min-width:0;
-      width:100%;
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-    }
-
     .section-head{
       padding:16px 16px 12px;
       flex-direction:column;
@@ -605,39 +473,7 @@
 <body>
 <div class="wrap">
 
-  <div class="topbar fade-up">
-    <div>
-      <div class="topbar-title">지금 레이드</div>
-      <div class="topbar-sub" id="topbarSub">한국 시간 기준 로딩 중...</div>
-    </div>
-    <div class="topbar-date" id="monthBadge">3월</div>
-  </div>
-
-  <section class="hero fade-up delay-1">
-    <div class="hero-row">
-      <div>
-        <div class="hero-badge">LIVE RAID STATUS</div>
-        <div class="hero-title">현재 진행 중인<br>레이드 보스 목록</div>
-        <div class="hero-desc">
-          raid-data.json에 업로드된 데이터 중 오늘 날짜에 해당하는 레이드만 자동 표시됩니다.<br>
-          정렬은 5성 → 3성 → 1성 → 메가 → 그림자 순서로 고정됩니다.
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-stat">
-          <div class="mini-stat-label">현재 진행 중</div>
-          <div class="mini-stat-value" id="activeCount">0</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">오늘 날짜</div>
-          <div class="mini-stat-value" id="todayMini" style="font-size:18px;">-</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section fade-up delay-2">
+  <section class="section fade-up">
     <div class="section-head">
       <div>
         <div class="section-title">레이드 타입 필터</div>
@@ -649,11 +485,11 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-3">
+  <section class="section fade-up delay-1">
     <div class="section-head">
       <div>
         <div class="section-title">진행 중인 보스</div>
-        <div class="section-sub">cp 값이 있으면 CP 보기 버튼이 자동으로 나타납니다</div>
+        <div class="section-sub">일반 CP와 부스트 CP가 카드에 바로 표시됩니다</div>
       </div>
     </div>
     <div class="section-body">
@@ -715,17 +551,21 @@
     return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
   }
 
-  function formatKoreanDate(date){
-    const days = ['일','월','화','수','목','금','토'];
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
-  }
-
   function inRange(date, startStr, endStr){
     const start = toDate(startStr);
     const end = toDate(endStr);
     if(!start || !end) return false;
     const t = toDate(toKey(date)).getTime();
     return t >= start.getTime() && t <= end.getTime();
+  }
+
+  function escapeHtml(value){
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
   }
 
   async function loadRecords(){
@@ -785,12 +625,6 @@
       });
   }
 
-  function renderTop(today){
-    document.getElementById('topbarSub').textContent = formatKoreanDate(today);
-    document.getElementById('monthBadge').textContent = `${today.getMonth()+1}월`;
-    document.getElementById('todayMini').textContent = `${today.getMonth()+1}.${today.getDate()}`;
-  }
-
   function renderFilters(){
     const wrap = document.getElementById('filterRow');
     wrap.innerHTML = FILTERS.map(label => `
@@ -813,45 +647,32 @@
     return currentItems.filter(item => item.label === currentFilter);
   }
 
-  function createMetaPills(item){
-    const pills = [];
-
-    if(item.boost) pills.push(`<span class="meta-pill">부스트 ${escapeHtml(item.boost)}</span>`);
-    if(item.boost2) pills.push(`<span class="meta-pill">부스트 ${escapeHtml(item.boost2)}</span>`);
-    if(item.startDate) pills.push(`<span class="meta-pill">시작 ${escapeHtml(item.startDate.replaceAll('-', '.'))}</span>`);
-    if(item.endDate) pills.push(`<span class="meta-pill">종료 ${escapeHtml(item.endDate.replaceAll('-', '.'))}</span>`);
-
-    return pills.join('');
-  }
-
-  function hasCpValue(item){
-    return !!String(item.cp || '').trim();
-  }
-
-  function escapeHtml(value){
-    return String(value ?? '')
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
+  function createBoostBadge(icon, text){
+    if(!text) return '';
+    return `
+      <div class="boost-badge">
+        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
+        <span>${escapeHtml(text)}</span>
+      </div>
+    `;
   }
 
   function renderRaidGrid(){
     const wrap = document.getElementById('raidGrid');
     const items = getFilteredItems();
 
-    document.getElementById('activeCount').textContent = items.length;
-
     if(!items.length){
       wrap.innerHTML = `<div class="empty-box">현재 조건에 맞는 진행 중 레이드가 없습니다.</div>`;
       return;
     }
 
-    wrap.innerHTML = items.map((item, index) => {
+    wrap.innerHTML = items.map(item => {
       const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
       const chip = chipClass(item.label);
-      const cpId = `cp-panel-${index}`;
+      const boostBadges = [
+        createBoostBadge(item.boostIcon, item.boost),
+        createBoostBadge(item.boostIcon2, item.boost2)
+      ].join('');
 
       return `
         <article class="raid-card ${shadowTheme}">
@@ -885,43 +706,30 @@
           </div>
 
           <div class="meta-row">
-            ${createMetaPills(item)}
-          </div>
-
-          <div class="action-row">
             ${
-              hasCpValue(item)
-                ? `<button class="action-btn" type="button" data-cp-target="${cpId}">CP 보기</button>`
+              (item.cpMin || item.cpMax)
+                ? `<span class="meta-pill">일반 CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
                 : ``
             }
-            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">상세 보기</a>
+            ${
+              (item.boostedCpMin || item.boostedCpMax)
+                ? `<span class="meta-pill">부스트 CP ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+                : ``
+            }
           </div>
 
-          ${
-            hasCpValue(item)
-              ? `<div class="cp-panel" id="${cpId}">CP 정보: ${escapeHtml(item.cp)}</div>`
-              : ``
-          }
+          ${boostBadges ? `<div class="boost-row">${boostBadges}</div>` : ``}
+
+          <div class="action-row">
+            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(toKey(getKoreaToday()))}">상세 보기</a>
+          </div>
         </article>
       `;
     }).join('');
-
-    wrap.querySelectorAll('[data-cp-target]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const panel = document.getElementById(btn.dataset.cpTarget);
-        if(!panel) return;
-
-        const isOpen = panel.classList.contains('show');
-        panel.classList.toggle('show', !isOpen);
-        btn.textContent = isOpen ? 'CP 보기' : 'CP 닫기';
-      });
-    });
   }
 
   async function init(){
     const today = getKoreaToday();
-    renderTop(today);
-
     const records = await loadRecords();
     currentItems = getTodayRaidItems(records, today);
 
