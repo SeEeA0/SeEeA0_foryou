@@ -636,6 +636,41 @@
       grid-template-columns:1fr;
     }
   }
+ 
+ .raid-thumb.shadow-thumb{
+  position:relative;
+  overflow:hidden;
+}
+
+.raid-thumb.shadow-thumb::after{
+  content:'';
+  position:absolute;
+  inset:-8px;
+  background-image:url('./purple_vector_transparent.png');
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:88%;
+  opacity:.5;
+  z-index:0;
+  pointer-events:none;
+  animation:shadowFlameFloat 4s ease-in-out infinite;
+}
+
+.raid-thumb.shadow-thumb img,
+.raid-thumb.shadow-thumb span{
+  position:relative;
+  z-index:1;
+}
+
+@keyframes shadowFlameFloat{
+  0%,100%{
+    transform:translateY(0) scale(1);
+  }
+  50%{
+    transform:translateY(-3px) scale(1.02);
+  }
+}
+ 
 </style>
 </head>
 <body>
@@ -849,7 +884,7 @@
           <div class="raid-desc">${item.desc || '현재 진행 중인 일정'}</div>
 
           <div class="raid-main">
-            <div class="raid-thumb">
+            <div class="raid-thumb ${item.label === '그림자' || item.bossType === 'shadow' ? 'shadow-thumb' : ''}">
               ${
                 item.image
                   ? `<img src="${item.image}" alt="${item.name || ''}">`
