@@ -350,23 +350,11 @@
     color:#cf4d79;
   }
 
-  .iv-header-image{
+  .iv-body.text-only{
     display:block;
-    width:100%;
-    max-width:560px;
-    height:auto;
-    margin-top:10px;
   }
 
-  .iv-body{
-    display:grid;
-    grid-template-columns:1fr 88px;
-    gap:0;
-    align-items:stretch;
-    background:#fff;
-  }
-
-  .iv-rows{
+  .iv-rows.full{
     padding:10px 14px 14px;
   }
 
@@ -386,20 +374,19 @@
     border-bottom:none;
   }
 
-  .iv-side{
-    border-left:1px solid #f4e5ec;
-    background:#fffafb;
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
-    padding:10px 6px;
+  .iv-row.iv-header-row{
+    color:#fff;
+    background:#d97a4e;
+    border-radius:12px;
+    padding:10px 8px;
+    margin-bottom:8px;
+    border-bottom:none;
   }
 
-  .iv-side img{
-    width:100%;
-    max-width:72px;
-    height:auto;
-    display:block;
+  .iv-row.iv-header-row small{
+    font-size:10px;
+    font-weight:800;
+    opacity:.9;
   }
 
   .iv-empty{
@@ -530,16 +517,6 @@
       grid-template-columns:1fr;
     }
 
-    .iv-body{
-      grid-template-columns:1fr;
-    }
-
-    .iv-side{
-      border-left:none;
-      border-top:1px solid #f4e5ec;
-      justify-content:flex-start;
-    }
-
     .iv-row{
       font-size:13px;
       gap:4px;
@@ -592,10 +569,6 @@
     const now = new Date();
     const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
     return new Date(koreaString);
-  }
-
-  function pad(n){
-    return String(n).padStart(2, '0');
   }
 
   function toDate(str){
@@ -661,7 +634,7 @@
   function getTargetDate(){
     const params = new URLSearchParams(location.search);
     const queryDate = params.get('date');
-    if(queryDate && /^\\d{4}-\\d{2}-\\d{2}$/.test(queryDate)){
+    if(queryDate && /^\d{4}-\d{2}-\d{2}$/.test(queryDate)){
       return toDate(queryDate);
     }
     const koreaNow = getKoreaNow();
@@ -690,7 +663,6 @@
     if(Array.isArray(item.boosts)){
       return item.boosts.filter(v => v && (v.weather || v.icon));
     }
-
     const legacy = [];
     if(item.boostWeather || item.boostIcon){
       legacy.push({
@@ -699,6 +671,14 @@
       });
     }
     return legacy;
+  }
+
+  function normalizeIvFields(item = {}){
+    return {
+      ivTableTitle: item.ivTableTitle || `${item.name || ''} CP`,
+      ivTableRowsText: item.ivTableRowsText || '',
+      ivMemo: item.ivMemo || ''
+    };
   }
 
   function renderBoosts(item){
@@ -750,7 +730,7 @@
   function parseIvRows(text){
     if(!text || typeof text !== 'string') return [];
     return text
-      .split('\\n')
+      .split('\n')
       .map(line => line.trim())
       .filter(Boolean)
       .map(line => line.split('|').map(v => v.trim()))
@@ -766,25 +746,30 @@
   }
 
   function renderIvTable(item){
-    const rows = parseIvRows(item.ivTableRowsText || '');
+    const iv = normalizeIvFields(item);
+    const rows = parseIvRows(iv.ivTableRowsText || '');
 
-    if(!item.ivTableHeaderImage && !item.ivTableSideImage && !rows.length && !item.ivMemo){
+    if(!rows.length && !iv.ivMemo){
       return '';
     }
 
     return `
       <div class="iv-box">
         <div class="iv-head">
-          <div class="iv-title">${item.ivTableTitle || '개체값 표'}</div>
-          ${
-            item.ivTableHeaderImage
-              ? `<img class="iv-header-image" src="${item.ivTableHeaderImage}" alt="개체값 표 헤더">`
-              : ``
-          }
+          <div class="iv-title">${iv.ivTableTitle || `${item.name || ''} CP`}</div>
         </div>
 
-        <div class="iv-body">
-          <div class="iv-rows">
+        <div class="iv-body text-only">
+          <div class="iv-rows full">
+            <div class="iv-row iv-header-row">
+              <div>CP<br><small>(lv.20)</small></div>
+              <div>CP<br><small>(lv.25)</small></div>
+              <div>ATK</div>
+              <div>DEF</div>
+              <div>STA</div>
+              <div>% IV</div>
+            </div>
+
             ${
               rows.length
                 ? rows.map(row => `
@@ -801,17 +786,9 @@
             }
 
             ${
-              item.ivMemo
-                ? `<div class="detail-note" style="margin-top:12px;">${item.ivMemo}</div>`
+              iv.ivMemo
+                ? `<div class="detail-note" style="margin-top:12px;">${iv.ivMemo}</div>`
                 : ``
-            }
-          </div>
-
-          <div class="iv-side">
-            ${
-              item.ivTableSideImage
-                ? `<img src="${item.ivTableSideImage}" alt="% IV">`
-                : `<div class="iv-empty">% IV 이미지 없음</div>`
             }
           </div>
         </div>
