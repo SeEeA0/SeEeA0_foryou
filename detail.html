@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>상세 일정</title>
+<title>Pokémon GO Raid Planner | 상세 정보</title>
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -16,7 +16,6 @@
   :root{
     --bg:#edf3fb;
     --card:#ffffff;
-    --card-soft:#f8fbff;
     --line:#d8e3f2;
     --text:#1f2f46;
     --muted:#7486a3;
@@ -39,371 +38,424 @@
     --gray:#67768f;
     --gray-soft:#f2f5fa;
 
-    --shadow:0 18px 40px rgba(43,67,110,.08);
-    --ease:cubic-bezier(.22,.61,.36,1);
+    --shadow:0 14px 32px rgba(43,67,110,.08);
+    --shadow-hover:0 18px 36px rgba(43,67,110,.14);
   }
 
   .wrap{
-    max-width:1120px;
+    max-width:1180px;
     margin:0 auto;
-    padding:20px 16px 110px;
+    padding:16px 14px 110px;
   }
 
-  .section{
-    background:rgba(255,255,255,.84);
-    border:1px solid var(--line);
-    border-radius:30px;
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    margin-bottom:18px;
-    animation:sectionFade .55s var(--ease) both;
+  .fade-up{
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeUp .55s ease forwards;
+  }
+  .delay-1{animation-delay:.05s}
+  .delay-2{animation-delay:.12s}
+  .delay-3{animation-delay:.19s}
+  .delay-4{animation-delay:.26s}
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
   }
 
-  .section-head{
+  @keyframes softFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-4px)}
+  }
+
+  @keyframes pulseRing{
+    0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
+    70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
+    100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
+  }
+
+  .topbar{
     display:flex;
+    align-items:flex-start;
     justify-content:space-between;
-    align-items:flex-end;
-    gap:18px;
-    padding:24px 26px 18px;
-    border-bottom:1px solid #e4edf8;
-    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+    gap:12px;
+    margin-bottom:16px;
   }
 
-  .section-title{
-    font-size:26px;
+  .topbar-title{
+    font-size:30px;
     font-weight:900;
-    letter-spacing:-.03em;
+    letter-spacing:-.04em;
+    line-height:1.05;
   }
 
-  .section-sub{
+  .topbar-sub{
     margin-top:8px;
-    font-size:14px;
     color:var(--muted);
-    font-weight:700;
-    line-height:1.5;
+    font-size:14px;
+    font-weight:800;
   }
 
-  .section-body{
-    padding:18px;
-  }
-
-  .tiny-badge{
-    display:inline-flex;
+  .topbar-date{
+    flex-shrink:0;
+    min-height:48px;
+    padding:0 16px;
+    border-radius:16px;
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    display:flex;
     align-items:center;
     justify-content:center;
-    min-height:42px;
-    padding:0 14px;
-    border-radius:999px;
-    background:#f1f6ff;
-    border:1px solid var(--line);
-    color:#58719a;
     font-size:13px;
     font-weight:900;
-    white-space:nowrap;
+    color:#617899;
+    box-shadow:var(--shadow);
   }
 
-  .detail-list{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
+  .hero{
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
+    border:1px solid var(--line);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:22px 20px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:16px;
   }
 
-  .detail-card{
-    display:flex;
-    gap:16px;
-    align-items:flex-start;
-    background:#fff;
-    border:1.5px solid #dce7f4;
-    border-radius:24px;
-    padding:16px;
-    box-shadow:0 12px 28px rgba(58,81,127,.04);
-    opacity:0;
-    transform:translateY(14px);
-    animation:fadeUp .5s var(--ease) forwards;
+  .hero::before{
+    content:"";
+    position:absolute;
+    right:-50px;
+    top:-50px;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(104,135,255,.18) 0%, rgba(104,135,255,0) 70%);
+    pointer-events:none;
   }
 
-  .detail-thumb{
-    width:96px;
-    height:96px;
-    border-radius:24px;
+  .hero.shadow-theme{
+    background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
+    border-color:#d7c8ff;
+    box-shadow:0 16px 34px rgba(98,67,168,.14);
+  }
+
+  .hero.shadow-theme::before{
+    background:radial-gradient(circle, rgba(124,88,233,.22) 0%, rgba(124,88,233,0) 70%);
+  }
+
+  .hero-row{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:22px;
+    align-items:center;
+  }
+
+  .hero-visual{
+    width:180px;
+    height:180px;
+    border-radius:30px;
     background:#f3f7ff;
-    border:1px solid #e0e8f6;
+    border:1px solid #dce6f5;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    flex-shrink:0;
-    position:relative;
+    box-shadow:0 14px 28px rgba(43,67,110,.08);
+    animation:softFloat 3.8s ease-in-out infinite;
   }
 
-  .detail-thumb img{
-    width:76px;
-    height:76px;
+  .hero.shadow-theme .hero-visual{
+    background:#f4eeff;
+    border-color:#d8ccff;
+  }
+
+  .hero-visual img{
+    width:140px;
+    height:140px;
     object-fit:contain;
-    position:relative;
-    z-index:1;
   }
 
-  .detail-thumb.shadow-thumb::after{
-    content:'';
-    position:absolute;
-    inset:-8px;
-    background-image:url('./purple_vector_transparent.png');
-    background-repeat:no-repeat;
-    background-position:center;
-    background-size:88%;
-    opacity:.5;
-    z-index:0;
-    pointer-events:none;
-    animation:shadowFlameFloat 4s ease-in-out infinite;
-  }
-
-  .detail-main{
-    flex:1;
-    min-width:0;
-  }
-
-  .detail-name{
-    font-size:24px;
-    font-weight:900;
-    line-height:1.15;
-    letter-spacing:-.03em;
-  }
-
-  .detail-meta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
-  }
-
-  .chip{
+  .hero-badge{
     display:inline-flex;
     align-items:center;
     justify-content:center;
     min-height:32px;
     padding:0 12px;
     border-radius:999px;
+    background:#edf4ff;
+    color:#3567d7;
     font-size:12px;
     font-weight:900;
-    line-height:1;
-    white-space:nowrap;
+    margin-bottom:12px;
   }
 
-  .chip.blue{background:var(--blue-soft);color:var(--blue)}
-  .chip.purple{background:var(--purple-soft);color:var(--purple)}
-  .chip.pink{background:var(--pink-soft);color:var(--pink)}
-  .chip.yellow{background:var(--yellow-soft);color:var(--yellow)}
-  .chip.green{background:var(--green-soft);color:var(--green)}
-  .chip.gray{background:var(--gray-soft);color:var(--gray)}
+  .hero.shadow-theme .hero-badge{
+    background:#efe7ff;
+    color:#7c58e9;
+  }
+
+  .hero-title{
+    font-size:34px;
+    line-height:1.08;
+    font-weight:900;
+    letter-spacing:-.04em;
+  }
+
+  .hero-desc{
+    margin-top:10px;
+    color:#6f819e;
+    font-size:14px;
+    line-height:1.6;
+    font-weight:800;
+  }
+
+  .hero-meta{
+    margin-top:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .meta-pill{
+    min-height:34px;
+    padding:0 12px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .hero.shadow-theme .meta-pill{
+    background:rgba(255,255,255,.82);
+    border-color:#ddcffd;
+  }
+
+  .section{
+    background:rgba(255,255,255,.9);
+    border:1px solid var(--line);
+    border-radius:26px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+
+  .section-head{
+    padding:18px 18px 14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid #e6eef8;
+  }
+
+  .section-title{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .section-sub{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--muted);
+    font-weight:800;
+  }
+
+  .section-body{
+    padding:14px;
+  }
 
   .info-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-    margin-top:14px;
+    gap:14px;
   }
 
-  .info-box{
-    background:#f6f9ff;
-    border:1px solid #dde7f5;
-    border-radius:18px;
-    padding:12px 14px;
+  .info-card{
+    background:linear-gradient(180deg,#fff 0%, #fbfdff 100%);
+    border:1.5px solid #dde7f4;
+    border-radius:22px;
+    padding:16px;
+    min-height:132px;
+    position:relative;
+    overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+
+  .info-card::after{
+    content:"";
+    position:absolute;
+    right:-30px;
+    bottom:-30px;
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:linear-gradient(135deg, rgba(120,148,255,.12), rgba(123,99,255,.03));
+    pointer-events:none;
+  }
+
+  .info-card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow-hover);
+    border-color:#c7d7ec;
   }
 
   .info-label{
     font-size:12px;
-    color:#7386a3;
     font-weight:900;
+    color:#7b8ca8;
   }
 
   .info-value{
-    margin-top:6px;
-    font-size:15px;
-    color:#31435d;
-    font-weight:900;
-    line-height:1.35;
-    word-break:keep-all;
-  }
-
-  .boost-row{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:10px;
-    margin-top:8px;
-  }
-
-  .boost-pill{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    min-height:36px;
-    padding:6px 12px 6px 6px;
-    border-radius:999px;
-    background:#fff;
-    border:1px solid #dbe5f3;
-  }
-
-  .boost-icon{
-    width:26px;
-    height:26px;
-    border-radius:50%;
-    background:#eef3ff;
-    border:1px solid #d9e4f3;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    flex-shrink:0;
-  }
-
-  .boost-icon img{
-    width:16px;
-    height:16px;
-    object-fit:contain;
-  }
-
-  .strategy-box{
-    margin-top:14px;
-    background:#f6f9ff;
-    border:1px solid #dde7f5;
-    border-radius:18px;
-    padding:12px 14px;
-  }
-
-  .strategy-label{
-    font-size:12px;
-    color:#7386a3;
-    font-weight:900;
-  }
-
-  .strategy-types{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
     margin-top:10px;
+    font-size:24px;
+    line-height:1.2;
+    font-weight:900;
+    color:#24374c;
+    letter-spacing:-.03em;
   }
 
-  .strategy-item{
+  .info-desc{
+    margin-top:8px;
+    font-size:13px;
+    line-height:1.55;
+    color:#7183a0;
+    font-weight:800;
+  }
+
+  .action-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .action-btn{
+    min-height:40px;
+    padding:0 14px;
+    border-radius:999px;
+    border:1px solid #d7e2f0;
+    background:#fff;
+    color:#597392;
+    font-size:12px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.16s ease;
+    text-decoration:none;
     display:inline-flex;
     align-items:center;
-    gap:8px;
-    min-height:36px;
-    padding:6px 10px 6px 6px;
-    border-radius:999px;
-    background:#fff;
-    border:1px solid #dbe5f3;
+    justify-content:center;
   }
 
-  .strategy-type-icon{
-    width:26px;
-    height:26px;
-    border-radius:50%;
-    background:#f3f7ff;
-    border:1px solid #dce6f4;
+  .action-btn:hover{
+    transform:translateY(-1px);
+    border-color:#c7d7ec;
+    box-shadow:0 10px 18px rgba(43,67,110,.07);
+  }
+
+  .action-btn.primary{
+    background:#edf4ff;
+    color:#3567d7;
+    border-color:#cdddf5;
+  }
+
+  .cp-panel{
+    margin-top:12px;
+    display:none;
+    padding:14px;
+    border-radius:18px;
+    background:#fbfdff;
+    border:1px dashed #d7e2f1;
+    font-size:13px;
+    color:#405674;
+    line-height:1.6;
+    font-weight:800;
+  }
+
+  .cp-panel.show{
+    display:block;
+    animation:fadeUp .24s ease forwards;
+  }
+
+  .timeline{
     display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .timeline-item{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid #dde7f4;
+    border-radius:22px;
+    padding:16px;
+    display:grid;
+    grid-template-columns:110px 1fr;
+    gap:14px;
+    align-items:start;
+  }
+
+  .timeline-date{
+    min-height:64px;
+    border-radius:18px;
+    background:#edf4ff;
+    border:1px solid #d8e6f6;
+    display:flex;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
-    flex-shrink:0;
-  }
-
-  .strategy-type-icon img{
-    width:16px;
-    height:16px;
-    object-fit:contain;
-  }
-
-  .strategy-type-name{
-    font-size:13px;
-    color:#31435d;
     font-weight:900;
-    line-height:1;
-  }
-
-  .detail-note{
-    margin-top:12px;
-    color:#8a98af;
-    font-size:13px;
-    font-weight:700;
-    line-height:1.5;
-  }
-
-  .iv-box{
-    margin-top:14px;
-    background:#fff;
-    border:1px solid #f0d9e3;
-    border-radius:22px;
-    overflow:hidden;
-  }
-
-  .iv-head{
-    padding:14px 16px 10px;
-    border-bottom:1px solid #f4e5ec;
-    background:#fff8fb;
-  }
-
-  .iv-title{
-    font-size:14px;
-    font-weight:900;
-    color:#cf4d79;
-  }
-
-  .iv-body.text-only{
-    display:block;
-  }
-
-  .iv-rows.full{
-    padding:10px 14px 14px;
-  }
-
-  .iv-row{
-    display:grid;
-    grid-template-columns:repeat(6,minmax(0,1fr));
-    gap:8px;
-    padding:8px 0;
-    border-bottom:1px solid #f7edf1;
-    color:#d56b8a;
-    font-weight:900;
-    font-size:14px;
+    color:#3567d7;
     text-align:center;
+    padding:8px;
   }
 
-  .iv-row:last-child{
-    border-bottom:none;
+  .timeline-date strong{
+    font-size:22px;
+    line-height:1;
+    color:#2f58ba;
   }
 
-  .iv-row.iv-header-row{
-    color:#fff;
-    background:#d97a4e;
-    border-radius:12px;
-    padding:10px 8px;
-    margin-bottom:8px;
-    border-bottom:none;
+  .timeline-title{
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-.03em;
   }
 
-  .iv-row.iv-header-row small{
-    font-size:10px;
-    font-weight:800;
-    opacity:.9;
-  }
-
-  .iv-empty{
-    padding:14px 0 4px;
-    color:#b98ea0;
+  .timeline-desc{
+    margin-top:7px;
     font-size:13px;
+    color:#70829f;
+    line-height:1.6;
     font-weight:800;
   }
 
   .empty-state{
-    background:#fbfdff;
-    border:1px dashed #dce7f4;
-    border-radius:20px;
-    padding:28px 18px;
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px dashed #d9e4f2;
+    border-radius:24px;
+    padding:34px 18px;
     text-align:center;
-    color:#8293ad;
+    color:#8193ad;
+  }
+
+  .empty-state h2{
+    margin:0;
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    color:#2b3d55;
+  }
+
+  .empty-state p{
+    margin:12px 0 0;
     font-size:14px;
+    line-height:1.7;
     font-weight:800;
   }
 
@@ -412,10 +464,10 @@
     left:50%;
     bottom:14px;
     transform:translateX(-50%);
-    width:min(1180px, calc(100% - 24px));
-    background:rgba(255,255,255,.92);
+    width:min(980px, calc(100% - 24px));
+    background:rgba(255,255,255,.94);
     border:1px solid var(--line);
-    border-radius:26px;
+    border-radius:24px;
     box-shadow:0 18px 36px rgba(42,59,97,.12);
     backdrop-filter:blur(10px);
     padding:10px;
@@ -426,8 +478,8 @@
   }
 
   .nav-item{
-    min-height:68px;
-    border-radius:18px;
+    min-height:64px;
+    border-radius:16px;
     text-decoration:none;
     color:#6f819e;
     display:flex;
@@ -435,7 +487,7 @@
     justify-content:center;
     flex-direction:column;
     gap:6px;
-    font-size:13px;
+    font-size:12px;
     font-weight:900;
     transition:.18s ease;
     background:#f8fbff;
@@ -446,6 +498,7 @@
     background:#f3f7ff;
     color:#486995;
     border-color:#d6e3f3;
+    transform:translateY(-1px);
   }
 
   .nav-item.active{
@@ -455,91 +508,84 @@
   }
 
   .nav-icon{
-    font-size:20px;
+    font-size:18px;
     line-height:1;
   }
 
-  @keyframes sectionFade{
-    from{opacity:0; transform:translateY(10px)}
-    to{opacity:1; transform:translateY(0)}
-  }
-
-  @keyframes fadeUp{
-    from{
-      opacity:0;
-      transform:translateY(14px);
+  @media (max-width:980px){
+    .info-grid{
+      grid-template-columns:1fr;
     }
-    to{
-      opacity:1;
-      transform:translateY(0);
-    }
-  }
-
-  @keyframes shadowFlameFloat{
-    0%,100%{ transform:translateY(0) scale(1); }
-    50%{ transform:translateY(-3px) scale(1.02); }
   }
 
   @media (max-width:768px){
     .wrap{
-      padding-bottom:120px;
+      padding:14px 12px 120px;
+    }
+
+    .topbar{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .topbar-title{
+      font-size:28px;
+    }
+
+    .hero-row{
+      grid-template-columns:1fr;
+    }
+
+    .hero-visual{
+      width:100%;
+      height:220px;
+    }
+
+    .hero-visual img{
+      width:160px;
+      height:160px;
+    }
+
+    .hero-title{
+      font-size:28px;
     }
 
     .section-head{
-      padding:22px 20px 16px;
+      padding:16px 16px 12px;
       flex-direction:column;
       align-items:flex-start;
     }
 
     .section-body{
-      padding:16px;
+      padding:12px;
     }
 
-    .section-title{
-      font-size:22px;
-    }
-
-    .detail-card{
-      flex-direction:column;
-    }
-
-    .detail-thumb{
-      width:88px;
-      height:88px;
-    }
-
-    .detail-thumb img{
-      width:68px;
-      height:68px;
-    }
-
-    .info-grid{
+    .timeline-item{
       grid-template-columns:1fr;
     }
+  }
 
-    .iv-row{
-      font-size:13px;
-      gap:4px;
+  @media (prefers-reduced-motion: reduce){
+    *{
+      animation:none !important;
+      transition:none !important;
+      scroll-behavior:auto !important;
     }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="app">
 
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <div class="section-title" id="pageTitle">상세 일정</div>
-        <div class="section-sub" id="pageSub">선택한 날짜의 일정만 자세히 확인합니다.</div>
-      </div>
-      <div class="tiny-badge" id="pageBadge">DETAIL</div>
+  <div class="topbar fade-up">
+    <div>
+      <div class="topbar-title">레이드 상세</div>
+      <div class="topbar-sub" id="topbarSub">선택한 레이드 상세 정보를 표시합니다</div>
     </div>
+    <div class="topbar-date" id="monthBadge">DETAIL</div>
+  </div>
 
-    <div class="section-body">
-      <div class="detail-list" id="detailList"></div>
-    </div>
-  </section>
+  <div id="detailContent"></div>
 
 </div>
 
@@ -556,24 +602,14 @@
     <div class="nav-icon">🗓️</div>
     <div>주간 일정표</div>
   </a>
-  <a href="./monthly.html" class="nav-item active">
+  <a href="./monthly.html" class="nav-item">
     <div class="nav-icon">📆</div>
     <div>월간 일정</div>
   </a>
 </nav>
 
 <script>
-  async function loadRaidData(){
-  try{
-    const res = await fetch('./raid-data.json?v=' + Date.now(), { cache:'no-store' });
-    if(!res.ok) throw new Error('raid-data.json load failed');
-    const parsed = await res.json();
-    return Array.isArray(parsed) ? parsed : [];
-  }catch(e){
-    console.error('raid-data.json 로딩 실패', e);
-    return [];
-  }
-}
+  const DATA_URL = './raid-data.json';
 
   function getKoreaNow(){
     const now = new Date();
@@ -581,295 +617,329 @@
     return new Date(koreaString);
   }
 
+  function getKoreaToday(){
+    const koreaNow = getKoreaNow();
+    koreaNow.setHours(0, 0, 0, 0);
+    return koreaNow;
+  }
+
+  function pad(n){
+    return String(n).padStart(2, '0');
+  }
+
   function toDate(str){
     if(!str) return null;
-    const [y, m, d] = str.split('-').map(Number);
+    const [y,m,d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
-  function getDayKor(day){
-    return ['일','월','화','수','목','금','토'][day];
+  function toKey(date){
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
   }
 
   function formatKoreanDate(date){
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${getDayKor(date.getDay())}요일`;
+    const days = ['일','월','화','수','목','금','토'];
+    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
   }
 
-  function toAmpm(time24){
-    if(!time24) return '';
-    const [hh, mm] = time24.split(':').map(Number);
-    const suffix = hh >= 12 ? 'PM' : 'AM';
-    const h12 = hh % 12 === 0 ? 12 : hh % 12;
-    return `${String(h12).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${suffix}`;
-  }
-
-  function getDisplayTime(item){
-    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
-    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
-    return `${start} ~ ${end}`;
+  function formatSimpleDate(dateStr){
+    if(!dateStr) return '-';
+    return dateStr.replaceAll('-', '.');
   }
 
   function inRange(date, startStr, endStr){
     const start = toDate(startStr);
     const end = toDate(endStr);
     if(!start || !end) return false;
-    const t = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+    const t = toDate(toKey(date)).getTime();
     return t >= start.getTime() && t <= end.getTime();
   }
 
-  
-
-  function isDetailAllowed(item){
-    return Array.isArray(item.showPages) && item.showPages.includes('detail');
+  function escapeHtml(value){
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
   }
 
-  function chipClass(item){
-    return item.type || (
-      item.label === '5성' ? 'blue' :
-      item.label === '메가' ? 'purple' :
-      item.label === '그림자' ? 'pink' :
-      item.label === '3성' ? 'yellow' :
-      item.label === '1성' ? 'green' : 'gray'
-    );
+  function hasCpValue(item){
+    return !!String(item.cp || '').trim();
   }
 
-  function getTargetDate(){
+  function chipLabelClass(label){
+    if(label === '5성') return '5성';
+    if(label === '3성') return '3성';
+    if(label === '1성') return '1성';
+    if(label === '메가') return '메가';
+    if(label === '그림자') return '그림자';
+    return '기타';
+  }
+
+  function pageChipClass(label){
+    if(label === '5성') return 'blue';
+    if(label === '3성') return 'yellow';
+    if(label === '1성') return 'green';
+    if(label === '메가') return 'purple';
+    if(label === '그림자') return 'pink';
+    return 'gray';
+  }
+
+  function getQueryParams(){
     const params = new URLSearchParams(location.search);
-    const queryDate = params.get('date');
-    if(queryDate && /^\d{4}-\d{2}-\d{2}$/.test(queryDate)){
-      return toDate(queryDate);
-    }
-    const koreaNow = getKoreaNow();
-    koreaNow.setHours(0, 0, 0, 0);
-    return koreaNow;
-  }
-
-  function getItemsForDate(records, date){
-    return records
-      .filter(item =>
-        isDetailAllowed(item) &&
-        item.startDate &&
-        item.endDate &&
-        inRange(date, item.startDate, item.endDate)
-      )
-      .sort((a, b) => {
-        const order = { '5성':0, '메가':1, '그림자':2, '3성':3, '1성':4 };
-        const aOrder = order[a.label] ?? 99;
-        const bOrder = order[b.label] ?? 99;
-        if(aOrder !== bOrder) return aOrder - bOrder;
-        return (a.name || '').localeCompare(b.name || '', 'ko');
-      });
-  }
-
-  function normalizeBoosts(item){
-    if(Array.isArray(item.boosts)){
-      return item.boosts.filter(v => v && (v.weather || v.icon));
-    }
-    const legacy = [];
-    if(item.boostWeather || item.boostIcon){
-      legacy.push({
-        weather: item.boostWeather || '',
-        icon: item.boostIcon || ''
-      });
-    }
-    return legacy;
-  }
-
-  function normalizeIvFields(item = {}){
     return {
-      ivTableTitle: item.ivTableTitle || `${item.name || ''} CP`,
-      ivTableRowsText: item.ivTableRowsText || '',
-      ivMemo: item.ivMemo || ''
+      name: params.get('name') || '',
+      date: params.get('date') || ''
     };
   }
 
-  function renderBoosts(item){
-    const boosts = normalizeBoosts(item);
+  async function loadRecords(){
+    try{
+      const res = await fetch(DATA_URL, { cache: 'no-store' });
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const parsed = await res.json();
 
-    if(!boosts.length){
-      return `<div class="info-value" style="margin-top:0;">미입력</div>`;
+      if(Array.isArray(parsed)) return parsed;
+      if(Array.isArray(parsed.records)) return parsed.records;
+      if(Array.isArray(parsed.items)) return parsed.items;
+
+      return [];
+    }catch(error){
+      console.error('raid-data.json 불러오기 실패:', error);
+      return [];
+    }
+  }
+
+  function getDetailItem(records, name, date){
+    const filtered = records.filter(item => (item.name || '') === name);
+
+    if(!filtered.length) return null;
+
+    if(date){
+      const dateObj = toDate(date);
+      const matchedByDate = filtered.find(item =>
+        item.startDate &&
+        item.endDate &&
+        dateObj &&
+        inRange(dateObj, item.startDate, item.endDate)
+      );
+      if(matchedByDate) return matchedByDate;
     }
 
-    return `
-      <div class="boost-row">
-        ${boosts.map(boost => `
-          <div class="boost-pill">
-            <div class="boost-icon">
+    return filtered[0];
+  }
+
+  function renderEmpty(){
+    document.getElementById('detailContent').innerHTML = `
+      <section class="empty-state fade-up">
+        <h2>상세 정보를 찾지 못했어요</h2>
+        <p>
+          detail.html로 넘어올 때 <strong>name</strong> 값이 없거나,<br>
+          raid-data.json 안에 해당 이름의 데이터가 없는 상태입니다.
+        </p>
+        <div class="action-row" style="justify-content:center;margin-top:18px;">
+          <a class="action-btn primary" href="./monthly.html">월간 일정으로 이동</a>
+          <a class="action-btn" href="./raid-now.html">지금 레이드 보기</a>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderDetail(item, queryDate){
+    const today = getKoreaToday();
+    const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
+    const displayDate = queryDate || toKey(today);
+
+    document.getElementById('topbarSub').textContent = `${escapeHtml(item.name || '-')} 상세 정보`;
+    document.getElementById('monthBadge').textContent = chipLabelClass(item.label || '-');
+
+    document.getElementById('detailContent').innerHTML = `
+      <section class="hero ${shadowTheme} fade-up">
+        <div class="hero-row">
+          <div class="hero-visual">
+            ${
+              item.image
+                ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
+                : `<span style="font-size:56px;">🖼️</span>`
+            }
+          </div>
+
+          <div>
+            <div class="hero-badge">${escapeHtml(item.label || '레이드')}</div>
+            <div class="hero-title">${escapeHtml(item.name || '-')}</div>
+            <div class="hero-desc">
               ${
-                boost.icon
-                  ? `<img src="${boost.icon}" alt="${boost.weather || ''}">`
-                  : `<span style="font-size:10px;">☁</span>`
+                item.label === '그림자'
+                  ? '그림자 레이드이므로 상세 페이지 전체에 보라색 테마가 적용됩니다.'
+                  : '선택한 레이드의 기간, CP, 부스트, 노출 범위를 한눈에 확인할 수 있습니다.'
               }
             </div>
-            <div class="info-value" style="margin:0; font-size:14px;">
-              ${boost.weather || '날씨'}
+
+            <div class="hero-meta">
+              <span class="meta-pill">시작 ${escapeHtml(formatSimpleDate(item.startDate))}</span>
+              <span class="meta-pill">종료 ${escapeHtml(formatSimpleDate(item.endDate))}</span>
+              <span class="meta-pill">타입 ${escapeHtml(item.label || '-')}</span>
+              ${item.boost ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost)}</span>` : ``}
+              ${item.boost2 ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost2)}</span>` : ``}
             </div>
           </div>
-        `).join('')}
-      </div>
-    `;
-  }
+        </div>
+      </section>
 
-  function renderStrategies(item){
-    if(!(Array.isArray(item.strategyTypes) && item.strategyTypes.length)){
-      return `<div class="strategy-type-name" style="color:#8a98af;">공략 타입 정보 없음</div>`;
-    }
+      <section class="section fade-up delay-1">
+        <div class="section-head">
+          <div>
+            <div class="section-title">기본 정보</div>
+            <div class="section-sub">선택한 레이드의 핵심 정보를 카드 형태로 정리했습니다</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="info-grid">
+            <article class="info-card">
+              <div class="info-label">레이드 이름</div>
+              <div class="info-value">${escapeHtml(item.name || '-')}</div>
+              <div class="info-desc">raid-data.json에 입력된 기준 이름입니다.</div>
+            </article>
 
-    return item.strategyTypes.map(type => `
-      <div class="strategy-item">
-        <div class="strategy-type-icon">
+            <article class="info-card">
+              <div class="info-label">레이드 타입</div>
+              <div class="info-value">${escapeHtml(item.label || '-')}</div>
+              <div class="info-desc">
+                5성 / 3성 / 1성 / 메가 / 그림자 분류 기준으로 정렬됩니다.
+              </div>
+            </article>
+
+            <article class="info-card">
+              <div class="info-label">진행 기간</div>
+              <div class="info-value">${escapeHtml(formatSimpleDate(item.startDate))} - ${escapeHtml(formatSimpleDate(item.endDate))}</div>
+              <div class="info-desc">해당 기간 내 날짜에서 자동으로 표시됩니다.</div>
+            </article>
+
+            <article class="info-card">
+              <div class="info-label">선택 기준 날짜</div>
+              <div class="info-value">${escapeHtml(displayDate)}</div>
+              <div class="info-desc">
+                monthly / weekly / raid-now 페이지에서 전달된 date 값을 우선 사용합니다.
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section fade-up delay-2">
+        <div class="section-head">
+          <div>
+            <div class="section-title">배틀 정보</div>
+            <div class="section-sub">cp 값이 있으면 버튼으로 펼쳐서 볼 수 있습니다</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="action-row">
+            ${
+              hasCpValue(item)
+                ? `<button class="action-btn primary" type="button" id="cpToggleBtn">CP 보기</button>`
+                : `<span class="action-btn" style="cursor:default;">CP 미입력</span>`
+            }
+            <a class="action-btn" href="./monthly.html">월간 일정</a>
+            <a class="action-btn" href="./weekly.html">주간 일정</a>
+            <a class="action-btn" href="./raid-now.html">지금 레이드</a>
+          </div>
+
           ${
-            type.icon
-              ? `<img src="${type.icon}" alt="${type.name || ''}">`
-              : `<span style="font-size:10px;">?</span>`
+            hasCpValue(item)
+              ? `<div class="cp-panel" id="cpPanel">CP 정보: ${escapeHtml(item.cp)}</div>`
+              : ``
           }
         </div>
-        <div class="strategy-type-name">${type.name || '타입'}</div>
-      </div>
-    `).join('');
-  }
+      </section>
 
-  function parseIvRows(text){
-    if(!text || typeof text !== 'string') return [];
-    return text
-      .split('\n')
-      .map(line => line.trim())
-      .filter(Boolean)
-      .map(line => line.split('|').map(v => v.trim()))
-      .filter(cols => cols.length >= 6)
-      .map(cols => ({
-        cp20: cols[0] || '',
-        cp25: cols[1] || '',
-        atk: cols[2] || '',
-        def: cols[3] || '',
-        sta: cols[4] || '',
-        iv: cols[5] || ''
-      }));
-  }
-
-  function renderIvTable(item){
-    const iv = normalizeIvFields(item);
-    const rows = parseIvRows(iv.ivTableRowsText || '');
-
-    if(!rows.length && !iv.ivMemo){
-      return '';
-    }
-
-    return `
-      <div class="iv-box">
-        <div class="iv-head">
-          <div class="iv-title">${iv.ivTableTitle || `${item.name || ''} CP`}</div>
-        </div>
-
-        <div class="iv-body text-only">
-          <div class="iv-rows full">
-            <div class="iv-row iv-header-row">
-              <div>CP<br><small>(lv.20)</small></div>
-              <div>CP<br><small>(lv.25)</small></div>
-              <div>ATK</div>
-              <div>DEF</div>
-              <div>STA</div>
-              <div>% IV</div>
-            </div>
-
-            ${
-              rows.length
-                ? rows.map(row => `
-                  <div class="iv-row">
-                    <div>${row.cp20}</div>
-                    <div>${row.cp25}</div>
-                    <div>${row.atk}</div>
-                    <div>${row.def}</div>
-                    <div>${row.sta}</div>
-                    <div>${row.iv}</div>
-                  </div>
-                `).join('')
-                : `<div class="iv-empty">행 데이터 없음</div>`
-            }
-
-            ${
-              iv.ivMemo
-                ? `<div class="detail-note" style="margin-top:12px;">${iv.ivMemo}</div>`
-                : ``
-            }
+      <section class="section fade-up delay-3">
+        <div class="section-head">
+          <div>
+            <div class="section-title">노출 정보 / 이동 흐름</div>
+            <div class="section-sub">어느 페이지에서 표시되는지와 사용 흐름을 같이 정리했습니다</div>
           </div>
         </div>
-      </div>
+        <div class="section-body">
+          <div class="timeline">
+            <article class="timeline-item">
+              <div class="timeline-date">
+                <strong>1</strong>
+                <span>데이터</span>
+              </div>
+              <div>
+                <div class="timeline-title">raid-data.json 에서 불러오기</div>
+                <div class="timeline-desc">
+                  이름, 타입, 시작일, 종료일, 이미지, CP, 부스트, showPages 값을 기준으로 각 페이지가 자동 구성됩니다.
+                </div>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-date">
+                <strong>2</strong>
+                <span>노출</span>
+              </div>
+              <div>
+                <div class="timeline-title">showPages 기준 페이지 노출</div>
+                <div class="timeline-desc">
+                  ${Array.isArray(item.showPages) && item.showPages.length
+                    ? escapeHtml(item.showPages.join(', '))
+                    : 'showPages 값이 없거나 비어 있습니다.'}
+                </div>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-date">
+                <strong>3</strong>
+                <span>상세</span>
+              </div>
+              <div>
+                <div class="timeline-title">이름 + 날짜 기준 상세 진입</div>
+                <div class="timeline-desc">
+                  ` + "`detail.html?name=이름&date=날짜`" + ` 형식으로 들어오면 해당 기간의 데이터를 우선 선택합니다.
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
     `;
+
+    const cpToggleBtn = document.getElementById('cpToggleBtn');
+    const cpPanel = document.getElementById('cpPanel');
+
+    if(cpToggleBtn && cpPanel){
+      cpToggleBtn.addEventListener('click', () => {
+        const isOpen = cpPanel.classList.contains('show');
+        cpPanel.classList.toggle('show', !isOpen);
+        cpToggleBtn.textContent = isOpen ? 'CP 보기' : 'CP 닫기';
+      });
+    }
   }
 
-  async function renderDetailPage(){
-    const records = await loadRaidData();
-    const targetDate = getTargetDate();
-    const items = getItemsForDate(records, targetDate);
+  async function init(){
+    const records = await loadRecords();
+    const { name, date } = getQueryParams();
 
-    document.getElementById('pageTitle').textContent = `${formatKoreanDate(targetDate)} 상세 일정`;
-    document.getElementById('pageSub').textContent = `선택한 날짜의 상세 레이드 정보입니다.`;
-    document.getElementById('pageBadge').textContent = `${targetDate.getMonth()+1}.${targetDate.getDate()}`;
-
-    const list = document.getElementById('detailList');
-
-    if(!items.length){
-      list.innerHTML = `
-        <div class="empty-state">
-          해당 날짜에는 등록된 일정이 없습니다.
-        </div>
-      `;
+    if(!name){
+      renderEmpty();
       return;
     }
 
-    list.innerHTML = items.map((item, index) => `
-      <article class="detail-card" style="animation-delay:${index * 0.05}s;">
-        <div class="detail-thumb ${item.label === '그림자' || item.bossType === 'shadow' ? 'shadow-thumb' : ''}">
-          ${
-            item.image
-              ? `<img src="${item.image}" alt="${item.name || ''}">`
-              : `<span style="font-size:30px;">🖼️</span>`
-          }
-        </div>
+    const item = getDetailItem(records, name, date);
 
-        <div class="detail-main">
-          <div class="detail-name">${item.name || '-'}</div>
+    if(!item){
+      renderEmpty();
+      return;
+    }
 
-          <div class="detail-meta">
-            <span class="chip ${chipClass(item)}">${item.label || '-'}</span>
-            <span class="chip gray">${item.startDate} ~ ${item.endDate}</span>
-            <span class="chip gray">${getDisplayTime(item)}</span>
-          </div>
-
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-label">일반 CP</div>
-              <div class="info-value">${item.cp || '-'}</div>
-            </div>
-
-            <div class="info-box">
-              <div class="info-label">부스트 CP</div>
-              <div class="info-value">${item.boostCp || '-'}</div>
-            </div>
-
-            <div class="info-box" style="grid-column:1 / -1;">
-              <div class="info-label">부스트 날씨</div>
-              ${renderBoosts(item)}
-            </div>
-          </div>
-
-          <div class="strategy-box">
-            <div class="strategy-label">추천 공략 타입</div>
-            <div class="strategy-types">
-              ${renderStrategies(item)}
-            </div>
-          </div>
-
-          ${renderIvTable(item)}
-
-          <div class="detail-note">${item.note || '메모 없음'}</div>
-        </div>
-      </article>
-    `).join('');
+    renderDetail(item, date);
   }
 
-  renderDetailPage();
+  init();
 </script>
 </body>
 </html>
