@@ -54,7 +54,6 @@
     animation:fadeUp .55s ease forwards;
   }
   .delay-1{animation-delay:.05s}
-  .delay-2{animation-delay:.12s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -70,6 +69,19 @@
     0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
     70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
     100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
+  }
+
+  @keyframes shadowGlow{
+    0%,100%{
+      box-shadow:
+        0 16px 34px rgba(98,67,168,.18),
+        0 0 0 0 rgba(124,88,233,.18);
+    }
+    50%{
+      box-shadow:
+        0 18px 38px rgba(98,67,168,.24),
+        0 0 0 8px rgba(124,88,233,.08);
+    }
   }
 
   .section{
@@ -152,7 +164,7 @@
     position:relative;
     overflow:hidden;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:255px;
+    min-height:320px;
   }
 
   .raid-card::after{
@@ -176,11 +188,11 @@
   .raid-card.shadow-theme{
     background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
     border-color:#d7c8ff;
-    box-shadow:0 16px 34px rgba(98,67,168,.14);
+    animation:shadowGlow 2.2s ease-in-out infinite;
   }
 
   .raid-card.shadow-theme::after{
-    background:radial-gradient(circle, rgba(124,88,233,.22) 0%, rgba(124,88,233,0) 68%);
+    background:radial-gradient(circle, rgba(124,88,233,.26) 0%, rgba(124,88,233,0) 68%);
   }
 
   .raid-head{
@@ -242,6 +254,9 @@
   .raid-card.shadow-theme .raid-thumb{
     background:#f4eeff;
     border-color:#d8ccff;
+    box-shadow:
+      0 12px 28px rgba(98,67,168,.2),
+      0 0 18px rgba(124,88,233,.15);
   }
 
   .raid-thumb img{
@@ -287,7 +302,7 @@
   }
 
   .raid-card.shadow-theme .meta-pill{
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.84);
     border-color:#ddcffd;
   }
 
@@ -322,12 +337,12 @@
   }
 
   .raid-card.shadow-theme .boost-badge{
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.84);
     border-color:#ddcffd;
   }
 
   .action-row{
-    margin-top:14px;
+    margin-top:12px;
     display:flex;
     flex-wrap:wrap;
     gap:8px;
@@ -354,6 +369,40 @@
     transform:translateY(-1px);
     border-color:#c7d7ec;
     box-shadow:0 10px 18px rgba(43,67,110,.07);
+  }
+
+  .action-btn.primary{
+    background:#edf4ff;
+    color:#3567d7;
+    border-color:#cdddf5;
+  }
+
+  .cp-table-panel{
+    margin-top:12px;
+    display:none;
+    padding:14px;
+    border-radius:18px;
+    background:#fbfdff;
+    border:1px dashed #d7e2f1;
+  }
+
+  .cp-table-panel.show{
+    display:block;
+    animation:fadeUp .24s ease forwards;
+  }
+
+  .cp-table-panel img{
+    width:100%;
+    max-width:420px;
+    display:block;
+    margin:0 auto;
+    border-radius:12px;
+    box-shadow:0 10px 24px rgba(43,67,110,.08);
+  }
+
+  .raid-card.shadow-theme .cp-table-panel{
+    background:rgba(255,255,255,.74);
+    border-color:#dacdfa;
   }
 
   .empty-box{
@@ -489,7 +538,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">진행 중인 보스</div>
-        <div class="section-sub">일반 CP와 부스트 CP가 카드에 바로 표시됩니다</div>
+        <div class="section-sub">상세 보기 없이도 CP, 부스트 CP, 부스트 아이콘과 이름이 바로 표시됩니다</div>
       </div>
     </div>
     <div class="section-body">
@@ -524,6 +573,23 @@
   const FILTERS = ['전체', '5성', '3성', '1성', '메가', '그림자'];
   let currentFilter = '전체';
   let currentItems = [];
+
+  const BOOST_ICON_MAP = {
+    '맑음': '/images/boost/sunny.png',
+    '쾌청': '/images/boost/sunny.png',
+    '비': '/images/boost/rainy.png',
+    '눈': '/images/boost/snow.png',
+    '안개': '/images/boost/fog.png',
+    '흐림': '/images/boost/cloudy.png',
+    '강풍': '/images/boost/windy.png',
+    '바람': '/images/boost/windy.png',
+    'windy': '/images/boost/windy.png',
+    'fog': '/images/boost/fog.png',
+    'sunny': '/images/boost/sunny.png',
+    'rainy': '/images/boost/rainy.png',
+    'snow': '/images/boost/snow.png',
+    'cloudy': '/images/boost/cloudy.png'
+  };
 
   function getKoreaNow(){
     const now = new Date();
@@ -609,6 +675,12 @@
     return 'chip-gray';
   }
 
+  function resolveBoostIcon(text, explicitIcon){
+    if(explicitIcon && String(explicitIcon).trim()) return explicitIcon;
+    const key = String(text || '').trim().toLowerCase();
+    return BOOST_ICON_MAP[key] || BOOST_ICON_MAP[String(text || '').trim()] || '';
+  }
+
   function getTodayRaidItems(records, today){
     return records
       .filter(item =>
@@ -647,8 +719,10 @@
     return currentItems.filter(item => item.label === currentFilter);
   }
 
-  function createBoostBadge(icon, text){
+  function createBoostBadge(text, explicitIcon){
     if(!text) return '';
+    const icon = resolveBoostIcon(text, explicitIcon);
+
     return `
       <div class="boost-badge">
         ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
@@ -660,19 +734,21 @@
   function renderRaidGrid(){
     const wrap = document.getElementById('raidGrid');
     const items = getFilteredItems();
+    const todayKey = toKey(getKoreaToday());
 
     if(!items.length){
       wrap.innerHTML = `<div class="empty-box">현재 조건에 맞는 진행 중 레이드가 없습니다.</div>`;
       return;
     }
 
-    wrap.innerHTML = items.map(item => {
+    wrap.innerHTML = items.map((item, index) => {
       const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
       const chip = chipClass(item.label);
       const boostBadges = [
-        createBoostBadge(item.boostIcon, item.boost),
-        createBoostBadge(item.boostIcon2, item.boost2)
+        createBoostBadge(item.boost, item.boostIcon),
+        createBoostBadge(item.boost2, item.boostIcon2)
       ].join('');
+      const cpTableId = `cp-table-${index}-${todayKey}`;
 
       return `
         <article class="raid-card ${shadowTheme}">
@@ -698,7 +774,7 @@
               <div class="raid-desc">
                 ${
                   item.label === '그림자'
-                    ? '그림자 레이드로 보라색 테마가 자동 적용됩니다.'
+                    ? '그림자 레이드 · 보라 glow 적용'
                     : '현재 진행 중인 레이드 정보입니다.'
                 }
               </div>
@@ -708,12 +784,12 @@
           <div class="meta-row">
             ${
               (item.cpMin || item.cpMax)
-                ? `<span class="meta-pill">일반 CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
+                ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
                 : ``
             }
             ${
               (item.boostedCpMin || item.boostedCpMax)
-                ? `<span class="meta-pill">부스트 CP ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+                ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
                 : ``
             }
           </div>
@@ -721,11 +797,36 @@
           ${boostBadges ? `<div class="boost-row">${boostBadges}</div>` : ``}
 
           <div class="action-row">
-            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(toKey(getKoreaToday()))}">상세 보기</a>
+            ${
+              item.cpTableImage
+                ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
+                : ``
+            }
+            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(todayKey)}">상세 보기</a>
           </div>
+
+          ${
+            item.cpTableImage
+              ? `
+                <div class="cp-table-panel" id="${cpTableId}">
+                  <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+                </div>
+              `
+              : ``
+          }
         </article>
       `;
     }).join('');
+
+    wrap.querySelectorAll('[data-cptable-target]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const panel = document.getElementById(btn.dataset.cptableTarget);
+        if(!panel) return;
+        const isOpen = panel.classList.contains('show');
+        panel.classList.toggle('show', !isOpen);
+        btn.textContent = isOpen ? 'CP표 보기' : 'CP표 닫기';
+      });
+    });
   }
 
   async function init(){
