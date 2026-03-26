@@ -311,21 +311,21 @@
   .iv-box{
     margin-top:14px;
     background:#fff;
-    border:1px solid #e3d7df;
+    border:1px solid #f0d9e3;
     border-radius:22px;
     overflow:hidden;
   }
 
   .iv-head{
     padding:14px 16px 10px;
-    border-bottom:1px solid #f1e7ec;
-    background:#fff7fa;
+    border-bottom:1px solid #f4e5ec;
+    background:#fff8fb;
   }
 
   .iv-title{
     font-size:14px;
     font-weight:900;
-    color:#cc4e78;
+    color:#cf4d79;
   }
 
   .iv-header-image{
@@ -353,8 +353,8 @@
     grid-template-columns:repeat(6,minmax(0,1fr));
     gap:8px;
     padding:8px 0;
-    border-bottom:1px solid #f5eef2;
-    color:#d06f8a;
+    border-bottom:1px solid #f7edf1;
+    color:#d56b8a;
     font-weight:900;
     font-size:14px;
     text-align:center;
@@ -365,7 +365,7 @@
   }
 
   .iv-side{
-    border-left:1px solid #f1e7ec;
+    border-left:1px solid #f4e5ec;
     background:#fffafb;
     display:flex;
     align-items:flex-start;
@@ -493,7 +493,7 @@
 
     .iv-side{
       border-left:none;
-      border-top:1px solid #f1e7ec;
+      border-top:1px solid #f4e5ec;
       justify-content:flex-start;
     }
 
@@ -691,7 +691,7 @@
   function parseIvRows(text){
     if(!text || typeof text !== 'string') return [];
     return text
-      .split('\n')
+      .split('\\n')
       .map(line => line.trim())
       .filter(Boolean)
       .map(line => line.split('|').map(v => v.trim()))
