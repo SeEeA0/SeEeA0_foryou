@@ -299,7 +299,7 @@
   }
 
   .day-cell{
-    min-height:162px;
+    min-height:178px;
     background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
     border:1.5px solid #dde7f4;
     border-radius:22px;
@@ -456,7 +456,7 @@
     position:relative;
     overflow:hidden;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:214px;
+    min-height:260px;
   }
 
   .raid-card::after{
@@ -587,6 +587,41 @@
     border-color:#ddcffd;
   }
 
+  .boost-row{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .boost-badge{
+    min-height:34px;
+    padding:5px 12px 5px 8px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .boost-badge img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f7fd;
+    flex-shrink:0;
+  }
+
+  .raid-card.shadow-theme .boost-badge{
+    background:rgba(255,255,255,.82);
+    border-color:#ddcffd;
+  }
+
   .action-row{
     margin-top:12px;
     display:flex;
@@ -615,29 +650,6 @@
     transform:translateY(-1px);
     border-color:#c7d7ec;
     box-shadow:0 10px 18px rgba(43,67,110,.07);
-  }
-
-  .cp-panel{
-    margin-top:12px;
-    display:none;
-    padding:14px;
-    border-radius:18px;
-    background:#fbfdff;
-    border:1px dashed #d7e2f1;
-    font-size:13px;
-    color:#405674;
-    line-height:1.6;
-    font-weight:800;
-  }
-
-  .cp-panel.show{
-    display:block;
-    animation:fadeUp .24s ease forwards;
-  }
-
-  .raid-card.shadow-theme .cp-panel{
-    background:rgba(255,255,255,.74);
-    border-color:#dacdfa;
   }
 
   .empty-box{
@@ -761,7 +773,7 @@
     }
 
     .day-cell{
-      min-height:150px;
+      min-height:164px;
     }
 
     .detail-header{
@@ -816,7 +828,7 @@
         <div class="hero-title">한 달 전체 레이드를<br>달력으로 한눈에 보기</div>
         <div class="hero-desc">
           raid-data.json 기준으로 월간 일정을 자동 표시합니다.<br>
-          날짜 칸에서는 이름 중심으로 간단히 보여주고, 날짜를 누르면 아래 상세 카드에서 CP와 부스트까지 확인할 수 있습니다.
+          날짜 칸에는 이름 중심으로 보여주고, 날짜를 누르면 아래 상세 카드에서 일반 CP, 부스트 CP, 부스트 타입을 확인할 수 있습니다.
         </div>
       </div>
 
@@ -868,7 +880,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">선택한 날짜 상세</div>
-        <div class="section-sub">cp 값이 있으면 CP 보기 버튼이 자동 표시됩니다</div>
+        <div class="section-sub">일반 CP와 부스트 CP가 카드에 바로 표시됩니다</div>
       </div>
     </div>
     <div class="section-body">
@@ -957,6 +969,15 @@
     return t >= start.getTime() && t <= end.getTime();
   }
 
+  function escapeHtml(value){
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
   async function loadRecords(){
     try{
       const res = await fetch(DATA_URL, { cache: 'no-store' });
@@ -1007,17 +1028,14 @@
     return 'pill-gray';
   }
 
-  function escapeHtml(value){
-    return String(value ?? '')
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
-  }
-
-  function hasCpValue(item){
-    return !!String(item.cp || '').trim();
+  function createBoostBadge(icon, text){
+    if(!text) return '';
+    return `
+      <div class="boost-badge">
+        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
+        <span>${escapeHtml(text)}</span>
+      </div>
+    `;
   }
 
   function getDisplayItemsForDate(records, date){
@@ -1144,9 +1162,12 @@
       return;
     }
 
-    grid.innerHTML = items.map((item, index) => {
+    grid.innerHTML = items.map(item => {
       const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
-      const cpId = `cp-panel-${index}-${toKey(date)}`;
+      const boostBadges = [
+        createBoostBadge(item.boostIcon, item.boost),
+        createBoostBadge(item.boostIcon2, item.boost2)
+      ].join('');
 
       return `
         <article class="raid-card ${shadowTheme}">
@@ -1177,40 +1198,26 @@
           </div>
 
           <div class="meta-row">
-            <span class="meta-pill">시작 ${escapeHtml((item.startDate || '').replaceAll('-', '.'))}</span>
-            <span class="meta-pill">종료 ${escapeHtml((item.endDate || '').replaceAll('-', '.'))}</span>
-            ${item.boost ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost)}</span>` : ``}
-            ${item.boost2 ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost2)}</span>` : ``}
-          </div>
-
-          <div class="action-row">
             ${
-              hasCpValue(item)
-                ? `<button class="action-btn" type="button" data-cp-target="${cpId}">CP 보기</button>`
+              (item.cpMin || item.cpMax)
+                ? `<span class="meta-pill">일반 CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
                 : ``
             }
-            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(toKey(date))}">상세 보기</a>
+            ${
+              (item.boostedCpMin || item.boostedCpMax)
+                ? `<span class="meta-pill">부스트 CP ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+                : ``
+            }
           </div>
 
-          ${
-            hasCpValue(item)
-              ? `<div class="cp-panel" id="${cpId}">CP 정보: ${escapeHtml(item.cp)}</div>`
-              : ``
-          }
+          ${boostBadges ? `<div class="boost-row">${boostBadges}</div>` : ``}
+
+          <div class="action-row">
+            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(toKey(date))}">상세 보기</a>
+          </div>
         </article>
       `;
     }).join('');
-
-    grid.querySelectorAll('[data-cp-target]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const panel = document.getElementById(btn.dataset.cpTarget);
-        if(!panel) return;
-
-        const isOpen = panel.classList.contains('show');
-        panel.classList.toggle('show', !isOpen);
-        btn.textContent = isOpen ? 'CP 보기' : 'CP 닫기';
-      });
-    });
   }
 
   function moveMonth(step){
