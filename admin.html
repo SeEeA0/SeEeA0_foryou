@@ -670,6 +670,77 @@
     padding:2px;
   }
 
+  .iv-preview{
+    margin-top:12px;
+    background:#fff8fb;
+    border:1px solid #f0d9e3;
+    border-radius:18px;
+    overflow:hidden;
+  }
+
+  .iv-preview-head{
+    padding:10px 12px;
+    border-bottom:1px solid #f4e5ec;
+    color:#cf4d79;
+    font-size:12px;
+    font-weight:900;
+  }
+
+  .iv-preview-head img{
+    display:block;
+    width:100%;
+    max-width:240px;
+    height:auto;
+    margin-top:8px;
+  }
+
+  .iv-preview-body{
+    display:grid;
+    grid-template-columns:1fr 74px;
+  }
+
+  .iv-preview-rows{
+    padding:10px 12px;
+  }
+
+  .iv-preview-row{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:6px;
+    text-align:center;
+    font-size:12px;
+    font-weight:900;
+    color:#d56b8a;
+    padding:6px 0;
+    border-bottom:1px solid #f7edf1;
+  }
+
+  .iv-preview-row:last-child{
+    border-bottom:none;
+  }
+
+  .iv-preview-side{
+    border-left:1px solid #f4e5ec;
+    background:#fffafb;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:10px 6px;
+  }
+
+  .iv-preview-side img{
+    width:100%;
+    max-width:56px;
+    height:auto;
+  }
+
+  .iv-preview-empty{
+    padding:12px;
+    color:#b98ea0;
+    font-size:12px;
+    font-weight:800;
+  }
+
   .empty-state{
     background:#fbfdff;
     border:1px dashed #dce7f4;
@@ -739,6 +810,16 @@
     .preview-body{
       grid-template-columns:1fr;
     }
+
+    .iv-preview-body{
+      grid-template-columns:1fr;
+    }
+
+    .iv-preview-side{
+      border-left:none;
+      border-top:1px solid #f4e5ec;
+      justify-content:flex-start;
+    }
   }
 
   @media (max-width:768px){
@@ -777,6 +858,7 @@
         <span class="hero-pill">저장키 : pogoRaidAdminData</span>
         <span class="hero-pill">날씨 아이콘 자동 매핑</span>
         <span class="hero-pill">타입 아이콘 자동 매핑</span>
+        <span class="hero-pill">개체값 표 입력 지원</span>
       </div>
     </div>
   </section>
@@ -788,7 +870,7 @@
         <div class="section-head">
           <div>
             <div class="section-title">입력 폼</div>
-            <div class="section-sub">포켓몬 이미지 제외 나머지 아이콘은 자동 연결됩니다. 필요하면 수동 수정도 가능합니다.</div>
+            <div class="section-sub">포켓몬 이미지 제외 나머지 아이콘은 자동 연결됩니다. 개체값 표도 함께 입력할 수 있습니다.</div>
           </div>
           <div class="tiny-badge" id="modeBadge">새 일정 입력</div>
         </div>
@@ -941,6 +1023,44 @@
               <div class="repeat-list" id="strategyTypeList"></div>
             </div>
 
+            <div class="sub-card" style="margin-top:16px;">
+              <div class="sub-card-head">
+                <div class="sub-card-title">개체값 표 입력</div>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label class="label" for="ivTableTitle">표 제목</label>
+                  <input id="ivTableTitle" name="ivTableTitle" type="text" placeholder="예: 개체값 표" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="ivMemo">표 메모</label>
+                  <input id="ivMemo" name="ivMemo" type="text" placeholder="예: 줄 수 제한 없이 입력 가능" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="ivTableHeaderImage">헤더 이미지 경로</label>
+                  <input id="ivTableHeaderImage" name="ivTableHeaderImage" type="url" placeholder="./images/iv-header.png" />
+                </div>
+
+                <div class="field">
+                  <label class="label" for="ivTableSideImage">우측 %IV 이미지 경로</label>
+                  <input id="ivTableSideImage" name="ivTableSideImage" type="url" placeholder="./images/iv-side.png" />
+                </div>
+
+                <div class="field full">
+                  <label class="label" for="ivTableRowsText">개체값 표 행 데이터</label>
+                  <textarea
+                    id="ivTableRowsText"
+                    name="ivTableRowsText"
+                    rows="12"
+                    placeholder="한 줄에 한 행씩 입력&#10;예:&#10;2351 | 2939 | 15 | 15 | 15 | 100.0%&#10;2346 | 2933 | 15 | 14 | 15 | 97.8%&#10;2346 | 2933 | 15 | 15 | 14 | 97.8%"></textarea>
+                  <div class="hint">형식: CP(lv20) | CP(lv25) | ATK | DEF | STA | %IV</div>
+                </div>
+              </div>
+            </div>
+
             <div class="toolbar" style="margin-top:16px;">
               <button class="btn primary" type="submit" id="saveBtn">저장하기</button>
               <button class="btn purple" type="button" id="resetBtn">새 일정으로 초기화</button>
@@ -1058,7 +1178,7 @@
         <div class="section-body">
           <div class="muted-box">
             저장 키는 <b>pogoRaidAdminData</b> 입니다.<br>
-            다른 페이지에서 불러올 때 기본 코드는 아래 구조를 쓰면 됩니다.
+            detail 페이지용 개체값 표 필드도 같이 저장됩니다.
           </div>
 
           <div class="sub-card" style="margin-top:14px;">
@@ -1089,6 +1209,11 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
                 <tr><td>strategyTypes</td><td>공략 타입 배열</td></tr>
                 <tr><td>showPages</td><td>노출할 페이지 목록</td></tr>
                 <tr><td>desc / note</td><td>설명 / 메모</td></tr>
+                <tr><td>ivTableTitle</td><td>개체값 표 제목</td></tr>
+                <tr><td>ivTableHeaderImage</td><td>개체값 표 상단 헤더 이미지</td></tr>
+                <tr><td>ivTableSideImage</td><td>우측 %IV 고정 이미지</td></tr>
+                <tr><td>ivTableRowsText</td><td>줄바꿈 텍스트 형태 행 데이터</td></tr>
+                <tr><td>ivMemo</td><td>개체값 표 하단 메모</td></tr>
               </tbody>
             </table>
           </div>
@@ -1311,6 +1436,34 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     return (legacyBoost.weather || legacyBoost.icon) ? [legacyBoost] : [];
   }
 
+  function normalizeIvFields(item = {}){
+    return {
+      ivTableTitle: item.ivTableTitle || '',
+      ivTableHeaderImage: item.ivTableHeaderImage || '',
+      ivTableSideImage: item.ivTableSideImage || '',
+      ivTableRowsText: item.ivTableRowsText || '',
+      ivMemo: item.ivMemo || ''
+    };
+  }
+
+  function parseIvRows(text){
+    if(!text || typeof text !== 'string') return [];
+    return text
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .map(line => line.split('|').map(v => v.trim()))
+      .filter(cols => cols.length >= 6)
+      .map(cols => ({
+        cp20: cols[0] || '',
+        cp25: cols[1] || '',
+        atk: cols[2] || '',
+        def: cols[3] || '',
+        sta: cols[4] || '',
+        iv: cols[5] || ''
+      }));
+  }
+
   function getFormBoosts(formData){
     return [
       {
@@ -1345,6 +1498,13 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
       note: formData.get('note')?.trim() || '',
       showPages: getCheckedShowPages(),
       strategyTypes: getStrategyTypesFromForm(),
+
+      ivTableTitle: formData.get('ivTableTitle')?.trim() || '',
+      ivTableHeaderImage: formData.get('ivTableHeaderImage')?.trim() || '',
+      ivTableSideImage: formData.get('ivTableSideImage')?.trim() || '',
+      ivTableRowsText: formData.get('ivTableRowsText')?.trim() || '',
+      ivMemo: formData.get('ivMemo')?.trim() || '',
+
       updatedAt: new Date().toISOString()
     };
   }
@@ -1368,6 +1528,11 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     addTypeRow();
     autoFillBoostIcon(document.getElementById('boostWeather1'), document.getElementById('boostIcon1'));
     autoFillBoostIcon(document.getElementById('boostWeather2'), document.getElementById('boostIcon2'));
+    document.getElementById('ivTableTitle').value = '';
+    document.getElementById('ivTableHeaderImage').value = '';
+    document.getElementById('ivTableSideImage').value = '';
+    document.getElementById('ivTableRowsText').value = '';
+    document.getElementById('ivMemo').value = '';
     modeBadge.textContent = '새 일정 입력';
     resetStatus();
     renderPreview();
@@ -1375,6 +1540,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
 
   function fillForm(item){
     const boosts = normalizeBoosts(item);
+    const iv = normalizeIvFields(item);
 
     editingId = item.id;
     raidForm.name.value = item.name || '';
@@ -1395,6 +1561,12 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
 
     raidForm.desc.value = item.desc || '';
     raidForm.note.value = item.note || '';
+
+    document.getElementById('ivTableTitle').value = iv.ivTableTitle;
+    document.getElementById('ivTableHeaderImage').value = iv.ivTableHeaderImage;
+    document.getElementById('ivTableSideImage').value = iv.ivTableSideImage;
+    document.getElementById('ivTableRowsText').value = iv.ivTableRowsText;
+    document.getElementById('ivMemo').value = iv.ivMemo;
 
     Array.from(raidForm.querySelectorAll('input[name="showPages"]')).forEach(el => {
       el.checked = (item.showPages || []).includes(el.value);
@@ -1426,11 +1598,15 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     const keyword = searchInput.value.trim().toLowerCase();
     const filtered = records.filter(item => {
       const boosts = normalizeBoosts(item);
+      const iv = normalizeIvFields(item);
       const target = [
         item.name,
         item.label,
         item.desc,
         item.note,
+        iv.ivTableTitle,
+        iv.ivMemo,
+        iv.ivTableRowsText,
         ...boosts.map(v => v.weather),
         ...(item.strategyTypes || []).map(v => v.name)
       ].join(' ').toLowerCase();
@@ -1446,6 +1622,8 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
 
     recordList.innerHTML = filtered.map(item => {
       const boosts = normalizeBoosts(item);
+      const iv = normalizeIvFields(item);
+      const ivRows = parseIvRows(iv.ivTableRowsText);
       return `
       <article class="raid-item">
         <div class="raid-item-thumb">
@@ -1457,6 +1635,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
           <div class="raid-item-meta">
             <span class="pill ${escapeHtml(item.type || 'gray')}">${escapeHtml(item.label)}</span>
             <span class="pill gray">${escapeHtml(item.startDate)} ~ ${escapeHtml(item.endDate)}</span>
+            ${ivRows.length ? `<span class="pill pink">개체값 ${ivRows.length}행</span>` : ``}
           </div>
           <div class="raid-item-desc">
             ${escapeHtml(item.desc || '설명 없음')}<br>
@@ -1514,6 +1693,47 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
 
   function getPreviewData(){
     return getFormData();
+  }
+
+  function renderIvPreview(item){
+    const rows = parseIvRows(item.ivTableRowsText || '');
+
+    if(!item.ivTableHeaderImage && !item.ivTableSideImage && !rows.length && !item.ivMemo){
+      return '';
+    }
+
+    return `
+      <div class="iv-preview">
+        <div class="iv-preview-head">
+          ${escapeHtml(item.ivTableTitle || '개체값 표')}
+          ${item.ivTableHeaderImage ? `<img src="${escapeHtml(item.ivTableHeaderImage)}" alt="iv header">` : ``}
+        </div>
+
+        <div class="iv-preview-body">
+          <div class="iv-preview-rows">
+            ${
+              rows.length
+                ? rows.map(row => `
+                  <div class="iv-preview-row">
+                    <div>${escapeHtml(row.cp20)}</div>
+                    <div>${escapeHtml(row.cp25)}</div>
+                    <div>${escapeHtml(row.atk)}</div>
+                    <div>${escapeHtml(row.def)}</div>
+                    <div>${escapeHtml(row.sta)}</div>
+                    <div>${escapeHtml(row.iv)}</div>
+                  </div>
+                `).join('')
+                : `<div class="iv-preview-empty">행 데이터 없음</div>`
+            }
+            ${item.ivMemo ? `<div style="margin-top:10px;color:#b98ea0;font-size:12px;font-weight:800;">${escapeHtml(item.ivMemo)}</div>` : ``}
+          </div>
+
+          <div class="iv-preview-side">
+            ${item.ivTableSideImage ? `<img src="${escapeHtml(item.ivTableSideImage)}" alt="% iv">` : `<div class="iv-preview-empty">%IV 이미지 없음</div>`}
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   function renderPreview(){
@@ -1596,6 +1816,8 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
               </div>
             </div>
 
+            ${renderIvPreview(item)}
+
             <div style="margin-top:10px;color:#8a98af;font-size:13px;font-weight:700;line-height:1.5;">
               ${escapeHtml(item.note || '메모 없음')}
             </div>
@@ -1629,6 +1851,15 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
         { name:'드래곤', icon:getTypeIcon('드래곤') },
         { name:'페어리', icon:getTypeIcon('페어리') }
       ],
+      ivTableTitle:'개체값 표',
+      ivTableHeaderImage:'./images/iv-header.png',
+      ivTableSideImage:'./images/iv-side.png',
+      ivTableRowsText:`2351 | 2939 | 15 | 15 | 15 | 100.0%
+2346 | 2933 | 15 | 14 | 15 | 97.8%
+2346 | 2933 | 15 | 15 | 14 | 97.8%
+2343 | 2929 | 14 | 15 | 15 | 97.8%
+2342 | 2927 | 15 | 13 | 15 | 95.6%`,
+      ivMemo:'원하는 만큼 행 추가 가능',
       updatedAt:new Date().toISOString()
     };
   }
@@ -1747,10 +1978,17 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
           icon: type.icon || getTypeIcon(type.name || '')
         }));
 
+        const iv = normalizeIvFields(item);
+
         return {
           ...item,
           boosts,
-          strategyTypes
+          strategyTypes,
+          ivTableTitle: iv.ivTableTitle,
+          ivTableHeaderImage: iv.ivTableHeaderImage,
+          ivTableSideImage: iv.ivTableSideImage,
+          ivTableRowsText: iv.ivTableRowsText,
+          ivMemo: iv.ivMemo
         };
       });
       saveRecords();
@@ -1820,10 +2058,17 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
         icon: type.icon || getTypeIcon(type.name || '')
       }));
 
+      const iv = normalizeIvFields(item);
+
       return {
         ...item,
         boosts,
-        strategyTypes
+        strategyTypes,
+        ivTableTitle: iv.ivTableTitle,
+        ivTableHeaderImage: iv.ivTableHeaderImage,
+        ivTableSideImage: iv.ivTableSideImage,
+        ivTableRowsText: iv.ivTableRowsText,
+        ivMemo: iv.ivMemo
       };
     });
     saveRecords();
