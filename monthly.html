@@ -301,6 +301,14 @@
     max-height:82vh;
     overflow:auto;
     box-shadow:0 -16px 40px rgba(22,35,58,.18);
+    transform:translateY(0);
+    transition:transform .22s ease;
+    will-change:transform;
+    touch-action:none;
+  }
+
+  .modal-sheet.dragging{
+    transition:none;
   }
 
   .modal-head{
@@ -424,8 +432,8 @@
   .chip-gray{background:var(--gray-soft);color:var(--gray)}
 
   .raid-date-chip{
-    min-height:30px;
-    padding:0 10px;
+    min-height:32px;
+    padding:4px 10px 4px 8px;
     border-radius:999px;
     background:#fff;
     border:1px solid #d7e2f0;
@@ -435,6 +443,23 @@
     display:inline-flex;
     align-items:center;
     justify-content:center;
+    gap:6px;
+    max-width:150px;
+  }
+
+  .raid-date-chip img{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f7fd;
+    flex-shrink:0;
+  }
+
+  .raid-date-chip span{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
 
   .raid-main{
@@ -751,6 +776,17 @@
       padding:12px 12px 18px;
     }
 
+    .raid-date-chip{
+      max-width:128px;
+      font-size:10px;
+      padding:4px 8px 4px 7px;
+    }
+
+    .raid-date-chip img{
+      width:16px;
+      height:16px;
+    }
+
     .raid-main{
       grid-template-columns:64px 1fr;
     }
@@ -861,6 +897,13 @@
   let viewYear = 0;
   let viewMonth = 0;
   let selectedDateKey = '';
+
+  let dragState = {
+    isDragging: false,
+    startY: 0,
+    currentY: 0,
+    deltaY: 0
+  };
 
   const BOOST_ICON_MAP = {
     '맑음': '/images/boost/sunny.png',
@@ -986,6 +1029,21 @@
     `;
   }
 
+  function createBoostChip(text, explicitIcon){
+    if(!text){
+      return `<span class="raid-date-chip"><span>부스트 없음</span></span>`;
+    }
+
+    const icon = resolveBoostIcon(text, explicitIcon);
+
+    return `
+      <span class="raid-date-chip">
+        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : ``}
+        <span>${escapeHtml(text)}</span>
+      </span>
+    `;
+  }
+
   function getDisplayItemsForDate(records, date){
     return records
       .filter(item =>
@@ -1074,9 +1132,15 @@
     const modalTitle = document.getElementById('modalTitle');
     const modalSub = document.getElementById('modalSub');
     const modalList = document.getElementById('modalList');
+    const modalSheet = modal.querySelector('.modal-sheet');
 
     modalTitle.textContent = formatShort(date);
     modalSub.textContent = items.length ? `${items.length}개의 레이드가 진행됩니다` : '진행 중인 레이드가 없습니다';
+
+    if(modalSheet){
+      modalSheet.style.transform = 'translateY(0px)';
+      modalSheet.classList.remove('dragging');
+    }
 
     if(!items.length){
       modalList.innerHTML = `<div class="empty-state">선택한 날짜에는 진행 중인 레이드가 없습니다.</div>`;
@@ -1097,7 +1161,7 @@
         <article class="raid-card ${shadowTheme}">
           <div class="raid-head">
             <span class="raid-chip ${chipClass(item.label)}">${escapeHtml(item.label || '-')}</span>
-            <span class="raid-date-chip">${escapeHtml(toKey(date))}</span>
+            ${createBoostChip(item.boost, item.boostIcon)}
           </div>
 
           <div class="raid-main">
@@ -1172,8 +1236,72 @@
   }
 
   function closeModal(){
-    document.getElementById('calendarModal').classList.remove('show');
+    const modal = document.getElementById('calendarModal');
+    const modalSheet = modal.querySelector('.modal-sheet');
+
+    if(modalSheet){
+      modalSheet.classList.remove('dragging');
+      modalSheet.style.transform = 'translateY(0px)';
+    }
+
+    modal.classList.remove('show');
     document.body.style.overflow = '';
+  }
+
+  function bindModalDrag(){
+    const modal = document.getElementById('calendarModal');
+    const modalSheet = modal.querySelector('.modal-sheet');
+    const modalHead = modal.querySelector('.modal-head');
+
+    if(!modalSheet || !modalHead) return;
+
+    const getY = (event) => {
+      if(event.touches && event.touches.length) return event.touches[0].clientY;
+      if(event.changedTouches && event.changedTouches.length) return event.changedTouches[0].clientY;
+      return event.clientY;
+    };
+
+    const startDrag = (event) => {
+      if(!modal.classList.contains('show')) return;
+      dragState.isDragging = true;
+      dragState.startY = getY(event);
+      dragState.currentY = dragState.startY;
+      dragState.deltaY = 0;
+      modalSheet.classList.add('dragging');
+    };
+
+    const moveDrag = (event) => {
+      if(!dragState.isDragging) return;
+
+      dragState.currentY = getY(event);
+      dragState.deltaY = Math.max(0, dragState.currentY - dragState.startY);
+
+      modalSheet.style.transform = `translateY(${dragState.deltaY}px)`;
+
+      if(event.cancelable) event.preventDefault();
+    };
+
+    const endDrag = () => {
+      if(!dragState.isDragging) return;
+
+      dragState.isDragging = false;
+      modalSheet.classList.remove('dragging');
+
+      if(dragState.deltaY > 120){
+        closeModal();
+      }else{
+        modalSheet.style.transform = 'translateY(0px)';
+      }
+    };
+
+    modalHead.addEventListener('touchstart', startDrag, { passive:true });
+    modalHead.addEventListener('mousedown', startDrag);
+
+    window.addEventListener('touchmove', moveDrag, { passive:false });
+    window.addEventListener('mousemove', moveDrag);
+
+    window.addEventListener('touchend', endDrag);
+    window.addEventListener('mouseup', endDrag);
   }
 
   function moveMonth(step){
@@ -1212,10 +1340,10 @@
     selectedDateKey = toKey(today);
 
     bindToolbar();
+    bindModalDrag();
     renderCalendar();
   }
 
   init();
-</script>
-</body>
+</script></body>
 </html>
