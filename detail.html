@@ -68,48 +68,39 @@
     50%{transform:translateY(-4px)}
   }
 
-  @keyframes pulseRing{
-    0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
-    70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
-    100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
-  }
-
-  .topbar{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
+  .section{
+    background:rgba(255,255,255,.9);
+    border:1px solid var(--line);
+    border-radius:26px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
     margin-bottom:16px;
   }
 
-  .topbar-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.04em;
-    line-height:1.05;
+  .section-head{
+    padding:18px 18px 14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid #e6eef8;
   }
 
-  .topbar-sub{
-    margin-top:8px;
+  .section-title{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .section-sub{
+    margin-top:6px;
+    font-size:13px;
     color:var(--muted);
-    font-size:14px;
     font-weight:800;
   }
 
-  .topbar-date{
-    flex-shrink:0;
-    min-height:48px;
-    padding:0 16px;
-    border-radius:16px;
-    background:rgba(255,255,255,.92);
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:900;
-    color:#617899;
-    box-shadow:var(--shadow);
+  .section-body{
+    padding:14px;
   }
 
   .hero{
@@ -237,41 +228,6 @@
     border-color:#ddcffd;
   }
 
-  .section{
-    background:rgba(255,255,255,.9);
-    border:1px solid var(--line);
-    border-radius:26px;
-    box-shadow:var(--shadow);
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-
-  .section-head{
-    padding:18px 18px 14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    border-bottom:1px solid #e6eef8;
-  }
-
-  .section-title{
-    font-size:20px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .section-sub{
-    margin-top:6px;
-    font-size:13px;
-    color:var(--muted);
-    font-weight:800;
-  }
-
-  .section-body{
-    padding:14px;
-  }
-
   .info-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -330,6 +286,35 @@
     font-weight:800;
   }
 
+  .boost-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .boost-badge{
+    min-height:40px;
+    padding:6px 12px 6px 8px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .boost-badge img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f7fd;
+    flex-shrink:0;
+  }
+
   .action-row{
     display:flex;
     flex-wrap:wrap;
@@ -365,74 +350,39 @@
     border-color:#cdddf5;
   }
 
-  .cp-panel{
+  .cp-table-panel{
     margin-top:12px;
     display:none;
     padding:14px;
     border-radius:18px;
     background:#fbfdff;
     border:1px dashed #d7e2f1;
-    font-size:13px;
-    color:#405674;
-    line-height:1.6;
-    font-weight:800;
   }
 
-  .cp-panel.show{
+  .cp-table-panel.show{
     display:block;
     animation:fadeUp .24s ease forwards;
   }
 
-  .timeline{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
+  .cp-table-panel img{
+    width:100%;
+    max-width:420px;
+    display:block;
+    margin:0 auto;
+    border-radius:12px;
+    box-shadow:0 10px 24px rgba(43,67,110,.08);
   }
 
-  .timeline-item{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+  .guide-box{
+    background:linear-gradient(180deg,#fff 0%, #fbfdff 100%);
     border:1.5px solid #dde7f4;
     border-radius:22px;
-    padding:16px;
-    display:grid;
-    grid-template-columns:110px 1fr;
-    gap:14px;
-    align-items:start;
-  }
-
-  .timeline-date{
-    min-height:64px;
-    border-radius:18px;
-    background:#edf4ff;
-    border:1px solid #d8e6f6;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    font-weight:900;
-    color:#3567d7;
-    text-align:center;
-    padding:8px;
-  }
-
-  .timeline-date strong{
-    font-size:22px;
-    line-height:1;
-    color:#2f58ba;
-  }
-
-  .timeline-title{
-    font-size:18px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .timeline-desc{
-    margin-top:7px;
-    font-size:13px;
-    color:#70829f;
-    line-height:1.6;
+    padding:18px;
+    font-size:14px;
+    line-height:1.75;
+    color:#405674;
     font-weight:800;
+    white-space:pre-wrap;
   }
 
   .empty-state{
@@ -501,12 +451,6 @@
     transform:translateY(-1px);
   }
 
-  .nav-item.active{
-    background:#edf4ff;
-    color:#3567d7;
-    border-color:#cdddf5;
-  }
-
   .nav-icon{
     font-size:18px;
     line-height:1;
@@ -521,15 +465,6 @@
   @media (max-width:768px){
     .wrap{
       padding:14px 12px 120px;
-    }
-
-    .topbar{
-      flex-direction:column;
-      align-items:flex-start;
-    }
-
-    .topbar-title{
-      font-size:28px;
     }
 
     .hero-row{
@@ -559,34 +494,12 @@
     .section-body{
       padding:12px;
     }
-
-    .timeline-item{
-      grid-template-columns:1fr;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{
-      animation:none !important;
-      transition:none !important;
-      scroll-behavior:auto !important;
-    }
   }
 </style>
 </head>
 <body>
 <div class="wrap" id="app">
-
-  <div class="topbar fade-up">
-    <div>
-      <div class="topbar-title">레이드 상세</div>
-      <div class="topbar-sub" id="topbarSub">선택한 레이드 상세 정보를 표시합니다</div>
-    </div>
-    <div class="topbar-date" id="monthBadge">DETAIL</div>
-  </div>
-
   <div id="detailContent"></div>
-
 </div>
 
 <nav class="bottom-nav">
@@ -611,40 +524,18 @@
 <script>
   const DATA_URL = './raid-data.json';
 
-  function getKoreaNow(){
-    const now = new Date();
-    const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
-    return new Date(koreaString);
-  }
-
-  function getKoreaToday(){
-    const koreaNow = getKoreaNow();
-    koreaNow.setHours(0, 0, 0, 0);
-    return koreaNow;
-  }
-
-  function pad(n){
-    return String(n).padStart(2, '0');
-  }
-
   function toDate(str){
     if(!str) return null;
     const [y,m,d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
+  function pad(n){
+    return String(n).padStart(2, '0');
+  }
+
   function toKey(date){
     return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
-  }
-
-  function formatKoreanDate(date){
-    const days = ['일','월','화','수','목','금','토'];
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
-  }
-
-  function formatSimpleDate(dateStr){
-    if(!dateStr) return '-';
-    return dateStr.replaceAll('-', '.');
   }
 
   function inRange(date, startStr, endStr){
@@ -655,6 +546,11 @@
     return t >= start.getTime() && t <= end.getTime();
   }
 
+  function formatSimpleDate(dateStr){
+    if(!dateStr) return '-';
+    return dateStr.replaceAll('-', '.');
+  }
+
   function escapeHtml(value){
     return String(value ?? '')
       .replaceAll('&', '&amp;')
@@ -662,28 +558,6 @@
       .replaceAll('>', '&gt;')
       .replaceAll('"', '&quot;')
       .replaceAll("'", '&#39;');
-  }
-
-  function hasCpValue(item){
-    return !!String(item.cp || '').trim();
-  }
-
-  function chipLabelClass(label){
-    if(label === '5성') return '5성';
-    if(label === '3성') return '3성';
-    if(label === '1성') return '1성';
-    if(label === '메가') return '메가';
-    if(label === '그림자') return '그림자';
-    return '기타';
-  }
-
-  function pageChipClass(label){
-    if(label === '5성') return 'blue';
-    if(label === '3성') return 'yellow';
-    if(label === '1성') return 'green';
-    if(label === '메가') return 'purple';
-    if(label === '그림자') return 'pink';
-    return 'gray';
   }
 
   function getQueryParams(){
@@ -713,7 +587,6 @@
 
   function getDetailItem(records, name, date){
     const filtered = records.filter(item => (item.name || '') === name);
-
     if(!filtered.length) return null;
 
     if(date){
@@ -730,13 +603,22 @@
     return filtered[0];
   }
 
+  function createBoostBadge(icon, text){
+    if(!text) return '';
+    return `
+      <div class="boost-badge">
+        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
+        <span>${escapeHtml(text)}</span>
+      </div>
+    `;
+  }
+
   function renderEmpty(){
     document.getElementById('detailContent').innerHTML = `
       <section class="empty-state fade-up">
         <h2>상세 정보를 찾지 못했어요</h2>
         <p>
-          detail.html로 넘어올 때 <strong>name</strong> 값이 없거나,<br>
-          raid-data.json 안에 해당 이름의 데이터가 없는 상태입니다.
+          name 값이 없거나 raid-data.json 안에 해당 이름의 데이터가 없습니다.
         </p>
         <div class="action-row" style="justify-content:center;margin-top:18px;">
           <a class="action-btn primary" href="./monthly.html">월간 일정으로 이동</a>
@@ -747,12 +629,12 @@
   }
 
   function renderDetail(item, queryDate){
-    const today = getKoreaToday();
     const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
-    const displayDate = queryDate || toKey(today);
-
-    document.getElementById('topbarSub').textContent = `${escapeHtml(item.name || '-')} 상세 정보`;
-    document.getElementById('monthBadge').textContent = chipLabelClass(item.label || '-');
+    const displayDate = queryDate || '-';
+    const boostBadges = [
+      createBoostBadge(item.boostIcon, item.boost),
+      createBoostBadge(item.boostIcon2, item.boost2)
+    ].join('');
 
     document.getElementById('detailContent').innerHTML = `
       <section class="hero ${shadowTheme} fade-up">
@@ -771,17 +653,15 @@
             <div class="hero-desc">
               ${
                 item.label === '그림자'
-                  ? '그림자 레이드이므로 상세 페이지 전체에 보라색 테마가 적용됩니다.'
-                  : '선택한 레이드의 기간, CP, 부스트, 노출 범위를 한눈에 확인할 수 있습니다.'
+                  ? '그림자 레이드 상세 정보입니다. 보라색 테마가 자동 적용됩니다.'
+                  : '선택한 레이드의 기간, CP, 부스트, 공략, CP표를 한눈에 확인할 수 있습니다.'
               }
             </div>
 
             <div class="hero-meta">
               <span class="meta-pill">시작 ${escapeHtml(formatSimpleDate(item.startDate))}</span>
               <span class="meta-pill">종료 ${escapeHtml(formatSimpleDate(item.endDate))}</span>
-              <span class="meta-pill">타입 ${escapeHtml(item.label || '-')}</span>
-              ${item.boost ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost)}</span>` : ``}
-              ${item.boost2 ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost2)}</span>` : ``}
+              <span class="meta-pill">선택 날짜 ${escapeHtml(displayDate || '-')}</span>
             </div>
           </div>
         </div>
@@ -791,37 +671,33 @@
         <div class="section-head">
           <div>
             <div class="section-title">기본 정보</div>
-            <div class="section-sub">선택한 레이드의 핵심 정보를 카드 형태로 정리했습니다</div>
+            <div class="section-sub">레이드 핵심 정보를 카드 형태로 정리했습니다</div>
           </div>
         </div>
         <div class="section-body">
           <div class="info-grid">
             <article class="info-card">
-              <div class="info-label">레이드 이름</div>
-              <div class="info-value">${escapeHtml(item.name || '-')}</div>
-              <div class="info-desc">raid-data.json에 입력된 기준 이름입니다.</div>
+              <div class="info-label">일반 CP</div>
+              <div class="info-value">${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</div>
+              <div class="info-desc">기본 상태에서 확인 가능한 일반 CP 범위입니다.</div>
+            </article>
+
+            <article class="info-card">
+              <div class="info-label">부스트 CP</div>
+              <div class="info-value">${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</div>
+              <div class="info-desc">날씨 부스트 적용 시 확인 가능한 CP 범위입니다.</div>
             </article>
 
             <article class="info-card">
               <div class="info-label">레이드 타입</div>
               <div class="info-value">${escapeHtml(item.label || '-')}</div>
-              <div class="info-desc">
-                5성 / 3성 / 1성 / 메가 / 그림자 분류 기준으로 정렬됩니다.
-              </div>
+              <div class="info-desc">5성 / 3성 / 1성 / 메가 / 그림자 기준 분류입니다.</div>
             </article>
 
             <article class="info-card">
               <div class="info-label">진행 기간</div>
               <div class="info-value">${escapeHtml(formatSimpleDate(item.startDate))} - ${escapeHtml(formatSimpleDate(item.endDate))}</div>
-              <div class="info-desc">해당 기간 내 날짜에서 자동으로 표시됩니다.</div>
-            </article>
-
-            <article class="info-card">
-              <div class="info-label">선택 기준 날짜</div>
-              <div class="info-value">${escapeHtml(displayDate)}</div>
-              <div class="info-desc">
-                monthly / weekly / raid-now 페이지에서 전달된 date 값을 우선 사용합니다.
-              </div>
+              <div class="info-desc">해당 기간 내 날짜에서 자동으로 노출됩니다.</div>
             </article>
           </div>
         </div>
@@ -830,26 +706,15 @@
       <section class="section fade-up delay-2">
         <div class="section-head">
           <div>
-            <div class="section-title">배틀 정보</div>
-            <div class="section-sub">cp 값이 있으면 버튼으로 펼쳐서 볼 수 있습니다</div>
+            <div class="section-title">날씨 부스트</div>
+            <div class="section-sub">최대 2개의 부스트 타입과 아이콘을 표시합니다</div>
           </div>
         </div>
         <div class="section-body">
-          <div class="action-row">
-            ${
-              hasCpValue(item)
-                ? `<button class="action-btn primary" type="button" id="cpToggleBtn">CP 보기</button>`
-                : `<span class="action-btn" style="cursor:default;">CP 미입력</span>`
-            }
-            <a class="action-btn" href="./monthly.html">월간 일정</a>
-            <a class="action-btn" href="./weekly.html">주간 일정</a>
-            <a class="action-btn" href="./raid-now.html">지금 레이드</a>
-          </div>
-
           ${
-            hasCpValue(item)
-              ? `<div class="cp-panel" id="cpPanel">CP 정보: ${escapeHtml(item.cp)}</div>`
-              : ``
+            boostBadges
+              ? `<div class="boost-row">${boostBadges}</div>`
+              : `<div class="guide-box">등록된 날씨 부스트 정보가 없습니다.</div>`
           }
         </div>
       </section>
@@ -857,65 +722,59 @@
       <section class="section fade-up delay-3">
         <div class="section-head">
           <div>
-            <div class="section-title">노출 정보 / 이동 흐름</div>
-            <div class="section-sub">어느 페이지에서 표시되는지와 사용 흐름을 같이 정리했습니다</div>
+            <div class="section-title">공략</div>
+            <div class="section-sub">어드민에 입력한 공략 문구가 여기 표시됩니다</div>
           </div>
         </div>
         <div class="section-body">
-          <div class="timeline">
-            <article class="timeline-item">
-              <div class="timeline-date">
-                <strong>1</strong>
-                <span>데이터</span>
-              </div>
-              <div>
-                <div class="timeline-title">raid-data.json 에서 불러오기</div>
-                <div class="timeline-desc">
-                  이름, 타입, 시작일, 종료일, 이미지, CP, 부스트, showPages 값을 기준으로 각 페이지가 자동 구성됩니다.
-                </div>
-              </div>
-            </article>
+          ${
+            item.guide
+              ? `<div class="guide-box">${escapeHtml(item.guide)}</div>`
+              : `<div class="guide-box">등록된 공략 정보가 없습니다.</div>`
+          }
+        </div>
+      </section>
 
-            <article class="timeline-item">
-              <div class="timeline-date">
-                <strong>2</strong>
-                <span>노출</span>
-              </div>
-              <div>
-                <div class="timeline-title">showPages 기준 페이지 노출</div>
-                <div class="timeline-desc">
-                  ${Array.isArray(item.showPages) && item.showPages.length
-                    ? escapeHtml(item.showPages.join(', '))
-                    : 'showPages 값이 없거나 비어 있습니다.'}
-                </div>
-              </div>
-            </article>
-
-            <article class="timeline-item">
-              <div class="timeline-date">
-                <strong>3</strong>
-                <span>상세</span>
-              </div>
-              <div>
-                <div class="timeline-title">이름 + 날짜 기준 상세 진입</div>
-                <div class="timeline-desc">
-                  ` + "`detail.html?name=이름&date=날짜`" + ` 형식으로 들어오면 해당 기간의 데이터를 우선 선택합니다.
-                </div>
-              </div>
-            </article>
+      <section class="section fade-up delay-4">
+        <div class="section-head">
+          <div>
+            <div class="section-title">CP표</div>
+            <div class="section-sub">CP표 이미지가 있을 경우에만 버튼이 표시됩니다</div>
           </div>
+        </div>
+        <div class="section-body">
+          <div class="action-row">
+            ${
+              item.cpTableImage
+                ? `<button class="action-btn primary" type="button" id="cpTableToggleBtn">CP표 보기</button>`
+                : `<span class="action-btn" style="cursor:default;">CP표 미입력</span>`
+            }
+            <a class="action-btn" href="./raid-now.html">지금 레이드</a>
+            <a class="action-btn" href="./weekly.html">주간 일정</a>
+            <a class="action-btn" href="./monthly.html">월간 일정</a>
+          </div>
+
+          ${
+            item.cpTableImage
+              ? `
+                <div class="cp-table-panel" id="cpTablePanel">
+                  <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+                </div>
+              `
+              : ``
+          }
         </div>
       </section>
     `;
 
-    const cpToggleBtn = document.getElementById('cpToggleBtn');
-    const cpPanel = document.getElementById('cpPanel');
+    const cpTableToggleBtn = document.getElementById('cpTableToggleBtn');
+    const cpTablePanel = document.getElementById('cpTablePanel');
 
-    if(cpToggleBtn && cpPanel){
-      cpToggleBtn.addEventListener('click', () => {
-        const isOpen = cpPanel.classList.contains('show');
-        cpPanel.classList.toggle('show', !isOpen);
-        cpToggleBtn.textContent = isOpen ? 'CP 보기' : 'CP 닫기';
+    if(cpTableToggleBtn && cpTablePanel){
+      cpTableToggleBtn.addEventListener('click', () => {
+        const isOpen = cpTablePanel.classList.contains('show');
+        cpTablePanel.classList.toggle('show', !isOpen);
+        cpTableToggleBtn.textContent = isOpen ? 'CP표 보기' : 'CP표 닫기';
       });
     }
   }
