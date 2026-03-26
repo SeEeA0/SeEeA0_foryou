@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>주간 일정표</title>
+<title>Pokémon GO Raid Planner | 주간 일정</title>
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -38,218 +38,530 @@
     --gray:#67768f;
     --gray-soft:#f2f5fa;
 
-    --shadow:0 18px 40px rgba(43,67,110,.08);
+    --shadow:0 14px 32px rgba(43,67,110,.08);
+    --shadow-hover:0 18px 36px rgba(43,67,110,.14);
   }
 
   .wrap{
-    max-width:1320px;
+    max-width:1180px;
     margin:0 auto;
-    padding:20px 16px 110px;
+    padding:16px 14px 110px;
+  }
+
+  .fade-up{
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeUp .55s ease forwards;
+  }
+  .delay-1{animation-delay:.05s}
+  .delay-2{animation-delay:.12s}
+  .delay-3{animation-delay:.19s}
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  @keyframes softFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-4px)}
+  }
+
+  @keyframes pulseRing{
+    0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
+    70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
+    100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
+  }
+
+  .topbar{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:16px;
+  }
+
+  .topbar-title{
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    line-height:1.05;
+  }
+
+  .topbar-sub{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:14px;
+    font-weight:800;
+  }
+
+  .topbar-date{
+    flex-shrink:0;
+    min-height:48px;
+    padding:0 16px;
+    border-radius:16px;
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:900;
+    color:#617899;
+    box-shadow:var(--shadow);
+  }
+
+  .hero{
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
+    border:1px solid var(--line);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:22px 20px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+
+  .hero::before{
+    content:"";
+    position:absolute;
+    right:-50px;
+    top:-50px;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(104,135,255,.18) 0%, rgba(104,135,255,0) 70%);
+    pointer-events:none;
+  }
+
+  .hero-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:18px;
+  }
+
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:32px;
+    padding:0 12px;
+    border-radius:999px;
+    background:#edf4ff;
+    color:#3567d7;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:12px;
+  }
+
+  .hero-title{
+    font-size:28px;
+    line-height:1.12;
+    font-weight:900;
+    letter-spacing:-.04em;
+  }
+
+  .hero-desc{
+    margin-top:10px;
+    color:#6f819e;
+    font-size:14px;
+    line-height:1.6;
+    font-weight:800;
+  }
+
+  .hero-side{
+    min-width:220px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .mini-stat{
+    background:#fff;
+    border:1px solid #dde7f5;
+    border-radius:18px;
+    padding:14px;
+    box-shadow:0 10px 24px rgba(43,67,110,.06);
+  }
+
+  .mini-stat-label{
+    font-size:12px;
+    font-weight:900;
+    color:#7b8ca8;
+  }
+
+  .mini-stat-value{
+    margin-top:8px;
+    font-size:22px;
+    line-height:1;
+    font-weight:900;
+    color:#24374c;
   }
 
   .section{
-    background:rgba(255,255,255,.84);
+    background:rgba(255,255,255,.9);
     border:1px solid var(--line);
-    border-radius:30px;
-    overflow:hidden;
+    border-radius:26px;
     box-shadow:var(--shadow);
-    margin-bottom:18px;
+    overflow:hidden;
+    margin-bottom:16px;
   }
 
   .section-head{
+    padding:18px 18px 14px;
     display:flex;
     justify-content:space-between;
-    align-items:flex-end;
-    gap:18px;
-    padding:24px 26px 18px;
-    border-bottom:1px solid #e4edf8;
-    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid #e6eef8;
   }
 
   .section-title{
-    font-size:26px;
+    font-size:20px;
     font-weight:900;
     letter-spacing:-.03em;
   }
 
   .section-sub{
-    margin-top:8px;
-    font-size:14px;
+    margin-top:6px;
+    font-size:13px;
     color:var(--muted);
-    font-weight:700;
-    line-height:1.5;
+    font-weight:800;
   }
 
   .section-body{
-    padding:18px;
+    padding:14px;
   }
 
-  .tiny-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:42px;
-    padding:0 14px;
-    border-radius:999px;
-    background:#f1f6ff;
-    border:1px solid var(--line);
-    color:#58719a;
-    font-size:13px;
-    font-weight:900;
-    white-space:nowrap;
-  }
-
-  .week-grid{
+  .weekday-strip{
     display:grid;
     grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .weekday-pill{
+    background:#f8fbff;
+    border:1px solid #dbe6f4;
+    border-radius:18px;
+    padding:12px 10px;
+    text-align:center;
+    transition:.18s ease;
+  }
+
+  .weekday-pill.today{
+    background:#edf4ff;
+    border-color:#cdddf5;
+    animation:pulseRing 1.8s infinite;
+  }
+
+  .weekday-kor{
+    font-size:12px;
+    font-weight:900;
+    color:#7b8ca8;
+  }
+
+  .weekday-date{
+    margin-top:8px;
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    color:#24374c;
+  }
+
+  .weekday-count{
+    margin-top:6px;
+    font-size:12px;
+    font-weight:800;
+    color:#6f819e;
+  }
+
+  .week-list{
+    display:flex;
+    flex-direction:column;
     gap:14px;
   }
 
-  .week-card{
-    min-height:420px;
-    opacity:0;
-    transform:translateY(12px);
-    animation:fadeUp .55s ease forwards;
-    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
+  .day-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
     border:1.5px solid var(--line);
     border-radius:24px;
-    padding:14px;
-    display:flex;
-    flex-direction:column;
+    padding:16px;
+    box-shadow:0 10px 24px rgba(43,67,110,.05);
   }
 
-  .week-card.today{
-    border-color:#a8c1ff;
-    box-shadow:0 12px 28px rgba(90,124,220,.10);
-    background:linear-gradient(180deg,#ffffff 0%, #f4f8ff 100%);
-  }
-
-  .week-top{
+  .day-head{
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
-    gap:10px;
-    margin-bottom:12px;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
   }
 
-  .week-date{
-    font-size:24px;
+  .day-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .day-badge{
+    min-width:64px;
+    height:64px;
+    border-radius:20px;
+    background:#edf4ff;
+    border:1px solid #d8e6f6;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 20px rgba(43,67,110,.06);
+  }
+
+  .day-badge .day-num{
+    font-size:22px;
+    font-weight:900;
+    line-height:1;
+    color:#2f58ba;
+  }
+
+  .day-badge .day-week{
+    margin-top:4px;
+    font-size:11px;
+    font-weight:900;
+    color:#6f87a7;
+  }
+
+  .day-title{
+    font-size:22px;
     font-weight:900;
     letter-spacing:-.03em;
+    line-height:1.1;
   }
 
-  .week-date.sun{color:#ef6b7a}
-  .week-date.sat{color:#4b7cf0}
-
-  .week-dayname{
-    margin-top:4px;
+  .day-sub{
+    margin-top:6px;
     font-size:13px;
-    color:#7f8faa;
     font-weight:800;
+    color:#7283a0;
   }
 
-  .today-pill{
+  .day-chip{
+    min-height:34px;
+    padding:0 14px;
+    border-radius:999px;
+    border:1px solid #d7e2f0;
+    background:#fff;
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    min-height:28px;
-    padding:0 10px;
-    border-radius:999px;
-    background:#e9f1ff;
-    color:#4e7deb;
-    font-size:11px;
+    font-size:12px;
     font-weight:900;
-    white-space:nowrap;
+    color:#607897;
   }
 
-  .week-items{
+  .raid-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+
+  .raid-card{
+    background:linear-gradient(180deg,#fff 0%, #fbfdff 100%);
+    border:1.5px solid #dde7f4;
+    border-radius:22px;
+    padding:14px;
+    position:relative;
+    overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    min-height:210px;
+  }
+
+  .raid-card::after{
+    content:"";
+    position:absolute;
+    right:-30px;
+    bottom:-30px;
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:linear-gradient(135deg, rgba(120,148,255,.14), rgba(123,99,255,.04));
+    pointer-events:none;
+  }
+
+  .raid-card:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-hover);
+    border-color:#c7d7ec;
+  }
+
+  .raid-card.shadow-theme{
+    background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
+    border-color:#d7c8ff;
+    box-shadow:0 16px 34px rgba(98,67,168,.14);
+  }
+
+  .raid-card.shadow-theme::after{
+    background:radial-gradient(circle, rgba(124,88,233,.22) 0%, rgba(124,88,233,0) 68%);
+  }
+
+  .raid-head{
     display:flex;
-    flex-direction:column;
+    align-items:flex-start;
+    justify-content:space-between;
     gap:10px;
   }
 
-  .timeline-item{
-    background:#fff;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    border:1px solid #e3ebf7;
-    border-radius:18px;
-    padding:11px;
-  }
-
-  .timeline-top{
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-
-  .timeline-thumb{
-    width:34px;
-    height:34px;
-    border-radius:12px;
-    background:#f3f7ff;
-    border:1px solid #dde7f5;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    flex-shrink:0;
-  }
-
-  .timeline-thumb img{
-    width:24px;
-    height:24px;
-    object-fit:contain;
-  }
-
-  .timeline-name{
-    min-width:0;
-    flex:1;
-    font-size:13px;
-    font-weight:900;
-    line-height:1.25;
-    word-break:keep-all;
-  }
-
-  .timeline-time{
-    margin-top:8px;
-    font-size:12px;
-    color:#6f809a;
-    font-weight:800;
-    line-height:1.4;
-  }
-
-  .timeline-meta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:8px;
-  }
-
-  .chip{
+  .raid-chip{
     display:inline-flex;
     align-items:center;
     justify-content:center;
     min-height:30px;
-    padding:0 12px;
+    padding:0 11px;
     border-radius:999px;
     font-size:11px;
     font-weight:900;
     line-height:1;
-    white-space:nowrap;
   }
 
-  .chip.blue{background:var(--blue-soft);color:var(--blue)}
-  .chip.purple{background:var(--purple-soft);color:var(--purple)}
-  .chip.pink{background:var(--pink-soft);color:var(--pink)}
-  .chip.yellow{background:var(--yellow-soft);color:var(--yellow)}
-  .chip.green{background:var(--green-soft);color:var(--green)}
-  .chip.gray{background:var(--gray-soft);color:var(--gray)}
+  .chip-blue{background:var(--blue-soft);color:var(--blue)}
+  .chip-yellow{background:var(--yellow-soft);color:var(--yellow)}
+  .chip-green{background:var(--green-soft);color:var(--green)}
+  .chip-purple{background:var(--purple-soft);color:var(--purple)}
+  .chip-pink{background:var(--pink-soft);color:var(--pink)}
+  .chip-gray{background:var(--gray-soft);color:var(--gray)}
+
+  .raid-main{
+    display:grid;
+    grid-template-columns:74px 1fr;
+    gap:12px;
+    align-items:center;
+    margin-top:12px;
+  }
+
+  .raid-thumb{
+    width:74px;
+    height:74px;
+    border-radius:20px;
+    background:#f3f7ff;
+    border:1px solid #dce6f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(43,67,110,.08);
+    animation:softFloat 3.8s ease-in-out infinite;
+  }
+
+  .raid-card.shadow-theme .raid-thumb{
+    background:#f4eeff;
+    border-color:#d8ccff;
+  }
+
+  .raid-thumb img{
+    width:60px;
+    height:60px;
+    object-fit:contain;
+  }
+
+  .raid-name{
+    font-size:20px;
+    line-height:1.1;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .raid-desc{
+    margin-top:7px;
+    font-size:12px;
+    color:#7183a0;
+    line-height:1.5;
+    font-weight:800;
+  }
+
+  .meta-row{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .meta-pill{
+    min-height:32px;
+    padding:0 12px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .raid-card.shadow-theme .meta-pill{
+    background:rgba(255,255,255,.82);
+    border-color:#ddcffd;
+  }
+
+  .action-row{
+    margin-top:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .action-btn{
+    min-height:36px;
+    padding:0 14px;
+    border-radius:999px;
+    border:1px solid #d7e2f0;
+    background:#fff;
+    color:#597392;
+    font-size:12px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.16s ease;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .action-btn:hover{
+    transform:translateY(-1px);
+    border-color:#c7d7ec;
+    box-shadow:0 10px 18px rgba(43,67,110,.07);
+  }
+
+  .cp-panel{
+    margin-top:12px;
+    display:none;
+    padding:14px;
+    border-radius:18px;
+    background:#fbfdff;
+    border:1px dashed #d7e2f1;
+    font-size:13px;
+    color:#405674;
+    line-height:1.6;
+    font-weight:800;
+  }
+
+  .cp-panel.show{
+    display:block;
+    animation:fadeUp .24s ease forwards;
+  }
+
+  .raid-card.shadow-theme .cp-panel{
+    background:rgba(255,255,255,.74);
+    border-color:#dacdfa;
+  }
 
   .empty-box{
     border:1px dashed #d9e4f2;
     background:#fbfdff;
     border-radius:18px;
-    padding:18px 12px;
+    padding:18px 14px;
     text-align:center;
     color:#97a5ba;
     font-size:13px;
@@ -261,10 +573,10 @@
     left:50%;
     bottom:14px;
     transform:translateX(-50%);
-    width:min(1180px, calc(100% - 24px));
-    background:rgba(255,255,255,.92);
+    width:min(980px, calc(100% - 24px));
+    background:rgba(255,255,255,.94);
     border:1px solid var(--line);
-    border-radius:26px;
+    border-radius:24px;
     box-shadow:0 18px 36px rgba(42,59,97,.12);
     backdrop-filter:blur(10px);
     padding:10px;
@@ -275,8 +587,8 @@
   }
 
   .nav-item{
-    min-height:68px;
-    border-radius:18px;
+    min-height:64px;
+    border-radius:16px;
     text-decoration:none;
     color:#6f819e;
     display:flex;
@@ -284,7 +596,7 @@
     justify-content:center;
     flex-direction:column;
     gap:6px;
-    font-size:13px;
+    font-size:12px;
     font-weight:900;
     transition:.18s ease;
     background:#f8fbff;
@@ -295,6 +607,7 @@
     background:#f3f7ff;
     color:#486995;
     border-color:#d6e3f3;
+    transform:translateY(-1px);
   }
 
   .nav-item.active{
@@ -304,36 +617,89 @@
   }
 
   .nav-icon{
-    font-size:20px;
+    font-size:18px;
     line-height:1;
   }
 
-  @media (max-width:1180px){
-    .week-grid{
-      min-width:1100px;
+  @media (max-width:980px){
+    .raid-grid{
+      grid-template-columns:1fr;
     }
-    .section-body{
-      overflow-x:auto;
+  }
+
+  @media (max-width:860px){
+    .weekday-strip{
+      grid-template-columns:repeat(4,minmax(0,1fr));
     }
   }
 
   @media (max-width:768px){
     .wrap{
-      padding-bottom:120px;
+      padding:14px 12px 120px;
+    }
+
+    .topbar{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .topbar-title{
+      font-size:28px;
+    }
+
+    .hero-row{
+      flex-direction:column;
+    }
+
+    .hero-side{
+      min-width:0;
+      width:100%;
     }
 
     .section-head{
-      padding:22px 20px 16px;
+      padding:16px 16px 12px;
       flex-direction:column;
       align-items:flex-start;
     }
 
     .section-body{
-      padding:16px;
+      padding:12px;
     }
 
-    .section-title{
-      font-size:22px;
+    .weekday-strip{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .day-head{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .raid-main{
+      grid-template-columns:64px 1fr;
+    }
+
+    .raid-thumb{
+      width:64px;
+      height:64px;
+      border-radius:18px;
+    }
+
+    .raid-thumb img{
+      width:50px;
+      height:50px;
+    }
+
+    .raid-name{
+      font-size:18px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{
+      animation:none !important;
+      transition:none !important;
+      scroll-behavior:auto !important;
     }
   }
 </style>
@@ -341,17 +707,59 @@
 <body>
 <div class="wrap">
 
-  <section class="section">
+  <div class="topbar fade-up">
+    <div>
+      <div class="topbar-title">주간 일정표</div>
+      <div class="topbar-sub" id="topbarSub">한국 시간 기준 로딩 중...</div>
+    </div>
+    <div class="topbar-date" id="monthBadge">3월</div>
+  </div>
+
+  <section class="hero fade-up delay-1">
+    <div class="hero-row">
+      <div>
+        <div class="hero-badge">WEEKLY RAID OVERVIEW</div>
+        <div class="hero-title">이번 주 레이드 일정을<br>날짜별로 한눈에 보기</div>
+        <div class="hero-desc">
+          raid-data.json 기준으로 이번 주에 걸쳐 등장하는 보스들을 날짜별로 자동 정리합니다.<br>
+          카드 순서는 5성 → 3성 → 1성 → 메가 → 그림자 순서이며, 그림자는 보라색 테마로 표시됩니다.
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-stat">
+          <div class="mini-stat-label">이번 주 날짜 수</div>
+          <div class="mini-stat-value" id="weekDaysCount">7</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-label">이번 주 전체 보스</div>
+          <div class="mini-stat-value" id="weekBossCount">0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fade-up delay-2">
     <div class="section-head">
       <div>
-        <div class="section-title">주간 일정표</div>
-        <div class="section-sub" id="weekRangeText">한국 시간 기준 오늘부터 7일</div>
+        <div class="section-title">주간 요약</div>
+        <div class="section-sub">오늘 날짜를 기준으로 이번 주 범위를 계산합니다</div>
       </div>
-      <div class="tiny-badge">7 DAYS</div>
     </div>
-
     <div class="section-body">
-      <div class="week-grid" id="weekGrid"></div>
+      <div class="weekday-strip" id="weekdayStrip"></div>
+    </div>
+  </section>
+
+  <section class="section fade-up delay-3">
+    <div class="section-head">
+      <div>
+        <div class="section-title">날짜별 레이드</div>
+        <div class="section-sub">cp 값이 있으면 CP 보기 버튼이 자동으로 표시됩니다</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="week-list" id="weekList"></div>
     </div>
   </section>
 
@@ -377,17 +785,7 @@
 </nav>
 
 <script>
-  async function loadRaidData(){
-  try{
-    const res = await fetch('./raid-data.json?v=' + Date.now(), { cache:'no-store' });
-    if(!res.ok) throw new Error('raid-data.json load failed');
-    const parsed = await res.json();
-    return Array.isArray(parsed) ? parsed : [];
-  }catch(e){
-    console.error('raid-data.json 로딩 실패', e);
-    return [];
-  }
-}
+  const DATA_URL = './raid-data.json';
 
   function getKoreaNow(){
     const now = new Date();
@@ -407,30 +805,22 @@
 
   function toDate(str){
     if(!str) return null;
-    const [y, m, d] = str.split('-').map(Number);
+    const [y,m,d] = str.split('-').map(Number);
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
   function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
   }
 
-  function getDayKor(day){
-    return ['일','월','화','수','목','금','토'][day];
+  function formatKoreanDate(date){
+    const days = ['일','월','화','수','목','금','토'];
+    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
   }
 
-  function toAmpm(time24){
-    if(!time24) return '';
-    const [hh, mm] = time24.split(':').map(Number);
-    const suffix = hh >= 12 ? 'PM' : 'AM';
-    const h12 = hh % 12 === 0 ? 12 : hh % 12;
-    return `${String(h12).padStart(2, '0')}:${String(mm).padStart(2, '0')} ${suffix}`;
-  }
-
-  function getDisplayTime(item){
-    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
-    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
-    return `${start} ~ ${end}`;
+  function formatShort(date){
+    const days = ['일','월','화','수','목','금','토'];
+    return `${date.getMonth()+1}.${date.getDate()} (${days[date.getDay()]})`;
   }
 
   function inRange(date, startStr, endStr){
@@ -441,119 +831,241 @@
     return t >= start.getTime() && t <= end.getTime();
   }
 
-  
+  async function loadRecords(){
+    try{
+      const res = await fetch(DATA_URL, { cache: 'no-store' });
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const parsed = await res.json();
 
-  function isWeeklyAllowed(item){
-    return Array.isArray(item.showPages) && item.showPages.includes('weekly');
+      if(Array.isArray(parsed)) return parsed;
+      if(Array.isArray(parsed.records)) return parsed.records;
+      if(Array.isArray(parsed.items)) return parsed.items;
+
+      return [];
+    }catch(error){
+      console.error('raid-data.json 불러오기 실패:', error);
+      return [];
+    }
   }
 
-  function getItemsForDate(records, date){
+  function isAllowed(item, page){
+    return Array.isArray(item.showPages) && item.showPages.includes(page);
+  }
+
+  function sortPriority(label){
+    const order = {
+      '5성': 0,
+      '3성': 1,
+      '1성': 2,
+      '메가': 3,
+      '그림자': 4
+    };
+    return order[label] ?? 99;
+  }
+
+  function chipClass(label){
+    if(label === '5성') return 'chip-blue';
+    if(label === '3성') return 'chip-yellow';
+    if(label === '1성') return 'chip-green';
+    if(label === '메가') return 'chip-purple';
+    if(label === '그림자') return 'chip-pink';
+    return 'chip-gray';
+  }
+
+  function hasCpValue(item){
+    return !!String(item.cp || '').trim();
+  }
+
+  function escapeHtml(value){
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function getWeekStart(today){
+    const d = new Date(today);
+    const day = d.getDay();
+    d.setDate(d.getDate() - day);
+    d.setHours(0,0,0,0);
+    return d;
+  }
+
+  function getWeekDates(today){
+    const start = getWeekStart(today);
+    const dates = [];
+    for(let i=0; i<7; i++){
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      dates.push(d);
+    }
+    return dates;
+  }
+
+  function getDayItems(records, date){
     return records
       .filter(item =>
-        isWeeklyAllowed(item) &&
+        (isAllowed(item, 'weekly') || isAllowed(item, 'index') || isAllowed(item, 'raid-now')) &&
+        ['1성','3성','5성','메가','그림자'].includes(item.label) &&
         item.startDate &&
         item.endDate &&
         inRange(date, item.startDate, item.endDate)
       )
-      .sort((a, b) => {
-        const order = {
-          '전설': 0,
-          '메가': 1,
-          '그림자': 2,
-          '레이드 아워': 3,
-          '레이드 데이': 4,
-          '이벤트': 5,
-          '커뮤니티 데이': 6
-        };
-        const aOrder = order[a.label] ?? 99;
-        const bOrder = order[b.label] ?? 99;
-        if(aOrder !== bOrder) return aOrder - bOrder;
-        return (a.name || '').localeCompare(b.name || '', 'ko');
+      .sort((a,b) => {
+        const diff = sortPriority(a.label) - sortPriority(b.label);
+        if(diff !== 0) return diff;
+        return (a.name || '').localeCompare((b.name || ''), 'ko');
       });
   }
 
-  function chipClass(item){
-    return item.type || (
-      item.label === '전설' ? 'blue' :
-      item.label === '메가' ? 'purple' :
-      item.label === '그림자' ? 'pink' :
-      item.label === '레이드 아워' || item.label === '레이드 데이' ? 'yellow' :
-      item.label === '이벤트' || item.label === '커뮤니티 데이' ? 'green' : 'gray'
-    );
+  function renderTop(today, weekDates){
+    const start = weekDates[0];
+    const end = weekDates[6];
+    document.getElementById('topbarSub').textContent = `${formatKoreanDate(today)} · ${start.getMonth()+1}.${start.getDate()} - ${end.getMonth()+1}.${end.getDate()}`;
+    document.getElementById('monthBadge').textContent = `${today.getMonth()+1}월`;
   }
 
-  function formatRangeText(start, end){
-    return `${start.getFullYear()}.${pad(start.getMonth()+1)}.${pad(start.getDate())} - ${end.getFullYear()}.${pad(end.getMonth()+1)}.${pad(end.getDate())}`;
-  }
+  function renderWeekdayStrip(weekDates, records, today){
+    const days = ['일','월','화','수','목','금','토'];
+    const wrap = document.getElementById('weekdayStrip');
 
-  function renderWeekRangeText(today){
-    const end = new Date(today);
-    end.setDate(today.getDate() + 6);
-    document.getElementById('weekRangeText').textContent = `한국 시간 기준 ${formatRangeText(today, end)}`;
-  }
-
-  function renderWeekGrid(){
-    const wrap = document.getElementById('weekGrid');
-    const records = await loadRaidData();
-    const today = getKoreaToday();
-
-    renderWeekRangeText(today);
-
-    const days = [];
-    for(let i = 0; i < 7; i++){
-      const d = new Date(today);
-      d.setDate(today.getDate() + i);
-      days.push(d);
-    }
-
-    wrap.innerHTML = days.map(date => {
-      const items = getItemsForDate(records, date);
+    wrap.innerHTML = weekDates.map(date => {
+      const count = getDayItems(records, date).length;
       const isToday = toKey(date) === toKey(today);
-      const dayClass = date.getDay() === 0 ? 'sun' : date.getDay() === 6 ? 'sat' : '';
 
       return `
-        <div class="week-card ${isToday ? 'today' : ''}">
-          <div class="week-top">
-            <div>
-              <div class="week-date ${dayClass}">${date.getMonth()+1}.${date.getDate()}</div>
-              <div class="week-dayname">${getDayKor(date.getDay())}요일</div>
-            </div>
-            ${isToday ? `<div class="today-pill">TODAY</div>` : ``}
-          </div>
-
-          <div class="week-items">
-            ${
-              items.length
-                ? items.map(item => `
-                  <div class="timeline-item">
-                    <div class="timeline-top">
-                      <div class="timeline-thumb">
-                        ${
-                          item.image
-                            ? `<img src="${item.image}" alt="${item.name || ''}">`
-                            : `<span style="font-size:14px;">🖼️</span>`
-                        }
-                      </div>
-                      <div class="timeline-name">${item.name || '-'}</div>
-                    </div>
-
-                    <div class="timeline-time">${getDisplayTime(item)}</div>
-
-                    <div class="timeline-meta">
-                      <span class="chip ${chipClass(item)}">${item.label || '-'}</span>
-                      ${item.boostWeather ? `<span class="chip gray">${item.boostWeather}</span>` : ``}
-                    </div>
-                  </div>
-                `).join('')
-                : `<div class="empty-box">일정 없음</div>`
-            }
-          </div>
+        <div class="weekday-pill ${isToday ? 'today' : ''}">
+          <div class="weekday-kor">${days[date.getDay()]}요일</div>
+          <div class="weekday-date">${date.getDate()}</div>
+          <div class="weekday-count">${count}개 보스</div>
         </div>
       `;
     }).join('');
   }
 
-  renderWeekGrid();
+  function renderWeekList(weekDates, records){
+    const daysKor = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+    const wrap = document.getElementById('weekList');
+
+    let totalCount = 0;
+
+    wrap.innerHTML = weekDates.map((date, dateIndex) => {
+      const items = getDayItems(records, date);
+      totalCount += items.length;
+
+      const content = items.length
+        ? `
+          <div class="raid-grid">
+            ${items.map((item, itemIndex) => {
+              const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
+              const chip = chipClass(item.label);
+              const cpId = `cp-panel-${dateIndex}-${itemIndex}`;
+
+              return `
+                <article class="raid-card ${shadowTheme}">
+                  <div class="raid-head">
+                    <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
+                    <span class="day-chip">${escapeHtml(formatShort(date))}</span>
+                  </div>
+
+                  <div class="raid-main">
+                    <div class="raid-thumb">
+                      ${
+                        item.image
+                          ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
+                          : `<span style="font-size:26px;">🖼️</span>`
+                      }
+                    </div>
+
+                    <div>
+                      <div class="raid-name">${escapeHtml(item.name || '-')}</div>
+                      <div class="raid-desc">
+                        ${
+                          item.label === '그림자'
+                            ? '그림자 레이드로 보라색 테마가 적용됩니다.'
+                            : '이 날짜에 진행 중인 레이드입니다.'
+                        }
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="meta-row">
+                    <span class="meta-pill">시작 ${escapeHtml((item.startDate || '').replaceAll('-', '.'))}</span>
+                    <span class="meta-pill">종료 ${escapeHtml((item.endDate || '').replaceAll('-', '.'))}</span>
+                    ${item.boost ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost)}</span>` : ``}
+                    ${item.boost2 ? `<span class="meta-pill">부스트 ${escapeHtml(item.boost2)}</span>` : ``}
+                  </div>
+
+                  <div class="action-row">
+                    ${
+                      hasCpValue(item)
+                        ? `<button class="action-btn" type="button" data-cp-target="${cpId}">CP 보기</button>`
+                        : ``
+                    }
+                    <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(toKey(date))}">상세 보기</a>
+                  </div>
+
+                  ${
+                    hasCpValue(item)
+                      ? `<div class="cp-panel" id="${cpId}">CP 정보: ${escapeHtml(item.cp)}</div>`
+                      : ``
+                  }
+                </article>
+              `;
+            }).join('')}
+          </div>
+        `
+        : `<div class="empty-box">이 날짜에는 진행 중인 레이드가 없습니다.</div>`;
+
+      return `
+        <section class="day-card">
+          <div class="day-head">
+            <div class="day-left">
+              <div class="day-badge">
+                <div class="day-num">${date.getDate()}</div>
+                <div class="day-week">${daysKor[date.getDay()].replace('요일','')}</div>
+              </div>
+              <div>
+                <div class="day-title">${date.getMonth()+1}월 ${date.getDate()}일 ${daysKor[date.getDay()]}</div>
+                <div class="day-sub">${items.length}개의 보스가 이 날짜에 표시됩니다</div>
+              </div>
+            </div>
+            <div class="day-chip">${escapeHtml(toKey(date))}</div>
+          </div>
+          ${content}
+        </section>
+      `;
+    }).join('');
+
+    document.getElementById('weekBossCount').textContent = totalCount;
+
+    wrap.querySelectorAll('[data-cp-target]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const panel = document.getElementById(btn.dataset.cpTarget);
+        if(!panel) return;
+
+        const isOpen = panel.classList.contains('show');
+        panel.classList.toggle('show', !isOpen);
+        btn.textContent = isOpen ? 'CP 보기' : 'CP 닫기';
+      });
+    });
+  }
+
+  async function init(){
+    const today = getKoreaToday();
+    const weekDates = getWeekDates(today);
+    const records = await loadRecords();
+
+    renderTop(today, weekDates);
+    renderWeekdayStrip(weekDates, records, today);
+    renderWeekList(weekDates, records);
+
+    document.getElementById('weekDaysCount').textContent = weekDates.length;
+  }
+
+  init();
 </script>
 </body>
 </html>
