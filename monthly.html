@@ -907,7 +907,7 @@
   ];
 
   let currentMonthIndex = 1;
-  let activeRaidFilter = 'all';
+  let activeRaidFilters = [];
 
   const monthTabs = document.getElementById('monthTabs');
   const calendarGrid = document.getElementById('calendarGrid');
@@ -1015,10 +1015,32 @@
     return loadRaidData().filter(item => (item.showPages || []).includes('monthly'));
   }
 
+  function isAllFilterActive(){
+    return activeRaidFilters.length === 0;
+  }
+
+  function isFilterSelected(filterKey){
+    if(filterKey === 'all') return isAllFilterActive();
+    return activeRaidFilters.includes(filterKey);
+  }
+
+  function toggleRaidFilter(filterKey){
+    if(filterKey === 'all'){
+      activeRaidFilters = [];
+      return;
+    }
+
+    if(activeRaidFilters.includes(filterKey)){
+      activeRaidFilters = activeRaidFilters.filter(v => v !== filterKey);
+    } else {
+      activeRaidFilters = [...activeRaidFilters, filterKey];
+    }
+  }
+
   function getFilteredMonthlyRaids(){
     const allRaids = getVisibleMonthlyRaids();
-    if(activeRaidFilter === 'all') return allRaids;
-    return allRaids.filter(item => item.label === activeRaidFilter);
+    if(isAllFilterActive()) return allRaids;
+    return allRaids.filter(item => activeRaidFilters.includes(item.label));
   }
 
   function getMonthStartEnd(year, month){
@@ -1052,26 +1074,32 @@
   }
 
   function getFilterBadgeText(){
-    return activeRaidFilter === 'all' ? '전체 보기' : `${activeRaidFilter}만 표시`;
+    if(isAllFilterActive()) return '전체 보기';
+    if(activeRaidFilters.length === 1) return `${activeRaidFilters[0]}만 표시`;
+    return `${activeRaidFilters.join(' · ')} 표시`;
   }
 
   function renderLegendFilters(){
-    legendFilters.innerHTML = RAID_FILTERS.map(filter => `
-      <button
-        class="legend-item legend-filter ${filter.key === activeRaidFilter ? 'active' : ''} ${filter.key === 'all' ? 'legend-all' : ''}"
-        type="button"
-        data-filter="${escapeHtml(filter.key)}"
-      >
-        <span class="legend-dot" style="background:${escapeHtml(filter.color)};"></span>
-        <span>${escapeHtml(filter.label)}</span>
-      </button>
-    `).join('');
+    legendFilters.innerHTML = RAID_FILTERS.map(filter => {
+      const isActive = isFilterSelected(filter.key);
+      return `
+        <button
+          class="legend-item legend-filter ${isActive ? 'active' : ''} ${filter.key === 'all' ? 'legend-all' : ''}"
+          type="button"
+          data-filter="${escapeHtml(filter.key)}"
+        >
+          <span class="legend-dot" style="background:${escapeHtml(filter.color)};"></span>
+          <span>${escapeHtml(filter.label)}</span>
+        </button>
+      `;
+    }).join('');
 
     legendBadge.textContent = getFilterBadgeText();
 
     Array.from(legendFilters.querySelectorAll('.legend-filter')).forEach(btn => {
       btn.addEventListener('click', () => {
-        activeRaidFilter = btn.dataset.filter || 'all';
+        const filterKey = btn.dataset.filter || 'all';
+        toggleRaidFilter(filterKey);
         renderLegendFilters();
         renderCalendar();
       });
@@ -1171,10 +1199,7 @@
 
   function renderDayRaids(dateStr){
     const dayRaids = getRaidsForDate(dateStr);
-
-    if (!dayRaids.length) {
-      return '';
-    }
+    if (!dayRaids.length) return '';
 
     return dayRaids.map(item => {
       const colorClass = getRaidColorClass(item.label);
