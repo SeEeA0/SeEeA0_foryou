@@ -437,41 +437,6 @@
     border-color:#ddcffd;
   }
 
-  .boost-row{
-    margin-top:12px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-
-  .boost-badge{
-    min-height:34px;
-    padding:5px 12px 5px 8px;
-    border-radius:999px;
-    border:1px solid #d9e3f2;
-    background:#fff;
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    font-size:12px;
-    font-weight:900;
-    color:#607897;
-  }
-
-  .boost-badge img{
-    width:20px;
-    height:20px;
-    object-fit:contain;
-    border-radius:50%;
-    background:#f4f7fd;
-    flex-shrink:0;
-  }
-
-  .raid-card.shadow-theme .boost-badge{
-    background:rgba(255,255,255,.84);
-    border-color:#ddcffd;
-  }
-
   .action-row{
     margin-top:12px;
     display:flex;
@@ -827,18 +792,6 @@
     return BOOST_ICON_MAP[key] || BOOST_ICON_MAP[String(text || '').trim()] || '';
   }
 
-  function createBoostBadge(text, explicitIcon){
-    if(!text) return '';
-    const icon = resolveBoostIcon(text, explicitIcon);
-
-    return `
-      <div class="boost-badge">
-        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
-        <span>${escapeHtml(text)}</span>
-      </div>
-    `;
-  }
-
   function createTopBoostBadge(text, explicitIcon){
     if(!text) return '';
     const icon = resolveBoostIcon(text, explicitIcon);
@@ -931,10 +884,6 @@
                 createTopBoostBadge(item.boost, item.boostIcon),
                 createTopBoostBadge(item.boost2, item.boostIcon2)
               ].join('');
-              const boostBadges = [
-                createBoostBadge(item.boost, item.boostIcon),
-                createBoostBadge(item.boost2, item.boostIcon2)
-              ].join('');
               const cpTableId = `cp-table-${dayIndex}-${itemIndex}-${toKey(date)}`;
 
               return `
@@ -977,8 +926,6 @@
                         : ``
                     }
                   </div>
-
-                  ${boostBadges ? `<div class="boost-row">${boostBadges}</div>` : ``}
 
                   ${
                     item.cpTableImage
