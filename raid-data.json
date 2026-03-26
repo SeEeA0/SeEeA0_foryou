@@ -1,86 +1,991 @@
 [
   {
-    "id": "raid_1",
+    "id": "raid_1774493706900_q1xxta",
+    "name": "그림자 파쪼옥",
+    "label": "그림자",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm595.icon.png",
+    "startDate": "2026-03-04",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "504 - 584",
+    "boostCp": "631 - 730",
+    "boosts": [
+      {
+        "weather": "비",
+        "icon": "https://seeea0-foryou.pages.dev/icons/rainy.png"
+      }
+    ],
+    "desc": "Shadow Raid Bosses featuring Shadow Latias",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:55:39.368Z",
+    "ivTableTitle": "그림자 파쪼옥 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_1774493668745_766881",
+    "name": "그림자 선인왕",
+    "label": "그림자",
+    "type": "green",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm331.icon.png",
+    "startDate": "2026-03-04",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "618 - 709",
+    "boostCp": "773 - 887",
+    "boosts": [
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      }
+    ],
+    "desc": "Shadow Raid Bosses",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:54:59.034Z",
+    "ivTableTitle": "그림자 선인왕 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_1774493615682_z5w3w9",
+    "name": "그림자 글라이거",
+    "label": "그림자",
+    "type": "pink",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm207.icon.png",
+    "startDate": "2026-03-04",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "952 - 1061",
+    "boostCp": "1191 - 1326",
+    "boosts": [
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      },
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      }
+    ],
+    "desc": "Shadow Raid Bosses",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:54:22.468Z",
+    "ivTableTitle": "그림자 글라이거 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_1774493562765_xqufsp",
+    "name": "그림자 미뇽",
+    "label": "그림자",
+    "type": "blue",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm147.icon.png",
+    "startDate": "2026-03-04",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1377 - 1509",
+    "boostCp": "1721 - 1886",
+    "boosts": [
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      }
+    ],
+    "desc": "Shadow Raid Bosses",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:53:23.015Z",
+    "ivTableTitle": "그림자 미뇽 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_1774493514699_x8pfol",
+    "name": "그림자 노라키",
+    "label": "그림자",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm234.icon.png",
+    "startDate": "2026-03-04",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1118 - 1236",
+    "boostCp": "1398 - 1546",
+    "boosts": [
+      {
+        "weather": "약간구름",
+        "icon": "https://seeea0-foryou.pages.dev/icons/partlycloudy.png"
+      }
+    ],
+    "desc": "Shadow Raid Bosses featuring Shadow Latias",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:52:36.082Z",
+    "ivTableTitle": "그림자 노라키 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_1774493197776_l2s1hx",
+    "name": "그림자 라프라스",
+    "label": "그림자",
+    "type": "blue",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm131.icon.png",
+    "startDate": "2026-03-04",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1377 - 1509",
+    "boostCp": "1721 - 1886",
+    "boosts": [
+      {
+        "weather": "비",
+        "icon": "https://seeea0-foryou.pages.dev/icons/rainy.png"
+      },
+      {
+        "weather": "눈",
+        "icon": "https://seeea0-foryou.pages.dev/icons/snowy.png"
+      }
+    ],
+    "desc": "Shadow Raid Bosses featuring Shadow Latias",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:49:21.162Z",
+    "ivTableTitle": "그림자 라프라스 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_1774493190610_yq6ppp",
+    "name": "그림자 탕구리",
+    "label": "그림자",
+    "type": "green",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm105.fALOLA.icon.png",
+    "startDate": "2026-03-04",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "941 - 1048",
+    "boostCp": "1176 - 1311",
+    "boosts": [
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      },
+      {
+        "weather": "안개",
+        "icon": "https://seeea0-foryou.pages.dev/icons/foggy.png"
+      }
+    ],
+    "desc": "Shadow Raid Bosses featuring Shadow Latias",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:49:11.779Z",
+    "ivTableTitle": "그림자 탕구리 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_larvitar",
+    "name": "애버라스",
+    "label": "1성",
+    "type": "green",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm246.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "548 - 594",
+    "boostCp": "686 - 743",
+    "boosts": [
+      {
+        "weather": "약간구름",
+        "icon": "https://seeea0-foryou.pages.dev/icons/partlycloudy.png"
+      },
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 1성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:39:32.774Z",
+    "ivTableTitle": "애버라스 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_lileep",
+    "name": "릴링",
+    "label": "1성",
+    "type": "purple",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm345.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "686 - 738",
+    "boostCp": "858 - 922",
+    "boosts": [
+      {
+        "weather": "약간구름",
+        "icon": "https://seeea0-foryou.pages.dev/icons/partlycloudy.png"
+      },
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 1성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:49:31.029Z",
+    "ivTableTitle": "릴링 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_galar_stunfisk",
+    "name": "가라르 메더",
+    "label": "1성",
+    "type": "green",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm618.fGALARIAN.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1169 - 1235",
+    "boostCp": "1461 - 1544",
+    "boosts": [
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      },
+      {
+        "weather": "눈",
+        "icon": "https://seeea0-foryou.pages.dev/icons/snowy.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 1성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:40:08.456Z",
+    "ivTableTitle": "가라르 메더 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_rockruff",
+    "name": "암멍이",
+    "label": "1성",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm744.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "499 - 543",
+    "boostCp": "624 - 679",
+    "boosts": [
+      {
+        "weather": "약간구름",
+        "icon": "https://seeea0-foryou.pages.dev/icons/partlycloudy.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 1성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:49:42.379Z",
+    "ivTableTitle": "암멍이 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_machamp",
+    "name": "괴력몬",
+    "label": "3성",
+    "type": "blue",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm68.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1667 - 1746",
+    "boostCp": "2084 - 2183",
+    "boosts": [
+      {
+        "weather": "흐림",
+        "icon": "https://seeea0-foryou.pages.dev/icons/cloudy.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 3성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:49:49.997Z",
+    "ivTableTitle": "괴력몬 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_hippowdon",
+    "name": "하마돈",
+    "label": "3성",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm450.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1684 - 1763",
+    "boostCp": "2105 - 2204",
+    "boosts": [
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 3성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:40:52.572Z",
+    "ivTableTitle": "하마돈 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_bombirdier",
+    "name": "떨구새",
+    "label": "3성",
+    "type": "gray",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm962.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1351 - 1421",
+    "boostCp": "1688 - 1777",
+    "boosts": [
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      },
+      {
+        "weather": "안개",
+        "icon": "https://seeea0-foryou.pages.dev/icons/foggy.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 3성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:49:59.930Z",
+    "ivTableTitle": "떨구새 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260325_regieleki",
+    "name": "레지에레키",
+    "label": "5성",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm894.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1524 - 1602",
+    "boostCp": "1905 - 2002",
+    "boosts": [
+      {
+        "weather": "비",
+        "icon": "https://seeea0-foryou.pages.dev/icons/rainy.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 5성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "ivTableTitle": "레지에레키 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "1602 | 2002 | 15 | 15 | 15 | 100.0%\n1598 | 1997 | 15 | 15 | 14 | 97.8%\n1596 | 1995 | 14 | 15 | 15 | 97.8%\n1596 | 1995 | 15 | 14 | 15 | 97.8%\n1594 | 1993 | 15 | 15 | 13 | 95.6%\n1592 | 1990 | 14 | 15 | 14 | 95.6%\n1592 | 1990 | 15 | 14 | 14 | 95.6%\n1590 | 1987 | 13 | 15 | 15 | 95.6%\n1590 | 1988 | 14 | 14 | 15 | 95.6%\n1590 | 1988 | 15 | 13 | 15 | 95.6%\n1590 | 1988 | 15 | 15 | 12 | 93.3%\n1588 | 1985 | 14 | 15 | 13 | 93.3%\n1588 | 1985 | 15 | 14 | 13 | 93.3%\n1586 | 1982 | 13 | 15 | 14 | 93.3%\n1586 | 1983 | 14 | 14 | 14 | 93.3%\n1586 | 1983 | 15 | 13 | 14 | 93.3%\n1586 | 1983 | 15 | 15 | 11 | 91.1%\n1584 | 1980 | 12 | 15 | 15 | 93.3%\n1584 | 1980 | 13 | 14 | 15 | 93.3%\n1584 | 1981 | 14 | 13 | 15 | 93.3%\n1584 | 1981 | 15 | 12 | 15 | 93.3%\n1584 | 1980 | 14 | 15 | 12 | 91.1%\n1584 | 1981 | 15 | 14 | 12 | 91.1%\n1582 | 1978 | 13 | 15 | 13 | 91.1%\n1582 | 1978 | 14 | 14 | 13 | 91.1%\n1582 | 1978 | 15 | 13 | 13 | 91.1%\n1581 | 1976 | 15 | 12 | 14 | 91.1%\n1580 | 1975 | 12 | 15 | 14 | 91.1%\n1580 | 1975 | 13 | 14 | 14 | 91.1%\n1580 | 1976 | 14 | 13 | 14 | 91.1%\n1579 | 1974 | 15 | 11 | 15 | 91.1%\n1578 | 1972 | 11 | 15 | 15 | 91.1%\n1578 | 1973 | 12 | 14 | 15 | 91.1%\n1578 | 1973 | 13 | 13 | 15 | 91.1%\n1578 | 1973 | 14 | 12 | 15 | 91.1%\n1524 | 1905 | 10 | 10 | 10 | 66.7%",
+    "ivMemo": "",
+    "updatedAt": "2026-03-26T04:32:32.939Z"
+  },
+  {
+    "id": "raid_20260325_mega_houndoom",
+    "name": "메가 헬가",
+    "label": "메가",
+    "type": "purple",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm229.fMEGA.icon.png",
+    "startDate": "2026-03-25",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1432 - 1505",
+    "boostCp": "1790 - 1882",
+    "boosts": [
+      {
+        "weather": "안개",
+        "icon": "https://seeea0-foryou.pages.dev/icons/foggy.png"
+      },
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      }
+    ],
+    "desc": "3월 25일 ~ 3월 31일 메가 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:41:49.688Z",
+    "ivTableTitle": "메가 헬가 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260304_shadow_latias",
     "name": "그림자 라티아스",
     "label": "그림자",
     "type": "pink",
-    "image": "./images/latias-shadow.png",
-    "startDate": "2026-03-01",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm380.icon.png",
+    "startDate": "2026-03-04",
     "endDate": "2026-03-31",
     "startTime": "",
     "endTime": "",
-    "cp": "1926 - 2006",
-    "boostCp": "2408 - 2507",
+    "cp": "1855 - 2006",
+    "boostCp": "2320 - 2507",
     "boosts": [
-      { "weather": "바람", "icon": "./icons/windy.png" }
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      }
     ],
-    "desc": "그림자 전설 레이드",
+    "desc": "Shadow Raid Bosses featuring Shadow Latias",
     "note": "",
-    "showPages": ["index","raid-now","weekly","monthly","detail"],
-    "strategyTypes": [
-      { "name": "드래곤", "icon": "./icons/15.png" },
-      { "name": "고스트", "icon": "./icons/14.png" },
-      { "name": "악", "icon": "./icons/16.png" }
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
     ],
+    "strategyTypes": [],
     "ivTableTitle": "그림자 라티아스 CP",
-    "ivTableRowsText": "2351 | 2939 | 15 | 15 | 15 | 100.0%\n2346 | 2933 | 15 | 14 | 15 | 97.8%\n2346 | 2933 | 15 | 15 | 14 | 97.8%\n2343 | 2929 | 14 | 15 | 15 | 97.8%",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "2006 | 2507 | 15 | 15 | 15 | 100.0%\n2002 | 2502 | 15 | 14 | 15 | 97.8%\n2001 | 2501 | 15 | 15 | 14 | 97.8%\n1998 | 2498 | 15 | 13 | 15 | 95.6%\n1997 | 2497 | 14 | 15 | 15 | 97.8%\n1997 | 2496 | 15 | 14 | 14 | 95.6%\n1996 | 2495 | 15 | 15 | 13 | 95.6%\n1994 | 2493 | 15 | 12 | 15 | 93.3%\n1993 | 2492 | 14 | 14 | 15 | 95.6%\n1993 | 2491 | 15 | 13 | 14 | 93.3%\n1992 | 2491 | 14 | 15 | 14 | 95.6%\n1992 | 2490 | 15 | 14 | 13 | 93.3%\n1991 | 2489 | 15 | 15 | 12 | 93.3%\n1990 | 2487 | 14 | 13 | 15 | 93.3%\n1990 | 2488 | 15 | 11 | 15 | 91.1%\n1989 | 2487 | 13 | 15 | 15 | 95.6%\n1989 | 2486 | 14 | 14 | 14 | 93.3%\n1989 | 2487 | 15 | 12 | 14 | 91.1%\n1988 | 2485 | 15 | 13 | 13 | 91.1%\n1987 | 2485 | 14 | 15 | 13 | 93.3%\n1987 | 2484 | 15 | 14 | 12 | 91.1%\n1986 | 2482 | 14 | 12 | 15 | 91.1%\n1986 | 2483 | 15 | 15 | 11 | 91.1%\n1985 | 2482 | 13 | 14 | 15 | 93.3%\n1985 | 2481 | 14 | 13 | 14 | 91.1%\n1984 | 2480 | 13 | 15 | 14 | 93.3%\n1984 | 2480 | 14 | 14 | 13 | 91.1%\n1983 | 2479 | 14 | 15 | 12 | 91.1%\n1981 | 2476 | 12 | 15 | 15 | 93.3%\n1981 | 2477 | 13 | 13 | 15 | 91.1%\n1980 | 2476 | 13 | 14 | 14 | 91.1%\n1979 | 2474 | 13 | 15 | 13 | 91.1%\n1977 | 2471 | 12 | 14 | 15 | 91.1%\n1976 | 2470 | 12 | 15 | 14 | 91.1%\n1972 | 2466 | 11 | 15 | 15 | 91.1%\n1921 | 2402 | 10 | 10 | 10 | 66.7%",
     "ivMemo": "",
-    "updatedAt": "2026-03-01T00:00:00Z"
+    "updatedAt": "2026-03-26T04:33:04.008Z"
   },
   {
-    "id": "raid_2",
-    "name": "그림자 라티오스",
-    "label": "그림자",
+    "id": "raid_20260401_regidrago",
+    "name": "레지드래고",
+    "label": "5성",
     "type": "pink",
-    "image": "./images/latios-shadow.png",
-    "startDate": "2026-03-01",
-    "endDate": "2026-03-31",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm895.icon.png",
+    "startDate": "2026-04-01",
+    "endDate": "2026-04-07",
     "startTime": "",
     "endTime": "",
-    "cp": "2006 - 2082",
-    "boostCp": "2507 - 2603",
+    "cp": "1614 - 1699",
+    "boostCp": "2017 - 2124",
     "boosts": [
-      { "weather": "바람", "icon": "./icons/windy.png" }
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      }
     ],
-    "desc": "그림자 전설 레이드",
+    "desc": "Regidrago 5성 레이드",
     "note": "",
-    "showPages": ["index","raid-now","weekly","monthly","detail"],
-    "strategyTypes": [
-      { "name": "드래곤", "icon": "./icons/15.png" },
-      { "name": "고스트", "icon": "./icons/14.png" },
-      { "name": "악", "icon": "./icons/16.png" }
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
     ],
-    "ivTableTitle": "그림자 라티오스 CP",
-    "ivTableRowsText": "2351 | 2939 | 15 | 15 | 15 | 100.0%\n2346 | 2933 | 15 | 14 | 15 | 97.8%\n2346 | 2933 | 15 | 15 | 14 | 97.8%",
+    "strategyTypes": [],
+    "ivTableTitle": "레지드래고 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "1699 | 2124 | 15 | 15 | 15 | 100.0%\n1697 | 2121 | 15 | 15 | 14 | 97.8%\n1695 | 2118 | 15 | 15 | 13 | 95.6%\n1693 | 2116 | 15 | 15 | 12 | 93.3%\n1691 | 2114 | 14 | 15 | 15 | 97.8%\n1691 | 2114 | 15 | 14 | 15 | 97.8%\n1690 | 2113 | 15 | 15 | 11 | 91.1%\n1689 | 2111 | 14 | 15 | 14 | 95.6%\n1689 | 2112 | 15 | 14 | 14 | 95.6%\n1687 | 2109 | 14 | 15 | 13 | 93.3%\n1687 | 2109 | 15 | 14 | 13 | 93.3%\n1685 | 2106 | 14 | 15 | 12 | 91.1%\n1685 | 2107 | 15 | 14 | 12 | 91.1%\n1684 | 2105 | 14 | 14 | 15 | 95.6%\n1684 | 2105 | 15 | 13 | 15 | 95.6%\n1683 | 2104 | 13 | 15 | 15 | 95.6%\n1682 | 2102 | 14 | 14 | 14 | 93.3%\n1682 | 2103 | 15 | 13 | 14 | 93.3%\n1681 | 2102 | 13 | 15 | 14 | 93.3%\n1680 | 2100 | 15 | 13 | 13 | 91.1%\n1679 | 2099 | 13 | 15 | 13 | 91.1%\n1679 | 2100 | 14 | 14 | 13 | 91.1%\n1677 | 2096 | 15 | 12 | 15 | 93.3%\n1676 | 2095 | 13 | 14 | 15 | 93.3%\n1676 | 2096 | 14 | 13 | 15 | 93.3%\n1675 | 2094 | 12 | 15 | 15 | 93.3%\n1675 | 2093 | 15 | 12 | 14 | 91.1%\n1674 | 2092 | 13 | 14 | 14 | 91.1%\n1674 | 2093 | 14 | 13 | 14 | 91.1%\n1673 | 2092 | 12 | 15 | 14 | 91.1%\n1669 | 2086 | 14 | 12 | 15 | 91.1%\n1669 | 2087 | 15 | 11 | 15 | 91.1%\n1668 | 2085 | 12 | 14 | 15 | 91.1%\n1668 | 2086 | 13 | 13 | 15 | 91.1%\n1667 | 2084 | 11 | 15 | 15 | 91.1%\n1614 | 2017 | 10 | 10 | 10 | 66.7%",
     "ivMemo": "",
-    "updatedAt": "2026-03-01T00:00:00Z"
+    "updatedAt": "2026-03-26T04:34:13.811Z"
   },
   {
-    "id": "raid_3",
-    "name": "메가 앱솔",
+    "id": "raid_20260401_mega_manectric",
+    "name": "메가썬더볼트",
+    "label": "메가",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm310.fMEGA.icon.png",
+    "startDate": "2026-04-01",
+    "endDate": "2026-04-07",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1267 - 1337",
+    "boostCp": "1585 - 1672",
+    "boosts": [
+      {
+        "weather": "비",
+        "icon": "https://seeea0-foryou.pages.dev/icons/rainy.png"
+      }
+    ],
+    "desc": "Mega Manectric 메가 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:50:36.248Z",
+    "ivTableTitle": "메가썬더볼트 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260408_kyogre",
+    "name": "가이오가",
+    "label": "5성",
+    "type": "blue",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm382.icon.png",
+    "startDate": "2026-04-08",
+    "endDate": "2026-04-14",
+    "startTime": "",
+    "endTime": "",
+    "cp": "2260 - 2351",
+    "boostCp": "2825 - 2939",
+    "boosts": [
+      {
+        "weather": "비",
+        "icon": "https://seeea0-foryou.pages.dev/icons/rainy.png"
+      }
+    ],
+    "desc": "Kyogre 5성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:43:09.374Z",
+    "ivTableTitle": "가이오가 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260408_mega_aerodactyl",
+    "name": "메가프테라",
     "label": "메가",
     "type": "purple",
-    "image": "./images/mega-absol.png",
-    "startDate": "2026-03-15",
-    "endDate": "2026-04-15",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm142.fMEGA.icon.png",
+    "startDate": "2026-04-08",
+    "endDate": "2026-04-14",
     "startTime": "",
     "endTime": "",
-    "cp": "1365 - 1442",
-    "boostCp": "1706 - 1802",
+    "cp": "1515 - 1590",
+    "boostCp": "1894 - 1988",
     "boosts": [
-      { "weather": "안개", "icon": "./icons/foggy.png" }
+      {
+        "weather": "약간구름",
+        "icon": "https://seeea0-foryou.pages.dev/icons/partlycloudy.png"
+      },
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      }
     ],
-    "desc": "메가 레이드 보스",
+    "desc": "Mega Aerodactyl 메가 레이드",
     "note": "",
-    "showPages": ["index","raid-now","weekly","monthly","detail"],
-    "strategyTypes": [
-      { "name": "격투", "icon": "./icons/7.png" },
-      { "name": "벌레", "icon": "./icons/12.png" },
-      { "name": "페어리", "icon": "./icons/18.png" }
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
     ],
-    "ivTableTitle": "메가 앱솔 CP",
-    "ivTableRowsText": "1442 | 1802 | 15 | 15 | 15 | 100.0%",
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:43:26.090Z",
+    "ivTableTitle": "메가프테라 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260415_groudon",
+    "name": "그란돈",
+    "label": "5성",
+    "type": "pink",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm383.icon.png",
+    "startDate": "2026-04-15",
+    "endDate": "2026-04-21",
+    "startTime": "",
+    "endTime": "",
+    "cp": "2260 - 2351",
+    "boostCp": "2825 - 2939",
+    "boosts": [
+      {
+        "weather": "맑음",
+        "icon": "https://seeea0-foryou.pages.dev/icons/sunny.png"
+      }
+    ],
+    "desc": "Groudon 5성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "ivTableTitle": "그란돈 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "2351 | 2939 | 15 | 15 | 15 | 100.0%\n2346 | 2933 | 15 | 14 | 15 | 97.8%\n2346 | 2933 | 15 | 15 | 14 | 97.8%\n2343 | 2929 | 14 | 15 | 15 | 97.8%\n2342 | 2927 | 15 | 13 | 15 | 95.6%\n2341 | 2927 | 15 | 14 | 14 | 95.6%\n2341 | 2926 | 15 | 15 | 13 | 95.6%\n2338 | 2923 | 14 | 14 | 15 | 95.6%\n2338 | 2922 | 14 | 15 | 14 | 95.6%\n2337 | 2921 | 15 | 12 | 15 | 93.3%\n2336 | 2921 | 15 | 13 | 14 | 93.3%\n2336 | 2920 | 15 | 14 | 13 | 93.3%\n2335 | 2919 | 13 | 15 | 15 | 95.6%\n2335 | 2919 | 15 | 15 | 12 | 93.3%\n2333 | 2917 | 14 | 13 | 15 | 93.3%\n2333 | 2916 | 14 | 14 | 14 | 93.3%\n2332 | 2916 | 14 | 15 | 13 | 93.3%\n2332 | 2915 | 15 | 11 | 15 | 91.1%\n2331 | 2915 | 15 | 12 | 14 | 91.1%\n2331 | 2914 | 15 | 13 | 13 | 91.1%\n2330 | 2913 | 13 | 14 | 15 | 93.3%\n2330 | 2913 | 15 | 14 | 12 | 91.1%\n2330 | 2913 | 15 | 15 | 11 | 91.1%\n2329 | 2912 | 13 | 15 | 14 | 93.3%\n2328 | 2911 | 14 | 12 | 15 | 91.1%\n2328 | 2910 | 14 | 13 | 14 | 91.1%\n2328 | 2910 | 14 | 14 | 13 | 91.1%\n2327 | 2909 | 14 | 15 | 12 | 91.1%\n2326 | 2908 | 12 | 15 | 15 | 93.3%\n2325 | 2907 | 13 | 13 | 15 | 91.1%\n2325 | 2906 | 13 | 14 | 14 | 91.1%\n2324 | 2905 | 13 | 15 | 13 | 91.1%\n2322 | 2902 | 12 | 14 | 15 | 91.1%\n2321 | 2902 | 12 | 15 | 14 | 91.1%\n2318 | 2898 | 11 | 15 | 15 | 91.1%\n2260 | 2825 | 10 | 10 | 10 | 66.7%",
     "ivMemo": "",
-    "updatedAt": "2026-03-15T00:00:00Z"
+    "updatedAt": "2026-03-26T04:37:18.545Z"
+  },
+  {
+    "id": "raid_20260415_mega_alakazam",
+    "name": "메가후딘",
+    "label": "메가",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm65.fMEGA.icon.png",
+    "startDate": "2026-04-15",
+    "endDate": "2026-04-21",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1666 - 1747",
+    "boostCp": "2083 - 2184",
+    "boosts": [
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      }
+    ],
+    "desc": "Mega Alakazam 메가 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:51:13.330Z",
+    "ivTableTitle": "메가후딘 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260422_tapu_koko",
+    "name": "카푸꼬꼬꼭",
+    "label": "5성",
+    "type": "yellow",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm785.icon.png",
+    "startDate": "2026-04-22",
+    "endDate": "2026-04-28",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1730 - 1810",
+    "boostCp": "2162 - 2263",
+    "boosts": [
+      {
+        "weather": "비",
+        "icon": "https://seeea0-foryou.pages.dev/icons/rainy.png"
+      },
+      {
+        "weather": "흐림",
+        "icon": "https://seeea0-foryou.pages.dev/icons/cloudy.png"
+      }
+    ],
+    "desc": "Tapu Koko 5성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:51:29.748Z",
+    "ivTableTitle": "카푸꼬꼬꼭 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260429_tapu_lele",
+    "name": "카푸나비나",
+    "label": "5성",
+    "type": "pink",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm786.icon.png",
+    "startDate": "2026-04-29",
+    "endDate": "2026-05-05",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1912 - 1996",
+    "boostCp": "2390 - 2496",
+    "boosts": [
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      },
+      {
+        "weather": "흐림",
+        "icon": "https://seeea0-foryou.pages.dev/icons/cloudy.png"
+      }
+    ],
+    "desc": "Tapu Lele 5성 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:51:21.031Z",
+    "ivTableTitle": "카푸나비나 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260429_mega_banette",
+    "name": "메가다크펫",
+    "label": "메가",
+    "type": "purple",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm354.fMEGA.icon.png",
+    "startDate": "2026-04-29",
+    "endDate": "2026-05-05",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1244 - 1313",
+    "boostCp": "1555 - 1642",
+    "boosts": [
+      {
+        "weather": "안개",
+        "icon": "https://seeea0-foryou.pages.dev/icons/foggy.png"
+      }
+    ],
+    "desc": "Mega Banette 메가 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:45:43.577Z",
+    "ivTableTitle": "메가다크펫 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
+  },
+  {
+    "id": "raid_20260401_shadow_latios",
+    "name": "그림자 라티오스",
+    "label": "그림자",
+    "type": "blue",
+    "image": "https://cdn.leekduck.com/assets/img/pokemon_icons/pm381.icon.png",
+    "startDate": "2026-04-01",
+    "endDate": "2026-05-05",
+    "startTime": "",
+    "endTime": "",
+    "cp": "2021 - 2178",
+    "boostCp": "2526 - 2723",
+    "boosts": [
+      {
+        "weather": "바람",
+        "icon": "https://seeea0-foryou.pages.dev/icons/windy.png"
+      }
+    ],
+    "desc": "Shadow Latios 5성 그림자 레이드",
+    "note": "",
+    "showPages": [
+      "index",
+      "raid-now",
+      "weekly",
+      "monthly",
+      "detail"
+    ],
+    "strategyTypes": [],
+    "updatedAt": "2026-03-26T02:51:41.781Z",
+    "ivTableTitle": "그림자 라티오스 CP",
+    "ivTableHeaderImage": "",
+    "ivTableSideImage": "",
+    "ivTableRowsText": "",
+    "ivMemo": ""
   }
 ]
