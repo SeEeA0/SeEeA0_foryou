@@ -55,8 +55,6 @@
   }
   .delay-1{animation-delay:.05s}
   .delay-2{animation-delay:.12s}
-  .delay-3{animation-delay:.19s}
-  .delay-4{animation-delay:.26s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -68,136 +66,17 @@
     50%{transform:translateY(-4px)}
   }
 
-  @keyframes pulseRing{
-    0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
-    70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
-    100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
-  }
-
-  .topbar{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:16px;
-  }
-
-  .topbar-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.04em;
-    line-height:1.05;
-  }
-
-  .topbar-sub{
-    margin-top:8px;
-    color:var(--muted);
-    font-size:14px;
-    font-weight:800;
-  }
-
-  .topbar-date{
-    flex-shrink:0;
-    min-height:48px;
-    padding:0 16px;
-    border-radius:16px;
-    background:rgba(255,255,255,.92);
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:900;
-    color:#617899;
-    box-shadow:var(--shadow);
-  }
-
-  .hero{
-    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-    border:1px solid var(--line);
-    border-radius:28px;
-    box-shadow:var(--shadow);
-    padding:22px 20px;
-    position:relative;
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-
-  .hero::before{
-    content:"";
-    position:absolute;
-    right:-50px;
-    top:-50px;
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(104,135,255,.18) 0%, rgba(104,135,255,0) 70%);
-    pointer-events:none;
-  }
-
-  .hero-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:18px;
-  }
-
-  .hero-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:32px;
-    padding:0 12px;
-    border-radius:999px;
-    background:#edf4ff;
-    color:#3567d7;
-    font-size:12px;
-    font-weight:900;
-    margin-bottom:12px;
-  }
-
-  .hero-title{
-    font-size:28px;
-    line-height:1.12;
-    font-weight:900;
-    letter-spacing:-.04em;
-  }
-
-  .hero-desc{
-    margin-top:10px;
-    color:#6f819e;
-    font-size:14px;
-    line-height:1.6;
-    font-weight:800;
-  }
-
-  .hero-side{
-    min-width:240px;
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .mini-stat{
-    background:#fff;
-    border:1px solid #dde7f5;
-    border-radius:18px;
-    padding:14px;
-    box-shadow:0 10px 24px rgba(43,67,110,.06);
-  }
-
-  .mini-stat-label{
-    font-size:12px;
-    font-weight:900;
-    color:#7b8ca8;
-  }
-
-  .mini-stat-value{
-    margin-top:8px;
-    font-size:22px;
-    line-height:1;
-    font-weight:900;
-    color:#24374c;
+  @keyframes shadowGlow{
+    0%,100%{
+      box-shadow:
+        0 16px 34px rgba(98,67,168,.18),
+        0 0 0 0 rgba(124,88,233,.18);
+    }
+    50%{
+      box-shadow:
+        0 18px 38px rgba(98,67,168,.24),
+        0 0 0 8px rgba(124,88,233,.08);
+    }
   }
 
   .section{
@@ -456,7 +335,7 @@
     position:relative;
     overflow:hidden;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:260px;
+    min-height:310px;
   }
 
   .raid-card::after{
@@ -480,11 +359,11 @@
   .raid-card.shadow-theme{
     background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
     border-color:#d7c8ff;
-    box-shadow:0 16px 34px rgba(98,67,168,.14);
+    animation:shadowGlow 2.2s ease-in-out infinite;
   }
 
   .raid-card.shadow-theme::after{
-    background:radial-gradient(circle, rgba(124,88,233,.22) 0%, rgba(124,88,233,0) 68%);
+    background:radial-gradient(circle, rgba(124,88,233,.26) 0%, rgba(124,88,233,0) 68%);
   }
 
   .raid-head{
@@ -538,6 +417,9 @@
   .raid-card.shadow-theme .raid-thumb{
     background:#f4eeff;
     border-color:#d8ccff;
+    box-shadow:
+      0 12px 28px rgba(98,67,168,.2),
+      0 0 18px rgba(124,88,233,.15);
   }
 
   .raid-thumb img{
@@ -583,7 +465,7 @@
   }
 
   .raid-card.shadow-theme .meta-pill{
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.84);
     border-color:#ddcffd;
   }
 
@@ -618,7 +500,7 @@
   }
 
   .raid-card.shadow-theme .boost-badge{
-    background:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.84);
     border-color:#ddcffd;
   }
 
@@ -650,6 +532,40 @@
     transform:translateY(-1px);
     border-color:#c7d7ec;
     box-shadow:0 10px 18px rgba(43,67,110,.07);
+  }
+
+  .action-btn.primary{
+    background:#edf4ff;
+    color:#3567d7;
+    border-color:#cdddf5;
+  }
+
+  .cp-table-panel{
+    margin-top:12px;
+    display:none;
+    padding:14px;
+    border-radius:18px;
+    background:#fbfdff;
+    border:1px dashed #d7e2f1;
+  }
+
+  .cp-table-panel.show{
+    display:block;
+    animation:fadeUp .24s ease forwards;
+  }
+
+  .cp-table-panel img{
+    width:100%;
+    max-width:420px;
+    display:block;
+    margin:0 auto;
+    border-radius:12px;
+    box-shadow:0 10px 24px rgba(43,67,110,.08);
+  }
+
+  .raid-card.shadow-theme .cp-table-panel{
+    background:rgba(255,255,255,.74);
+    border-color:#dacdfa;
   }
 
   .empty-box{
@@ -734,24 +650,6 @@
       padding:14px 12px 120px;
     }
 
-    .topbar{
-      flex-direction:column;
-      align-items:flex-start;
-    }
-
-    .topbar-title{
-      font-size:28px;
-    }
-
-    .hero-row{
-      flex-direction:column;
-    }
-
-    .hero-side{
-      min-width:0;
-      width:100%;
-    }
-
     .section-head{
       padding:16px 16px 12px;
       flex-direction:column;
@@ -813,43 +711,11 @@
 <body>
 <div class="wrap">
 
-  <div class="topbar fade-up">
-    <div>
-      <div class="topbar-title">월간 일정</div>
-      <div class="topbar-sub" id="topbarSub">한국 시간 기준 로딩 중...</div>
-    </div>
-    <div class="topbar-date" id="monthBadge">3월</div>
-  </div>
-
-  <section class="hero fade-up delay-1">
-    <div class="hero-row">
-      <div>
-        <div class="hero-badge">MONTHLY RAID CALENDAR</div>
-        <div class="hero-title">한 달 전체 레이드를<br>달력으로 한눈에 보기</div>
-        <div class="hero-desc">
-          raid-data.json 기준으로 월간 일정을 자동 표시합니다.<br>
-          날짜 칸에는 이름 중심으로 보여주고, 날짜를 누르면 아래 상세 카드에서 일반 CP, 부스트 CP, 부스트 타입을 확인할 수 있습니다.
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-stat">
-          <div class="mini-stat-label">이번 달 표시 일수</div>
-          <div class="mini-stat-value" id="monthDayCount">0</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">이번 달 전체 보스</div>
-          <div class="mini-stat-value" id="monthBossCount">0</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section fade-up delay-2">
+  <section class="section fade-up">
     <div class="section-head">
       <div>
         <div class="section-title">월간 캘린더</div>
-        <div class="section-sub">날짜를 누르면 아래 상세 영역이 바뀝니다</div>
+        <div class="section-sub">날짜를 누르면 아래 상세 영역이 바뀌고, 카드에서 바로 CP와 부스트 정보를 확인할 수 있습니다</div>
       </div>
     </div>
     <div class="section-body">
@@ -876,11 +742,11 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-3">
+  <section class="section fade-up delay-1">
     <div class="section-head">
       <div>
         <div class="section-title">선택한 날짜 상세</div>
-        <div class="section-sub">일반 CP와 부스트 CP가 카드에 바로 표시됩니다</div>
+        <div class="section-sub">상세 보기 없이도 CP, 부스트 CP, 부스트 아이콘과 이름이 바로 표시됩니다</div>
       </div>
     </div>
     <div class="section-body">
@@ -925,6 +791,23 @@
   let viewMonth = 0;
   let selectedDateKey = '';
 
+  const BOOST_ICON_MAP = {
+    '맑음': '/images/boost/sunny.png',
+    '쾌청': '/images/boost/sunny.png',
+    '비': '/images/boost/rainy.png',
+    '눈': '/images/boost/snow.png',
+    '안개': '/images/boost/fog.png',
+    '흐림': '/images/boost/cloudy.png',
+    '강풍': '/images/boost/windy.png',
+    '바람': '/images/boost/windy.png',
+    'windy': '/images/boost/windy.png',
+    'fog': '/images/boost/fog.png',
+    'sunny': '/images/boost/sunny.png',
+    'rainy': '/images/boost/rainy.png',
+    'snow': '/images/boost/snow.png',
+    'cloudy': '/images/boost/cloudy.png'
+  };
+
   function getKoreaNow(){
     const now = new Date();
     const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
@@ -949,11 +832,6 @@
 
   function toKey(date){
     return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
-  }
-
-  function formatKoreanDate(date){
-    const days = ['일','월','화','수','목','금','토'];
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
   }
 
   function formatShort(date){
@@ -1028,8 +906,16 @@
     return 'pill-gray';
   }
 
-  function createBoostBadge(icon, text){
+  function resolveBoostIcon(text, explicitIcon){
+    if(explicitIcon && String(explicitIcon).trim()) return explicitIcon;
+    const key = String(text || '').trim().toLowerCase();
+    return BOOST_ICON_MAP[key] || BOOST_ICON_MAP[String(text || '').trim()] || '';
+  }
+
+  function createBoostBadge(text, explicitIcon){
     if(!text) return '';
+    const icon = resolveBoostIcon(text, explicitIcon);
+
     return `
       <div class="boost-badge">
         ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
@@ -1074,31 +960,12 @@
     return dates;
   }
 
-  function updateTop(today){
-    document.getElementById('topbarSub').textContent = formatKoreanDate(today);
-    document.getElementById('monthBadge').textContent = `${today.getMonth()+1}월`;
-  }
-
-  function renderMonthStats(year, month){
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    let total = 0;
-
-    for(let day=1; day<=daysInMonth; day++){
-      const d = new Date(year, month, day);
-      total += getDisplayItemsForDate(allRecords, d).length;
-    }
-
-    document.getElementById('monthDayCount').textContent = daysInMonth;
-    document.getElementById('monthBossCount').textContent = total;
-  }
-
   function renderCalendar(){
     const today = getKoreaToday();
     const grid = document.getElementById('calendarGrid');
     const monthDates = getMonthMatrix(viewYear, viewMonth);
 
     document.getElementById('monthTitle').textContent = `${viewYear}년 ${viewMonth + 1}월`;
-    renderMonthStats(viewYear, viewMonth);
 
     grid.innerHTML = monthDates.map(date => {
       const items = getDisplayItemsForDate(allRecords, date);
@@ -1162,12 +1029,13 @@
       return;
     }
 
-    grid.innerHTML = items.map(item => {
+    grid.innerHTML = items.map((item, index) => {
       const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
       const boostBadges = [
-        createBoostBadge(item.boostIcon, item.boost),
-        createBoostBadge(item.boostIcon2, item.boost2)
+        createBoostBadge(item.boost, item.boostIcon),
+        createBoostBadge(item.boost2, item.boostIcon2)
       ].join('');
+      const cpTableId = `cp-table-${index}-${toKey(date)}`;
 
       return `
         <article class="raid-card ${shadowTheme}">
@@ -1190,8 +1058,8 @@
               <div class="raid-desc">
                 ${
                   item.label === '그림자'
-                    ? '그림자 레이드로 보라색 테마가 적용됩니다.'
-                    : '선택한 날짜 기준으로 진행 중인 레이드입니다.'
+                    ? '그림자 레이드 · 보라 glow 적용'
+                    : '선택한 날짜 기준 진행 중'
                 }
               </div>
             </div>
@@ -1200,12 +1068,12 @@
           <div class="meta-row">
             ${
               (item.cpMin || item.cpMax)
-                ? `<span class="meta-pill">일반 CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
+                ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
                 : ``
             }
             ${
               (item.boostedCpMin || item.boostedCpMax)
-                ? `<span class="meta-pill">부스트 CP ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+                ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
                 : ``
             }
           </div>
@@ -1213,11 +1081,36 @@
           ${boostBadges ? `<div class="boost-row">${boostBadges}</div>` : ``}
 
           <div class="action-row">
+            ${
+              item.cpTableImage
+                ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
+                : ``
+            }
             <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(toKey(date))}">상세 보기</a>
           </div>
+
+          ${
+            item.cpTableImage
+              ? `
+                <div class="cp-table-panel" id="${cpTableId}">
+                  <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+                </div>
+              `
+              : ``
+          }
         </article>
       `;
     }).join('');
+
+    grid.querySelectorAll('[data-cptable-target]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const panel = document.getElementById(btn.dataset.cptableTarget);
+        if(!panel) return;
+        const isOpen = panel.classList.contains('show');
+        panel.classList.toggle('show', !isOpen);
+        btn.textContent = isOpen ? 'CP표 보기' : 'CP표 닫기';
+      });
+    });
   }
 
   function moveMonth(step){
@@ -1247,7 +1140,6 @@
 
   async function init(){
     const today = getKoreaToday();
-    updateTop(today);
 
     allRecords = await loadRecords();
 
