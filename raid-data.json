@@ -1,0 +1,86 @@
+[
+  {
+    "id": "raid_1",
+    "name": "그림자 라티아스",
+    "label": "그림자",
+    "type": "pink",
+    "image": "./images/latias-shadow.png",
+    "startDate": "2026-03-01",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1926 - 2006",
+    "boostCp": "2408 - 2507",
+    "boosts": [
+      { "weather": "바람", "icon": "./icons/windy.png" }
+    ],
+    "desc": "그림자 전설 레이드",
+    "note": "",
+    "showPages": ["index","raid-now","weekly","monthly","detail"],
+    "strategyTypes": [
+      { "name": "드래곤", "icon": "./icons/15.png" },
+      { "name": "고스트", "icon": "./icons/14.png" },
+      { "name": "악", "icon": "./icons/16.png" }
+    ],
+    "ivTableTitle": "그림자 라티아스 CP",
+    "ivTableRowsText": "2351 | 2939 | 15 | 15 | 15 | 100.0%\n2346 | 2933 | 15 | 14 | 15 | 97.8%\n2346 | 2933 | 15 | 15 | 14 | 97.8%\n2343 | 2929 | 14 | 15 | 15 | 97.8%",
+    "ivMemo": "",
+    "updatedAt": "2026-03-01T00:00:00Z"
+  },
+  {
+    "id": "raid_2",
+    "name": "그림자 라티오스",
+    "label": "그림자",
+    "type": "pink",
+    "image": "./images/latios-shadow.png",
+    "startDate": "2026-03-01",
+    "endDate": "2026-03-31",
+    "startTime": "",
+    "endTime": "",
+    "cp": "2006 - 2082",
+    "boostCp": "2507 - 2603",
+    "boosts": [
+      { "weather": "바람", "icon": "./icons/windy.png" }
+    ],
+    "desc": "그림자 전설 레이드",
+    "note": "",
+    "showPages": ["index","raid-now","weekly","monthly","detail"],
+    "strategyTypes": [
+      { "name": "드래곤", "icon": "./icons/15.png" },
+      { "name": "고스트", "icon": "./icons/14.png" },
+      { "name": "악", "icon": "./icons/16.png" }
+    ],
+    "ivTableTitle": "그림자 라티오스 CP",
+    "ivTableRowsText": "2351 | 2939 | 15 | 15 | 15 | 100.0%\n2346 | 2933 | 15 | 14 | 15 | 97.8%\n2346 | 2933 | 15 | 15 | 14 | 97.8%",
+    "ivMemo": "",
+    "updatedAt": "2026-03-01T00:00:00Z"
+  },
+  {
+    "id": "raid_3",
+    "name": "메가 앱솔",
+    "label": "메가",
+    "type": "purple",
+    "image": "./images/mega-absol.png",
+    "startDate": "2026-03-15",
+    "endDate": "2026-04-15",
+    "startTime": "",
+    "endTime": "",
+    "cp": "1365 - 1442",
+    "boostCp": "1706 - 1802",
+    "boosts": [
+      { "weather": "안개", "icon": "./icons/foggy.png" }
+    ],
+    "desc": "메가 레이드 보스",
+    "note": "",
+    "showPages": ["index","raid-now","weekly","monthly","detail"],
+    "strategyTypes": [
+      { "name": "격투", "icon": "./icons/7.png" },
+      { "name": "벌레", "icon": "./icons/12.png" },
+      { "name": "페어리", "icon": "./icons/18.png" }
+    ],
+    "ivTableTitle": "메가 앱솔 CP",
+    "ivTableRowsText": "1442 | 1802 | 15 | 15 | 15 | 100.0%",
+    "ivMemo": "",
+    "updatedAt": "2026-03-15T00:00:00Z"
+  }
+]
