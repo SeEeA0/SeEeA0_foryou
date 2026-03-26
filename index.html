@@ -216,6 +216,7 @@
     font-size:13px;
     color:var(--muted);
     font-weight:800;
+    line-height:1.45;
   }
 
   .head-link{
@@ -416,6 +417,8 @@
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     position:relative;
     overflow:hidden;
+    display:flex;
+    flex-direction:column;
   }
 
   .now-card:hover{
@@ -485,6 +488,7 @@
     font-size:11px;
     font-weight:900;
     border:1px solid #ffd4df;
+    flex-shrink:0;
   }
 
   .now-main{
@@ -519,6 +523,7 @@
     font-weight:900;
     line-height:1.12;
     letter-spacing:-.03em;
+    word-break:keep-all;
   }
 
   .now-meta{
@@ -534,6 +539,7 @@
     display:flex;
     flex-wrap:wrap;
     gap:8px;
+    align-items:flex-start;
   }
 
   .boost-badge{
@@ -548,6 +554,7 @@
     font-size:11px;
     font-weight:900;
     color:#607897;
+    max-width:100%;
   }
 
   .boost-badge img{
@@ -557,6 +564,12 @@
     border-radius:50%;
     background:#f4f7fd;
     flex-shrink:0;
+  }
+
+  .boost-badge span{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
 
   .empty-box{
@@ -624,9 +637,12 @@
   }
 
   @media (max-width:1100px){
-    .quick-grid,
-    .now-row{
+    .quick-grid{
       grid-template-columns:1fr;
+    }
+
+    .now-row{
+      grid-template-columns:repeat(2,minmax(0,1fr));
     }
 
     .weekday-points{
@@ -681,8 +697,30 @@
       object-fit:contain;
     }
 
+    .now-row{
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .now-card{
+      min-height:auto;
+      padding:13px;
+    }
+
+    .now-head{
+      align-items:center;
+    }
+
+    .hot-badge{
+      min-height:26px;
+      padding:0 9px;
+      font-size:10px;
+    }
+
     .now-main{
       grid-template-columns:56px 1fr;
+      gap:10px;
+      margin-top:10px;
     }
 
     .now-thumb{
@@ -693,6 +731,31 @@
     .now-thumb img{
       width:44px;
       height:44px;
+    }
+
+    .now-name{
+      font-size:17px;
+    }
+
+    .now-meta{
+      font-size:11px;
+      line-height:1.4;
+    }
+
+    .boost-row{
+      margin-top:10px;
+      gap:6px;
+    }
+
+    .boost-badge{
+      min-height:28px;
+      padding:4px 9px 4px 6px;
+      font-size:10px;
+    }
+
+    .boost-badge img{
+      width:16px;
+      height:16px;
     }
   }
 
@@ -814,7 +877,7 @@
       day: '일요일',
       title: '루어 선데이',
       image: '/images/weekday/sunday.png',
-      summary: '일요일에는 향로와 여러 종류의 루어모듈 지속 시간이 최대 2배가 됩니다.',
+      summary: '일요일에는 향로와 루어모듈 지속 시간이 최대 2배가 됩니다.',
       points: [
         '향로 지속 시간 증가',
         '루어모듈 / 아이스 / 허브 / 마그네틱 / 레이니 루어모듈 지속 시간 최대 2배'
@@ -893,6 +956,23 @@
       ],
       note: '단, 글로벌 Pokémon GO Fest / Pokémon GO 와일드 에리어 / Pokémon GO Tour 주간에는 데일리 디스커버리가 진행되지 않을 수 있습니다.'
     }
+  };
+
+  const BOOST_ICON_MAP = {
+    '맑음': '/images/boost/sunny.png',
+    '쾌청': '/images/boost/sunny.png',
+    '비': '/images/boost/rainy.png',
+    '눈': '/images/boost/snow.png',
+    '안개': '/images/boost/fog.png',
+    '흐림': '/images/boost/cloudy.png',
+    '강풍': '/images/boost/windy.png',
+    '바람': '/images/boost/windy.png',
+    'sunny': '/images/boost/sunny.png',
+    'rainy': '/images/boost/rainy.png',
+    'snow': '/images/boost/snow.png',
+    'fog': '/images/boost/fog.png',
+    'cloudy': '/images/boost/cloudy.png',
+    'windy': '/images/boost/windy.png'
   };
 
   function getKoreaNow(){
@@ -1012,6 +1092,28 @@
     return sortHotItems(finalItems).slice(0, 3);
   }
 
+  function resolveBoostIcon(text, explicitIcon){
+    if(explicitIcon && String(explicitIcon).trim()) return explicitIcon;
+
+    const raw = String(text || '').trim();
+    const lower = raw.toLowerCase();
+
+    return BOOST_ICON_MAP[raw] || BOOST_ICON_MAP[lower] || '';
+  }
+
+  function createBoostBadge(text, explicitIcon){
+    if(!text) return '';
+
+    const icon = resolveBoostIcon(text, explicitIcon);
+
+    return `
+      <div class="boost-badge">
+        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : ``}
+        <span>${escapeHtml(text)}</span>
+      </div>
+    `;
+  }
+
   function renderTop(today){
     document.getElementById('topbarSub').textContent = formatKoreanDate(today);
     document.getElementById('monthBadge').textContent = `${today.getMonth()+1}월`;
@@ -1060,16 +1162,6 @@
     renderWeekdayTabs(dayIndex);
   }
 
-  function createBoostBadge(icon, text){
-    if(!text) return '';
-    return `
-      <div class="boost-badge">
-        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
-        <span>${escapeHtml(text)}</span>
-      </div>
-    `;
-  }
-
   function renderNowSection(records, today){
     const wrap = document.getElementById('nowGrid');
     const items = getHotRaidItems(records, today);
@@ -1081,8 +1173,8 @@
 
     wrap.innerHTML = items.map(item => {
       const boostBadges = [
-        createBoostBadge(item.boostIcon, item.boost),
-        createBoostBadge(item.boostIcon2, item.boost2)
+        createBoostBadge(item.boost, item.boostIcon),
+        createBoostBadge(item.boost2, item.boostIcon2)
       ].join('');
 
       return `
