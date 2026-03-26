@@ -4,166 +4,1324 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pokémon GO Monthly Raid Calendar</title>
-
 <style>
-body{font-family:Pretendard;background:#f5f7fb;margin:0}
-.wrap{max-width:1200px;margin:0 auto;padding:20px}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:linear-gradient(180deg,#edf3fb 0%, #f8fbff 100%);
+    color:#1f2f46;
+  }
 
-.section{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px}
+  :root{
+    --line:#d9e4f3;
+    --line-strong:#c7d6ea;
+    --text:#1f2f46;
+    --muted:#7386a4;
 
-.legend-wrap{display:flex;flex-wrap:wrap;gap:10px}
-.legend-item{
-  padding:10px 14px;border-radius:999px;border:1px solid #ddd;
-  cursor:pointer;font-weight:700;background:#f8fbff
-}
-.legend-item.active{background:#4f7fff;color:#fff;border:none}
+    --blue:#3567d7;
+    --blue-soft:#e7f0ff;
 
-.calendar-grid{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:8px;
-}
+    --purple:#7c58e9;
+    --purple-soft:#efe7ff;
 
-.day-cell{
-  min-height:120px;border:1px solid #ddd;border-radius:12px;padding:6px
-}
+    --pink:#d85b85;
+    --pink-soft:#ffe8f0;
 
-.month-raid-item{
-  display:block;margin-top:4px;padding:4px 6px;border-radius:8px;
-  font-size:12px;font-weight:700
-}
+    --yellow:#b88818;
+    --yellow-soft:#fff1c9;
 
-.raid-tier-1{background:#e7f5eb;color:#2f9f63}
-.raid-tier-3{background:#fff4d6;color:#b88818}
-.raid-tier-5{background:#e7f0ff;color:#3567d7}
-.raid-tier-mega{background:#efe7ff;color:#7c58e9}
-.raid-tier-shadow{background:#ffe8f0;color:#d85b85}
+    --green:#2f9f63;
+    --green-soft:#e7f5eb;
+
+    --gray:#67768f;
+    --gray-soft:#f2f5fa;
+
+    --shadow:0 20px 48px rgba(43,67,110,.08);
+    --shadow-soft:0 12px 30px rgba(43,67,110,.06);
+    --nav-height:84px;
+  }
+
+  .wrap{
+    max-width:1520px;
+    margin:0 auto;
+    padding:20px 16px calc(var(--nav-height) + 24px);
+  }
+
+  .hero{
+    position:relative;
+    overflow:hidden;
+    border-radius:32px;
+    padding:30px 28px 28px;
+    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
+    color:#fff;
+    box-shadow:0 28px 70px rgba(78,94,200,.22);
+    margin-bottom:18px;
+  }
+
+  .hero:before,
+  .hero:after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.10);
+  }
+
+  .hero:before{
+    width:250px;height:250px;right:-50px;top:-50px;
+  }
+
+  .hero:after{
+    width:180px;height:180px;left:42%;bottom:-70px;
+  }
+
+  .hero-inner{
+    position:relative;
+    z-index:1;
+  }
+
+  .hero-kicker{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    padding:0 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    font-size:13px;
+    font-weight:900;
+  }
+
+  .hero-title{
+    margin-top:16px;
+    font-size:38px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    line-height:1.08;
+  }
+
+  .hero-sub{
+    margin-top:12px;
+    max-width:980px;
+    font-size:15px;
+    line-height:1.6;
+    font-weight:700;
+    color:rgba(255,255,255,.92);
+  }
+
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:16px;
+  }
+
+  .hero-pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:36px;
+    padding:0 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    font-size:12px;
+    font-weight:900;
+  }
+
+  .section{
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(8px);
+    margin-bottom:18px;
+  }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:16px;
+    padding:22px 24px 16px;
+    border-bottom:1px solid #e6eef9;
+    background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+  }
+
+  .section-title{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .section-sub{
+    margin-top:8px;
+    font-size:13px;
+    color:var(--muted);
+    font-weight:700;
+    line-height:1.5;
+  }
+
+  .section-body{
+    padding:18px;
+  }
+
+  .tiny-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    padding:0 14px;
+    border-radius:999px;
+    background:#f1f6ff;
+    border:1px solid var(--line);
+    color:#58719a;
+    font-size:12px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .top-toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:16px;
+  }
+
+  .month-tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .month-tab{
+    border:none;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:46px;
+    padding:0 18px;
+    border-radius:999px;
+    background:#f4f8ff;
+    border:1px solid #d8e3f2;
+    color:#465d7f;
+    font:inherit;
+    font-weight:900;
+    transition:.16s ease;
+  }
+
+  .month-tab:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 20px rgba(55,80,127,.08);
+  }
+
+  .month-tab.active{
+    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 14px 30px rgba(87,102,210,.22);
+  }
+
+  .legend-wrap{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-height:54px;
+    padding:0 16px;
+    border-radius:16px;
+    background:#f8fbff;
+    border:1px solid #dfe8f6;
+    font-size:14px;
+    font-weight:900;
+    color:#415676;
+  }
+
+  .legend-filter{
+    width:100%;
+    cursor:pointer;
+    appearance:none;
+    -webkit-appearance:none;
+    font:inherit;
+    transition:.16s ease;
+  }
+
+  .legend-filter:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 18px rgba(45,65,110,.08);
+  }
+
+  .legend-filter.active{
+    border-color:#8aa9df;
+    background:#edf4ff;
+    box-shadow:0 0 0 3px rgba(76,123,224,.10);
+  }
+
+  .legend-filter.active.legend-all{
+    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 14px 26px rgba(87,102,210,.20);
+  }
+
+  .legend-filter.active.legend-all .legend-dot{
+    background:#fff !important;
+  }
+
+  .legend-dot{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+
+  .calendar-head{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:10px;
+    margin-bottom:10px;
+  }
+
+  .weekday{
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:#f5f8fd;
+    border:1px solid #e2ebf7;
+    font-size:13px;
+    font-weight:900;
+    color:#58719a;
+  }
+
+  .calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .day-cell{
+    min-height:180px;
+    padding:10px;
+    border-radius:20px;
+    background:#fff;
+    border:1px solid #dbe6f4;
+    box-shadow:var(--shadow-soft);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .day-cell.is-outside{
+    background:#f9fbfe;
+    opacity:.5;
+  }
+
+  .day-cell.is-today{
+    border:1.5px solid #93b3f2;
+    box-shadow:0 0 0 4px rgba(76,123,224,.08), var(--shadow-soft);
+  }
+
+  .day-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  }
+
+  .day-num{
+    width:30px;
+    height:30px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    font-size:14px;
+    font-weight:900;
+    color:#2b3b54;
+    background:#f4f8ff;
+    border:1px solid #dce7f5;
+    flex-shrink:0;
+  }
+
+  .day-count{
+    font-size:11px;
+    font-weight:900;
+    color:#7d8faa;
+    white-space:nowrap;
+  }
+
+  .day-events{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .month-raid-item{
+    border:none;
+    cursor:pointer;
+    width:100%;
+    text-align:left;
+    border-radius:14px;
+    padding:8px 9px;
+    font:inherit;
+    transition:.16s ease;
+  }
+
+  .month-raid-item:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 18px rgba(45,65,110,.08);
+  }
+
+  .month-raid-name{
+    font-size:12px;
+    font-weight:900;
+    line-height:1.3;
+    word-break:keep-all;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+  }
+
+  .raid-tier-1{
+    background:#e7f5eb;
+    color:#2f9f63;
+  }
+
+  .raid-tier-3{
+    background:#fff4d6;
+    color:#b88818;
+  }
+
+  .raid-tier-5{
+    background:#e7f0ff;
+    color:#3567d7;
+  }
+
+  .raid-tier-mega{
+    background:#efe7ff;
+    color:#7c58e9;
+  }
+
+  .raid-tier-shadow{
+    background:#ffe8f0;
+    color:#d85b85;
+  }
+
+  .raid-tier-default{
+    background:#f2f5fa;
+    color:#67768f;
+  }
+
+  .empty-state{
+    background:#fbfdff;
+    border:1px dashed #dce7f4;
+    border-radius:20px;
+    padding:28px 16px;
+    text-align:center;
+    color:#8293ad;
+    font-size:14px;
+    font-weight:800;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    width:min(920px, calc(100% - 24px));
+    z-index:100;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(14px);
+    border:1px solid #dce6f5;
+    box-shadow:0 18px 40px rgba(30,48,88,.14);
+    border-radius:24px;
+    padding:10px;
+  }
+
+  .bottom-nav-list{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .bottom-nav a{
+    min-height:60px;
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    text-decoration:none;
+    color:#6d7f9c;
+    font-size:11px;
+    font-weight:900;
+    transition:.16s ease;
+  }
+
+  .bottom-nav a:hover{
+    background:#f3f7ff;
+    color:#3d5ea8;
+  }
+
+  .bottom-nav a.active{
+    background:linear-gradient(135deg,#4f7fff 0%, #7b63ff 100%);
+    color:#fff;
+    box-shadow:0 10px 24px rgba(87,102,210,.24);
+  }
+
+  .nav-icon{
+    font-size:18px;
+    line-height:1;
+  }
+
+  .modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(20,29,48,.48);
+    z-index:1000;
+  }
+
+  .modal.show{
+    display:flex;
+  }
+
+  .modal-card{
+    width:min(920px,100%);
+    max-height:min(86vh,920px);
+    overflow:auto;
+    background:#fff;
+    border-radius:28px;
+    border:1px solid #dce7f4;
+    box-shadow:0 36px 90px rgba(15,25,48,.24);
+  }
+
+  .modal-head{
+    position:sticky;
+    top:0;
+    z-index:2;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    padding:22px 24px 16px;
+    border-bottom:1px solid #e6eef9;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(8px);
+  }
+
+  .modal-title{
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    line-height:1.15;
+  }
+
+  .modal-close{
+    border:none;
+    cursor:pointer;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#f3f7ff;
+    border:1px solid #dce6f5;
+    color:#48617f;
+    font-size:18px;
+    font-weight:900;
+    flex-shrink:0;
+  }
+
+  .modal-body{
+    padding:18px 24px 24px;
+  }
+
+  .detail-top{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:18px;
+  }
+
+  .detail-thumb{
+    width:120px;
+    height:120px;
+    border-radius:26px;
+    background:#f3f7ff;
+    border:1px solid #dce6f5;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .detail-thumb img{
+    width:94px;
+    height:94px;
+    object-fit:contain;
+  }
+
+  .detail-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:8px;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:32px;
+    padding:0 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+
+  .pill.gray{
+    background:#f2f5fa;
+    color:#67768f;
+  }
+
+  .detail-desc{
+    margin-top:12px;
+    color:#7284a0;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.6;
+  }
+
+  .detail-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    margin-top:18px;
+  }
+
+  .detail-box{
+    background:#f8fbff;
+    border:1px solid #dde7f5;
+    border-radius:18px;
+    padding:14px;
+  }
+
+  .detail-label{
+    font-size:11px;
+    color:#7c8ea9;
+    font-weight:900;
+  }
+
+  .detail-value{
+    margin-top:6px;
+    font-size:15px;
+    color:#31445d;
+    font-weight:900;
+    line-height:1.45;
+  }
+
+  .detail-section{
+    margin-top:18px;
+    background:#f8fbff;
+    border:1px solid #dde7f5;
+    border-radius:18px;
+    padding:14px;
+  }
+
+  .detail-section-title{
+    font-size:13px;
+    font-weight:900;
+    color:#465b79;
+  }
+
+  .chip-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    min-height:36px;
+    padding:6px 11px 6px 6px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
+    font-size:12px;
+    font-weight:900;
+    color:#31445d;
+  }
+
+  .chip img{
+    width:22px;
+    height:22px;
+    object-fit:contain;
+    border-radius:50%;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    padding:3px;
+  }
+
+  .note-box{
+    margin-top:10px;
+    font-size:13px;
+    color:#71839f;
+    font-weight:700;
+    line-height:1.6;
+  }
+
+  @media (max-width:920px){
+    .legend-wrap{
+      grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+
+    .day-cell{
+      min-height:140px;
+      padding:8px;
+      border-radius:16px;
+    }
+
+    .detail-top{
+      grid-template-columns:1fr;
+    }
+
+    .detail-grid{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media (max-width:768px){
+    .wrap{
+      padding:16px 12px calc(var(--nav-height) + 20px);
+    }
+
+    .hero{
+      padding:24px 20px 22px;
+      border-radius:26px;
+    }
+
+    .hero-title{
+      font-size:30px;
+    }
+
+    .section-head{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .calendar-head{
+      gap:6px;
+    }
+
+    .calendar-grid{
+      gap:6px;
+    }
+
+    .weekday{
+      min-height:36px;
+      font-size:11px;
+    }
+
+    .day-cell{
+      min-height:118px;
+      padding:7px;
+      border-radius:14px;
+    }
+
+    .day-num{
+      width:26px;
+      height:26px;
+      font-size:12px;
+    }
+
+    .month-raid-item{
+      padding:7px 8px;
+      border-radius:12px;
+    }
+
+    .month-raid-name{
+      font-size:11px;
+    }
+
+    .legend-wrap{
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .legend-item{
+      min-height:48px;
+      padding:0 12px;
+      font-size:13px;
+    }
+
+    .bottom-nav{
+      bottom:10px;
+      width:calc(100% - 16px);
+      border-radius:20px;
+      padding:8px;
+    }
+
+    .bottom-nav a{
+      min-height:54px;
+      border-radius:14px;
+      font-size:10px;
+    }
+
+    .nav-icon{
+      font-size:16px;
+    }
+  }
 </style>
 </head>
-
 <body>
-
 <div class="wrap">
 
-  <div class="section">
-    <h2>월간 레이드 캘린더</h2>
-    <div id="legendBadge">전체 보기</div>
-  </div>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-kicker">📅 Pokémon GO Monthly</div>
+      <div class="hero-title">월간 레이드 캘린더</div>
+      <div class="hero-sub">
+        어드민에서 저장한 레이드 데이터를 기준으로 월간 일정이 자동으로 표시됩니다.
+      </div>
+      <div class="hero-meta">
+        <span class="hero-pill">monthly 체크 데이터만 표시</span>
+        <span class="hero-pill">1성 / 3성 / 5성 / 메가 / 그림자</span>
+      </div>
+    </div>
+  </section>
 
-  <div class="section">
-    <div class="legend-wrap" id="legendFilters"></div>
-  </div>
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title" id="calendarTitle">2026년 4월 레이드 일정</div>
+        <div class="section-sub">월 탭을 누르면 해당 월 일정만 표시됩니다.</div>
+      </div>
+      <div class="tiny-badge" id="monthSummaryBadge">0건</div>
+    </div>
 
-  <div class="section">
-    <div class="calendar-grid" id="calendarGrid"></div>
-  </div>
+    <div class="section-body">
+      <div class="top-toolbar">
+        <div class="month-tabs" id="monthTabs"></div>
+      </div>
+    </div>
+  </section>
 
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">구분 색상</div>
+        <div class="section-sub">여러 개를 눌러 함께 볼 수 있고, 다시 누르면 해제됩니다.</div>
+      </div>
+      <div class="tiny-badge" id="legendBadge">전체 보기</div>
+    </div>
+
+    <div class="section-body">
+      <div class="legend-wrap" id="legendFilters"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-body">
+      <div class="calendar-head">
+        <div class="weekday">일</div>
+        <div class="weekday">월</div>
+        <div class="weekday">화</div>
+        <div class="weekday">수</div>
+        <div class="weekday">목</div>
+        <div class="weekday">금</div>
+        <div class="weekday">토</div>
+      </div>
+
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+  </section>
+</div>
+
+<nav class="bottom-nav" aria-label="하단 메뉴">
+  <div class="bottom-nav-list">
+    <a href="./index.html">
+      <span class="nav-icon">🏠</span>
+      <span>홈</span>
+    </a>
+    <a href="./raid-now.html">
+      <span class="nav-icon">⚔️</span>
+      <span>지금 레이드</span>
+    </a>
+    <a href="./weekly.html">
+      <span class="nav-icon">🗓️</span>
+      <span>주간</span>
+    </a>
+    <a href="./monthly.html" class="active">
+      <span class="nav-icon">📆</span>
+      <span>월간</span>
+    </a>
+  </div>
+</nav>
+
+<div class="modal" id="detailModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="modalTitle">레이드 상세</div>
+      </div>
+      <button class="modal-close" id="modalCloseBtn" type="button" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
 </div>
 
 <script>
-const STORAGE_KEY = 'pogoRaidAdminData';
+  const STORAGE_KEY = 'pogoRaidAdminData';
 
-const RAID_FILTERS = [
-  { key:'all', label:'전체'},
-  { key:'1성', label:'1성'},
-  { key:'3성', label:'3성'},
-  { key:'5성', label:'5성'},
-  { key:'메가', label:'메가'},
-  { key:'그림자', label:'그림자'}
-];
+  const MONTHS = [
+    { year: 2026, month: 3 },
+    { year: 2026, month: 4 },
+    { year: 2026, month: 5 },
+    { year: 2026, month: 6 }
+  ];
 
-let activeFilters = [];
+  const RAID_FILTERS = [
+    { key: 'all', label: '전체', color: '#58719a' },
+    { key: '1성', label: '1성', color: '#2f9f63' },
+    { key: '3성', label: '3성', color: '#b88818' },
+    { key: '5성', label: '5성', color: '#3567d7' },
+    { key: '메가', label: '메가', color: '#7c58e9' },
+    { key: '그림자', label: '그림자', color: '#d85b85' }
+  ];
 
-const legendFilters = document.getElementById('legendFilters');
-const calendarGrid = document.getElementById('calendarGrid');
-const legendBadge = document.getElementById('legendBadge');
+  let currentMonthIndex = 1;
+  let activeRaidFilters = [];
 
-function loadData(){
-  const raw = localStorage.getItem(STORAGE_KEY);
-  const data = raw ? JSON.parse(raw) : [];
-  console.log('🔥 전체 데이터', data);
+  const monthTabs = document.getElementById('monthTabs');
+  const calendarGrid = document.getElementById('calendarGrid');
+  const calendarTitle = document.getElementById('calendarTitle');
+  const monthSummaryBadge = document.getElementById('monthSummaryBadge');
+  const legendFilters = document.getElementById('legendFilters');
+  const legendBadge = document.getElementById('legendBadge');
 
-  return data.filter(v => (v.showPages||[]).includes('monthly'));
-}
+  const detailModal = document.getElementById('detailModal');
+  const modalBody = document.getElementById('modalBody');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-function isAll(){ return activeFilters.length===0 }
-
-function toggleFilter(key){
-  if(key==='all'){ activeFilters=[]; return }
-
-  if(activeFilters.includes(key)){
-    activeFilters = activeFilters.filter(v=>v!==key)
-  }else{
-    activeFilters.push(key)
+  function escapeHtml(str=''){
+    return String(str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
   }
-}
 
-function getFiltered(data){
-  if(isAll()) return data;
-  return data.filter(v=>activeFilters.includes(v.label))
-}
-
-function renderLegend(){
-  legendFilters.innerHTML = RAID_FILTERS.map(f=>{
-    const active = f.key==='all' ? isAll() : activeFilters.includes(f.key);
-    return `<div class="legend-item ${active?'active':''}" data-key="${f.key}">
-      ${f.label}
-    </div>`
-  }).join('');
-
-  legendBadge.innerText = isAll()
-    ? '전체 보기'
-    : activeFilters.join(' + ') + ' 표시';
-
-  document.querySelectorAll('.legend-item').forEach(el=>{
-    el.onclick=()=>{
-      toggleFilter(el.dataset.key);
-      renderLegend();
-      renderCalendar();
+  function loadRaidData() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const parsed = saved ? JSON.parse(saved) : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map(normalizeRaidItem);
+    } catch (e) {
+      return [];
     }
-  })
-}
-
-function getColor(label){
-  return {
-    '1성':'raid-tier-1',
-    '3성':'raid-tier-3',
-    '5성':'raid-tier-5',
-    '메가':'raid-tier-mega',
-    '그림자':'raid-tier-shadow'
-  }[label] || '';
-}
-
-function renderCalendar(){
-  const data = getFiltered(loadData());
-
-  console.log('🔥 필터 적용 데이터', data);
-
-  let html='';
-
-  for(let i=1;i<=30;i++){
-    const date = `2026-04-${String(i).padStart(2,'0')}`;
-
-    const dayData = data.filter(v=> date>=v.startDate && date<=v.endDate);
-
-    html += `
-      <div class="day-cell">
-        <b>${i}</b>
-        ${dayData.map(v=>`
-          <div class="month-raid-item ${getColor(v.label)}">
-            ${v.name}
-          </div>
-        `).join('')}
-      </div>
-    `
   }
 
-  calendarGrid.innerHTML = html;
-}
+  function normalizeRaidItem(item = {}) {
+    let boosts = [];
 
-renderLegend();
-renderCalendar();
+    if (Array.isArray(item.boosts)) {
+      boosts = item.boosts
+        .map(v => ({
+          weather: v?.weather || '',
+          icon: v?.icon || ''
+        }))
+        .filter(v => v.weather || v.icon)
+        .slice(0, 2);
+    } else if (item.boostWeather || item.boostIcon) {
+      boosts = [{
+        weather: item.boostWeather || '',
+        icon: item.boostIcon || ''
+      }];
+    }
+
+    return {
+      ...item,
+      boosts,
+      showPages: Array.isArray(item.showPages) ? item.showPages : [],
+      strategyTypes: Array.isArray(item.strategyTypes) ? item.strategyTypes : []
+    };
+  }
+
+  function getRaidColorClass(label) {
+    switch (label) {
+      case '1성': return 'raid-tier-1';
+      case '3성': return 'raid-tier-3';
+      case '5성': return 'raid-tier-5';
+      case '메가': return 'raid-tier-mega';
+      case '그림자': return 'raid-tier-shadow';
+      default: return 'raid-tier-default';
+    }
+  }
+
+  function isDateInRange(targetDate, startDate, endDate) {
+    if (!targetDate || !startDate || !endDate) return false;
+    return targetDate >= startDate && targetDate <= endDate;
+  }
+
+  function toAmpm(time24){
+    if(!time24) return '';
+    const [hh, mm] = time24.split(':').map(Number);
+    if (Number.isNaN(hh) || Number.isNaN(mm)) return time24;
+    const suffix = hh >= 12 ? 'PM' : 'AM';
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    return `${String(h12).padStart(2,'0')}:${String(mm).padStart(2,'0')} ${suffix}`;
+  }
+
+  function getDisplayTime(item){
+    const start = item.startTime ? toAmpm(item.startTime) : '06:00 AM';
+    const end = item.endTime ? toAmpm(item.endTime) : '10:00 PM';
+    return `${start} ~ ${end}`;
+  }
+
+  function formatMonthTitle(year, month){
+    return `${year}년 ${month}월 레이드 일정`;
+  }
+
+  function formatDateStr(date){
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2,'0');
+    const d = String(date.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+
+  function getCurrentMonthConfig(){
+    return MONTHS[currentMonthIndex];
+  }
+
+  function getVisibleMonthlyRaids(){
+    return loadRaidData().filter(item => (item.showPages || []).includes('monthly'));
+  }
+
+  function isAllFilterActive(){
+    return activeRaidFilters.length === 0;
+  }
+
+  function isFilterSelected(filterKey){
+    if(filterKey === 'all') return isAllFilterActive();
+    return activeRaidFilters.includes(filterKey);
+  }
+
+  function toggleRaidFilter(filterKey){
+    if(filterKey === 'all'){
+      activeRaidFilters = [];
+      return;
+    }
+
+    if(activeRaidFilters.includes(filterKey)){
+      activeRaidFilters = activeRaidFilters.filter(v => v !== filterKey);
+    } else {
+      activeRaidFilters = [...activeRaidFilters, filterKey];
+    }
+  }
+
+  function getFilteredMonthlyRaids(){
+    const allRaids = getVisibleMonthlyRaids();
+    if(isAllFilterActive()) return allRaids;
+    return allRaids.filter(item => activeRaidFilters.includes(item.label));
+  }
+
+  function getMonthStartEnd(year, month){
+    const start = new Date(year, month - 1, 1);
+    const end = new Date(year, month, 0);
+    return { start, end };
+  }
+
+  function doesRaidTouchMonth(item, year, month){
+    if(!item.startDate || !item.endDate) return false;
+    const { start, end } = getMonthStartEnd(year, month);
+    const monthStart = formatDateStr(start);
+    const monthEnd = formatDateStr(end);
+    return !(item.endDate < monthStart || item.startDate > monthEnd);
+  }
+
+  function getMonthRaids(year, month){
+    return getFilteredMonthlyRaids().filter(item => doesRaidTouchMonth(item, year, month));
+  }
+
+  function getRaidsForDate(dateStr) {
+    return getFilteredMonthlyRaids()
+      .filter(item => isDateInRange(dateStr, item.startDate, item.endDate))
+      .sort((a,b) => {
+        const order = ['1성','3성','5성','메가','그림자'];
+        const ai = order.indexOf(a.label);
+        const bi = order.indexOf(b.label);
+        if(ai !== bi) return ai - bi;
+        return (a.name || '').localeCompare(b.name || '', 'ko');
+      });
+  }
+
+  function getFilterBadgeText(){
+    if(isAllFilterActive()) return '전체 보기';
+    if(activeRaidFilters.length === 1) return `${activeRaidFilters[0]}만 표시`;
+    return `${activeRaidFilters.join(' · ')} 표시`;
+  }
+
+  function renderLegendFilters(){
+    legendFilters.innerHTML = RAID_FILTERS.map(filter => {
+      const isActive = isFilterSelected(filter.key);
+      return `
+        <button
+          class="legend-item legend-filter ${isActive ? 'active' : ''} ${filter.key === 'all' ? 'legend-all' : ''}"
+          type="button"
+          data-filter="${escapeHtml(filter.key)}"
+        >
+          <span class="legend-dot" style="background:${escapeHtml(filter.color)};"></span>
+          <span>${escapeHtml(filter.label)}</span>
+        </button>
+      `;
+    }).join('');
+
+    legendBadge.textContent = getFilterBadgeText();
+
+    Array.from(legendFilters.querySelectorAll('.legend-filter')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filterKey = btn.dataset.filter || 'all';
+        toggleRaidFilter(filterKey);
+        renderLegendFilters();
+        renderCalendar();
+      });
+    });
+  }
+
+  function renderMonthTabs(){
+    monthTabs.innerHTML = MONTHS.map((item, idx) => `
+      <button class="month-tab ${idx === currentMonthIndex ? 'active' : ''}" data-index="${idx}" type="button">
+        ${item.year}.${String(item.month).padStart(2,'0')}
+      </button>
+    `).join('');
+
+    Array.from(monthTabs.querySelectorAll('.month-tab')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentMonthIndex = Number(btn.dataset.index);
+        renderAll();
+      });
+    });
+  }
+
+  function renderCalendar(){
+    const { year, month } = getCurrentMonthConfig();
+    calendarTitle.textContent = formatMonthTitle(year, month);
+
+    const firstDay = new Date(year, month - 1, 1);
+    const lastDay = new Date(year, month, 0);
+
+    const startWeekday = firstDay.getDay();
+    const totalDays = lastDay.getDate();
+
+    const prevMonthLastDay = new Date(year, month - 1, 0).getDate();
+    const cells = [];
+
+    for(let i = startWeekday - 1; i >= 0; i--){
+      const day = prevMonthLastDay - i;
+      const date = new Date(year, month - 2, day);
+      cells.push({
+        date,
+        dateStr: formatDateStr(date),
+        day,
+        outside:true
+      });
+    }
+
+    for(let day = 1; day <= totalDays; day++){
+      const date = new Date(year, month - 1, day);
+      cells.push({
+        date,
+        dateStr: formatDateStr(date),
+        day,
+        outside:false
+      });
+    }
+
+    const remain = 42 - cells.length;
+    for(let day = 1; day <= remain; day++){
+      const date = new Date(year, month, day);
+      cells.push({
+        date,
+        dateStr: formatDateStr(date),
+        day,
+        outside:true
+      });
+    }
+
+    const todayStr = formatDateStr(new Date());
+    const monthRaids = getMonthRaids(year, month);
+    monthSummaryBadge.textContent = `${monthRaids.length}건`;
+
+    calendarGrid.innerHTML = cells.map(cell => {
+      const dayRaids = cell.outside ? [] : getRaidsForDate(cell.dateStr);
+
+      return `
+        <div class="day-cell ${cell.outside ? 'is-outside' : ''} ${cell.dateStr === todayStr ? 'is-today' : ''}">
+          <div class="day-top">
+            <span class="day-num">${cell.day}</span>
+            <span class="day-count">${cell.outside ? '' : (dayRaids.length ? `${dayRaids.length}건` : '')}</span>
+          </div>
+
+          <div class="day-events">
+            ${!cell.outside ? renderDayRaids(cell.dateStr) : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    Array.from(calendarGrid.querySelectorAll('.month-raid-item')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const all = getFilteredMonthlyRaids();
+        const item = all.find(v => String(v.id) === String(id));
+        if(item) openDetailModal(item);
+      });
+    });
+  }
+
+  function renderDayRaids(dateStr){
+    const dayRaids = getRaidsForDate(dateStr);
+
+    if (!dayRaids.length) {
+      return '';
+    }
+
+    return dayRaids.map(item => {
+      const colorClass = getRaidColorClass(item.label);
+      return `
+        <button class="month-raid-item ${colorClass}" data-id="${escapeHtml(item.id)}" type="button">
+          <div class="month-raid-name">${escapeHtml(item.name || '')}</div>
+        </button>
+      `;
+    }).join('');
+  }
+
+  function openDetailModal(item){
+    modalTitle.textContent = item.name || '레이드 상세';
+
+    modalBody.innerHTML = `
+      <div class="detail-top">
+        <div class="detail-thumb">
+          ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : `<span style="font-size:42px;">🖼️</span>`}
+        </div>
+
+        <div>
+          <div class="detail-pills">
+            <span class="pill ${escapeHtml(getRaidColorClass(item.label))}">${escapeHtml(item.label || '-')}</span>
+            <span class="pill gray">${escapeHtml(item.startDate || '-')} ~ ${escapeHtml(item.endDate || '-')}</span>
+            <span class="pill gray">${escapeHtml(getDisplayTime(item))}</span>
+          </div>
+
+          <div class="detail-desc">${escapeHtml(item.desc || '설명 없음')}</div>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-box">
+          <div class="detail-label">일반 CP</div>
+          <div class="detail-value">${escapeHtml(item.cp || '-')}</div>
+        </div>
+
+        <div class="detail-box">
+          <div class="detail-label">부스트 CP</div>
+          <div class="detail-value">${escapeHtml(item.boostCp || '-')}</div>
+        </div>
+
+        <div class="detail-box">
+          <div class="detail-label">노출 페이지</div>
+          <div class="detail-value">${escapeHtml((item.showPages || []).join(', ') || '-')}</div>
+        </div>
+
+        <div class="detail-box">
+          <div class="detail-label">일정 시간</div>
+          <div class="detail-value">${escapeHtml(getDisplayTime(item))}</div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">부스트 날씨</div>
+        <div class="chip-list">
+          ${
+            item.boosts?.length
+              ? item.boosts.map(boost => `
+                <span class="chip">
+                  ${boost.icon ? `<img src="${escapeHtml(boost.icon)}" alt="${escapeHtml(boost.weather || '부스트')}">` : `<span style="width:22px;height:22px;border-radius:50%;background:#f4f8ff;border:1px solid #dce6f4;display:inline-flex;align-items:center;justify-content:center;font-size:11px;">☁</span>`}
+                  <span>${escapeHtml(boost.weather || '부스트')}</span>
+                </span>
+              `).join('')
+              : `<span class="note-box">부스트 정보 없음</span>`
+          }
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">추천 공략 타입</div>
+        <div class="chip-list">
+          ${
+            item.strategyTypes?.length
+              ? item.strategyTypes.map(type => `
+                <span class="chip">
+                  ${type.icon ? `<img src="${escapeHtml(type.icon)}" alt="${escapeHtml(type.name || '타입')}">` : `<span style="width:22px;height:22px;border-radius:50%;background:#f4f8ff;border:1px solid #dce6f4;display:inline-flex;align-items:center;justify-content:center;font-size:11px;">?</span>`}
+                  <span>${escapeHtml(type.name || '타입')}</span>
+                </span>
+              `).join('')
+              : `<span class="note-box">공략 타입 정보 없음</span>`
+          }
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">메모</div>
+        <div class="note-box">${escapeHtml(item.note || '메모 없음')}</div>
+      </div>
+    `;
+
+    detailModal.classList.add('show');
+    detailModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDetailModal(){
+    detailModal.classList.remove('show');
+    detailModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function renderAll(){
+    renderMonthTabs();
+    renderLegendFilters();
+    renderCalendar();
+  }
+
+  modalCloseBtn.addEventListener('click', closeDetailModal);
+  detailModal.addEventListener('click', (e) => {
+    if(e.target === detailModal) closeDetailModal();
+  });
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeDetailModal();
+  });
+
+  renderAll();
 </script>
-
 </body>
 </html>
