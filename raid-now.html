@@ -160,11 +160,13 @@
     background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
     border:1.5px solid var(--line);
     border-radius:24px;
-    padding:16px;
+    padding:18px;
     position:relative;
     overflow:hidden;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:320px;
+    min-height:340px;
+    display:flex;
+    flex-direction:column;
   }
 
   .raid-card::after{
@@ -212,6 +214,7 @@
     font-size:11px;
     font-weight:900;
     line-height:1;
+    flex-shrink:0;
   }
 
   .chip-blue{background:var(--blue-soft);color:var(--blue)}
@@ -227,14 +230,15 @@
     font-weight:900;
     text-align:right;
     line-height:1.35;
+    letter-spacing:-.01em;
   }
 
   .raid-main{
     display:grid;
     grid-template-columns:88px 1fr;
-    gap:14px;
+    gap:16px;
     align-items:center;
-    margin-top:14px;
+    margin-top:16px;
   }
 
   .raid-thumb{
@@ -267,9 +271,10 @@
 
   .raid-name{
     font-size:24px;
-    line-height:1.1;
+    line-height:1.12;
     font-weight:900;
     letter-spacing:-.03em;
+    word-break:keep-all;
   }
 
   .raid-desc{
@@ -280,16 +285,29 @@
     font-weight:800;
   }
 
+  .raid-content{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-height:0;
+  }
+
+  .info-stack{
+    margin-top:16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
   .meta-row{
-    margin-top:14px;
     display:flex;
     flex-wrap:wrap;
     gap:8px;
   }
 
   .meta-pill{
-    min-height:34px;
-    padding:0 12px;
+    min-height:36px;
+    padding:0 13px;
     border-radius:999px;
     border:1px solid #d9e3f2;
     background:#fff;
@@ -306,8 +324,51 @@
     border-color:#ddcffd;
   }
 
+  .boost-row{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .boost-pill{
+    min-height:36px;
+    padding:0 13px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .raid-card.shadow-theme .boost-pill{
+    background:rgba(255,255,255,.84);
+    border-color:#ddcffd;
+  }
+
+  .boost-icon{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
+  }
+
+  .card-bottom{
+    margin-top:auto;
+    padding-top:14px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+  }
+
   .action-row{
-    margin-top:12px;
     display:flex;
     flex-wrap:wrap;
     gap:8px;
@@ -455,8 +516,14 @@
       padding:12px;
     }
 
+    .raid-card{
+      min-height:auto;
+      padding:16px;
+    }
+
     .raid-main{
       grid-template-columns:72px 1fr;
+      gap:14px;
     }
 
     .raid-thumb{
@@ -472,6 +539,14 @@
 
     .raid-name{
       font-size:21px;
+    }
+
+    .card-bottom{
+      align-items:flex-start;
+    }
+
+    .raid-period{
+      font-size:11px;
     }
   }
 
@@ -642,8 +717,22 @@
 
   function resolveBoostIcon(text, explicitIcon){
     if(explicitIcon && String(explicitIcon).trim()) return explicitIcon;
-    const key = String(text || '').trim().toLowerCase();
-    return BOOST_ICON_MAP[key] || BOOST_ICON_MAP[String(text || '').trim()] || '';
+    const raw = String(text || '').trim();
+    const key = raw.toLowerCase();
+    return BOOST_ICON_MAP[key] || BOOST_ICON_MAP[raw] || '';
+  }
+
+  function normalizeBoostArray(item){
+    if(Array.isArray(item.boosts) && item.boosts.length){
+      return item.boosts.filter(Boolean).map(v => String(v).trim()).filter(Boolean);
+    }
+    if(typeof item.boost === 'string' && item.boost.trim()){
+      return item.boost
+        .split(',')
+        .map(v => v.trim())
+        .filter(Boolean);
+    }
+    return [];
   }
 
   function getTodayRaidItems(records, today){
@@ -684,6 +773,25 @@
     return currentItems.filter(item => item.label === currentFilter);
   }
 
+  function renderBoostPills(item){
+    const boosts = normalizeBoostArray(item);
+    if(!boosts.length) return '';
+
+    return `
+      <div class="boost-row">
+        ${boosts.map(boost => {
+          const icon = resolveBoostIcon(boost, item.boostIcon);
+          return `
+            <span class="boost-pill">
+              ${icon ? `<img src="${escapeHtml(icon)}" class="boost-icon" alt="${escapeHtml(boost)}">` : ``}
+              <span>${escapeHtml(boost)}</span>
+            </span>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
   function renderRaidGrid(){
     const wrap = document.getElementById('raidGrid');
     const items = getFilteredItems();
@@ -701,66 +809,74 @@
 
       return `
         <article class="raid-card ${shadowTheme}">
-          <div class="raid-head">
-            <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
-            <div class="raid-period">
-              ${(item.startDate || '').replaceAll('-', '.')}<br>
-              ${(item.endDate || '').replaceAll('-', '.')}
-            </div>
-          </div>
-
-          <div class="raid-main">
-            <div class="raid-thumb">
-              ${
-                item.image
-                  ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
-                  : `<span style="font-size:28px;">🖼️</span>`
-              }
-            </div>
-
-            <div>
-              <div class="raid-name">${escapeHtml(item.name || '-')}</div>
-              <div class="raid-desc">
-                ${
-                  item.label === '그림자'
-                    ? '그림자 레이드 · 보라 glow 적용'
-                    : '현재 진행 중인 레이드 정보입니다.'
-                }
+          <div class="raid-content">
+            <div class="raid-head">
+              <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
+              <div class="raid-period">
+                ${(item.startDate || '').replaceAll('-', '.')}<br>
+                ${(item.endDate || '').replaceAll('-', '.')}
               </div>
             </div>
-          </div>
 
-          <div class="meta-row">
-            ${
-              (item.cpMin || item.cpMax)
-                ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
-                : ``
-            }
-            ${
-              (item.boostedCpMin || item.boostedCpMax)
-                ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
-                : ``
-            }
-          </div>
+            <div class="raid-main">
+              <div class="raid-thumb">
+                ${
+                  item.image
+                    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
+                    : `<span style="font-size:28px;">🖼️</span>`
+                }
+              </div>
 
-          <div class="action-row">
+              <div>
+                <div class="raid-name">${escapeHtml(item.name || '-')}</div>
+                <div class="raid-desc">
+                  ${
+                    item.label === '그림자'
+                      ? '현재 진행 중인 그림자 레이드입니다.'
+                      : '현재 진행 중인 레이드 정보입니다.'
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="info-stack">
+              <div class="meta-row">
+                ${
+                  (item.cpMin || item.cpMax)
+                    ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
+                    : ``
+                }
+                ${
+                  (item.boostedCpMin || item.boostedCpMax)
+                    ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+                    : ``
+                }
+              </div>
+
+              ${renderBoostPills(item)}
+            </div>
+
+            <div class="card-bottom">
+              <div class="action-row">
+                ${
+                  item.cpTableImage
+                    ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
+                    : ``
+                }
+                <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(todayKey)}">상세 보기</a>
+              </div>
+            </div>
+
             ${
               item.cpTableImage
-                ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
+                ? `
+                  <div class="cp-table-panel" id="${cpTableId}">
+                    <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+                  </div>
+                `
                 : ``
             }
-            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(todayKey)}">상세 보기</a>
           </div>
-
-          ${
-            item.cpTableImage
-              ? `
-                <div class="cp-table-panel" id="${cpTableId}">
-                  <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
-                </div>
-              `
-              : ``
-          }
         </article>
       `;
     }).join('');
