@@ -206,9 +206,21 @@
 
   .boost-row{
     display:flex;
+    flex-wrap:wrap;
     align-items:center;
     gap:10px;
-    margin-top:6px;
+    margin-top:8px;
+  }
+
+  .boost-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:36px;
+    padding:6px 12px 6px 6px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #dbe5f3;
   }
 
   .boost-icon{
@@ -294,6 +306,85 @@
     font-size:13px;
     font-weight:700;
     line-height:1.5;
+  }
+
+  .iv-box{
+    margin-top:14px;
+    background:#fff;
+    border:1px solid #e3d7df;
+    border-radius:22px;
+    overflow:hidden;
+  }
+
+  .iv-head{
+    padding:14px 16px 10px;
+    border-bottom:1px solid #f1e7ec;
+    background:#fff7fa;
+  }
+
+  .iv-title{
+    font-size:14px;
+    font-weight:900;
+    color:#cc4e78;
+  }
+
+  .iv-header-image{
+    display:block;
+    width:100%;
+    max-width:560px;
+    height:auto;
+    margin-top:10px;
+  }
+
+  .iv-body{
+    display:grid;
+    grid-template-columns:1fr 88px;
+    gap:0;
+    align-items:stretch;
+    background:#fff;
+  }
+
+  .iv-rows{
+    padding:10px 14px 14px;
+  }
+
+  .iv-row{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:8px;
+    padding:8px 0;
+    border-bottom:1px solid #f5eef2;
+    color:#d06f8a;
+    font-weight:900;
+    font-size:14px;
+    text-align:center;
+  }
+
+  .iv-row:last-child{
+    border-bottom:none;
+  }
+
+  .iv-side{
+    border-left:1px solid #f1e7ec;
+    background:#fffafb;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:10px 6px;
+  }
+
+  .iv-side img{
+    width:100%;
+    max-width:72px;
+    height:auto;
+    display:block;
+  }
+
+  .iv-empty{
+    padding:14px 0 4px;
+    color:#b98ea0;
+    font-size:13px;
+    font-weight:800;
   }
 
   .empty-state{
@@ -395,6 +486,21 @@
     .info-grid{
       grid-template-columns:1fr;
     }
+
+    .iv-body{
+      grid-template-columns:1fr;
+    }
+
+    .iv-side{
+      border-left:none;
+      border-top:1px solid #f1e7ec;
+      justify-content:flex-start;
+    }
+
+    .iv-row{
+      font-size:13px;
+      gap:4px;
+    }
   }
 </style>
 </head>
@@ -455,10 +561,6 @@
     return new Date(y, m - 1, d, 0, 0, 0, 0);
   }
 
-  function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-  }
-
   function getDayKor(day){
     return ['일','월','화','수','목','금','토'][day];
   }
@@ -485,7 +587,7 @@
     const start = toDate(startStr);
     const end = toDate(endStr);
     if(!start || !end) return false;
-    const t = toDate(toKey(date)).getTime();
+    const t = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
     return t >= start.getTime() && t <= end.getTime();
   }
 
@@ -505,11 +607,11 @@
 
   function chipClass(item){
     return item.type || (
-      item.label === '전설' ? 'blue' :
+      item.label === '5성' ? 'blue' :
       item.label === '메가' ? 'purple' :
       item.label === '그림자' ? 'pink' :
-      item.label === '레이드 아워' || item.label === '레이드 데이' ? 'yellow' :
-      item.label === '이벤트' || item.label === '커뮤니티 데이' ? 'green' : 'gray'
+      item.label === '3성' ? 'yellow' :
+      item.label === '1성' ? 'green' : 'gray'
     );
   }
 
@@ -533,20 +635,129 @@
         inRange(date, item.startDate, item.endDate)
       )
       .sort((a, b) => {
-        const order = {
-          '전설': 0,
-          '메가': 1,
-          '그림자': 2,
-          '레이드 아워': 3,
-          '레이드 데이': 4,
-          '이벤트': 5,
-          '커뮤니티 데이': 6
-        };
+        const order = { '5성':0, '메가':1, '그림자':2, '3성':3, '1성':4 };
         const aOrder = order[a.label] ?? 99;
         const bOrder = order[b.label] ?? 99;
         if(aOrder !== bOrder) return aOrder - bOrder;
         return (a.name || '').localeCompare(b.name || '', 'ko');
       });
+  }
+
+  function renderBoosts(item){
+    const boosts = Array.isArray(item.boosts) ? item.boosts : [];
+    if(!boosts.length){
+      return `<div class="info-value" style="margin-top:0;">미입력</div>`;
+    }
+
+    return `
+      <div class="boost-row">
+        ${boosts.map(boost => `
+          <div class="boost-pill">
+            <div class="boost-icon">
+              ${
+                boost.icon
+                  ? `<img src="${boost.icon}" alt="${boost.weather || ''}">`
+                  : `<span style="font-size:10px;">☁</span>`
+              }
+            </div>
+            <div class="info-value" style="margin:0; font-size:14px;">
+              ${boost.weather || '날씨'}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderStrategies(item){
+    if(!(Array.isArray(item.strategyTypes) && item.strategyTypes.length)){
+      return `<div class="strategy-type-name" style="color:#8a98af;">공략 타입 정보 없음</div>`;
+    }
+
+    return item.strategyTypes.map(type => `
+      <div class="strategy-item">
+        <div class="strategy-type-icon">
+          ${
+            type.icon
+              ? `<img src="${type.icon}" alt="${type.name || ''}">`
+              : `<span style="font-size:10px;">?</span>`
+          }
+        </div>
+        <div class="strategy-type-name">${type.name || '타입'}</div>
+      </div>
+    `).join('');
+  }
+
+  function parseIvRows(text){
+    if(!text || typeof text !== 'string') return [];
+    return text
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .map(line => line.split('|').map(v => v.trim()))
+      .filter(cols => cols.length >= 6)
+      .map(cols => ({
+        cp20: cols[0] || '',
+        cp25: cols[1] || '',
+        atk: cols[2] || '',
+        def: cols[3] || '',
+        sta: cols[4] || '',
+        iv: cols[5] || ''
+      }));
+  }
+
+  function renderIvTable(item){
+    const rows = parseIvRows(item.ivTableRowsText || '');
+
+    if(!item.ivTableHeaderImage && !item.ivTableSideImage && !rows.length && !item.ivMemo){
+      return '';
+    }
+
+    return `
+      <div class="iv-box">
+        <div class="iv-head">
+          <div class="iv-title">${item.ivTableTitle || '개체값 표'}</div>
+          ${
+            item.ivTableHeaderImage
+              ? `<img class="iv-header-image" src="${item.ivTableHeaderImage}" alt="개체값 표 헤더">`
+              : ``
+          }
+        </div>
+
+        <div class="iv-body">
+          <div class="iv-rows">
+            ${
+              rows.length
+                ? rows.map(row => `
+                  <div class="iv-row">
+                    <div>${row.cp20}</div>
+                    <div>${row.cp25}</div>
+                    <div>${row.atk}</div>
+                    <div>${row.def}</div>
+                    <div>${row.sta}</div>
+                    <div>${row.iv}</div>
+                  </div>
+                `).join('')
+                : `<div class="iv-empty">행 데이터 없음</div>`
+            }
+
+            ${
+              item.ivMemo
+                ? `<div class="detail-note" style="margin-top:12px;">${item.ivMemo}</div>`
+                : ``
+            }
+          </div>
+
+          <div class="iv-side">
+            ${
+              item.ivTableSideImage
+                ? `<img src="${item.ivTableSideImage}" alt="% IV">`
+                : `<div class="iv-empty">% IV 이미지 없음</div>`
+            }
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   function renderDetailPage(){
@@ -555,7 +766,7 @@
     const items = getItemsForDate(records, targetDate);
 
     document.getElementById('pageTitle').textContent = `${formatKoreanDate(targetDate)} 상세 일정`;
-    document.getElementById('pageSub').textContent = `어드민에서 저장한 일정 중 상세 페이지(detail)에 표시되는 데이터만 불러옵니다.`;
+    document.getElementById('pageSub').textContent = `선택한 날짜의 상세 레이드 정보입니다.`;
     document.getElementById('pageBadge').textContent = `${targetDate.getMonth()+1}.${targetDate.getDate()}`;
 
     const list = document.getElementById('detailList');
@@ -563,8 +774,7 @@
     if(!items.length){
       list.innerHTML = `
         <div class="empty-state">
-          해당 날짜에는 등록된 일정이 없습니다.<br>
-          admin.html에서 detail 노출 체크 후 저장해 주세요.
+          해당 날짜에는 등록된 일정이 없습니다.
         </div>
       `;
       return;
@@ -585,65 +795,37 @@
 
           <div class="detail-meta">
             <span class="chip ${chipClass(item)}">${item.label || '-'}</span>
-            ${item.boostWeather ? `<span class="chip gray">${item.boostWeather}</span>` : ``}
+            <span class="chip gray">${item.startDate} ~ ${item.endDate}</span>
+            <span class="chip gray">${getDisplayTime(item)}</span>
           </div>
 
           <div class="info-grid">
-            <div class="info-box">
-              <div class="info-label">진행 시간</div>
-              <div class="info-value">${getDisplayTime(item)}</div>
-            </div>
-
-            <div class="info-box">
-              <div class="info-label">일정 구간</div>
-              <div class="info-value">${item.startDate} ~ ${item.endDate}</div>
-            </div>
-
             <div class="info-box">
               <div class="info-label">일반 CP</div>
               <div class="info-value">${item.cp || '-'}</div>
             </div>
 
             <div class="info-box">
-              <div class="info-label">부스트</div>
-              <div class="boost-row">
-                <div class="boost-icon">
-                  ${
-                    item.boostIcon
-                      ? `<img src="${item.boostIcon}" alt="${item.boostWeather || ''}">`
-                      : `<span style="font-size:10px;">?</span>`
-                  }
-                </div>
-                <div class="info-value" style="margin:0;">
-                  ${item.boostWeather || '미입력'} / ${item.boostCp || '-'}
-                </div>
-              </div>
+              <div class="info-label">부스트 CP</div>
+              <div class="info-value">${item.boostCp || '-'}</div>
+            </div>
+
+            <div class="info-box" style="grid-column:1 / -1;">
+              <div class="info-label">부스트 날씨</div>
+              ${renderBoosts(item)}
             </div>
           </div>
 
           <div class="strategy-box">
-            <div class="strategy-label">공략</div>
+            <div class="strategy-label">추천 공략 타입</div>
             <div class="strategy-types">
-              ${
-                Array.isArray(item.strategyTypes) && item.strategyTypes.length
-                  ? item.strategyTypes.map(type => `
-                    <div class="strategy-item">
-                      <div class="strategy-type-icon">
-                        ${
-                          type.icon
-                            ? `<img src="${type.icon}" alt="${type.name || ''}">`
-                            : `<span style="font-size:10px;">?</span>`
-                        }
-                      </div>
-                      <div class="strategy-type-name">${type.name || '타입'}</div>
-                    </div>
-                  `).join('')
-                  : `<div class="strategy-type-name" style="color:#8a98af;">공략 타입 없음</div>`
-              }
+              ${renderStrategies(item)}
             </div>
           </div>
 
-          <div class="detail-note">${item.note || '시간이 따로 없는 항목은 기본적으로 06:00 AM ~ 10:00 PM 으로 표시됩니다.'}</div>
+          ${renderIvTable(item)}
+
+          <div class="detail-note">${item.note || '메모 없음'}</div>
         </div>
       </article>
     `).join('');
