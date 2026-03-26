@@ -679,28 +679,20 @@
   }
 
   .iv-preview-head{
-    padding:10px 12px;
+    padding:12px 14px;
     border-bottom:1px solid #f4e5ec;
     color:#cf4d79;
-    font-size:12px;
+    font-size:14px;
     font-weight:900;
+    background:#fff2f6;
   }
 
-  .iv-preview-head img{
+  .iv-preview-body.text-only{
     display:block;
-    width:100%;
-    max-width:240px;
-    height:auto;
-    margin-top:8px;
   }
 
-  .iv-preview-body{
-    display:grid;
-    grid-template-columns:1fr 74px;
-  }
-
-  .iv-preview-rows{
-    padding:10px 12px;
+  .iv-preview-rows.full{
+    padding:10px 12px 12px;
   }
 
   .iv-preview-row{
@@ -719,19 +711,18 @@
     border-bottom:none;
   }
 
-  .iv-preview-side{
-    border-left:1px solid #f4e5ec;
-    background:#fffafb;
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
-    padding:10px 6px;
+  .iv-preview-row.iv-preview-header{
+    color:#ffffff;
+    background:#d97a4e;
+    border-radius:10px;
+    padding:10px 8px;
+    margin-bottom:6px;
   }
 
-  .iv-preview-side img{
-    width:100%;
-    max-width:56px;
-    height:auto;
+  .iv-preview-row.iv-preview-header small{
+    font-size:10px;
+    font-weight:800;
+    opacity:.9;
   }
 
   .iv-preview-empty{
@@ -809,16 +800,6 @@
 
     .preview-body{
       grid-template-columns:1fr;
-    }
-
-    .iv-preview-body{
-      grid-template-columns:1fr;
-    }
-
-    .iv-preview-side{
-      border-left:none;
-      border-top:1px solid #f4e5ec;
-      justify-content:flex-start;
     }
   }
 
@@ -1030,23 +1011,16 @@
 
               <div class="form-grid">
                 <div class="field">
-                  <label class="label" for="ivTableTitle">표 제목</label>
-                  <input id="ivTableTitle" name="ivTableTitle" type="text" placeholder="예: 개체값 표" />
+                  <label class="label">표 제목</label>
+                  <div class="icon-preview">
+                    <span id="ivAutoTitlePreview">포켓몬이름 CP</span>
+                  </div>
+                  <div class="hint">자동 생성: 이름 + CP</div>
                 </div>
 
                 <div class="field">
                   <label class="label" for="ivMemo">표 메모</label>
                   <input id="ivMemo" name="ivMemo" type="text" placeholder="예: 줄 수 제한 없이 입력 가능" />
-                </div>
-
-                <div class="field">
-                  <label class="label" for="ivTableHeaderImage">헤더 이미지 경로</label>
-                  <input id="ivTableHeaderImage" name="ivTableHeaderImage" type="url" placeholder="./images/iv-header.png" />
-                </div>
-
-                <div class="field">
-                  <label class="label" for="ivTableSideImage">우측 %IV 이미지 경로</label>
-                  <input id="ivTableSideImage" name="ivTableSideImage" type="url" placeholder="./images/iv-side.png" />
                 </div>
 
                 <div class="field full">
@@ -1209,9 +1183,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
                 <tr><td>strategyTypes</td><td>공략 타입 배열</td></tr>
                 <tr><td>showPages</td><td>노출할 페이지 목록</td></tr>
                 <tr><td>desc / note</td><td>설명 / 메모</td></tr>
-                <tr><td>ivTableTitle</td><td>개체값 표 제목</td></tr>
-                <tr><td>ivTableHeaderImage</td><td>개체값 표 상단 헤더 이미지</td></tr>
-                <tr><td>ivTableSideImage</td><td>우측 %IV 고정 이미지</td></tr>
+                <tr><td>ivTableTitle</td><td>자동 생성되는 개체값 표 제목</td></tr>
                 <tr><td>ivTableRowsText</td><td>줄바꿈 텍스트 형태 행 데이터</td></tr>
                 <tr><td>ivMemo</td><td>개체값 표 하단 메모</td></tr>
               </tbody>
@@ -1364,6 +1336,11 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     iconInput.value = icon || '';
   }
 
+  function updateIvAutoTitlePreview(){
+    const name = document.getElementById('name').value.trim();
+    document.getElementById('ivAutoTitlePreview').textContent = name ? `${name} CP` : '포켓몬이름 CP';
+  }
+
   function createTypeRow(data = {name:'', icon:''}){
     const row = document.createElement('div');
     row.className = 'mini-row type';
@@ -1438,9 +1415,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
 
   function normalizeIvFields(item = {}){
     return {
-      ivTableTitle: item.ivTableTitle || '',
-      ivTableHeaderImage: item.ivTableHeaderImage || '',
-      ivTableSideImage: item.ivTableSideImage || '',
+      ivTableTitle: item.ivTableTitle || `${item.name || ''} CP`,
       ivTableRowsText: item.ivTableRowsText || '',
       ivMemo: item.ivMemo || ''
     };
@@ -1480,10 +1455,11 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
   function getFormData(){
     const formData = new FormData(raidForm);
     const label = formData.get('label')?.trim() || '';
+    const name = formData.get('name')?.trim() || '';
 
     return {
       id: editingId || uid(),
-      name: formData.get('name')?.trim() || '',
+      name,
       label,
       type: formData.get('type')?.trim() || typeClassForLabel(label),
       image: formData.get('image')?.trim() || '',
@@ -1499,9 +1475,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
       showPages: getCheckedShowPages(),
       strategyTypes: getStrategyTypesFromForm(),
 
-      ivTableTitle: formData.get('ivTableTitle')?.trim() || '',
-      ivTableHeaderImage: formData.get('ivTableHeaderImage')?.trim() || '',
-      ivTableSideImage: formData.get('ivTableSideImage')?.trim() || '',
+      ivTableTitle: `${name} CP`,
       ivTableRowsText: formData.get('ivTableRowsText')?.trim() || '',
       ivMemo: formData.get('ivMemo')?.trim() || '',
 
@@ -1528,13 +1502,11 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     addTypeRow();
     autoFillBoostIcon(document.getElementById('boostWeather1'), document.getElementById('boostIcon1'));
     autoFillBoostIcon(document.getElementById('boostWeather2'), document.getElementById('boostIcon2'));
-    document.getElementById('ivTableTitle').value = '';
-    document.getElementById('ivTableHeaderImage').value = '';
-    document.getElementById('ivTableSideImage').value = '';
     document.getElementById('ivTableRowsText').value = '';
     document.getElementById('ivMemo').value = '';
     modeBadge.textContent = '새 일정 입력';
     resetStatus();
+    updateIvAutoTitlePreview();
     renderPreview();
   }
 
@@ -1562,9 +1534,6 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     raidForm.desc.value = item.desc || '';
     raidForm.note.value = item.note || '';
 
-    document.getElementById('ivTableTitle').value = iv.ivTableTitle;
-    document.getElementById('ivTableHeaderImage').value = iv.ivTableHeaderImage;
-    document.getElementById('ivTableSideImage').value = iv.ivTableSideImage;
     document.getElementById('ivTableRowsText').value = iv.ivTableRowsText;
     document.getElementById('ivMemo').value = iv.ivMemo;
 
@@ -1580,6 +1549,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     }
 
     modeBadge.textContent = '일정 수정 중';
+    updateIvAutoTitlePreview();
     renderPreview();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1669,6 +1639,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
         const duplicated = JSON.parse(JSON.stringify(item));
         duplicated.id = uid();
         duplicated.name = `${duplicated.name} 복사본`;
+        duplicated.ivTableTitle = `${duplicated.name} CP`;
         duplicated.updatedAt = new Date().toISOString();
         records.unshift(duplicated);
         saveRecords();
@@ -1698,19 +1669,27 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
   function renderIvPreview(item){
     const rows = parseIvRows(item.ivTableRowsText || '');
 
-    if(!item.ivTableHeaderImage && !item.ivTableSideImage && !rows.length && !item.ivMemo){
+    if(!rows.length && !item.ivMemo){
       return '';
     }
 
     return `
       <div class="iv-preview">
         <div class="iv-preview-head">
-          ${escapeHtml(item.ivTableTitle || '개체값 표')}
-          ${item.ivTableHeaderImage ? `<img src="${escapeHtml(item.ivTableHeaderImage)}" alt="iv header">` : ``}
+          ${escapeHtml(item.ivTableTitle || `${item.name || ''} CP`)}
         </div>
 
-        <div class="iv-preview-body">
-          <div class="iv-preview-rows">
+        <div class="iv-preview-body text-only">
+          <div class="iv-preview-rows full">
+            <div class="iv-preview-row iv-preview-header">
+              <div>CP<br><small>(lv.20)</small></div>
+              <div>CP<br><small>(lv.25)</small></div>
+              <div>ATK</div>
+              <div>DEF</div>
+              <div>STA</div>
+              <div>% IV</div>
+            </div>
+
             ${
               rows.length
                 ? rows.map(row => `
@@ -1725,11 +1704,12 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
                 `).join('')
                 : `<div class="iv-preview-empty">행 데이터 없음</div>`
             }
-            ${item.ivMemo ? `<div style="margin-top:10px;color:#b98ea0;font-size:12px;font-weight:800;">${escapeHtml(item.ivMemo)}</div>` : ``}
-          </div>
 
-          <div class="iv-preview-side">
-            ${item.ivTableSideImage ? `<img src="${escapeHtml(item.ivTableSideImage)}" alt="% iv">` : `<div class="iv-preview-empty">%IV 이미지 없음</div>`}
+            ${
+              item.ivMemo
+                ? `<div style="margin-top:10px;color:#b98ea0;font-size:12px;font-weight:800;">${escapeHtml(item.ivMemo)}</div>`
+                : ``
+            }
           </div>
         </div>
       </div>
@@ -1851,14 +1831,12 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
         { name:'드래곤', icon:getTypeIcon('드래곤') },
         { name:'페어리', icon:getTypeIcon('페어리') }
       ],
-      ivTableTitle:'개체값 표',
-      ivTableHeaderImage:'./images/iv-header.png',
-      ivTableSideImage:'./images/iv-side.png',
-      ivTableRowsText:`2351 | 2939 | 15 | 15 | 15 | 100.0%
-2346 | 2933 | 15 | 14 | 15 | 97.8%
-2346 | 2933 | 15 | 15 | 14 | 97.8%
-2343 | 2929 | 14 | 15 | 15 | 97.8%
-2342 | 2927 | 15 | 13 | 15 | 95.6%`,
+      ivTableTitle:'레지드래고 CP',
+      ivTableRowsText:`1699 | 2124 | 15 | 15 | 15 | 100.0%
+1697 | 2121 | 15 | 15 | 14 | 97.8%
+1695 | 2118 | 15 | 15 | 13 | 95.6%
+1693 | 2116 | 15 | 15 | 12 | 93.3%
+1691 | 2114 | 14 | 15 | 15 | 97.8%`,
       ivMemo:'원하는 만큼 행 추가 가능',
       updatedAt:new Date().toISOString()
     };
@@ -1902,6 +1880,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
     const item = getFormData();
     item.id = uid();
     item.name = item.name ? `${item.name} 복사본` : '새 일정 복사본';
+    item.ivTableTitle = `${item.name} CP`;
     const error = validateData(item);
     if(error){
       showStatus(error, 'error');
@@ -1984,9 +1963,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
           ...item,
           boosts,
           strategyTypes,
-          ivTableTitle: iv.ivTableTitle,
-          ivTableHeaderImage: iv.ivTableHeaderImage,
-          ivTableSideImage: iv.ivTableSideImage,
+          ivTableTitle: iv.ivTableTitle || `${item.name || ''} CP`,
           ivTableRowsText: iv.ivTableRowsText,
           ivMemo: iv.ivMemo
         };
@@ -2006,6 +1983,11 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
   Array.from(raidForm.querySelectorAll('input, select, textarea')).forEach(el => {
     el.addEventListener('input', renderPreview);
     el.addEventListener('change', renderPreview);
+  });
+
+  document.getElementById('name').addEventListener('input', () => {
+    updateIvAutoTitlePreview();
+    renderPreview();
   });
 
   document.getElementById('label').addEventListener('change', (e) => {
@@ -2064,9 +2046,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
         ...item,
         boosts,
         strategyTypes,
-        ivTableTitle: iv.ivTableTitle,
-        ivTableHeaderImage: iv.ivTableHeaderImage,
-        ivTableSideImage: iv.ivTableSideImage,
+        ivTableTitle: iv.ivTableTitle || `${item.name || ''} CP`,
         ivTableRowsText: iv.ivTableRowsText,
         ivMemo: iv.ivMemo
       };
@@ -2078,6 +2058,7 @@ const raidData = saved ? JSON.parse(saved) : [];</pre>
   raidForm.label.value = '5성';
   raidForm.type.value = typeClassForLabel('5성');
   syncBoostAutoFill();
+  updateIvAutoTitlePreview();
   renderRecordList();
   renderPreview();
 </script>
