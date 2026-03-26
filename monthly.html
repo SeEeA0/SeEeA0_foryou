@@ -53,8 +53,8 @@
     transform:translateY(10px);
     animation:fadeUp .55s ease forwards;
   }
+
   .delay-1{animation-delay:.05s}
-  .delay-2{animation-delay:.12s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -79,8 +79,13 @@
     }
   }
 
+  @keyframes todayPulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(83,123,221,.12)}
+    50%{box-shadow:0 0 0 6px rgba(83,123,221,.06)}
+  }
+
   .section{
-    background:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.92);
     border:1px solid var(--line);
     border-radius:26px;
     box-shadow:var(--shadow);
@@ -108,6 +113,7 @@
     font-size:13px;
     color:var(--muted);
     font-weight:800;
+    line-height:1.5;
   }
 
   .section-body{
@@ -155,176 +161,208 @@
 
   .calendar-head{
     display:grid;
-    grid-template-columns:repeat(7, minmax(0,1fr));
-    gap:10px;
-    margin-bottom:10px;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:6px;
+    margin-bottom:8px;
   }
 
   .weekday-name{
     text-align:center;
-    padding:12px 8px;
-    border-radius:16px;
+    padding:10px 4px;
+    border-radius:12px;
     background:#f6f9ff;
     border:1px solid #dce7f4;
-    font-size:13px;
+    font-size:12px;
     font-weight:900;
     color:#6f819e;
   }
 
   .calendar-grid{
     display:grid;
-    grid-template-columns:repeat(7, minmax(0,1fr));
-    gap:10px;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:6px;
   }
 
   .day-cell{
-    min-height:178px;
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    aspect-ratio:1 / 1;
+    background:#fff;
     border:1.5px solid #dde7f4;
-    border-radius:22px;
-    padding:12px;
+    border-radius:16px;
+    padding:6px;
     position:relative;
     overflow:hidden;
     cursor:pointer;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    text-align:left;
   }
 
   .day-cell:hover{
-    transform:translateY(-3px);
-    box-shadow:var(--shadow-hover);
+    transform:translateY(-2px);
+    box-shadow:0 10px 18px rgba(43,67,110,.06);
     border-color:#c7d7ec;
   }
 
   .day-cell.outside{
-    opacity:.46;
+    opacity:.45;
     background:#f8fbff;
   }
 
   .day-cell.today{
     border-color:#cdddf5;
-    box-shadow:0 0 0 2px rgba(83,123,221,.08), var(--shadow);
+    animation:todayPulse 2s ease-in-out infinite;
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
   }
 
   .day-cell.selected{
     border-color:#adc5f0;
-    box-shadow:0 0 0 2px rgba(83,123,221,.12), 0 16px 30px rgba(43,67,110,.1);
-  }
-
-  .day-cell::after{
-    content:"";
-    position:absolute;
-    right:-28px;
-    bottom:-28px;
-    width:88px;
-    height:88px;
-    border-radius:50%;
-    background:linear-gradient(135deg, rgba(120,148,255,.12), rgba(123,99,255,.03));
-    pointer-events:none;
-  }
-
-  .day-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:8px;
-    margin-bottom:10px;
+    box-shadow:0 0 0 2px rgba(83,123,221,.12), 0 12px 22px rgba(43,67,110,.08);
   }
 
   .day-number{
-    font-size:22px;
+    font-size:13px;
     font-weight:900;
-    letter-spacing:-.03em;
+    line-height:1;
+    color:#2b3d55;
+  }
+
+  .day-main{
+    margin-top:5px;
+    width:100%;
+    font-size:10px;
+    font-weight:900;
+    color:#48617f;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    line-height:1.25;
+  }
+
+  .day-more{
+    margin-top:2px;
+    font-size:10px;
+    color:#7a8ca8;
+    font-weight:900;
+    line-height:1.2;
   }
 
   .day-count{
-    min-height:26px;
-    padding:0 9px;
+    margin-top:auto;
+    min-height:20px;
+    padding:0 7px;
     border-radius:999px;
     background:#edf4ff;
     color:#3567d7;
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    font-size:11px;
+    font-size:10px;
     font-weight:900;
   }
 
-  .day-list{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-
-  .name-pill{
-    min-height:28px;
-    padding:0 10px;
-    border-radius:999px;
-    display:inline-flex;
-    align-items:center;
-    width:100%;
-    font-size:11px;
-    font-weight:900;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    border:1px solid transparent;
-  }
-
-  .pill-blue{background:var(--blue-soft); color:var(--blue)}
-  .pill-yellow{background:var(--yellow-soft); color:var(--yellow)}
-  .pill-green{background:var(--green-soft); color:var(--green)}
-  .pill-purple{background:var(--purple-soft); color:var(--purple)}
-  .pill-pink{background:#f3e8ff; color:#7c58e9}
-  .pill-gray{background:var(--gray-soft); color:var(--gray)}
-
-  .more-text{
-    margin-top:2px;
-    font-size:11px;
-    color:#7d8ea8;
-    font-weight:900;
-    padding-left:4px;
-  }
-
-  .detail-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    margin-bottom:14px;
-  }
-
-  .detail-date{
-    font-size:24px;
-    font-weight:900;
-    letter-spacing:-.03em;
-    line-height:1.1;
-  }
-
-  .detail-sub{
-    margin-top:6px;
+  .empty-state{
+    border:1px dashed #d9e4f2;
+    background:#fbfdff;
+    border-radius:18px;
+    padding:22px 14px;
+    text-align:center;
+    color:#97a5ba;
     font-size:13px;
-    color:#7283a0;
     font-weight:800;
   }
 
-  .detail-chip{
-    min-height:38px;
-    padding:0 14px;
+  .modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    z-index:999;
+  }
+
+  .modal.show{
+    display:block;
+  }
+
+  .modal-bg{
+    position:absolute;
+    inset:0;
+    background:rgba(26,37,56,.46);
+  }
+
+  .modal-sheet{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    background:#fff;
+    border-radius:24px 24px 0 0;
+    max-height:82vh;
+    overflow:auto;
+    box-shadow:0 -16px 40px rgba(22,35,58,.18);
+  }
+
+  .modal-head{
+    position:sticky;
+    top:0;
+    z-index:2;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid #e8eef8;
+    padding:14px 16px 12px;
+  }
+
+  .modal-handle{
+    width:42px;
+    height:5px;
+    border-radius:999px;
+    background:#dbe5f3;
+    margin:0 auto 12px;
+  }
+
+  .modal-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .modal-title{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    line-height:1.15;
+  }
+
+  .modal-sub{
+    margin-top:6px;
+    font-size:12px;
+    color:#7486a3;
+    font-weight:800;
+  }
+
+  .modal-close{
+    min-height:36px;
+    padding:0 12px;
     border-radius:999px;
     border:1px solid #d7e2f0;
     background:#fff;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
+    color:#597392;
     font-size:12px;
     font-weight:900;
-    color:#607897;
+    cursor:pointer;
+    flex-shrink:0;
   }
 
-  .raid-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:14px;
+  .modal-body{
+    padding:14px 14px 18px;
+  }
+
+  .modal-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
   }
 
   .raid-card{
@@ -334,8 +372,7 @@
     padding:14px;
     position:relative;
     overflow:hidden;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:310px;
+    min-height:250px;
   }
 
   .raid-card::after{
@@ -348,12 +385,6 @@
     border-radius:50%;
     background:linear-gradient(135deg, rgba(120,148,255,.14), rgba(123,99,255,.04));
     pointer-events:none;
-  }
-
-  .raid-card:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--shadow-hover);
-    border-color:#c7d7ec;
   }
 
   .raid-card.shadow-theme{
@@ -391,6 +422,20 @@
   .chip-purple{background:var(--purple-soft);color:var(--purple)}
   .chip-pink{background:var(--pink-soft);color:var(--pink)}
   .chip-gray{background:var(--gray-soft);color:var(--gray)}
+
+  .raid-date-chip{
+    min-height:30px;
+    padding:0 10px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #d7e2f0;
+    color:#607897;
+    font-size:11px;
+    font-weight:900;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
 
   .raid-main{
     display:grid;
@@ -522,16 +567,9 @@
     font-weight:900;
     cursor:pointer;
     transition:.16s ease;
-    text-decoration:none;
     display:inline-flex;
     align-items:center;
     justify-content:center;
-  }
-
-  .action-btn:hover{
-    transform:translateY(-1px);
-    border-color:#c7d7ec;
-    box-shadow:0 10px 18px rgba(43,67,110,.07);
   }
 
   .action-btn.primary{
@@ -566,17 +604,6 @@
   .raid-card.shadow-theme .cp-table-panel{
     background:rgba(255,255,255,.74);
     border-color:#dacdfa;
-  }
-
-  .empty-box{
-    border:1px dashed #d9e4f2;
-    background:#fbfdff;
-    border-radius:18px;
-    padding:18px 14px;
-    text-align:center;
-    color:#97a5ba;
-    font-size:13px;
-    font-weight:800;
   }
 
   .bottom-nav{
@@ -632,32 +659,19 @@
     line-height:1;
   }
 
-  @media (max-width:1100px){
-    .calendar-grid,
-    .calendar-head{
-      grid-template-columns:repeat(4, minmax(0,1fr));
-    }
-  }
-
-  @media (max-width:980px){
-    .raid-grid{
-      grid-template-columns:1fr;
-    }
-  }
-
   @media (max-width:768px){
     .wrap{
-      padding:14px 12px 120px;
+      padding:14px 10px 120px;
     }
 
     .section-head{
-      padding:16px 16px 12px;
+      padding:16px 14px 12px;
       flex-direction:column;
       align-items:flex-start;
     }
 
     .section-body{
-      padding:12px;
+      padding:10px;
     }
 
     .month-toolbar{
@@ -665,18 +679,76 @@
       align-items:flex-start;
     }
 
-    .calendar-grid,
+    .month-title{
+      font-size:22px;
+    }
+
+    .month-actions{
+      width:100%;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+    }
+
+    .tool-btn{
+      width:100%;
+      padding:0 8px;
+      font-size:11px;
+    }
+
     .calendar-head{
-      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:4px;
+    }
+
+    .weekday-name{
+      padding:8px 2px;
+      font-size:10px;
+      border-radius:10px;
+    }
+
+    .calendar-grid{
+      gap:4px;
     }
 
     .day-cell{
-      min-height:164px;
+      border-radius:12px;
+      padding:5px;
     }
 
-    .detail-header{
-      flex-direction:column;
-      align-items:flex-start;
+    .day-number{
+      font-size:12px;
+    }
+
+    .day-main{
+      font-size:9px;
+      margin-top:4px;
+    }
+
+    .day-more{
+      font-size:9px;
+    }
+
+    .day-count{
+      min-height:18px;
+      padding:0 6px;
+      font-size:9px;
+    }
+
+    .modal-sheet{
+      max-height:86vh;
+      border-radius:20px 20px 0 0;
+    }
+
+    .modal-head{
+      padding:12px 12px 10px;
+    }
+
+    .modal-title{
+      font-size:20px;
+    }
+
+    .modal-body{
+      padding:12px 12px 18px;
     }
 
     .raid-main{
@@ -715,7 +787,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">월간 캘린더</div>
-        <div class="section-sub">날짜를 누르면 아래 상세 영역이 바뀌고, 카드에서 바로 CP와 부스트 정보를 확인할 수 있습니다</div>
+        <div class="section-sub">날짜칸에는 대표 포켓몬 1개와 추가 개수만 표시하고, 누르면 팝업에서 그날 레이드 목록을 볼 수 있습니다</div>
       </div>
     </div>
     <div class="section-body">
@@ -742,26 +814,25 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-1">
-    <div class="section-head">
-      <div>
-        <div class="section-title">선택한 날짜 상세</div>
-        <div class="section-sub">상세 보기 없이도 CP, 부스트 CP, 부스트 아이콘과 이름이 바로 표시됩니다</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="detail-header">
+</div>
+
+<div id="calendarModal" class="modal">
+  <div class="modal-bg"></div>
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <div class="modal-handle"></div>
+      <div class="modal-top">
         <div>
-          <div class="detail-date" id="detailDateTitle">날짜를 선택해 주세요</div>
-          <div class="detail-sub" id="detailDateSub">월간 캘린더에서 날짜를 누르면 상세 레이드 카드가 표시됩니다</div>
+          <div class="modal-title" id="modalTitle">날짜</div>
+          <div class="modal-sub" id="modalSub">레이드 목록</div>
         </div>
-        <div class="detail-chip" id="detailCountChip">0개 보스</div>
+        <button type="button" class="modal-close" id="modalClose">닫기</button>
       </div>
-
-      <div class="raid-grid" id="detailRaidGrid"></div>
     </div>
-  </section>
-
+    <div class="modal-body">
+      <div class="modal-list" id="modalList"></div>
+    </div>
+  </div>
 </div>
 
 <nav class="bottom-nav">
@@ -858,7 +929,7 @@
 
   async function loadRecords(){
     try{
-      const res = await fetch(DATA_URL, { cache: 'no-store' });
+      const res = await fetch(DATA_URL, { cache:'no-store' });
       if(!res.ok) throw new Error(`HTTP ${res.status}`);
       const parsed = await res.json();
 
@@ -895,15 +966,6 @@
     if(label === '메가') return 'chip-purple';
     if(label === '그림자') return 'chip-pink';
     return 'chip-gray';
-  }
-
-  function pillClass(label){
-    if(label === '5성') return 'pill-blue';
-    if(label === '3성') return 'pill-yellow';
-    if(label === '1성') return 'pill-green';
-    if(label === '메가') return 'pill-purple';
-    if(label === '그림자') return 'pill-pink';
-    return 'pill-gray';
   }
 
   function resolveBoostIcon(text, explicitIcon){
@@ -973,8 +1035,8 @@
       const isToday = toKey(date) === toKey(today);
       const isSelected = toKey(date) === selectedDateKey;
 
-      const visibleItems = items.slice(0, 4);
-      const moreCount = Math.max(0, items.length - visibleItems.length);
+      const visibleItem = items[0];
+      const moreCount = items.length - 1;
 
       return `
         <button
@@ -982,18 +1044,10 @@
           class="day-cell ${outside ? 'outside' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}"
           data-date="${toKey(date)}"
         >
-          <div class="day-top">
-            <div class="day-number">${date.getDate()}</div>
-            <div class="day-count">${items.length}개</div>
-          </div>
-
-          <div class="day-list">
-            ${visibleItems.map(item => `
-              <div class="name-pill ${pillClass(item.label)}">${escapeHtml(item.name || '-')}</div>
-            `).join('')}
-
-            ${moreCount > 0 ? `<div class="more-text">+ ${moreCount}개 더 보기</div>` : ``}
-          </div>
+          <div class="day-number">${date.getDate()}</div>
+          ${visibleItem ? `<div class="day-main">${escapeHtml(visibleItem.name || '-')}</div>` : ``}
+          ${moreCount > 0 ? `<div class="day-more">+${moreCount}</div>` : ``}
+          ${items.length ? `<div class="day-count">${items.length}개</div>` : ``}
         </button>
       `;
     }).join('');
@@ -1006,30 +1060,32 @@
         if(selectedDate.getMonth() !== viewMonth || selectedDate.getFullYear() !== viewYear){
           viewYear = selectedDate.getFullYear();
           viewMonth = selectedDate.getMonth();
-          renderCalendar();
-        }else{
-          renderCalendar();
         }
 
-        renderDetail(selectedDate);
+        renderCalendar();
+        openModal(selectedDate);
       });
     });
   }
 
-  function renderDetail(date){
-    const grid = document.getElementById('detailRaidGrid');
+  function openModal(date){
     const items = getDisplayItemsForDate(allRecords, date);
+    const modal = document.getElementById('calendarModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSub = document.getElementById('modalSub');
+    const modalList = document.getElementById('modalList');
 
-    document.getElementById('detailDateTitle').textContent = formatShort(date);
-    document.getElementById('detailDateSub').textContent = `${toKey(date)} 기준 진행 중인 레이드 목록입니다`;
-    document.getElementById('detailCountChip').textContent = `${items.length}개 보스`;
+    modalTitle.textContent = formatShort(date);
+    modalSub.textContent = items.length ? `${items.length}개의 레이드가 진행됩니다` : '진행 중인 레이드가 없습니다';
 
     if(!items.length){
-      grid.innerHTML = `<div class="empty-box">선택한 날짜에는 진행 중인 레이드가 없습니다.</div>`;
+      modalList.innerHTML = `<div class="empty-state">선택한 날짜에는 진행 중인 레이드가 없습니다.</div>`;
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
       return;
     }
 
-    grid.innerHTML = items.map((item, index) => {
+    modalList.innerHTML = items.map((item, index) => {
       const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
       const boostBadges = [
         createBoostBadge(item.boost, item.boostIcon),
@@ -1041,7 +1097,7 @@
         <article class="raid-card ${shadowTheme}">
           <div class="raid-head">
             <span class="raid-chip ${chipClass(item.label)}">${escapeHtml(item.label || '-')}</span>
-            <span class="detail-chip">${escapeHtml(toKey(date))}</span>
+            <span class="raid-date-chip">${escapeHtml(toKey(date))}</span>
           </div>
 
           <div class="raid-main">
@@ -1086,7 +1142,6 @@
                 ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
                 : ``
             }
-            <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(toKey(date))}">상세 보기</a>
           </div>
 
           ${
@@ -1102,7 +1157,7 @@
       `;
     }).join('');
 
-    grid.querySelectorAll('[data-cptable-target]').forEach(btn => {
+    modalList.querySelectorAll('[data-cptable-target]').forEach(btn => {
       btn.addEventListener('click', () => {
         const panel = document.getElementById(btn.dataset.cptableTarget);
         if(!panel) return;
@@ -1111,6 +1166,14 @@
         btn.textContent = isOpen ? 'CP표 보기' : 'CP표 닫기';
       });
     });
+
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    document.getElementById('calendarModal').classList.remove('show');
+    document.body.style.overflow = '';
   }
 
   function moveMonth(step){
@@ -1122,7 +1185,6 @@
     selectedDateKey = toKey(firstDay);
 
     renderCalendar();
-    renderDetail(firstDay);
   }
 
   function bindToolbar(){
@@ -1134,8 +1196,10 @@
       viewMonth = today.getMonth();
       selectedDateKey = toKey(today);
       renderCalendar();
-      renderDetail(today);
     });
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.querySelector('.modal-bg').addEventListener('click', closeModal);
   }
 
   async function init(){
@@ -1149,7 +1213,6 @@
 
     bindToolbar();
     renderCalendar();
-    renderDetail(today);
   }
 
   init();
