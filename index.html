@@ -57,8 +57,6 @@
   .delay-1{animation-delay:.05s}
   .delay-2{animation-delay:.12s}
   .delay-3{animation-delay:.19s}
-  .delay-4{animation-delay:.26s}
-  .delay-5{animation-delay:.33s}
 
   @keyframes fadeUp{
     from{
@@ -479,196 +477,6 @@
     line-height:1.35;
   }
 
-  .week-grid{
-    display:grid;
-    grid-template-columns:repeat(7,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .week-day{
-    min-height:136px;
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:20px;
-    padding:12px;
-    transition:transform .18s ease, box-shadow .18s ease;
-  }
-
-  .week-day:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(43,67,110,.08);
-  }
-
-  .week-day.today{
-    border-color:#abc3ff;
-    background:linear-gradient(180deg,#ffffff 0%, #f4f8ff 100%);
-  }
-
-  .week-top{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:8px;
-    margin-bottom:10px;
-  }
-
-  .week-date{
-    font-size:20px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .week-date.sun{color:#ef6b7a}
-  .week-date.sat{color:#4b7cf0}
-
-  .week-dayname{
-    margin-top:2px;
-    font-size:12px;
-    color:#8090aa;
-    font-weight:800;
-  }
-
-  .today-pill{
-    min-height:24px;
-    padding:0 8px;
-    border-radius:999px;
-    background:#e9f1ff;
-    color:#4e7deb;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:10px;
-    font-weight:900;
-    white-space:nowrap;
-  }
-
-  .week-items{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-
-  .week-pill{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    min-height:30px;
-    padding:6px 8px;
-    border-radius:12px;
-    font-size:11px;
-    font-weight:900;
-    line-height:1.2;
-    white-space:normal;
-    word-break:keep-all;
-    transition:transform .15s ease;
-  }
-
-  .week-pill:hover{
-    transform:translateX(2px);
-  }
-
-  .week-pill.blue{background:var(--blue-soft);color:var(--blue)}
-  .week-pill.purple{background:var(--purple-soft);color:var(--purple)}
-  .week-pill.pink{background:var(--pink-soft);color:var(--pink)}
-  .week-pill.yellow{background:var(--yellow-soft);color:var(--yellow)}
-  .week-pill.green{background:var(--green-soft);color:var(--green)}
-  .week-pill.gray{background:var(--gray-soft);color:var(--gray)}
-
-  .week-pill img{
-    width:14px;
-    height:14px;
-    object-fit:contain;
-    flex-shrink:0;
-  }
-
-  .month-grid{
-    display:grid;
-    grid-template-columns:repeat(7,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .month-day{
-    min-height:126px;
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:18px;
-    padding:12px;
-    text-decoration:none;
-    color:inherit;
-    position:relative;
-    overflow:hidden;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }
-
-  .month-day:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 20px rgba(43,67,110,.08);
-    border-color:#c7d7ec;
-  }
-
-  .month-num{
-    font-size:17px;
-    font-weight:900;
-    margin-bottom:8px;
-  }
-
-  .month-items{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    padding-right:24px;
-  }
-
-  .month-pill{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    min-height:28px;
-    padding:6px 8px;
-    border-radius:11px;
-    font-size:10px;
-    font-weight:900;
-    line-height:1.2;
-    white-space:normal;
-    word-break:keep-all;
-  }
-
-  .month-pill.blue{background:var(--blue-soft);color:var(--blue)}
-  .month-pill.purple{background:var(--purple-soft);color:var(--purple)}
-  .month-pill.pink{background:var(--pink-soft);color:var(--pink)}
-  .month-pill.yellow{background:var(--yellow-soft);color:var(--yellow)}
-  .month-pill.green{background:var(--green-soft);color:var(--green)}
-  .month-pill.gray{background:var(--gray-soft);color:var(--gray)}
-
-  .month-pill img{
-    width:14px;
-    height:14px;
-    object-fit:contain;
-    flex-shrink:0;
-  }
-
-  .month-avatar{
-    position:absolute;
-    right:8px;
-    bottom:8px;
-    width:30px;
-    height:30px;
-    border-radius:10px;
-    background:#f3f7ff;
-    border:1px solid #dce6f4;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    animation:softFloat 3.4s ease-in-out infinite;
-  }
-
-  .month-avatar img{
-    width:22px;
-    height:22px;
-    object-fit:contain;
-  }
-
   .empty-box{
     border:1px dashed #d9e4f2;
     background:#fbfdff;
@@ -741,15 +549,6 @@
 
     .weekday-points{
       grid-template-columns:1fr;
-    }
-
-    .week-grid,
-    .month-grid{
-      min-width:980px;
-    }
-
-    .section-body{
-      overflow-x:auto;
     }
   }
 
@@ -897,32 +696,6 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-4">
-    <div class="section-head">
-      <div>
-        <div class="section-title">주간 일정</div>
-        <div class="section-sub" id="weekSectionSub">오늘부터 7일</div>
-      </div>
-      <a class="head-link" href="./weekly.html">전체 보기</a>
-    </div>
-    <div class="section-body">
-      <div class="week-grid" id="weekPreview"></div>
-    </div>
-  </section>
-
-  <section class="section fade-up delay-5">
-    <div class="section-head">
-      <div>
-        <div class="section-title">월간 일정</div>
-        <div class="section-sub" id="monthSectionSub">이번 달 미리보기</div>
-      </div>
-      <a class="head-link" href="./monthly.html">전체 보기</a>
-    </div>
-    <div class="section-body">
-      <div class="month-grid" id="miniCalendar"></div>
-    </div>
-  </section>
-
 </div>
 
 <nav class="bottom-nav">
@@ -1045,6 +818,11 @@
     return koreaNow;
   }
 
+  function formatKoreanDate(date){
+    const days = ['일','월','화','수','목','금','토'];
+    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
+  }
+
   function pad(n){
     return String(n).padStart(2, '0');
   }
@@ -1057,18 +835,6 @@
 
   function toKey(date){
     return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
-  }
-
-  function getDayKor(day){
-    return ['일','월','화','수','목','금','토'][day];
-  }
-
-  function formatKoreanDate(date){
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${getDayKor(date.getDay())}요일`;
-  }
-
-  function formatRange(start, end){
-    return `${start.getFullYear()}.${pad(start.getMonth()+1)}.${pad(start.getDate())} - ${end.getFullYear()}.${pad(end.getMonth()+1)}.${pad(end.getDate())}`;
   }
 
   function inRange(date, startStr, endStr){
@@ -1099,9 +865,7 @@
       item.label === '메가' ? 'purple' :
       item.label === '그림자' ? 'pink' :
       item.label === '3성' ? 'yellow' :
-      item.label === '1성' ? 'green' :
-      item.label === '레이드 아워' || item.label === '레이드 데이' ? 'yellow' :
-      item.label === '이벤트' || item.label === '커뮤니티 데이' ? 'green' : 'gray'
+      item.label === '1성' ? 'green' : 'gray'
     );
   }
 
@@ -1111,11 +875,7 @@
       '3성':1,
       '5성':2,
       '메가':3,
-      '그림자':4,
-      '레이드 아워':5,
-      '레이드 데이':6,
-      '이벤트':7,
-      '커뮤니티 데이':8
+      '그림자':4
     };
     return map[item.label] ?? 99;
   }
@@ -1126,17 +886,6 @@
       if(diff !== 0) return diff;
       return (a.name || '').localeCompare(b.name || '', 'ko');
     });
-  }
-
-  function getIndexItemsForDate(records, date){
-    return sortItems(
-      records.filter(item =>
-        isAllowed(item, 'index') &&
-        item.startDate &&
-        item.endDate &&
-        inRange(date, item.startDate, item.endDate)
-      )
-    );
   }
 
   function getRaidNowItems(records, today){
@@ -1168,8 +917,7 @@
 
     wrap.querySelectorAll('.weekday-tab').forEach(btn => {
       btn.addEventListener('click', () => {
-        const day = Number(btn.dataset.day);
-        renderWeekdayCard(day);
+        renderWeekdayCard(Number(btn.dataset.day));
       });
     });
   }
@@ -1185,8 +933,7 @@
     document.getElementById('weekdayImage').src = data.image || '';
     document.getElementById('weekdayImage').alt = data.title || '요일 이벤트 이미지';
 
-    const pointsWrap = document.getElementById('weekdayPoints');
-    pointsWrap.innerHTML = (data.points || []).map(text => `
+    document.getElementById('weekdayPoints').innerHTML = (data.points || []).map(text => `
       <div class="weekday-point">${text}</div>
     `).join('');
 
@@ -1231,101 +978,6 @@
     `).join('');
   }
 
-  function renderWeekSection(records, today){
-    const wrap = document.getElementById('weekPreview');
-    const end = new Date(today);
-    end.setDate(today.getDate() + 6);
-    document.getElementById('weekSectionSub').textContent = formatRange(today, end);
-
-    const days = [];
-    for(let i=0; i<7; i++){
-      const d = new Date(today);
-      d.setDate(today.getDate() + i);
-      days.push(d);
-    }
-
-    wrap.innerHTML = days.map(date => {
-      const items = getIndexItemsForDate(records, date);
-      const dayClass = date.getDay() === 0 ? 'sun' : date.getDay() === 6 ? 'sat' : '';
-      const isToday = toKey(date) === toKey(today);
-
-      return `
-        <div class="week-day">
-          <div class="week-top">
-            <div>
-              <div class="week-date ${dayClass}">${date.getDate()}</div>
-              <div class="week-dayname">${getDayKor(date.getDay())}</div>
-            </div>
-            ${isToday ? `<div class="today-pill">TODAY</div>` : ``}
-          </div>
-
-          <div class="week-items">
-            ${
-              items.length
-                ? items.slice(0,3).map(item => `
-                  <div class="week-pill ${chipClass(item)}">
-                    ${
-                      item.image
-                        ? `<img src="${item.image}" alt="${item.name || ''}">`
-                        : `<span style="width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;">•</span>`
-                    }
-                    <span>${['1성','3성','5성','메가','그림자'].includes(item.label) ? item.name : item.label}</span>
-                  </div>
-                `).join('')
-                : `<div class="empty-box">일정 없음</div>`
-            }
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function renderMonthSection(records, today){
-    const wrap = document.getElementById('miniCalendar');
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    document.getElementById('monthSectionSub').textContent = `${year}년 ${month}월`;
-
-    const lastDate = new Date(year, month, 0).getDate();
-    const previewEnd = Math.min(lastDate, 7);
-    const previewDates = [];
-
-    for(let day=1; day<=previewEnd; day++){
-      previewDates.push(new Date(year, month - 1, day));
-    }
-
-    wrap.innerHTML = previewDates.map(date => {
-      const items = getIndexItemsForDate(records, date);
-
-      return `
-        <a href="./detail.html?date=${toKey(date)}" class="month-day">
-          <div class="month-num">${date.getDate()}</div>
-          <div class="month-items">
-            ${
-              items.length
-                ? items.slice(0,2).map(item => `
-                  <div class="month-pill ${chipClass(item)}">
-                    ${
-                      item.image
-                        ? `<img src="${item.image}" alt="${item.name || ''}">`
-                        : `<span style="width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;">•</span>`
-                    }
-                    <span>${['1성','3성','5성','메가','그림자'].includes(item.label) ? item.name : item.label}</span>
-                  </div>
-                `).join('')
-                : `<div class="empty-box">없음</div>`
-            }
-          </div>
-          ${
-            items[0] && items[0].image
-              ? `<div class="month-avatar"><img src="${items[0].image}" alt="${items[0].name || ''}"></div>`
-              : ``
-          }
-        </a>
-      `;
-    }).join('');
-  }
-
   function init(){
     const records = loadRecords();
     const today = getKoreaToday();
@@ -1333,8 +985,6 @@
     renderTop(today);
     renderWeekdayCard(today.getDay());
     renderNowSection(records, today);
-    renderWeekSection(records, today);
-    renderMonthSection(records, today);
   }
 
   init();
