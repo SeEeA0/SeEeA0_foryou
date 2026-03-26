@@ -7,6 +7,7 @@
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{
     font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
     background:#edf3fb;
@@ -55,7 +56,6 @@
   }
   .delay-1{animation-delay:.05s}
   .delay-2{animation-delay:.12s}
-  .delay-3{animation-delay:.19s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -71,132 +71,6 @@
     0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
     70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
     100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
-  }
-
-  .topbar{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:16px;
-  }
-
-  .topbar-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.04em;
-    line-height:1.05;
-  }
-
-  .topbar-sub{
-    margin-top:8px;
-    color:var(--muted);
-    font-size:14px;
-    font-weight:800;
-  }
-
-  .topbar-date{
-    flex-shrink:0;
-    min-height:48px;
-    padding:0 16px;
-    border-radius:16px;
-    background:rgba(255,255,255,.92);
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:900;
-    color:#617899;
-    box-shadow:var(--shadow);
-  }
-
-  .hero{
-    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-    border:1px solid var(--line);
-    border-radius:28px;
-    box-shadow:var(--shadow);
-    padding:22px 20px;
-    position:relative;
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-
-  .hero::before{
-    content:"";
-    position:absolute;
-    right:-50px;
-    top:-50px;
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(104,135,255,.18) 0%, rgba(104,135,255,0) 70%);
-    pointer-events:none;
-  }
-
-  .hero-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:18px;
-  }
-
-  .hero-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:32px;
-    padding:0 12px;
-    border-radius:999px;
-    background:#edf4ff;
-    color:#3567d7;
-    font-size:12px;
-    font-weight:900;
-    margin-bottom:12px;
-  }
-
-  .hero-title{
-    font-size:28px;
-    line-height:1.12;
-    font-weight:900;
-    letter-spacing:-.04em;
-  }
-
-  .hero-desc{
-    margin-top:10px;
-    color:#6f819e;
-    font-size:14px;
-    line-height:1.6;
-    font-weight:800;
-  }
-
-  .hero-side{
-    min-width:220px;
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .mini-stat{
-    background:#fff;
-    border:1px solid #dde7f5;
-    border-radius:18px;
-    padding:14px;
-    box-shadow:0 10px 24px rgba(43,67,110,.06);
-  }
-
-  .mini-stat-label{
-    font-size:12px;
-    font-weight:900;
-    color:#7b8ca8;
-  }
-
-  .mini-stat-value{
-    margin-top:8px;
-    font-size:22px;
-    line-height:1;
-    font-weight:900;
-    color:#24374c;
   }
 
   .section{
@@ -247,6 +121,13 @@
     padding:12px 10px;
     text-align:center;
     transition:.18s ease;
+    cursor:pointer;
+  }
+
+  .weekday-pill:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 18px rgba(43,67,110,.06);
+    border-color:#c7d7ec;
   }
 
   .weekday-pill.today{
@@ -288,6 +169,7 @@
     border-radius:24px;
     padding:16px;
     box-shadow:0 10px 24px rgba(43,67,110,.05);
+    scroll-margin-top:18px;
   }
 
   .day-head{
@@ -650,24 +532,6 @@
       padding:14px 12px 120px;
     }
 
-    .topbar{
-      flex-direction:column;
-      align-items:flex-start;
-    }
-
-    .topbar-title{
-      font-size:28px;
-    }
-
-    .hero-row{
-      flex-direction:column;
-    }
-
-    .hero-side{
-      min-width:0;
-      width:100%;
-    }
-
     .section-head{
       padding:16px 16px 12px;
       flex-direction:column;
@@ -708,6 +572,7 @@
   }
 
   @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
     *{
       animation:none !important;
       transition:none !important;
@@ -719,39 +584,7 @@
 <body>
 <div class="wrap">
 
-  <div class="topbar fade-up">
-    <div>
-      <div class="topbar-title">주간 일정표</div>
-      <div class="topbar-sub" id="topbarSub">한국 시간 기준 로딩 중...</div>
-    </div>
-    <div class="topbar-date" id="monthBadge">3월</div>
-  </div>
-
-  <section class="hero fade-up delay-1">
-    <div class="hero-row">
-      <div>
-        <div class="hero-badge">WEEKLY RAID OVERVIEW</div>
-        <div class="hero-title">이번 주 레이드 일정을<br>날짜별로 한눈에 보기</div>
-        <div class="hero-desc">
-          raid-data.json 기준으로 이번 주에 걸쳐 등장하는 보스들을 날짜별로 자동 정리합니다.<br>
-          카드에는 일반 CP와 부스트 CP가 항상 표시되고, 공략과 CP표는 상세 페이지에서 확인합니다.
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="mini-stat">
-          <div class="mini-stat-label">이번 주 날짜 수</div>
-          <div class="mini-stat-value" id="weekDaysCount">7</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">이번 주 전체 보스</div>
-          <div class="mini-stat-value" id="weekBossCount">0</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section fade-up delay-2">
+  <section class="section fade-up">
     <div class="section-head">
       <div>
         <div class="section-title">주간 요약</div>
@@ -763,7 +596,7 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-3">
+  <section class="section fade-up delay-1">
     <div class="section-head">
       <div>
         <div class="section-title">날짜별 레이드</div>
@@ -823,11 +656,6 @@
 
   function toKey(date){
     return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
-  }
-
-  function formatKoreanDate(date){
-    const days = ['일','월','화','수','목','금','토'];
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${days[date.getDay()]}요일`;
   }
 
   function formatShort(date){
@@ -938,13 +766,6 @@
       });
   }
 
-  function renderTop(today, weekDates){
-    const start = weekDates[0];
-    const end = weekDates[6];
-    document.getElementById('topbarSub').textContent = `${formatKoreanDate(today)} · ${start.getMonth()+1}.${start.getDate()} - ${end.getMonth()+1}.${end.getDate()}`;
-    document.getElementById('monthBadge').textContent = `${today.getMonth()+1}월`;
-  }
-
   function renderWeekdayStrip(weekDates, records, today){
     const days = ['일','월','화','수','목','금','토'];
     const wrap = document.getElementById('weekdayStrip');
@@ -952,26 +773,33 @@
     wrap.innerHTML = weekDates.map(date => {
       const count = getDayItems(records, date).length;
       const isToday = toKey(date) === toKey(today);
+      const targetId = `day-${toKey(date)}`;
 
       return `
-        <div class="weekday-pill ${isToday ? 'today' : ''}">
+        <button type="button" class="weekday-pill ${isToday ? 'today' : ''}" data-target="${targetId}">
           <div class="weekday-kor">${days[date.getDay()]}요일</div>
           <div class="weekday-date">${date.getDate()}</div>
           <div class="weekday-count">${count}개 보스</div>
-        </div>
+        </button>
       `;
     }).join('');
+
+    wrap.querySelectorAll('[data-target]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if(target){
+          target.scrollIntoView({ behavior:'smooth', block:'start' });
+        }
+      });
+    });
   }
 
   function renderWeekList(weekDates, records){
     const daysKor = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
     const wrap = document.getElementById('weekList');
 
-    let totalCount = 0;
-
     wrap.innerHTML = weekDates.map(date => {
       const items = getDayItems(records, date);
-      totalCount += items.length;
 
       const content = items.length
         ? `
@@ -1038,7 +866,7 @@
         : `<div class="empty-box">이 날짜에는 진행 중인 레이드가 없습니다.</div>`;
 
       return `
-        <section class="day-card">
+        <section class="day-card" id="day-${toKey(date)}">
           <div class="day-head">
             <div class="day-left">
               <div class="day-badge">
@@ -1056,8 +884,6 @@
         </section>
       `;
     }).join('');
-
-    document.getElementById('weekBossCount').textContent = totalCount;
   }
 
   async function init(){
@@ -1065,11 +891,8 @@
     const weekDates = getWeekDates(today);
     const records = await loadRecords();
 
-    renderTop(today, weekDates);
     renderWeekdayStrip(weekDates, records, today);
     renderWeekList(weekDates, records);
-
-    document.getElementById('weekDaysCount').textContent = weekDates.length;
   }
 
   init();
