@@ -120,20 +120,36 @@
     padding:14px;
   }
 
+  .weekday-strip-wrap{
+    position:sticky;
+    top:10px;
+    z-index:25;
+    margin:-2px 0 0;
+  }
+
   .weekday-strip{
     display:grid;
-    grid-template-columns:repeat(7,minmax(0,1fr));
+    grid-template-columns:repeat(7,minmax(120px,1fr));
     gap:10px;
   }
+
+  .weekday-strip-scroll{
+    overflow-x:auto;
+    padding-bottom:2px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .weekday-strip-scroll::-webkit-scrollbar{display:none}
 
   .weekday-pill{
     background:#f8fbff;
     border:1px solid #dbe6f4;
     border-radius:18px;
-    padding:12px 10px;
+    padding:14px 10px;
     text-align:center;
     transition:.18s ease;
     cursor:pointer;
+    min-height:88px;
   }
 
   .weekday-pill:hover{
@@ -148,25 +164,25 @@
     animation:pulseRing 1.8s infinite;
   }
 
+  .weekday-pill.active{
+    background:#eaf2ff;
+    border-color:#bcd1f2;
+    box-shadow:0 10px 22px rgba(43,67,110,.08);
+  }
+
   .weekday-kor{
-    font-size:12px;
+    font-size:15px;
     font-weight:900;
     color:#7b8ca8;
   }
 
   .weekday-date{
-    margin-top:8px;
-    font-size:20px;
+    margin-top:10px;
+    font-size:28px;
     font-weight:900;
     letter-spacing:-.03em;
     color:#24374c;
-  }
-
-  .weekday-count{
-    margin-top:6px;
-    font-size:12px;
-    font-weight:800;
-    color:#6f819e;
+    line-height:1;
   }
 
   .week-list{
@@ -181,7 +197,7 @@
     border-radius:24px;
     padding:16px;
     box-shadow:0 10px 24px rgba(43,67,110,.05);
-    scroll-margin-top:18px;
+    scroll-margin-top:120px;
   }
 
   .day-head{
@@ -230,13 +246,6 @@
     font-weight:900;
     letter-spacing:-.03em;
     line-height:1.1;
-  }
-
-  .day-sub{
-    margin-top:6px;
-    font-size:13px;
-    font-weight:800;
-    color:#7283a0;
   }
 
   .day-chip{
@@ -411,6 +420,39 @@
     font-weight:800;
   }
 
+  .type-row{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .type-badge{
+    min-height:30px;
+    padding:4px 10px 4px 8px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .type-badge img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+    flex-shrink:0;
+  }
+
+  .raid-card.shadow-theme .type-badge{
+    background:rgba(255,255,255,.84);
+    border-color:#ddcffd;
+  }
+
   .meta-row{
     margin-top:12px;
     display:flex;
@@ -564,12 +606,6 @@
     }
   }
 
-  @media (max-width:860px){
-    .weekday-strip{
-      grid-template-columns:repeat(4,minmax(0,1fr));
-    }
-  }
-
   @media (max-width:768px){
     .wrap{
       padding:14px 12px 120px;
@@ -586,7 +622,26 @@
     }
 
     .weekday-strip{
-      grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-columns:repeat(7,minmax(88px,88px));
+    }
+
+    .weekday-strip-wrap{
+      top:8px;
+    }
+
+    .weekday-pill{
+      min-height:78px;
+      padding:12px 8px;
+      border-radius:16px;
+    }
+
+    .weekday-kor{
+      font-size:14px;
+    }
+
+    .weekday-date{
+      font-size:22px;
+      margin-top:8px;
     }
 
     .day-head{
@@ -640,7 +695,11 @@
       </div>
     </div>
     <div class="section-body">
-      <div class="weekday-strip" id="weekdayStrip"></div>
+      <div class="weekday-strip-wrap">
+        <div class="weekday-strip-scroll">
+          <div class="weekday-strip" id="weekdayStrip"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -697,6 +756,28 @@
     'cloudy': '/images/boost/cloudy.png'
   };
 
+  const TYPE_ICON_NUMBER_MAP = {
+    '노말': 1,
+    '불': 2,
+    '물': 3,
+    '전기': 4,
+    '풀': 5,
+    '얼음': 6,
+    '격투': 7,
+    '독': 8,
+    '땅': 9,
+    '비행': 10,
+    '페어리': 11,
+    '벌레': 12,
+    '바위': 13,
+    '고스트': 14,
+    '드래곤': 15,
+    '드레곤': 15,
+    '악': 16,
+    '강철': 17,
+    '에스퍼': 18
+  };
+
   function getKoreaNow(){
     const now = new Date();
     const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
@@ -721,11 +802,6 @@
 
   function toKey(date){
     return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
-  }
-
-  function formatShort(date){
-    const days = ['일','월','화','수','목','금','토'];
-    return `${date.getMonth()+1}.${date.getDate()} (${days[date.getDay()]})`;
   }
 
   function inRange(date, startStr, endStr){
@@ -804,6 +880,24 @@
     `;
   }
 
+  function getTypeIconPath(typeText, explicitIcon){
+    if(explicitIcon && String(explicitIcon).trim()) return explicitIcon;
+    const number = TYPE_ICON_NUMBER_MAP[String(typeText || '').trim()];
+    return number ? `icons/${number}.png` : '';
+  }
+
+  function createTypeBadge(typeText, explicitIcon){
+    if(!typeText) return '';
+    const icon = getTypeIconPath(typeText, explicitIcon);
+
+    return `
+      <div class="type-badge">
+        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(typeText)}">` : ``}
+        <span>${escapeHtml(typeText)}</span>
+      </div>
+    `;
+  }
+
   function getWeekStart(today){
     const d = new Date(today);
     const day = d.getDay();
@@ -839,20 +933,24 @@
       });
   }
 
+  function setActiveWeekdayButton(targetId){
+    document.querySelectorAll('.weekday-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.target === targetId);
+    });
+  }
+
   function renderWeekdayStrip(weekDates, records, today){
     const days = ['일','월','화','수','목','금','토'];
     const wrap = document.getElementById('weekdayStrip');
 
     wrap.innerHTML = weekDates.map(date => {
-      const count = getDayItems(records, date).length;
       const isToday = toKey(date) === toKey(today);
       const targetId = `day-${toKey(date)}`;
 
       return `
         <button type="button" class="weekday-pill ${isToday ? 'today' : ''}" data-target="${targetId}">
-          <div class="weekday-kor">${days[date.getDay()]}요일</div>
+          <div class="weekday-kor">${days[date.getDay()]}</div>
           <div class="weekday-date">${date.getDate()}</div>
-          <div class="weekday-count">${count}개 보스</div>
         </button>
       `;
     }).join('');
@@ -861,10 +959,14 @@
       btn.addEventListener('click', () => {
         const target = document.getElementById(btn.dataset.target);
         if(target){
+          setActiveWeekdayButton(btn.dataset.target);
           target.scrollIntoView({ behavior:'smooth', block:'start' });
         }
       });
     });
+
+    const todayTargetId = `day-${toKey(today)}`;
+    setActiveWeekdayButton(todayTargetId);
   }
 
   function renderWeekList(weekDates, records){
@@ -884,6 +986,12 @@
                 createTopBoostBadge(item.boost, item.boostIcon),
                 createTopBoostBadge(item.boost2, item.boostIcon2)
               ].join('');
+
+              const typeBadges = [
+                createTypeBadge(item.type, item.typeIcon),
+                createTypeBadge(item.type2, item.typeIcon2)
+              ].join('');
+
               const cpTableId = `cp-table-${dayIndex}-${itemIndex}-${toKey(date)}`;
 
               return `
@@ -911,6 +1019,8 @@
                             : '이 날짜에 진행 중인 레이드입니다.'
                         }
                       </div>
+
+                      ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
                     </div>
                   </div>
 
@@ -956,7 +1066,6 @@
               </div>
               <div>
                 <div class="day-title">${date.getMonth()+1}월 ${date.getDate()}일 ${daysKor[date.getDay()]}</div>
-                <div class="day-sub">${items.length}개의 보스</div>
               </div>
             </div>
             <div class="day-chip">${escapeHtml(toKey(date))}</div>
@@ -977,6 +1086,31 @@
     });
   }
 
+  function bindScrollSpy(weekDates){
+    const ids = weekDates.map(date => `day-${toKey(date)}`);
+    const sections = ids
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+
+    if(!sections.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+      if(visible.length){
+        setActiveWeekdayButton(visible[0].target.id);
+      }
+    }, {
+      root: null,
+      rootMargin: '-18% 0px -60% 0px',
+      threshold: [0.15, 0.3, 0.5]
+    });
+
+    sections.forEach(section => observer.observe(section));
+  }
+
   async function init(){
     const today = getKoreaToday();
     const weekDates = getWeekDates(today);
@@ -984,6 +1118,7 @@
 
     renderWeekdayStrip(weekDates, records, today);
     renderWeekList(weekDates, records);
+    bindScrollSpy(weekDates);
   }
 
   init();
