@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Pokémon GO 테스트 | 내타입 포켓몬 확인하기</title>
+<title>Pokémon GO 테스트 | 내 타입 포켓몬 확인하기</title>
 <link rel="icon" href="/images/favicon.png" />
 
-<meta name="description" content="Trainer Test" />
-<meta property="og:title" content="Pokémon GO Global | Trainer Test" />
-<meta property="og:description" content="나와 같은타입의 포켓몬을 확인해보세요." />
+<meta name="description" content="간단한 테스트로 내 플레이 스타일과 어울리는 포켓몬 타입을 확인해보세요." />
+<meta property="og:title" content="Pokémon GO 테스트 | 내 타입 포켓몬 확인하기" />
+<meta property="og:description" content="질문에 답하고 나와 잘 맞는 포켓몬 타입과 플레이 성향을 확인해보세요." />
 <meta property="og:image" content="https://pokemon-global.pages.dev/og2.jpg" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pokemon-global.pages.dev/" />
@@ -207,6 +207,17 @@ body{
   color:#25365c;
   box-shadow:0 8px 18px rgba(44,58,119,.08);
 }
+.btn-raid-link{
+  color:#fff;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,0) 34%),
+    linear-gradient(135deg,#36a2ff 0%, #5b66ff 45%, #7b78ff 100%);
+  box-shadow:0 14px 28px rgba(73,102,225,.28);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
 .btn:disabled{
   opacity:.45;
   cursor:not-allowed;
@@ -252,6 +263,21 @@ body{
   font-size:13px;
 }
 
+.question-stage{
+  position:relative;
+  min-height:520px;
+  overflow:hidden;
+}
+.question-slider{
+  display:flex;
+  width:100%;
+  transition:transform .42s var(--ease);
+  will-change:transform;
+}
+.question-page{
+  min-width:100%;
+  width:100%;
+}
 .question-card{
   background:linear-gradient(180deg,#ffffff 0%, #fbfcff 100%);
   border:1px solid #edf1f7;
@@ -521,13 +547,6 @@ body{
   height:46px;
   background:#d8deee;
 }
-.info-value{
-  font-size:18px;
-  font-weight:600;
-  letter-spacing:-.02em;
-  color:#33447f;
-  white-space:nowrap;
-}
 .info-label{
   margin-top:10px;
   font-size:13px;
@@ -535,7 +554,6 @@ body{
   font-weight:600;
   letter-spacing:-0.01em;
 }
-  
 .info-icon{
   width:36px;
   height:36px;
@@ -689,11 +707,14 @@ body{
 .result-actions{
   margin-top:16px;
 }
-.share-preview{
-  margin-top:14px;
-  font-size:12px;
-  color:#7e8b95;
-  line-height:1.5;
+.result-actions .btn-row{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.result-actions .btn{
+  width:100%;
+  justify-content:center;
 }
 
 #analyzingOverlay{
@@ -751,14 +772,6 @@ body{
   }
 }
 
-.info-type-value{
-  margin:24px auto 0;
-  font-size:16px;
-  font-weight:600;
-  color:#33447f;
-  line-height:1.2;
-}
-
 .type-detail-box{
   margin:8px auto 0;
   width:100%;
@@ -788,14 +801,13 @@ body{
 .capture-fix .badge-ring,
 .capture-fix .badge-stars,
 .capture-fix .badge-star{
-  transform: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  will-change: auto !important;
+  transform:none!important;
+  filter:none!important;
+  text-shadow:none!important;
+  will-change:auto!important;
 }
-
 .capture-fix .badge-star{
-  font-size: 22px !important;
+  font-size:22px!important;
 }
 </style>
 </head>
@@ -804,7 +816,7 @@ body{
 <div class="wrap">
   <section class="hero">
     <h1>Pokémon 테스트</h1>
-    <p>만들다가 세아잡겠네</p>
+    <p>질문에 답하고 나와 잘 맞는 포켓몬 타입과 플레이 성향을 확인해보세요.</p>
   </section>
 
   <section class="card" id="introSection">
@@ -819,7 +831,7 @@ body{
       autocomplete="off"
     >
 
-    <label class="label" for="nickname">닉네임 (한글만 입력가능)</label>
+    <label class="label" for="nickname">닉네임 (한글만 입력 가능)</label>
     <input class="input" type="text" id="nickname" placeholder="한글 닉네임 입력" autocomplete="off">
     <div class="helper">한글만 입력되며 공백은 자동 제거됩니다.</div>
 
@@ -846,7 +858,9 @@ body{
       </div>
 
       <form id="quizForm">
-        <div id="questionArea"></div>
+        <div class="question-stage">
+          <div class="question-slider" id="questionSlider"></div>
+        </div>
 
         <div class="btn-row">
           <button class="btn btn-secondary" type="button" id="prevBtn">이전</button>
@@ -894,7 +908,7 @@ body{
           </div>
 
           <div class="info-col">
-            <img class="info-icon" id="resultIcon" src="" alt="icon">
+            <img class="info-icon" id="resultIcon" src="" alt="type icon">
             <div class="info-label">내 타입</div>
           </div>
 
@@ -957,31 +971,24 @@ body{
 
     <div class="result-actions">
       <div class="btn-row">
-        <button class="btn btn-primary hidden" type="button" id="shareBtn">카카오톡 공유하기</button>
-        <button class="btn btn-secondary" type="button" id="downloadBtn">결과 이미지 저장</button>
-        <button class="btn btn-secondary" type="button" id="retryBtn">다시 테스트하기</button>
-      </div>
-      <div class="share-preview">
-        카카오 공유용 이미지는 결과 카드 영역을 캡처해 자동 생성하는 구조입니다.
+        <button class="btn btn-secondary" type="button" id="downloadBtn">이미지 저장하기</button>
+        <button class="btn btn-secondary" type="button" id="retryBtn">테스트 다시하기</button>
+        <a
+          class="btn btn-raid-link"
+          href="https://8f8c6da3.seeea0-foryou.pages.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          레이드 일정 보러가기
+        </a>
       </div>
     </div>
   </section>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
 
 <script>
-const KAKAO_JS_KEY = 'a9b34626a97035962f44ebb33091147d';
-
-if (window.Kakao && !window.Kakao.isInitialized()) {
-  try {
-    window.Kakao.init(KAKAO_JS_KEY);
-  } catch (e) {
-    console.error('Kakao init failed:', e);
-  }
-}
-
 const SCALE_LABELS = ['매우 그렇다', '그렇다', '보통', '아니다', '매우 아니다'];
 
 const questionBank = [
@@ -1041,7 +1048,7 @@ const resultSection = document.getElementById('resultSection');
 
 const trainerLevel = document.getElementById('trainerLevel');
 const nickname = document.getElementById('nickname');
-const questionArea = document.getElementById('questionArea');
+const questionSlider = document.getElementById('questionSlider');
 const progressFill = document.getElementById('progressFill');
 const pageRangeText = document.getElementById('pageRangeText');
 const pageStepText = document.getElementById('pageStepText');
@@ -1136,50 +1143,63 @@ function getTypeIconPath(typeName) {
   return `./images/icon-${typeProfiles[typeName].iconNo}.png`;
 }
 
-function getShareImageUrl(profile) {
-  return `${window.location.origin}/images/${profile.iconNo}.png`;
-}
-
 function getTrackFillPercent(value) {
   if (!value) return 0;
   return ((value - 1) / 4) * 76;
 }
 
-function renderCurrentPage() {
+function buildPages() {
+  const pages = [];
+  for (let page = 0; page < TOTAL_PAGES; page++) {
+    const start = page * QUESTIONS_PER_PAGE;
+    const end = start + QUESTIONS_PER_PAGE;
+    const pageQuestions = shuffledQuestions.slice(start, end);
+
+    const pageHtml = `
+      <div class="question-page">
+        ${pageQuestions.map((item, idx) => {
+          const absoluteIndex = start + idx;
+          const savedValue = answers[item.no] || 0;
+          return `
+            <div class="question-card">
+              <div class="q-top">
+                <div class="q-badge">${String(absoluteIndex + 1).padStart(2, '0')}</div>
+              </div>
+              <h3 class="q-title">${item.question}</h3>
+
+              <div class="scale-text-row">
+                ${SCALE_LABELS.map(label => `<div>${label}</div>`).join('')}
+              </div>
+
+              <div class="options scale-circle" data-q="${item.no}" data-value="${savedValue}">
+                <div class="scale-track"></div>
+                <div class="scale-track-fill" style="width:${getTrackFillPercent(savedValue)}%;"></div>
+                ${[1,2,3,4,5].map(num => `
+                  <button type="button" class="circle ${savedValue === num ? 'active' : ''}" data-value="${num}" aria-label="${num} 선택">
+                    <span>${num}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    pages.push(pageHtml);
+  }
+
+  questionSlider.innerHTML = pages.join('');
+}
+
+function updateQuestionView() {
   const start = currentPage * QUESTIONS_PER_PAGE;
   const end = start + QUESTIONS_PER_PAGE;
-  const pageQuestions = shuffledQuestions.slice(start, end);
 
   pageRangeText.textContent = `${start + 1} - ${Math.min(end, questionBank.length)} / ${questionBank.length}`;
   pageStepText.textContent = `${currentPage + 1} / ${TOTAL_PAGES}`;
   progressFill.style.width = `${((currentPage + 1) / TOTAL_PAGES) * 100}%`;
 
-  questionArea.innerHTML = pageQuestions.map((item, idx) => {
-    const absoluteIndex = start + idx;
-    const savedValue = answers[item.no] || 0;
-    return `
-      <div class="question-card">
-        <div class="q-top">
-          <div class="q-badge">${String(absoluteIndex + 1).padStart(2, '0')}</div>
-        </div>
-        <h3 class="q-title">${item.question}</h3>
-
-        <div class="scale-text-row">
-          ${SCALE_LABELS.map(label => `<div>${label}</div>`).join('')}
-        </div>
-
-        <div class="options scale-circle" data-q="${item.no}" data-value="${savedValue}">
-          <div class="scale-track"></div>
-          <div class="scale-track-fill" style="width:${getTrackFillPercent(savedValue)}%;"></div>
-          ${[1,2,3,4,5].map(num => `
-            <button type="button" class="circle ${savedValue === num ? 'active' : ''}" data-value="${num}" aria-label="${num} 선택">
-              <span>${num}</span>
-            </button>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
+  questionSlider.style.transform = `translateX(-${currentPage * 100}%)`;
 
   prevBtn.disabled = currentPage === 0;
   if (currentPage === TOTAL_PAGES - 1) {
@@ -1314,7 +1334,7 @@ function getValueFromPointer(container, clientX) {
   return 5;
 }
 
-questionArea.addEventListener('click', (e) => {
+questionSlider.addEventListener('click', (e) => {
   const circle = e.target.closest('.circle');
   if (!circle) return;
   const container = circle.closest('.scale-circle');
@@ -1323,17 +1343,17 @@ questionArea.addEventListener('click', (e) => {
   setScaleAnswer(qNo, value, container);
 });
 
-questionArea.addEventListener('pointerdown', (e) => {
+questionSlider.addEventListener('pointerdown', (e) => {
   const container = e.target.closest('.scale-circle');
   if (!container) return;
   draggingScale = container;
-  const qNo = Number(container.dataset.q);
   const value = getValueFromPointer(container, e.clientX);
+  const qNo = Number(container.dataset.q);
   setScaleAnswer(qNo, value, container);
   container.setPointerCapture?.(e.pointerId);
 });
 
-questionArea.addEventListener('pointermove', (e) => {
+questionSlider.addEventListener('pointermove', (e) => {
   if (!draggingScale) return;
   const value = getValueFromPointer(draggingScale, e.clientX);
   const qNo = Number(draggingScale.dataset.q);
@@ -1353,14 +1373,15 @@ document.getElementById('startBtn').addEventListener('click', () => {
   currentPage = 0;
 
   showQuiz();
-  renderCurrentPage();
+  buildPages();
+  updateQuestionView();
   window.scrollTo({ top:0, behavior:'smooth' });
 });
 
 prevBtn.addEventListener('click', () => {
   if (currentPage > 0) {
     currentPage--;
-    renderCurrentPage();
+    updateQuestionView();
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 });
@@ -1372,7 +1393,7 @@ nextBtn.addEventListener('click', () => {
   }
   if (currentPage < TOTAL_PAGES - 1) {
     currentPage++;
-    renderCurrentPage();
+    updateQuestionView();
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 });
@@ -1391,13 +1412,11 @@ quizForm.addEventListener('submit', (e) => {
   const worstType = profile.worst;
   const starData = getStarDataByStats(profile);
   const randomHp = getRandomHp();
-  const shareImageUrl = getShareImageUrl(profile);
   const pogoPath = getRandomPogoByType(resultType);
 
   currentRendered = {
     profileResult: profile,
     resultType,
-    shareImageUrl,
     pogoPath,
     starData,
     randomHp
@@ -1476,6 +1495,7 @@ document.getElementById('retryBtn').addEventListener('click', () => {
   currentPage = 0;
   trainerLevel.value = '';
   nickname.value = '';
+  questionSlider.innerHTML = '';
   document.getElementById('resultLevel').textContent = '15';
   analyzingOverlay.classList.add('hidden');
   showIntro();
@@ -1531,34 +1551,6 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     console.error(error);
     alert('이미지 저장 중 오류가 발생했습니다.');
   }
-});
-
-document.getElementById('shareBtn').addEventListener('click', () => {
-  if (!currentRendered) return;
-
-  const profile = currentRendered.profileResult;
-  const shareImageUrl = currentRendered.shareImageUrl;
-
-  if (!window.Kakao) {
-    alert('카카오 SDK가 로드되지 않았습니다.');
-    return;
-  }
-
-  if (!window.Kakao.isInitialized()) {
-    alert('카카오 JavaScript 키 또는 도메인 설정을 확인해주세요.');
-    return;
-  }
-
-  window.Kakao.Share.sendCustom({
-    templateId: 1409816,
-    templateArgs: {
-      TYPE: profile.type,
-      MAINCOPY: profile.mainCopy,
-      PLAYSTYLE: profile.playStyle,
-      DESC: profile.story.replace(/\n/g, ' '),
-      THU: shareImageUrl
-    }
-  });
 });
 </script>
 </body>
