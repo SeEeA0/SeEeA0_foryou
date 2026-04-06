@@ -61,6 +61,11 @@
     to{opacity:1;transform:translateY(0)}
   }
 
+  @keyframes contentSwap{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
   @keyframes softFloat{
     0%,100%{transform:translateY(0)}
     50%{transform:translateY(-4px)}
@@ -120,75 +125,118 @@
     padding:14px;
   }
 
-  .weekday-strip-wrap{
+  .date-switcher-wrap{
     position:sticky;
     top:10px;
     z-index:25;
-    margin:-2px 0 0;
   }
 
-  .weekday-strip{
+  .date-switcher{
     display:grid;
-    grid-template-columns:repeat(7,minmax(120px,1fr));
+    grid-template-columns:64px 1fr 64px;
     gap:10px;
+    align-items:stretch;
   }
 
-  .weekday-strip-scroll{
-    overflow-x:auto;
-    padding-bottom:2px;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
-  .weekday-strip-scroll::-webkit-scrollbar{display:none}
-
-  .weekday-pill{
+  .date-nav-btn{
+    border:1px solid #d8e3f2;
     background:#f8fbff;
-    border:1px solid #dbe6f4;
+    color:#355fbb;
     border-radius:18px;
-    padding:14px 10px;
-    text-align:center;
-    transition:.18s ease;
+    min-height:96px;
     cursor:pointer;
-    min-height:88px;
+    font-size:24px;
+    font-weight:900;
+    transition:.16s ease;
+    box-shadow:0 10px 18px rgba(43,67,110,.05);
   }
 
-  .weekday-pill:hover{
+  .date-nav-btn:hover:not(:disabled){
     transform:translateY(-2px);
-    box-shadow:0 10px 18px rgba(43,67,110,.06);
     border-color:#c7d7ec;
+    box-shadow:0 14px 22px rgba(43,67,110,.08);
   }
 
-  .weekday-pill.today{
+  .date-nav-btn:disabled{
+    opacity:.42;
+    cursor:default;
+  }
+
+  .date-current{
     background:#edf4ff;
-    border-color:#cdddf5;
+    border:1px solid #cdddf5;
+    border-radius:22px;
+    min-height:96px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:12px;
     animation:pulseRing 1.8s infinite;
+    box-shadow:0 12px 24px rgba(43,67,110,.06);
   }
 
-  .weekday-pill.active{
-    background:#eaf2ff;
-    border-color:#bcd1f2;
-    box-shadow:0 10px 22px rgba(43,67,110,.08);
+  .date-current-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
   }
 
-  .weekday-kor{
-    font-size:15px;
+  .date-current-weekday{
+    font-size:16px;
     font-weight:900;
     color:#7b8ca8;
-  }
-
-  .weekday-date{
-    margin-top:10px;
-    font-size:28px;
-    font-weight:900;
-    letter-spacing:-.03em;
-    color:#24374c;
     line-height:1;
   }
 
-  .week-list{
+  .date-current-day{
+    margin-top:8px;
+    font-size:32px;
+    font-weight:900;
+    color:#24374c;
+    line-height:1;
+    letter-spacing:-.03em;
+  }
+
+  .date-current-full{
+    margin-top:8px;
+    font-size:13px;
+    font-weight:800;
+    color:#6f819e;
+  }
+
+  .week-dots{
+    margin-top:12px;
     display:flex;
-    flex-direction:column;
-    gap:14px;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .week-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#d6e3f3;
+    border:none;
+    padding:0;
+    cursor:pointer;
+    transition:.16s ease;
+  }
+
+  .week-dot.active{
+    width:28px;
+    border-radius:999px;
+    background:#3567d7;
+  }
+
+  .week-dot.today:not(.active){
+    background:#8cb0f0;
+  }
+
+  .selected-day-wrap{
+    animation:contentSwap .22s ease;
   }
 
   .day-card{
@@ -197,7 +245,6 @@
     border-radius:24px;
     padding:16px;
     box-shadow:0 10px 24px rgba(43,67,110,.05);
-    scroll-margin-top:120px;
   }
 
   .day-head{
@@ -621,27 +668,34 @@
       padding:12px;
     }
 
-    .weekday-strip{
-      grid-template-columns:repeat(7,minmax(88px,88px));
+    .date-switcher{
+      grid-template-columns:56px 1fr 56px;
+      gap:8px;
     }
 
-    .weekday-strip-wrap{
-      top:8px;
-    }
-
-    .weekday-pill{
-      min-height:78px;
-      padding:12px 8px;
+    .date-nav-btn{
+      min-height:84px;
       border-radius:16px;
-    }
-
-    .weekday-kor{
-      font-size:14px;
-    }
-
-    .weekday-date{
       font-size:22px;
-      margin-top:8px;
+    }
+
+    .date-current{
+      min-height:84px;
+      border-radius:18px;
+      padding:10px;
+    }
+
+    .date-current-weekday{
+      font-size:15px;
+    }
+
+    .date-current-day{
+      font-size:28px;
+    }
+
+    .date-current-full{
+      font-size:12px;
+      margin-top:7px;
     }
 
     .day-head{
@@ -695,10 +749,16 @@
       </div>
     </div>
     <div class="section-body">
-      <div class="weekday-strip-wrap">
-        <div class="weekday-strip-scroll">
-          <div class="weekday-strip" id="weekdayStrip"></div>
+      <div class="date-switcher-wrap">
+        <div class="date-switcher">
+          <button type="button" class="date-nav-btn" id="prevDateBtn" aria-label="이전 날짜">‹</button>
+
+          <div class="date-current" id="dateCurrent"></div>
+
+          <button type="button" class="date-nav-btn" id="nextDateBtn" aria-label="다음 날짜">›</button>
         </div>
+
+        <div class="week-dots" id="weekDots"></div>
       </div>
     </div>
   </section>
@@ -711,7 +771,7 @@
       </div>
     </div>
     <div class="section-body">
-      <div class="week-list" id="weekList"></div>
+      <div id="weekList"></div>
     </div>
   </section>
 
@@ -777,6 +837,10 @@
     '강철': 17,
     '에스퍼': 18
   };
+
+  let weekDates = [];
+  let records = [];
+  let selectedIndex = 0;
 
   function getKoreaNow(){
     const now = new Date();
@@ -874,7 +938,7 @@
 
     return `
       <div class="top-boost-badge">
-        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : `<img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">`}
+        ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : ``}
         <span>${escapeHtml(text)}</span>
       </div>
     `;
@@ -933,147 +997,157 @@
       });
   }
 
-  function setActiveWeekdayButton(targetId){
-    document.querySelectorAll('.weekday-pill').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.target === targetId);
-    });
+  function renderDateCurrent(){
+    const days = ['일','월','화','수','목','금','토'];
+    const selectedDate = weekDates[selectedIndex];
+    const dateCurrent = document.getElementById('dateCurrent');
+
+    dateCurrent.innerHTML = `
+      <div class="date-current-inner">
+        <div class="date-current-weekday">${days[selectedDate.getDay()]}</div>
+        <div class="date-current-day">${selectedDate.getDate()}</div>
+        <div class="date-current-full">${selectedDate.getMonth()+1}월 ${selectedDate.getDate()}일</div>
+      </div>
+    `;
   }
 
-  function renderWeekdayStrip(weekDates, records, today){
-    const days = ['일','월','화','수','목','금','토'];
-    const wrap = document.getElementById('weekdayStrip');
+  function renderWeekDots(today){
+    const wrap = document.getElementById('weekDots');
 
-    wrap.innerHTML = weekDates.map(date => {
+    wrap.innerHTML = weekDates.map((date, index) => {
       const isToday = toKey(date) === toKey(today);
-      const targetId = `day-${toKey(date)}`;
+      const isActive = index === selectedIndex;
 
       return `
-        <button type="button" class="weekday-pill ${isToday ? 'today' : ''}" data-target="${targetId}">
-          <div class="weekday-kor">${days[date.getDay()]}</div>
-          <div class="weekday-date">${date.getDate()}</div>
-        </button>
+        <button
+          type="button"
+          class="week-dot ${isToday ? 'today' : ''} ${isActive ? 'active' : ''}"
+          data-index="${index}"
+          aria-label="${date.getMonth()+1}월 ${date.getDate()}일 선택"
+        ></button>
       `;
     }).join('');
 
-    wrap.querySelectorAll('[data-target]').forEach(btn => {
+    wrap.querySelectorAll('[data-index]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const target = document.getElementById(btn.dataset.target);
-        if(target){
-          setActiveWeekdayButton(btn.dataset.target);
-          target.scrollIntoView({ behavior:'smooth', block:'start' });
-        }
+        selectedIndex = Number(btn.dataset.index);
+        updateSelectedDay(today);
       });
     });
-
-    const todayTargetId = `day-${toKey(today)}`;
-    setActiveWeekdayButton(todayTargetId);
   }
 
-  function renderWeekList(weekDates, records){
+  function renderNavButtons(){
+    const prevBtn = document.getElementById('prevDateBtn');
+    const nextBtn = document.getElementById('nextDateBtn');
+
+    prevBtn.disabled = selectedIndex <= 0;
+    nextBtn.disabled = selectedIndex >= weekDates.length - 1;
+  }
+
+  function renderSelectedDay(){
     const daysKor = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+    const selectedDate = weekDates[selectedIndex];
     const wrap = document.getElementById('weekList');
+    const items = getDayItems(records, selectedDate);
 
-    wrap.innerHTML = weekDates.map((date, dayIndex) => {
-      const items = getDayItems(records, date);
+    const content = items.length
+      ? `
+        <div class="raid-grid">
+          ${items.map((item, itemIndex) => {
+            const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
+            const chip = chipClass(item.label);
+            const topBoosts = [
+              createTopBoostBadge(item.boost, item.boostIcon),
+              createTopBoostBadge(item.boost2, item.boostIcon2)
+            ].join('');
 
-      const content = items.length
-        ? `
-          <div class="raid-grid">
-            ${items.map((item, itemIndex) => {
-              const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
-              const chip = chipClass(item.label);
-              const topBoosts = [
-                createTopBoostBadge(item.boost, item.boostIcon),
-                createTopBoostBadge(item.boost2, item.boostIcon2)
-              ].join('');
+            const typeBadges = [
+              createTypeBadge(item.type, item.typeIcon),
+              createTypeBadge(item.type2, item.typeIcon2)
+            ].join('');
 
-              const typeBadges = [
-                createTypeBadge(item.type, item.typeIcon),
-                createTypeBadge(item.type2, item.typeIcon2)
-              ].join('');
+            const cpTableId = `cp-table-${toKey(selectedDate)}-${itemIndex}`;
 
-              const cpTableId = `cp-table-${dayIndex}-${itemIndex}-${toKey(date)}`;
+            return `
+              <article class="raid-card ${shadowTheme}">
+                <div class="raid-head">
+                  <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
+                  <div class="top-boosts">${topBoosts}</div>
+                </div>
 
-              return `
-                <article class="raid-card ${shadowTheme}">
-                  <div class="raid-head">
-                    <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
-                    <div class="top-boosts">${topBoosts}</div>
+                <div class="raid-main">
+                  <div class="raid-thumb">
+                    ${
+                      item.image
+                        ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
+                        : `<span style="font-size:26px;">🖼️</span>`
+                    }
                   </div>
 
-                  <div class="raid-main">
-                    <div class="raid-thumb">
+                  <div>
+                    <div class="raid-name">${escapeHtml(item.name || '-')}</div>
+                    <div class="raid-desc">
                       ${
-                        item.image
-                          ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
-                          : `<span style="font-size:26px;">🖼️</span>`
+                        item.label === '그림자'
+                          ? '이 날짜에 진행 중인 그림자 레이드입니다.'
+                          : '이 날짜에 진행 중인 레이드입니다.'
                       }
                     </div>
-
-                    <div>
-                      <div class="raid-name">${escapeHtml(item.name || '-')}</div>
-                      <div class="raid-desc">
-                        ${
-                          item.label === '그림자'
-                            ? '이 날짜에 진행 중인 그림자 레이드입니다.'
-                            : '이 날짜에 진행 중인 레이드입니다.'
-                        }
-                      </div>
-
-                      ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
-                    </div>
+                    ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
                   </div>
+                </div>
 
-                  <div class="meta-row">
-                    ${
-                      (item.cpMin || item.cpMax)
-                        ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
-                        : ``
-                    }
-                    ${
-                      (item.boostedCpMin || item.boostedCpMax)
-                        ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
-                        : ``
-                    }
-                  </div>
-
+                <div class="meta-row">
                   ${
-                    item.cpTableImage
-                      ? `
-                        <div class="action-row">
-                          <button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>
-                        </div>
-                        <div class="cp-table-panel" id="${cpTableId}">
-                          <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
-                        </div>
-                      `
+                    (item.cpMin || item.cpMax)
+                      ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
                       : ``
                   }
-                </article>
-              `;
-            }).join('')}
-          </div>
-        `
-        : `<div class="empty-box">이 날짜에는 진행 중인 레이드가 없습니다.</div>`;
+                  ${
+                    (item.boostedCpMin || item.boostedCpMax)
+                      ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+                      : ``
+                  }
+                </div>
 
-      return `
-        <section class="day-card" id="day-${toKey(date)}">
+                ${
+                  item.cpTableImage
+                    ? `
+                      <div class="action-row">
+                        <button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>
+                      </div>
+                      <div class="cp-table-panel" id="${cpTableId}">
+                        <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+                      </div>
+                    `
+                    : ``
+                }
+              </article>
+            `;
+          }).join('')}
+        </div>
+      `
+      : `<div class="empty-box">이 날짜에는 진행 중인 레이드가 없습니다.</div>`;
+
+    wrap.innerHTML = `
+      <div class="selected-day-wrap">
+        <section class="day-card">
           <div class="day-head">
             <div class="day-left">
               <div class="day-badge">
-                <div class="day-num">${date.getDate()}</div>
-                <div class="day-week">${daysKor[date.getDay()].replace('요일','')}</div>
+                <div class="day-num">${selectedDate.getDate()}</div>
+                <div class="day-week">${daysKor[selectedDate.getDay()].replace('요일','')}</div>
               </div>
               <div>
-                <div class="day-title">${date.getMonth()+1}월 ${date.getDate()}일 ${daysKor[date.getDay()]}</div>
+                <div class="day-title">${selectedDate.getMonth()+1}월 ${selectedDate.getDate()}일 ${daysKor[selectedDate.getDay()]}</div>
               </div>
             </div>
-            <div class="day-chip">${escapeHtml(toKey(date))}</div>
+            <div class="day-chip">${escapeHtml(toKey(selectedDate))}</div>
           </div>
           ${content}
         </section>
-      `;
-    }).join('');
+      </div>
+    `;
 
     wrap.querySelectorAll('[data-cptable-target]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1086,39 +1160,40 @@
     });
   }
 
-  function bindScrollSpy(weekDates){
-    const ids = weekDates.map(date => `day-${toKey(date)}`);
-    const sections = ids
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
+  function updateSelectedDay(today){
+    renderDateCurrent();
+    renderWeekDots(today);
+    renderNavButtons();
+    renderSelectedDay();
+  }
 
-    if(!sections.length) return;
+  function bindNavButtons(today){
+    const prevBtn = document.getElementById('prevDateBtn');
+    const nextBtn = document.getElementById('nextDateBtn');
 
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-      if(visible.length){
-        setActiveWeekdayButton(visible[0].target.id);
-      }
-    }, {
-      root: null,
-      rootMargin: '-18% 0px -60% 0px',
-      threshold: [0.15, 0.3, 0.5]
+    prevBtn.addEventListener('click', () => {
+      if(selectedIndex <= 0) return;
+      selectedIndex -= 1;
+      updateSelectedDay(today);
     });
 
-    sections.forEach(section => observer.observe(section));
+    nextBtn.addEventListener('click', () => {
+      if(selectedIndex >= weekDates.length - 1) return;
+      selectedIndex += 1;
+      updateSelectedDay(today);
+    });
   }
 
   async function init(){
     const today = getKoreaToday();
-    const weekDates = getWeekDates(today);
-    const records = await loadRecords();
+    weekDates = getWeekDates(today);
+    records = await loadRecords();
 
-    renderWeekdayStrip(weekDates, records, today);
-    renderWeekList(weekDates, records);
-    bindScrollSpy(weekDates);
+    const todayIndex = weekDates.findIndex(date => toKey(date) === toKey(today));
+    selectedIndex = todayIndex >= 0 ? todayIndex : 0;
+
+    bindNavButtons(today);
+    updateSelectedDay(today);
   }
 
   init();
