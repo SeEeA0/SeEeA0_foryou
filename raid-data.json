@@ -144,7 +144,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "애버라스",
       "label": "1성",
@@ -307,7 +306,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "레지드래고",
       "label": "5성",
@@ -344,7 +342,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "코스튬 디그다",
       "label": "1성",
@@ -471,7 +468,6 @@
       "guide": "패션 레이드 데이 · 14:00~17:00",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "코스튬 버터플",
       "label": "3성",
@@ -544,7 +540,6 @@
       "guide": "패션 레이드 데이 · 14:00~17:00",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "가이오가",
       "label": "5성",
@@ -581,7 +576,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "그란돈",
       "label": "5성",
@@ -618,7 +612,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "카푸꼬꼬꼭",
       "label": "5성",
@@ -637,7 +630,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "카푸느지느",
       "label": "5성",
@@ -674,7 +666,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "그림자 라티오스",
       "label": "5성",
@@ -692,9 +683,7 @@
       "cpTableImage": "",
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
-    }
-    {
-  "records": [
+    },
     {
       "name": "에몽가",
       "label": "1성",
@@ -767,7 +756,6 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
     {
       "name": "라이츄",
       "label": "3성",
@@ -822,7 +810,5 @@
       "guide": "",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     }
-  ]
-}
   ]
 }
