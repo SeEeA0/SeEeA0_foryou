@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta name="description" content="내 플레이 스타일과 어울리는 포켓몬 타입을 테스트해보세요." />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>내 타입 포켓몬 테스트</title>
 
-<meta property="og:title" content="나는 어떤 포켓몬 타입일까?" />
-<meta property="og:description" content="테스트로 알아보는 나의 플레이 스타일 · 타입 분석 결과 확인하기" />
+<meta name="description" content="내 타입 포켓몬은 무엇일까? 나의 플레이스타일로 알아보는 포켓몬 테스트." />
+
+<meta property="og:title" content="내 타입 포켓몬은?" />
+<meta property="og:description" content="나의 플레이스타일로 알아보는 포켓몬 테스트 · 결과 이미지로 공유해보세요" />
 <meta property="og:image" content="https://seeea0-foryou.pages.dev/images/test-og.jpg" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://seeea0-foryou.pages.dev/test.html" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="나는 어떤 포켓몬 타입일까?" />
-<meta name="twitter:description" content="플레이 스타일 기반 포켓몬 타입 테스트" />
+<meta name="twitter:title" content="내 타입 포켓몬은?" />
+<meta name="twitter:description" content="나의 플레이스타일로 알아보는 포켓몬 테스트" />
 <meta name="twitter:image" content="https://seeea0-foryou.pages.dev/images/test-og.jpg" />
+
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -62,6 +67,36 @@ body{
   max-width:560px;
   margin:0 auto;
   padding:22px 16px 80px;
+}
+
+.top-home-row{
+  display:flex;
+  justify-content:flex-start;
+  margin-bottom:12px;
+}
+
+.top-home-link{
+  appearance:none;
+  border:0;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:0 16px;
+  border-radius:999px;
+  background:rgba(255,255,255,.9);
+  color:#2b3d62;
+  font-size:14px;
+  font-weight:800;
+  box-shadow:0 10px 24px rgba(24,34,69,.08);
+  border:1px solid rgba(255,255,255,.82);
+  transition:transform .18s var(--ease), box-shadow .18s var(--ease), background .18s ease;
+}
+.top-home-link:hover{
+  transform:translateY(-1px);
+  box-shadow:0 14px 28px rgba(24,34,69,.10);
+  background:#fff;
 }
 
 .card{
@@ -213,6 +248,12 @@ body{
     linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,0) 34%),
     linear-gradient(135deg,#36a2ff 0%, #5b66ff 45%, #7b78ff 100%);
   box-shadow:0 14px 28px rgba(73,102,225,.28);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.btn-home-link{
   text-decoration:none;
   display:inline-flex;
   align-items:center;
@@ -814,9 +855,13 @@ body{
 <body>
 
 <div class="wrap">
+  <div class="top-home-row">
+    <a class="top-home-link" href="./index.html">← 메인으로 돌아가기</a>
+  </div>
+
   <section class="hero">
-    <h1>Pokémon 테스트</h1>
-    <p>질문에 답하고 나와 잘 맞는 포켓몬 타입과 플레이 성향을 확인해보세요.</p>
+    <h1>내 타입 포켓몬은?</h1>
+    <p>질문에 답하고 나의 플레이스타일과 어울리는 포켓몬 타입을 확인해보세요.</p>
   </section>
 
   <section class="card" id="introSection">
@@ -973,6 +1018,7 @@ body{
       <div class="btn-row">
         <button class="btn btn-secondary" type="button" id="downloadBtn">이미지 저장하기</button>
         <button class="btn btn-secondary" type="button" id="retryBtn">테스트 다시하기</button>
+        <a class="btn btn-secondary btn-home-link" href="./index.html">메인으로 돌아가기</a>
         <a
           class="btn btn-raid-link"
           href="https://8f8c6da3.seeea0-foryou.pages.dev/"
