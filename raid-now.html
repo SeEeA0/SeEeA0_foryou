@@ -299,6 +299,40 @@
     gap:10px;
   }
 
+  .type-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .type-pill{
+    min-height:36px;
+    padding:0 13px;
+    border-radius:999px;
+    border:1px solid #d9e3f2;
+    background:#fff;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    font-size:12px;
+    font-weight:900;
+    color:#607897;
+  }
+
+  .raid-card.shadow-theme .type-pill{
+    background:rgba(255,255,255,.84);
+    border-color:#ddcffd;
+  }
+
+  .type-icon{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
+  }
+
   .meta-row{
     display:flex;
     flex-wrap:wrap;
@@ -735,6 +769,75 @@
     return [];
   }
 
+  function normalizeTypeArray(item){
+    if(Array.isArray(item.types) && item.types.length){
+      return item.types.filter(Boolean).map(v => String(v).trim()).filter(Boolean);
+    }
+
+    const fromType1 = typeof item.type === 'string' && item.type.trim() ? [item.type.trim()] : [];
+    const fromType2 = typeof item.type2 === 'string' && item.type2.trim() ? [item.type2.trim()] : [];
+
+    if(fromType1.length || fromType2.length){
+      return [...fromType1, ...fromType2];
+    }
+
+    return [];
+  }
+
+  function getTypeIconPathByValue(value){
+    if(value == null) return '';
+
+    const raw = String(value).trim();
+    if(!raw) return '';
+
+    if (/^\d+$/.test(raw)) {
+      return `./images/icon-${raw}.png`;
+    }
+
+    const typeNumberMap = {
+      '풀': 1,
+      '얼음': 2,
+      '강철': 3,
+      '드래곤': 4,
+      '불': 5,
+      '바위': 6,
+      '물': 7,
+      '전기': 8,
+      '고스트': 9,
+      '격투': 10,
+      '노말': 11,
+      '에스퍼': 12,
+      '땅': 13,
+      '악': 14,
+      '페어리': 15,
+      '비행': 16,
+      '독': 17,
+      '벌레': 18
+    };
+
+    const matched = typeNumberMap[raw];
+    return matched ? `./images/icon-${matched}.png` : '';
+  }
+
+  function renderTypePills(item){
+    const types = normalizeTypeArray(item);
+    if(!types.length) return '';
+
+    return `
+      <div class="type-row">
+        ${types.map(type => {
+          const icon = getTypeIconPathByValue(type);
+          return `
+            <span class="type-pill">
+              ${icon ? `<img src="${escapeHtml(icon)}" class="type-icon" alt="${escapeHtml(type)}">` : ``}
+              <span>${escapeHtml(type)}</span>
+            </span>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
   function getTodayRaidItems(records, today){
     return records
       .filter(item =>
@@ -840,6 +943,8 @@
             </div>
 
             <div class="info-stack">
+              ${renderTypePills(item)}
+
               <div class="meta-row">
                 ${
                   (item.cpMin || item.cpMax)
