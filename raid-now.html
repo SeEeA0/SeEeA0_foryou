@@ -54,6 +54,7 @@
     animation:fadeUp .55s ease forwards;
   }
   .delay-1{animation-delay:.05s}
+  .delay-2{animation-delay:.1s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -81,6 +82,29 @@
       box-shadow:
         0 18px 38px rgba(98,67,168,.24),
         0 0 0 8px rgba(124,88,233,.08);
+    }
+  }
+
+  @keyframes smokeFloat{
+    0%{
+      transform:translate(-50%, -56%) scale(1) rotate(0deg);
+      opacity:.72;
+    }
+    25%{
+      transform:translate(-50.5%, -58%) scale(1.03) rotate(-1deg);
+      opacity:.88;
+    }
+    50%{
+      transform:translate(-49.5%, -54%) scale(1.06) rotate(1deg);
+      opacity:.98;
+    }
+    75%{
+      transform:translate(-50.3%, -57%) scale(1.03) rotate(-.6deg);
+      opacity:.84;
+    }
+    100%{
+      transform:translate(-50%, -56%) scale(1) rotate(0deg);
+      opacity:.72;
     }
   }
 
@@ -250,9 +274,11 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
+    overflow:visible;
     box-shadow:0 10px 24px rgba(43,67,110,.08);
     animation:softFloat 3.8s ease-in-out infinite;
+    position:relative;
+    isolation:isolate;
   }
 
   .raid-card.shadow-theme .raid-thumb{
@@ -263,7 +289,23 @@
       0 0 18px rgba(124,88,233,.15);
   }
 
-  .raid-thumb img{
+  .shadow-flame{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -56%);
+    width:118px;
+    height:auto;
+    opacity:.9;
+    pointer-events:none;
+    z-index:1;
+    animation:smokeFloat 3.8s ease-in-out infinite;
+    filter:drop-shadow(0 0 10px rgba(124,88,233,.35));
+  }
+
+  .pokemon-img{
+    position:relative;
+    z-index:2;
     width:72px;
     height:72px;
     object-fit:contain;
@@ -566,7 +608,11 @@
       border-radius:18px;
     }
 
-    .raid-thumb img{
+    .shadow-flame{
+      width:96px;
+    }
+
+    .pokemon-img{
       width:58px;
       height:58px;
     }
@@ -611,12 +657,24 @@
   <section class="section fade-up delay-1">
     <div class="section-head">
       <div>
-        <div class="section-title">진행 중인 보스</div>
-        <div class="section-sub"></div>
+        <div class="section-title">일반 레이드</div>
+        <div class="section-sub">현재 진행 중인 일반 레이드 보스입니다</div>
       </div>
     </div>
     <div class="section-body">
-      <div class="raid-grid" id="raidGrid"></div>
+      <div class="raid-grid" id="normalRaidGrid"></div>
+    </div>
+  </section>
+
+  <section class="section fade-up delay-2">
+    <div class="section-head">
+      <div>
+        <div class="section-title">그림자 레이드</div>
+        <div class="section-sub">보라 연기 배경이 적용된 그림자 레이드 보스입니다</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="raid-grid" id="shadowRaidGrid"></div>
     </div>
   </section>
 
@@ -729,24 +787,32 @@
     return Array.isArray(item.showPages) && item.showPages.includes(page);
   }
 
-  function sortPriority(label){
+  function sortPriority(item){
+    const isShadow = !!item.isShadow;
+    const label = item.label;
+
     const order = {
       '5성': 0,
       '3성': 1,
       '1성': 2,
-      '메가': 3,
-      '그림자': 4
+      '메가': 3
     };
+
+    if(isShadow) return 10;
     return order[label] ?? 99;
   }
 
-  function chipClass(label){
-    if(label === '5성') return 'chip-blue';
-    if(label === '3성') return 'chip-yellow';
-    if(label === '1성') return 'chip-green';
-    if(label === '메가') return 'chip-purple';
-    if(label === '그림자') return 'chip-pink';
+  function chipClass(item){
+    if(item.isShadow) return 'chip-pink';
+    if(item.label === '5성') return 'chip-blue';
+    if(item.label === '3성') return 'chip-yellow';
+    if(item.label === '1성') return 'chip-green';
+    if(item.label === '메가') return 'chip-purple';
     return 'chip-gray';
+  }
+
+  function chipLabel(item){
+    return item.isShadow ? `그림자 ${item.label || ''}`.trim() : (item.label || '-');
   }
 
   function resolveBoostIcon(text, explicitIcon){
@@ -757,76 +823,60 @@
   }
 
   function normalizeBoostArray(item){
-    if(Array.isArray(item.boosts) && item.boosts.length){
-      return item.boosts.filter(Boolean).map(v => String(v).trim()).filter(Boolean);
-    }
+    const result = [];
+
     if(typeof item.boost === 'string' && item.boost.trim()){
-      return item.boost
-        .split(',')
-        .map(v => v.trim())
-        .filter(Boolean);
+      result.push(item.boost.trim());
     }
-    return [];
+    if(typeof item.boost2 === 'string' && item.boost2.trim()){
+      result.push(item.boost2.trim());
+    }
+
+    if(Array.isArray(item.boosts) && item.boosts.length){
+      item.boosts.forEach(v => {
+        const text = String(v || '').trim();
+        if(text) result.push(text);
+      });
+    }
+
+    return [...new Set(result)];
   }
 
   function normalizeTypeArray(item){
+    const result = [];
+
+    if(typeof item.type === 'string' && item.type.trim()){
+      result.push(item.type.trim());
+    }
+    if(typeof item.type2 === 'string' && item.type2.trim()){
+      result.push(item.type2.trim());
+    }
+
     if(Array.isArray(item.types) && item.types.length){
-      return item.types.filter(Boolean).map(v => String(v).trim()).filter(Boolean);
+      item.types.forEach(v => {
+        const text = String(v || '').trim();
+        if(text) result.push(text);
+      });
     }
 
-    const fromType1 = typeof item.type === 'string' && item.type.trim() ? [item.type.trim()] : [];
-    const fromType2 = typeof item.type2 === 'string' && item.type2.trim() ? [item.type2.trim()] : [];
-
-    if(fromType1.length || fromType2.length){
-      return [...fromType1, ...fromType2];
-    }
-
-    return [];
+    return [...new Set(result)];
   }
 
-  function getTypeIconPathByValue(value){
-    if(value == null) return '';
-
-    const raw = String(value).trim();
-    if(!raw) return '';
-
-    if (/^\d+$/.test(raw)) {
-      return `./images/icon-${raw}.png`;
-    }
-
-    const typeNumberMap = {
-      '풀': 1,
-      '얼음': 2,
-      '강철': 3,
-      '드래곤': 4,
-      '불': 5,
-      '바위': 6,
-      '물': 7,
-      '전기': 8,
-      '고스트': 9,
-      '격투': 10,
-      '노말': 11,
-      '에스퍼': 12,
-      '땅': 13,
-      '악': 14,
-      '페어리': 15,
-      '비행': 16,
-      '독': 17,
-      '벌레': 18
-    };
-
-    const matched = typeNumberMap[raw];
-    return matched ? `./images/icon-${matched}.png` : '';
+  function getTypeIconPath(typeText, fallbackPath){
+    if(fallbackPath && String(fallbackPath).trim()) return fallbackPath;
+    return '';
   }
 
   function renderTypePills(item){
     const types = normalizeTypeArray(item);
     if(!types.length) return '';
 
+    const icons = [item.typeIcon || '', item.typeIcon2 || ''];
+
     return `
       <div class="type-row">
-        ${types.map(type => {
-          const icon = getTypeIconPathByValue(type);
+        ${types.map((type, idx) => {
+          const icon = getTypeIconPath(type, icons[idx] || '');
           return `
             <span class="type-pill">
               ${icon ? `<img src="${escapeHtml(icon)}" class="type-icon" alt="${escapeHtml(type)}">` : ``}
@@ -842,13 +892,13 @@
     return records
       .filter(item =>
         (isAllowed(item, 'raid-now') || isAllowed(item, 'index')) &&
-        ['1성','3성','5성','메가','그림자'].includes(item.label) &&
+        ['1성','3성','5성','메가'].includes(item.label) &&
         item.startDate &&
         item.endDate &&
         inRange(today, item.startDate, item.endDate)
       )
       .sort((a,b) => {
-        const diff = sortPriority(a.label) - sortPriority(b.label);
+        const diff = sortPriority(a) - sortPriority(b);
         if(diff !== 0) return diff;
         return (a.name || '').localeCompare((b.name || ''), 'ko');
       });
@@ -866,14 +916,25 @@
       btn.addEventListener('click', () => {
         currentFilter = btn.dataset.filter;
         renderFilters();
-        renderRaidGrid();
+        renderRaidSections();
       });
     });
   }
 
-  function getFilteredItems(){
-    if(currentFilter === '전체') return currentItems;
-    return currentItems.filter(item => item.label === currentFilter);
+  function getFilteredNormalItems(){
+    const normalItems = currentItems.filter(item => !item.isShadow);
+
+    if(currentFilter === '전체') return normalItems;
+    if(currentFilter === '그림자') return [];
+    return normalItems.filter(item => item.label === currentFilter);
+  }
+
+  function getFilteredShadowItems(){
+    const shadowItems = currentItems.filter(item => item.isShadow);
+
+    if(currentFilter === '전체') return shadowItems;
+    if(currentFilter === '그림자') return shadowItems;
+    return shadowItems.filter(item => item.label === currentFilter);
   }
 
   function renderBoostPills(item){
@@ -882,8 +943,9 @@
 
     return `
       <div class="boost-row">
-        ${boosts.map(boost => {
-          const icon = resolveBoostIcon(boost, item.boostIcon);
+        ${boosts.map((boost, idx) => {
+          const explicitIcon = idx === 0 ? item.boostIcon : item.boostIcon2;
+          const icon = resolveBoostIcon(boost, explicitIcon);
           return `
             <span class="boost-pill">
               ${icon ? `<img src="${escapeHtml(icon)}" class="boost-icon" alt="${escapeHtml(boost)}">` : ``}
@@ -895,98 +957,105 @@
     `;
   }
 
-  function renderRaidGrid(){
-    const wrap = document.getElementById('raidGrid');
-    const items = getFilteredItems();
+  function buildRaidCard(item, index, todayKey, sectionKey){
+    const shadowTheme = item.isShadow ? 'shadow-theme' : '';
+    const chip = chipClass(item);
+    const cpTableId = `cp-table-${sectionKey}-${index}-${todayKey}`;
+
+    return `
+      <article class="raid-card ${shadowTheme}">
+        <div class="raid-content">
+          <div class="raid-head">
+            <span class="raid-chip ${chip}">${escapeHtml(chipLabel(item))}</span>
+            <div class="raid-period">
+              ${(item.startDate || '').replaceAll('-', '.')}<br>
+              ${(item.endDate || '').replaceAll('-', '.')}
+            </div>
+          </div>
+
+          <div class="raid-main">
+            <div class="raid-thumb">
+              ${
+                item.isShadow
+                  ? `<img src="${escapeHtml(item.shadowBg || 'images/shadow-flame.png')}" class="shadow-flame" alt="">`
+                  : ``
+              }
+              ${
+                item.image
+                  ? `<img src="${escapeHtml(item.image)}" class="pokemon-img" alt="${escapeHtml(item.name || '')}">`
+                  : `<span style="font-size:28px; position:relative; z-index:2;">🖼️</span>`
+              }
+            </div>
+
+            <div>
+              <div class="raid-name">${escapeHtml(item.name || '-')}</div>
+              <div class="raid-desc">
+                ${
+                  item.isShadow
+                    ? '현재 진행 중인 그림자 레이드입니다.'
+                    : '현재 진행 중인 레이드 정보입니다.'
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="info-stack">
+            ${renderTypePills(item)}
+
+            <div class="meta-row">
+              ${
+                (item.cpMin || item.cpMax)
+                  ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
+                  : ``
+              }
+              ${
+                (item.boostedCpMin || item.boostedCpMax)
+                  ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+                  : ``
+              }
+            </div>
+
+            ${renderBoostPills(item)}
+          </div>
+
+          <div class="card-bottom">
+            <div class="action-row">
+              ${
+                item.cpTableImage
+                  ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
+                  : ``
+              }
+            </div>
+          </div>
+
+          ${
+            item.cpTableImage
+              ? `
+                <div class="cp-table-panel" id="${cpTableId}">
+                  <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+                </div>
+              `
+              : ``
+          }
+        </div>
+      </article>
+    `;
+  }
+
+  function renderGrid(targetId, items, sectionKey){
+    const wrap = document.getElementById(targetId);
     const todayKey = toKey(getKoreaToday());
 
     if(!items.length){
-      wrap.innerHTML = `<div class="empty-box">현재 조건에 맞는 진행 중 레이드가 없습니다.</div>`;
+      wrap.innerHTML = `<div class="empty-box">현재 조건에 맞는 레이드가 없습니다.</div>`;
       return;
     }
 
-    wrap.innerHTML = items.map((item, index) => {
-      const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
-      const chip = chipClass(item.label);
-      const cpTableId = `cp-table-${index}-${todayKey}`;
+    wrap.innerHTML = items.map((item, index) => buildRaidCard(item, index, todayKey, sectionKey)).join('');
+  }
 
-      return `
-        <article class="raid-card ${shadowTheme}">
-          <div class="raid-content">
-            <div class="raid-head">
-              <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
-              <div class="raid-period">
-                ${(item.startDate || '').replaceAll('-', '.')}<br>
-                ${(item.endDate || '').replaceAll('-', '.')}
-              </div>
-            </div>
-
-            <div class="raid-main">
-              <div class="raid-thumb">
-                ${
-                  item.image
-                    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
-                    : `<span style="font-size:28px;">🖼️</span>`
-                }
-              </div>
-
-              <div>
-                <div class="raid-name">${escapeHtml(item.name || '-')}</div>
-                <div class="raid-desc">
-                  ${
-                    item.label === '그림자'
-                      ? '현재 진행 중인 그림자 레이드입니다.'
-                      : '현재 진행 중인 레이드 정보입니다.'
-                  }
-                </div>
-              </div>
-            </div>
-
-            <div class="info-stack">
-              ${renderTypePills(item)}
-
-              <div class="meta-row">
-                ${
-                  (item.cpMin || item.cpMax)
-                    ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
-                    : ``
-                }
-                ${
-                  (item.boostedCpMin || item.boostedCpMax)
-                    ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
-                    : ``
-                }
-              </div>
-
-              ${renderBoostPills(item)}
-            </div>
-
-            <div class="card-bottom">
-              <div class="action-row">
-                ${
-                  item.cpTableImage
-                    ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
-                    : ``
-                }
-                <a class="action-btn" href="./detail.html?name=${encodeURIComponent(item.name || '')}&date=${encodeURIComponent(todayKey)}">상세 보기</a>
-              </div>
-            </div>
-
-            ${
-              item.cpTableImage
-                ? `
-                  <div class="cp-table-panel" id="${cpTableId}">
-                    <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
-                  </div>
-                `
-                : ``
-            }
-          </div>
-        </article>
-      `;
-    }).join('');
-
-    wrap.querySelectorAll('[data-cptable-target]').forEach(btn => {
+  function bindCpButtons(){
+    document.querySelectorAll('[data-cptable-target]').forEach(btn => {
       btn.addEventListener('click', () => {
         const panel = document.getElementById(btn.dataset.cptableTarget);
         if(!panel) return;
@@ -997,13 +1066,22 @@
     });
   }
 
+  function renderRaidSections(){
+    const normalItems = getFilteredNormalItems();
+    const shadowItems = getFilteredShadowItems();
+
+    renderGrid('normalRaidGrid', normalItems, 'normal');
+    renderGrid('shadowRaidGrid', shadowItems, 'shadow');
+    bindCpButtons();
+  }
+
   async function init(){
     const today = getKoreaToday();
     const records = await loadRecords();
     currentItems = getTodayRaidItems(records, today);
 
     renderFilters();
-    renderRaidGrid();
+    renderRaidSections();
   }
 
   init();
