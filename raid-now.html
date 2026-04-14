@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pokémon GO Raid Planner | 지금 레이드</title>
+<title>Pokémon GO Raid Planner | 거다이맥스</title>
+<meta name="description" content="거다이맥스 보스 정보, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
 
 <style>
   *{box-sizing:border-box}
@@ -36,8 +37,11 @@
     --green:#49a66b;
     --green-soft:#e7f5eb;
 
-    --gray:#67768f;
-    --gray-soft:#f2f5fa;
+    --orange:#eb7d35;
+    --orange-soft:#fff0e5;
+
+    --red:#d95656;
+    --red-soft:#ffeaea;
 
     --shadow:0 14px 32px rgba(43,67,110,.08);
     --shadow-hover:0 18px 36px rgba(43,67,110,.14);
@@ -55,7 +59,8 @@
     animation:fadeUp .55s ease forwards;
   }
   .delay-1{animation-delay:.05s}
-  .delay-2{animation-delay:.1s}
+  .delay-2{animation-delay:.12s}
+  .delay-3{animation-delay:.18s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -67,37 +72,83 @@
     50%{transform:translateY(-4px)}
   }
 
-  @keyframes pulseRing{
-    0%{box-shadow:0 0 0 0 rgba(83,123,221,.16)}
-    70%{box-shadow:0 0 0 10px rgba(83,123,221,0)}
-    100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
+  .hero{
+    background:linear-gradient(135deg,#ffffff 0%, #eef4ff 100%);
+    border:1px solid var(--line);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:22px 18px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:16px;
   }
 
-  @keyframes smokeFloat{
-    0%{
-      transform:translate(-50%, -50%) scale(1) rotate(0deg);
-      opacity:.62;
-    }
-    25%{
-      transform:translate(-50%, -50%) scale(1.02) rotate(-0.6deg);
-      opacity:.7;
-    }
-    50%{
-      transform:translate(-50%, -50%) scale(1.04) rotate(0.6deg);
-      opacity:.74;
-    }
-    75%{
-      transform:translate(-50%, -50%) scale(1.02) rotate(-0.4deg);
-      opacity:.68;
-    }
-    100%{
-      transform:translate(-50%, -50%) scale(1) rotate(0deg);
-      opacity:.62;
-    }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;
+    top:-40px;
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(124,88,233,.18) 0%, rgba(124,88,233,0) 72%);
+    pointer-events:none;
+  }
+
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:30px;
+    padding:0 12px;
+    border-radius:999px;
+    background:#efe7ff;
+    color:#7c58e9;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:12px;
+  }
+
+  .hero-title{
+    font-size:32px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    line-height:1.05;
+  }
+
+  .hero-sub{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:14px;
+    font-weight:800;
+    line-height:1.6;
+    max-width:760px;
+    word-break:keep-all;
+  }
+
+  .hero-meta{
+    margin-top:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .hero-pill{
+    min-height:34px;
+    padding:0 12px;
+    border-radius:999px;
+    border:1px solid #d7e2f0;
+    background:#fff;
+    color:#597392;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:900;
   }
 
   .section{
-    background:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.92);
     border:1px solid var(--line);
     border-radius:26px;
     box-shadow:var(--shadow);
@@ -125,434 +176,343 @@
     font-size:13px;
     color:var(--muted);
     font-weight:800;
+    line-height:1.5;
   }
 
   .section-body{
     padding:14px;
   }
 
-  .filter-row{
+  .boss-tabs{
     display:flex;
-    flex-wrap:wrap;
-    gap:8px;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:2px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
+  .boss-tabs::-webkit-scrollbar{display:none}
 
-  .filter-btn{
-    min-height:38px;
-    padding:0 14px;
-    border-radius:999px;
-    border:1px solid #d7e2f0;
-    background:#fff;
-    color:#6c7f9f;
-    font-size:12px;
-    font-weight:900;
+  .boss-tab{
+    min-width:132px;
+    border-radius:22px;
+    border:1.5px solid #dce6f4;
+    background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
+    padding:12px;
+    text-align:center;
     cursor:pointer;
-    transition:.15s ease;
-  }
-
-  .filter-btn:hover{
-    transform:translateY(-1px);
-    border-color:#c7d7ec;
-  }
-
-  .filter-btn.active{
-    background:#edf4ff;
-    color:#3567d7;
-    border-color:#cdddf5;
-    animation:pulseRing 1.8s infinite;
-  }
-
-  .raid-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:14px;
-  }
-
-  .group-section + .group-section{
-    margin-top:14px;
-  }
-
-  .group-head{
-    margin-bottom:12px;
-  }
-
-  .group-title{
-    font-size:18px;
-    font-weight:900;
-    letter-spacing:-.03em;
-  }
-
-  .group-sub{
-    margin-top:6px;
-    font-size:12px;
-    color:#7b8ca8;
-    font-weight:800;
-  }
-
-  .raid-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid var(--line);
-    border-radius:24px;
-    padding:18px;
-    position:relative;
-    overflow:hidden;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:340px;
-    display:flex;
-    flex-direction:column;
-  }
-
-  .raid-card::after{
-    content:"";
-    position:absolute;
-    right:-35px;
-    bottom:-35px;
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    background:linear-gradient(135deg, rgba(120,148,255,.14), rgba(123,99,255,.04));
-    pointer-events:none;
-  }
-
-  .raid-card:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--shadow-hover);
-    border-color:#c7d7ec;
-  }
-
-  .raid-card.shadow-theme{
-    background:linear-gradient(180deg,#f3f3f5 0%, #e5e5e9 100%);
-    border-color:#2b2b31;
-    box-shadow:
-      0 14px 30px rgba(0,0,0,.12),
-      inset 0 0 0 1px rgba(255,255,255,.18);
-  }
-
-  .raid-card.shadow-theme::after{
-    right:-18px;
-    bottom:-18px;
-    width:96px;
-    height:96px;
-    background:radial-gradient(circle, rgba(0,0,0,.08) 0%, rgba(0,0,0,0) 68%);
-  }
-
-  .raid-head{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-  }
-
-  .raid-chip{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:30px;
-    padding:0 11px;
-    border-radius:999px;
-    font-size:11px;
-    font-weight:900;
-    line-height:1;
+    transition:.18s ease;
     flex-shrink:0;
   }
 
-  .chip-blue{background:var(--blue-soft);color:var(--blue)}
-  .chip-yellow{background:var(--yellow-soft);color:var(--yellow)}
-  .chip-green{background:var(--green-soft);color:var(--green)}
-  .chip-purple{background:var(--purple-soft);color:var(--purple)}
-  .chip-gray{background:var(--gray-soft);color:var(--gray)}
-  .chip-shadow{
-    background:#e7e7ea;
-    color:#2d3138;
-    border:1px solid #bfc4cc;
+  .boss-tab.active{
+    border-color:#bfd2ef;
+    box-shadow:0 0 0 2px rgba(83,123,221,.12);
+    transform:translateY(-1px);
   }
 
-  .raid-period{
-    font-size:12px;
-    color:#7b8ca8;
-    font-weight:900;
-    text-align:right;
-    line-height:1.35;
-    letter-spacing:-.01em;
-  }
-
-  .raid-card.shadow-theme .raid-period{
-    color:#5f6670;
-    position:relative;
-    z-index:3;
-  }
-
-  .raid-main{
-    display:grid;
-    grid-template-columns:88px 1fr;
-    gap:16px;
-    align-items:center;
-    margin-top:16px;
-  }
-
-  .raid-thumb{
-    width:88px;
-    height:88px;
-    border-radius:22px;
-    background:#f3f7ff;
-    border:1px solid #dce6f5;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    box-shadow:0 10px 24px rgba(43,67,110,.08);
-    animation:softFloat 3.8s ease-in-out infinite;
-    position:relative;
-    isolation:isolate;
-  }
-
-  .raid-card.shadow-theme .raid-thumb{
-    background:linear-gradient(180deg,#efeff2 0%, #dcdce2 100%);
-    border-color:#2d2f35;
-    box-shadow:
-      0 10px 20px rgba(0,0,0,.12),
-      inset 0 1px 0 rgba(255,255,255,.25);
-    overflow:visible;
-  }
-
-  .shadow-flame{
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%, -50%);
-    width:76px;
-    height:76px;
-    object-fit:contain;
-    opacity:.7;
-    pointer-events:none;
-    z-index:1;
-    filter:drop-shadow(0 0 8px rgba(130, 92, 220, .22));
-    animation:smokeFloat 3.8s ease-in-out infinite;
-  }
-
-  .pokemon-img{
-    position:relative;
-    z-index:2;
+  .boss-tab img{
     width:72px;
     height:72px;
     object-fit:contain;
+    display:block;
+    margin:0 auto 8px;
+    animation:softFloat 3.8s ease-in-out infinite;
   }
 
-  .rocket-badge{
-    position:absolute;
-    right:18px;
-    bottom:18px;
-    width:70px;
-    height:70px;
-    object-fit:contain;
-    z-index:2;
-    opacity:.92;
-    filter:drop-shadow(0 3px 6px rgba(0,0,0,.12));
-    pointer-events:none;
+  .boss-tab-name{
+    font-size:15px;
+    font-weight:900;
+    letter-spacing:-.02em;
+    line-height:1.2;
   }
 
-  .raid-name{
-    font-size:24px;
-    line-height:1.12;
+  .boss-tab-sub{
+    margin-top:4px;
+    font-size:11px;
+    color:#7486a3;
+    font-weight:800;
+  }
+
+  .summary-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .summary-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid #dce6f4;
+    border-radius:20px;
+    padding:14px;
+    min-height:96px;
+  }
+
+  .summary-label{
+    font-size:12px;
+    color:#7a8ca8;
+    font-weight:900;
+  }
+
+  .summary-value{
+    margin-top:8px;
+    font-size:18px;
+    line-height:1.3;
     font-weight:900;
     letter-spacing:-.03em;
     word-break:keep-all;
   }
 
-  .raid-desc{
-    margin-top:8px;
-    font-size:13px;
-    color:#7183a0;
-    line-height:1.5;
+  .boss-panel{
+    display:none;
+  }
+
+  .boss-panel.active{
+    display:block;
+    animation:fadeUp .3s ease;
+  }
+
+  .boss-hero{
+    background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
+    border:1.5px solid #dce6f4;
+    border-radius:24px;
+    overflow:hidden;
+  }
+
+  .boss-hero-top{
+    padding:18px 16px 14px;
+    text-align:center;
+    border-bottom:1px solid #e7eef8;
+  }
+
+  .boss-name-ko{
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    line-height:1.2;
+  }
+
+  .boss-name-en{
+    margin-top:4px;
+    font-size:14px;
+    color:#6f81a0;
     font-weight:800;
   }
 
-  .raid-card.shadow-theme .raid-desc{
-    color:#636a74;
-  }
-
-  .raid-content{
+  .boss-hero-image{
+    padding:18px 16px;
     display:flex;
-    flex-direction:column;
-    flex:1;
-    min-height:0;
-  }
-
-  .info-stack{
-    margin-top:16px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .type-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-
-  .type-pill{
-    min-height:36px;
-    padding:0 13px;
-    border-radius:999px;
-    border:1px solid #d9e3f2;
-    background:#fff;
-    display:inline-flex;
-    align-items:center;
     justify-content:center;
-    gap:7px;
-    font-size:12px;
-    font-weight:900;
-    color:#607897;
+    align-items:center;
+    min-height:220px;
+    background:#fbfdff;
   }
 
-  .raid-card.shadow-theme .type-pill,
-  .raid-card.shadow-theme .meta-pill,
-  .raid-card.shadow-theme .boost-pill{
-    background:rgba(255,255,255,.82);
-    border-color:#b8bcc5;
-    color:#464c55;
-  }
-
-  .type-icon{
-    width:18px;
-    height:18px;
+  .boss-hero-image img{
+    max-width:100%;
+    max-height:220px;
     object-fit:contain;
     display:block;
-    flex-shrink:0;
   }
 
-  .meta-row{
+  .boss-info-table{
+    border-top:1px solid #e7eef8;
+  }
+
+  .boss-info-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    border-top:1px solid #f0f4fa;
+  }
+
+  .boss-info-row:first-child{border-top:0}
+
+  .boss-info-cell{
+    min-height:48px;
+    padding:10px 12px;
     display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-
-  .meta-pill{
-    min-height:36px;
-    padding:0 13px;
-    border-radius:999px;
-    border:1px solid #d9e3f2;
-    background:#fff;
-    display:inline-flex;
     align-items:center;
     justify-content:center;
-    font-size:12px;
+    text-align:center;
+    font-size:14px;
     font-weight:900;
-    color:#607897;
+    color:#334863;
   }
 
-  .boost-row{
+  .boss-info-cell.label{
+    background:#faf2f4;
+  }
+
+  .boss-info-wide{
+    border-top:1px solid #f0f4fa;
+    padding:12px 14px;
+    text-align:center;
+  }
+
+  .boss-info-wide.label{
+    background:#faf2f4;
+    font-size:14px;
+    font-weight:900;
+    color:#334863;
+  }
+
+  .boss-info-wide.value{
+    font-size:15px;
+    font-weight:900;
+    color:#334863;
+  }
+
+  .weakness-grid{
+    display:grid;
+    grid-template-columns:120px 80px 1fr;
+    border-top:1px solid #f0f4fa;
+  }
+
+  .weakness-grid > div{
+    min-height:52px;
+    padding:10px 12px;
     display:flex;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-
-  .boost-pill{
-    min-height:36px;
-    padding:0 13px;
-    border-radius:999px;
-    border:1px solid #d9e3f2;
-    background:#fff;
-    display:inline-flex;
     align-items:center;
     justify-content:center;
-    gap:7px;
-    font-size:12px;
+    text-align:center;
+    font-size:14px;
     font-weight:900;
-    color:#607897;
+    color:#334863;
+    border-top:1px solid #f0f4fa;
   }
 
-  .boost-icon{
-    width:16px;
-    height:16px;
-    object-fit:contain;
-    display:block;
-    flex-shrink:0;
+  .weakness-grid > div:nth-child(1),
+  .weakness-grid > div:nth-child(2),
+  .weakness-grid > div:nth-child(3){
+    border-top:0;
   }
 
-  .card-bottom{
-    margin-top:auto;
-    padding-top:14px;
+  .weakness-side{
+    background:#faf2f4;
+    grid-row:span 2;
+  }
+
+  .moves-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .move-card{
+    min-height:86px;
+    border-top:1px solid #f0f4fa;
+    border-right:1px solid #f0f4fa;
     display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:12px;
+  }
+
+  .move-card:nth-child(2n){
+    border-right:0;
+  }
+
+  .move-name{
+    font-size:15px;
+    font-weight:900;
+    line-height:1.2;
+  }
+
+  .move-rank{
+    margin-top:4px;
+    font-size:13px;
+    font-weight:900;
+  }
+
+  .danger{color:#ef4b4b}
+  .normal{color:#ff8a1f}
+  .easy{color:#29b86f}
+
+  .recommend-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
     gap:12px;
   }
 
-  .action-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
+  .role-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid #dce6f4;
+    border-radius:24px;
+    overflow:hidden;
   }
 
-  .action-btn{
-    min-height:38px;
-    padding:0 14px;
-    border-radius:999px;
-    border:1px solid #d7e2f0;
-    background:#fff;
-    color:#597392;
-    font-size:12px;
+  .role-head{
+    padding:16px 14px;
+    border-bottom:1px solid #e8eef8;
+    text-align:center;
+    font-size:18px;
     font-weight:900;
-    cursor:pointer;
-    transition:.16s ease;
-    text-decoration:none;
-    display:inline-flex;
+    letter-spacing:-.03em;
+  }
+
+  .role-list{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .role-item{
+    min-height:82px;
+    padding:10px 12px;
+    border-top:1px solid #eef3fa;
+    display:flex;
     align-items:center;
     justify-content:center;
-  }
-
-  .action-btn:hover{
-    transform:translateY(-1px);
-    border-color:#c7d7ec;
-    box-shadow:0 10px 18px rgba(43,67,110,.07);
-  }
-
-  .action-btn.primary{
-    background:#edf4ff;
-    color:#3567d7;
-    border-color:#cdddf5;
-  }
-
-  .cp-table-panel{
-    margin-top:12px;
-    display:none;
-    padding:14px;
-    border-radius:18px;
-    background:#fbfdff;
-    border:1px dashed #d7e2f1;
-  }
-
-  .cp-table-panel.show{
-    display:block;
-    animation:fadeUp .24s ease forwards;
-  }
-
-  .cp-table-panel img{
-    width:100%;
-    max-width:420px;
-    display:block;
-    margin:0 auto;
-    border-radius:12px;
-    box-shadow:0 10px 24px rgba(43,67,110,.08);
-  }
-
-  .raid-card.shadow-theme .cp-table-panel{
-    background:rgba(255,255,255,.74);
-    border-color:#aeb3be;
-  }
-
-  .empty-box{
-    border:1px dashed #d9e4f2;
-    background:#fbfdff;
-    border-radius:18px;
-    padding:18px 14px;
+    gap:10px;
     text-align:center;
-    color:#97a5ba;
+  }
+
+  .role-item:first-child{border-top:0}
+
+  .role-item img{
+    width:42px;
+    height:42px;
+    object-fit:contain;
+    flex-shrink:0;
+  }
+
+  .role-item-text{
+    line-height:1.25;
+  }
+
+  .role-name{
+    font-size:15px;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .role-skill{
+    margin-top:3px;
     font-size:13px;
+    color:#607897;
     font-weight:800;
+    white-space:pre-line;
+  }
+
+  .tip-box{
+    margin-top:14px;
+    background:#faf4f5;
+    border:1px solid #f0dfe3;
+    border-radius:22px;
+    padding:18px 16px;
+    text-align:center;
+    font-size:15px;
+    line-height:1.7;
+    font-weight:900;
+    color:#314761;
+    word-break:keep-all;
+  }
+
+  .tip-box small{
+    display:block;
+    margin-top:6px;
+    font-size:12px;
+    font-weight:800;
+    color:#6f81a0;
   }
 
   .bottom-nav{
@@ -560,7 +520,7 @@
     left:50%;
     bottom:14px;
     transform:translateX(-50%);
-    width:min(980px, calc(100% - 24px));
+    width:min(1080px, calc(100% - 24px));
     background:rgba(255,255,255,.94);
     border:1px solid var(--line);
     border-radius:24px;
@@ -608,15 +568,18 @@
     line-height:1;
   }
 
-  @media (max-width:980px){
-    .raid-grid{
-      grid-template-columns:1fr;
-    }
-  }
-
   @media (max-width:768px){
     .wrap{
       padding:14px 12px 120px;
+    }
+
+    .hero{
+      padding:20px 16px;
+      border-radius:24px;
+    }
+
+    .hero-title{
+      font-size:28px;
     }
 
     .section-head{
@@ -629,49 +592,140 @@
       padding:12px;
     }
 
-    .raid-card{
-      min-height:auto;
-      padding:16px;
+    .summary-grid{
+      grid-template-columns:1fr 1fr;
+      gap:8px;
     }
 
-    .raid-main{
-      grid-template-columns:72px 1fr;
-      gap:14px;
+    .summary-card{
+      min-height:90px;
+      border-radius:18px;
+      padding:12px;
     }
 
-    .raid-thumb{
-      width:72px;
-      height:72px;
+    .summary-value{
+      font-size:16px;
+    }
+
+    .boss-tabs{
+      gap:8px;
+    }
+
+    .boss-tab{
+      min-width:120px;
+      padding:10px;
       border-radius:18px;
     }
 
-    .shadow-flame{
-      width:62px;
-      height:62px;
+    .boss-tab img{
+      width:64px;
+      height:64px;
     }
 
-    .pokemon-img{
-      width:58px;
-      height:58px;
+    .boss-hero{
+      border-radius:20px;
     }
 
-    .rocket-badge{
-      right:14px;
-      bottom:14px;
-      width:55px;
-      height:55px;
+    .boss-hero-image{
+      min-height:180px;
+      padding:14px 12px;
     }
 
-    .raid-name{
-      font-size:21px;
+    .boss-hero-image img{
+      max-height:180px;
     }
 
-    .card-bottom{
-      align-items:flex-start;
+    .boss-info-cell,
+    .boss-info-wide.value,
+    .boss-info-wide.label{
+      font-size:13px;
     }
 
-    .raid-period{
+    .weakness-grid{
+      grid-template-columns:92px 68px 1fr;
+    }
+
+    .weakness-grid > div{
+      font-size:13px;
+      padding:9px 8px;
+    }
+
+    .moves-grid{
+      grid-template-columns:1fr 1fr;
+    }
+
+    .move-card{
+      min-height:78px;
+      padding:10px;
+    }
+
+    .move-name{
+      font-size:14px;
+    }
+
+    .move-rank{
+      font-size:12px;
+    }
+
+    .recommend-grid{
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .role-card{
+      border-radius:20px;
+    }
+
+    .role-head{
+      font-size:16px;
+      padding:14px 12px;
+    }
+
+    .role-item{
+      min-height:76px;
+      padding:10px 8px;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .role-item img{
+      width:38px;
+      height:38px;
+    }
+
+    .role-name{
+      font-size:14px;
+    }
+
+    .role-skill{
+      font-size:12px;
+    }
+
+    .tip-box{
+      border-radius:18px;
+      padding:16px 14px;
+      font-size:14px;
+    }
+
+    .bottom-nav{
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      padding:8px;
+    }
+
+    .nav-item{
+      min-height:60px;
       font-size:11px;
+    }
+  }
+
+  @media (max-width:420px){
+    .summary-grid{
+      grid-template-columns:1fr;
+    }
+
+    .recommend-grid{
+      grid-template-columns:1fr 1fr;
     }
   }
 
@@ -687,41 +741,626 @@
 <body>
 <div class="wrap">
 
-  <section class="section fade-up">
-    <div class="section-head">
-      <div>
-        <div class="section-title">레이드 타입 필터</div>
-        <div class="section-sub">원하는 타입만 골라서 볼 수 있습니다</div>
-      </div>
+  <section class="hero fade-up">
+    <div class="hero-badge">⚡ 거다이맥스 전용 페이지</div>
+    <div class="hero-title">거다이맥스 배틀</div>
+    <div class="hero-sub">
+      진행 중인 거다이맥스 보스의 약점, 추천 포켓몬, 위험 기술, 역할 구성을 모바일에서 빠르게 확인할 수 있게 정리했습니다.
     </div>
-    <div class="section-body">
-      <div class="filter-row" id="filterRow"></div>
+    <div class="hero-meta">
+      <div class="hero-pill">이번 버전: 거다이맥스만 우선 정리</div>
+      <div class="hero-pill">리자몽 · 이상해꽃 · 거북왕 · 팬텀</div>
+      <div class="hero-pill">추후 다이맥스 추가 가능</div>
     </div>
   </section>
 
   <section class="section fade-up delay-1">
     <div class="section-head">
       <div>
-        <div class="section-title">진행 중인 레이드</div>
-        <div class="section-sub">오늘날짜 기반 자동 업데이트 됩니다</div>
+        <div class="section-title">빠른 요약</div>
+        <div class="section-sub">모바일에서 먼저 봐야 하는 핵심만 짧게 정리했습니다</div>
       </div>
     </div>
     <div class="section-body">
-      <div class="group-section">
-        <div class="group-head">
-          <div class="group-title">일반 레이드</div>
-          <div class="group-sub"></div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-label">추천 역할</div>
+          <div class="summary-value">탱커 1 · 어태커 3</div>
         </div>
-        <div class="raid-grid" id="normalRaidGrid"></div>
+        <div class="summary-card">
+          <div class="summary-label">우선순위</div>
+          <div class="summary-value">거다이맥스 가능하면 우선 사용</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">공통 팁</div>
+          <div class="summary-value">약점 타입과 위험 기술 먼저 확인</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">페이지 구성</div>
+          <div class="summary-value">보스 선택 → 상세 공략 → 추천 포켓몬</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fade-up delay-2">
+    <div class="section-head">
+      <div>
+        <div class="section-title">거다이맥스 보스 선택</div>
+        <div class="section-sub">상단 보스를 누르면 아래 상세 공략이 바뀝니다</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="boss-tabs">
+        <button class="boss-tab active" data-boss="charizard">
+          <img src="./images/max/charizard.png" alt="거다이맥스 리자몽">
+          <div class="boss-tab-name">리자몽</div>
+          <div class="boss-tab-sub">불꽃 · 비행</div>
+        </button>
+
+        <button class="boss-tab" data-boss="venusaur">
+          <img src="./images/max/venusaur.png" alt="거다이맥스 이상해꽃">
+          <div class="boss-tab-name">이상해꽃</div>
+          <div class="boss-tab-sub">풀 · 독</div>
+        </button>
+
+        <button class="boss-tab" data-boss="blastoise">
+          <img src="./images/max/blastoise.png" alt="거다이맥스 거북왕">
+          <div class="boss-tab-name">거북왕</div>
+          <div class="boss-tab-sub">물</div>
+        </button>
+
+        <button class="boss-tab" data-boss="gengar">
+          <img src="./images/max/gengar.png" alt="거다이맥스 팬텀">
+          <div class="boss-tab-name">팬텀</div>
+          <div class="boss-tab-sub">고스트 · 독</div>
+        </button>
       </div>
 
-      <div class="group-section">
-        <div class="group-head">
-          <div class="group-title">그림자 레이드</div>
-          <div class="group-sub">/div>
-        </div>
-        <div class="raid-grid" id="shadowRaidGrid"></div>
+    </div>
+  </section>
+
+  <section class="section fade-up delay-3">
+    <div class="section-head">
+      <div>
+        <div class="section-title">보스 상세 공략</div>
+        <div class="section-sub">모바일 기준으로 핵심 정보부터 먼저 보이게 구성했습니다</div>
       </div>
+    </div>
+
+    <div class="section-body">
+
+      <!-- 리자몽 -->
+      <div class="boss-panel active" id="boss-charizard">
+        <div class="boss-hero">
+          <div class="boss-hero-top">
+            <div class="boss-name-ko">거다이맥스 리자몽</div>
+            <div class="boss-name-en">Gigantamax Charizard</div>
+          </div>
+          <div class="boss-hero-image">
+            <img src="./images/max/charizard.png" alt="거다이맥스 리자몽">
+          </div>
+
+          <div class="boss-info-table">
+            <div class="boss-info-row">
+              <div class="boss-info-cell label">색이 다른 모습</div>
+              <div class="boss-info-cell">✨ 7.5%</div>
+            </div>
+
+            <div class="boss-info-wide label">타입</div>
+            <div class="boss-info-wide value">🔥 불꽃, 🪽 비행</div>
+
+            <div class="weakness-grid">
+              <div class="weakness-side">상성</div>
+              <div>2.56x</div>
+              <div>🪨 바위</div>
+              <div>1.6x</div>
+              <div>⚡ 전기, 💧 물</div>
+            </div>
+
+            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
+            <div class="moves-grid">
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🔥 블라스트번</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🔥 오버히트</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🔥 화염방사</div>
+                  <div class="move-rank normal">어려움</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🔥 불대문자</div>
+                  <div class="move-rank easy">보통</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🐉 드래곤클로</div>
+                  <div class="move-rank easy">쉬움</div>
+                </div>
+              </div>
+              <div class="move-card"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="recommend-grid">
+          <div class="role-card">
+            <div class="role-head">탱크 · 백업</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/blastoise-small.png" alt="거북왕">
+                <div class="role-item-text">
+                  <div class="role-name">거북왕</div>
+                  <div class="role-skill">물대포</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/moltres-small.png" alt="파이어">
+                <div class="role-item-text">
+                  <div class="role-name">파이어</div>
+                  <div class="role-skill">날개치기</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-card">
+            <div class="role-head">어태커</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/kingler-small.png" alt="거다이맥스 킹크랩">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 킹크랩</div>
+                  <div class="role-skill">집게해머</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/toxtricity-small.png" alt="거다이맥스 스트린더">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 스트린더</div>
+                  <div class="role-skill">와일드볼트</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/inteleon-small.png" alt="인텔리레온">
+                <div class="role-item-text">
+                  <div class="role-name">인텔리레온</div>
+                  <div class="role-skill">물대포</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/zapdos-small.png" alt="썬더">
+                <div class="role-item-text">
+                  <div class="role-name">썬더</div>
+                  <div class="role-skill">차지빔</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          바위가 가장 강력하고, 물 / 전기 딜러도 안정적입니다. 거다이맥스 기술 1레벨이 다이맥스 기술 3레벨 수준이라면 거다이맥스 포켓몬 우선 사용이 좋습니다.
+          <small>다이월, 다이리커버리 최대 레벨 / 어태커는 다이어택, 다이월 최대 레벨 추천</small>
+        </div>
+      </div>
+
+      <!-- 이상해꽃 -->
+      <div class="boss-panel" id="boss-venusaur">
+        <div class="boss-hero">
+          <div class="boss-hero-top">
+            <div class="boss-name-ko">거다이맥스 이상해꽃</div>
+            <div class="boss-name-en">Gigantamax Venusaur</div>
+          </div>
+          <div class="boss-hero-image">
+            <img src="./images/max/venusaur.png" alt="거다이맥스 이상해꽃">
+          </div>
+
+          <div class="boss-info-table">
+            <div class="boss-info-row">
+              <div class="boss-info-cell label">색이 다른 모습</div>
+              <div class="boss-info-cell">✨ 7.5%</div>
+            </div>
+
+            <div class="boss-info-wide label">타입</div>
+            <div class="boss-info-wide value">🌿 풀, ☠️ 독</div>
+
+            <div class="weakness-grid">
+              <div class="weakness-side">상성</div>
+              <div>1.6x</div>
+              <div>🪽 비행, 🔥 불꽃, ❄️ 얼음, 🔮 에스퍼</div>
+              <div></div>
+              <div></div>
+            </div>
+
+            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
+            <div class="moves-grid">
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🌿 하드플랜트</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🌿 솔라빔</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🌿 꽃보라</div>
+                  <div class="move-rank easy">쉬움</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">☠️ 오물폭탄</div>
+                  <div class="move-rank normal">보통</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="recommend-grid">
+          <div class="role-card">
+            <div class="role-head">탱크 · 백업</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/charizard-small.png" alt="리자몽">
+                <div class="role-item-text">
+                  <div class="role-name">리자몽</div>
+                  <div class="role-skill">용의숨결 / (0.5초)</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/moltres-small.png" alt="파이어">
+                <div class="role-item-text">
+                  <div class="role-name">파이어</div>
+                  <div class="role-skill">회오리불꽃 / 날개치기</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/metagross-small.png" alt="메타그로스">
+                <div class="role-item-text">
+                  <div class="role-name">메타그로스</div>
+                  <div class="role-skill">사념의박치기</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-card">
+            <div class="role-head">어태커</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/charizard-small.png" alt="거다이맥스 리자몽">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 리자몽</div>
+                  <div class="role-skill">회오리불꽃</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/moltres-small.png" alt="파이어">
+                <div class="role-item-text">
+                  <div class="role-name">파이어</div>
+                  <div class="role-skill">회오리불꽃 / 날개치기</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/metagross-small.png" alt="메타그로스">
+                <div class="role-item-text">
+                  <div class="role-name">메타그로스</div>
+                  <div class="role-skill">사념의박치기</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/zapdos-small.png" alt="썬더">
+                <div class="role-item-text">
+                  <div class="role-name">썬더</div>
+                  <div class="role-skill">차지빔 / 전기쇼크*</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          비행 / 불꽃 / 얼음 / 에스퍼 약점입니다. 리자몽과 파이어 계열이 안정적이며, 거다이맥스 사용 가능 시 우선 채용이 좋습니다.
+          <small>오물폭탄 패턴에 약한 포켓몬은 주의하세요</small>
+        </div>
+      </div>
+
+      <!-- 거북왕 -->
+      <div class="boss-panel" id="boss-blastoise">
+        <div class="boss-hero">
+          <div class="boss-hero-top">
+            <div class="boss-name-ko">거다이맥스 거북왕</div>
+            <div class="boss-name-en">Gigantamax Blastoise</div>
+          </div>
+          <div class="boss-hero-image">
+            <img src="./images/max/blastoise.png" alt="거다이맥스 거북왕">
+          </div>
+
+          <div class="boss-info-table">
+            <div class="boss-info-row">
+              <div class="boss-info-cell label">색이 다른 모습</div>
+              <div class="boss-info-cell">✨ 7.5%</div>
+            </div>
+
+            <div class="boss-info-wide label">타입</div>
+            <div class="boss-info-wide value">💧 물</div>
+
+            <div class="weakness-grid">
+              <div class="weakness-side">상성</div>
+              <div>1.6x</div>
+              <div>⚡ 전기, 🌿 풀</div>
+              <div></div>
+              <div></div>
+            </div>
+
+            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
+            <div class="moves-grid">
+              <div class="move-card">
+                <div>
+                  <div class="move-name">💧 하이드로캐논</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">💧 하이드로펌프</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">❄️ 냉동빔</div>
+                  <div class="move-rank normal">보통</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">⚙️ 로켓박치기</div>
+                  <div class="move-rank normal">보통</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🔩 러스터캐논</div>
+                  <div class="move-rank easy">쉬움</div>
+                </div>
+              </div>
+              <div class="move-card"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="recommend-grid">
+          <div class="role-card">
+            <div class="role-head">탱크 · 백업</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/blastoise-small.png" alt="거북왕">
+                <div class="role-item-text">
+                  <div class="role-name">거북왕</div>
+                  <div class="role-skill">물대포 / 물기</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/lapras-small.png" alt="라프라스">
+                <div class="role-item-text">
+                  <div class="role-name">라프라스</div>
+                  <div class="role-skill">사이코웨이브</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/metagross-small.png" alt="메타그로스">
+                <div class="role-item-text">
+                  <div class="role-name">메타그로스</div>
+                  <div class="role-skill">불릿펀치</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-card">
+            <div class="role-head">어태커</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/toxtricity-small.png" alt="거다이맥스 스트린더">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 스트린더</div>
+                  <div class="role-skill">전기 딜러</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/venusaur-small.png" alt="거다이맥스 이상해꽃">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 이상해꽃</div>
+                  <div class="role-skill">풀 딜러</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/zapdos-small.png" alt="썬더">
+                <div class="role-item-text">
+                  <div class="role-name">썬더</div>
+                  <div class="role-skill">차지빔 / 전기쇼크*</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/raikou-small.png" alt="라이코">
+                <div class="role-item-text">
+                  <div class="role-name">라이코</div>
+                  <div class="role-skill">전기쇼크 / 볼트체인지</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          전기와 풀이 핵심 약점입니다. 스트린더 / 이상해꽃 / 썬더 / 라이코 축이 가장 직관적이며, 하이드로캐논과 하이드로펌프 패턴은 우선 주의하세요.
+          <small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>
+        </div>
+      </div>
+
+      <!-- 팬텀 -->
+      <div class="boss-panel" id="boss-gengar">
+        <div class="boss-hero">
+          <div class="boss-hero-top">
+            <div class="boss-name-ko">거다이맥스 팬텀</div>
+            <div class="boss-name-en">Gigantamax Gengar</div>
+          </div>
+          <div class="boss-hero-image">
+            <img src="./images/max/gengar.png" alt="거다이맥스 팬텀">
+          </div>
+
+          <div class="boss-info-table">
+            <div class="boss-info-row">
+              <div class="boss-info-cell label">색이 다른 모습</div>
+              <div class="boss-info-cell">✨ 7.5%</div>
+            </div>
+
+            <div class="boss-info-wide label">타입</div>
+            <div class="boss-info-wide value">👻 고스트, ☠️ 독</div>
+
+            <div class="weakness-grid">
+              <div class="weakness-side">상성</div>
+              <div>1.6x</div>
+              <div>🪨 땅, 👻 고스트, 🌑 악, 🔮 에스퍼</div>
+              <div></div>
+              <div></div>
+            </div>
+
+            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
+            <div class="moves-grid">
+              <div class="move-card">
+                <div>
+                  <div class="move-name">👻 섀도볼</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">☠️ 오물폭탄</div>
+                  <div class="move-rank normal">보통</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">🥊 기합구슬</div>
+                  <div class="move-rank danger">위험</div>
+                </div>
+              </div>
+              <div class="move-card">
+                <div>
+                  <div class="move-name">👻 병상첨병</div>
+                  <div class="move-rank normal">보통</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="recommend-grid">
+          <div class="role-card">
+            <div class="role-head">탱크 · 백업</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/blastoise-small.png" alt="거다이맥스 거북왕">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 거북왕</div>
+                  <div class="role-skill">물대포 / 물기</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/venusaur-small.png" alt="거다이맥스 이상해꽃">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 이상해꽃</div>
+                  <div class="role-skill">덤굴채찍 / 오물폭탄</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/metagross-small.png" alt="메타그로스">
+                <div class="role-item-text">
+                  <div class="role-name">메타그로스</div>
+                  <div class="role-skill">사념의박치기</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/lapras-small.png" alt="라프라스">
+                <div class="role-item-text">
+                  <div class="role-name">라프라스</div>
+                  <div class="role-skill">사이코웨이브</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-card">
+            <div class="role-head">어태커</div>
+            <div class="role-list">
+              <div class="role-item">
+                <img src="./images/max/gengar-small.png" alt="거다이맥스 팬텀">
+                <div class="role-item-text">
+                  <div class="role-name">거다이맥스 팬텀</div>
+                  <div class="role-skill">고스트 미러 딜러</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/zapdos-small.png" alt="썬더">
+                <div class="role-item-text">
+                  <div class="role-name">썬더</div>
+                  <div class="role-skill">차지빔 / 전기쇼크</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/raikou-small.png" alt="라이코">
+                <div class="role-item-text">
+                  <div class="role-name">라이코</div>
+                  <div class="role-skill">전기쇼크 / 볼트체인지</div>
+                </div>
+              </div>
+              <div class="role-item">
+                <img src="./images/max/rillaboom-small.png" alt="고릴타">
+                <div class="role-item-text">
+                  <div class="role-name">고릴타</div>
+                  <div class="role-skill">잎날가르기</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          팬텀은 고스트 / 악 / 땅 / 에스퍼 약점이 핵심이며, 섀도볼과 기합구슬 패턴은 특히 주의가 필요합니다. 거다이맥스 팬텀이 가능하면 우선 채용하세요.
+          <small>탱커 1 + 딜러 3 구성이 안정적이며, 회피가 매우 중요합니다.</small>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -733,8 +1372,8 @@
     <div>메인</div>
   </a>
   <a href="./raid-now.html" class="nav-item active">
-    <div class="nav-icon">⚔️</div>
-    <div>지금 레이드</div>
+    <div class="nav-icon">⚡</div>
+    <div>거다이맥스</div>
   </a>
   <a href="./weekly.html" class="nav-item">
     <div class="nav-icon">🗓️</div>
@@ -746,6 +1385,21 @@
   </a>
 </nav>
 
-<script type="module" src="./js/raid-now.js"></script>
+<script>
+  const tabs = document.querySelectorAll('.boss-tab');
+  const panels = document.querySelectorAll('.boss-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.boss;
+
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(`boss-${target}`).classList.add('active');
+    });
+  });
+</script>
 </body>
 </html>
