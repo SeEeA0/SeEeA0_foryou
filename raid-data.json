@@ -601,7 +601,7 @@
       "showPages": ["index", "raid-now", "weekly"]
     },
     {
-      "name": "미뇽",
+      "name": "그림자 미뇽",
       "label": "1성",
       "isShadow": true,
       "shadowBg": "images/shadow-flame.png",
@@ -625,7 +625,7 @@
       "showPages": ["raid-now"]
     },
     {
-      "name": "글라이거",
+      "name": "그림자 글라이거",
       "label": "1성",
       "isShadow": true,
       "shadowBg": "images/shadow-flame.png",
@@ -649,7 +649,7 @@
       "showPages": ["raid-now"]
     },
     {
-      "name": "선인왕",
+      "name": "그림자 선인왕",
       "label": "1성",
       "isShadow": true,
       "shadowBg": "images/shadow-flame.png",
@@ -673,7 +673,7 @@
       "showPages": ["raid-now"]
     },
     {
-      "name": "전지충이",
+      "name": "그림자 전지충이",
       "label": "1성",
       "isShadow": true,
       "shadowBg": "images/shadow-flame.png",
