@@ -72,42 +72,6 @@
     100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
   }
 
-  @keyframes shadowGlow{
-    0%,100%{
-      box-shadow:
-        0 16px 34px rgba(98,67,168,.18),
-        0 0 0 0 rgba(124,88,233,.18);
-    }
-    50%{
-      box-shadow:
-        0 18px 38px rgba(98,67,168,.24),
-        0 0 0 8px rgba(124,88,233,.08);
-    }
-  }
-
-  @keyframes smokeFloat{
-    0%{
-      transform:translateX(-50%) scale(1) rotate(0deg);
-      opacity:.72;
-    }
-    25%{
-      transform:translateX(-50%) scale(1.03) rotate(-1deg);
-      opacity:.88;
-    }
-    50%{
-      transform:translateX(-50%) scale(1.06) rotate(1deg);
-      opacity:.96;
-    }
-    75%{
-      transform:translateX(-50%) scale(1.03) rotate(-.6deg);
-      opacity:.84;
-    }
-    100%{
-      transform:translateX(-50%) scale(1) rotate(0deg);
-      opacity:.72;
-    }
-  }
-
   .section{
     background:rgba(255,255,255,.9);
     border:1px solid var(--line);
@@ -212,13 +176,15 @@
   }
 
   .raid-card.shadow-theme{
-    background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
-    border-color:#d7c8ff;
-    animation:shadowGlow 2.2s ease-in-out infinite;
+    background:linear-gradient(180deg,#f3f3f5 0%, #e5e5e9 100%);
+    border-color:#2b2b31;
+    box-shadow:
+      0 14px 30px rgba(0,0,0,.12),
+      inset 0 0 0 1px rgba(255,255,255,.18);
   }
 
   .raid-card.shadow-theme::after{
-    background:radial-gradient(circle, rgba(124,88,233,.26) 0%, rgba(124,88,233,0) 68%);
+    background:radial-gradient(circle, rgba(0,0,0,.14) 0%, rgba(0,0,0,0) 68%);
   }
 
   .raid-head{
@@ -247,6 +213,11 @@
   .chip-purple{background:var(--purple-soft);color:var(--purple)}
   .chip-pink{background:var(--pink-soft);color:var(--pink)}
   .chip-gray{background:var(--gray-soft);color:var(--gray)}
+  .chip-shadow{
+    background:#e7e7ea;
+    color:#2d3138;
+    border:1px solid #bfc4cc;
+  }
 
   .raid-period{
     font-size:12px;
@@ -255,6 +226,10 @@
     text-align:right;
     line-height:1.35;
     letter-spacing:-.01em;
+  }
+
+  .raid-card.shadow-theme .raid-period{
+    color:#5f6670;
   }
 
   .raid-main{
@@ -274,7 +249,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:visible;
+    overflow:hidden;
     box-shadow:0 10px 24px rgba(43,67,110,.08);
     animation:softFloat 3.8s ease-in-out infinite;
     position:relative;
@@ -282,26 +257,11 @@
   }
 
   .raid-card.shadow-theme .raid-thumb{
-    background:#f4eeff;
-    border-color:#d8ccff;
+    background:linear-gradient(180deg,#efeff2 0%, #dcdce2 100%);
+    border-color:#2d2f35;
     box-shadow:
-      0 12px 28px rgba(98,67,168,.2),
-      0 0 18px rgba(124,88,233,.15);
-  }
-
-  .shadow-flame{
-    position:absolute;
-    left:50%;
-    top:6px;
-    transform:translateX(-50%);
-    width:84px;
-    height:98px;
-    object-fit:contain;
-    opacity:.88;
-    pointer-events:none;
-    z-index:1;
-    animation:smokeFloat 3.8s ease-in-out infinite;
-    filter:drop-shadow(0 0 8px rgba(124,88,233,.22));
+      0 10px 20px rgba(0,0,0,.12),
+      inset 0 1px 0 rgba(255,255,255,.25);
   }
 
   .pokemon-img{
@@ -310,6 +270,22 @@
     width:72px;
     height:72px;
     object-fit:contain;
+  }
+
+  .rocket-badge{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:26px;
+    height:26px;
+    object-fit:contain;
+    z-index:3;
+    opacity:.95;
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));
+  }
+
+  .raid-card.shadow-theme .raid-head{
+    padding-right:34px;
   }
 
   .raid-name{
@@ -326,6 +302,10 @@
     color:#7183a0;
     line-height:1.5;
     font-weight:800;
+  }
+
+  .raid-card.shadow-theme .raid-desc{
+    color:#636a74;
   }
 
   .raid-content{
@@ -363,9 +343,12 @@
     color:#607897;
   }
 
-  .raid-card.shadow-theme .type-pill{
-    background:rgba(255,255,255,.84);
-    border-color:#ddcffd;
+  .raid-card.shadow-theme .type-pill,
+  .raid-card.shadow-theme .meta-pill,
+  .raid-card.shadow-theme .boost-pill{
+    background:rgba(255,255,255,.82);
+    border-color:#b8bcc5;
+    color:#464c55;
   }
 
   .type-icon{
@@ -396,11 +379,6 @@
     color:#607897;
   }
 
-  .raid-card.shadow-theme .meta-pill{
-    background:rgba(255,255,255,.84);
-    border-color:#ddcffd;
-  }
-
   .boost-row{
     display:flex;
     align-items:center;
@@ -421,11 +399,6 @@
     font-size:12px;
     font-weight:900;
     color:#607897;
-  }
-
-  .raid-card.shadow-theme .boost-pill{
-    background:rgba(255,255,255,.84);
-    border-color:#ddcffd;
   }
 
   .boost-icon{
@@ -505,7 +478,7 @@
 
   .raid-card.shadow-theme .cp-table-panel{
     background:rgba(255,255,255,.74);
-    border-color:#dacdfa;
+    border-color:#aeb3be;
   }
 
   .empty-box{
@@ -609,15 +582,16 @@
       border-radius:18px;
     }
 
-    .shadow-flame{
-      width:68px;
-      height:82px;
-      top:4px;
-    }
-
     .pokemon-img{
       width:58px;
       height:58px;
+    }
+
+    .rocket-badge{
+      width:22px;
+      height:22px;
+      top:12px;
+      right:12px;
     }
 
     .raid-name{
@@ -661,7 +635,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">일반 레이드</div>
-        <div class="section-sub">현재 진행 중인 일반 레이드 보스입니다</div>
+        <div class="section-sub"></div>
       </div>
     </div>
     <div class="section-body">
@@ -673,7 +647,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">그림자 레이드</div>
-        <div class="section-sub">보라 연기 배경이 적용된 그림자 레이드 보스입니다</div>
+        <div class="section-sub"></div>
       </div>
     </div>
     <div class="section-body">
@@ -704,6 +678,7 @@
 
 <script>
   const DATA_URL = './raid-data.json';
+  const ROCKET_ICON = './images/rocket-r.png';
 
   const FILTERS = ['전체', '5성', '3성', '1성', '메가', '그림자'];
   let currentFilter = '전체';
@@ -806,7 +781,7 @@
   }
 
   function chipClass(item){
-    if(item.isShadow) return 'chip-pink';
+    if(item.isShadow) return 'chip-shadow';
     if(item.label === '5성') return 'chip-blue';
     if(item.label === '3성') return 'chip-yellow';
     if(item.label === '1성') return 'chip-green';
@@ -967,6 +942,11 @@
 
     return `
       <article class="raid-card ${shadowTheme}">
+        ${
+          item.isShadow
+            ? `<img src="${escapeHtml(ROCKET_ICON)}" class="rocket-badge" alt="로켓단">`
+            : ``
+        }
         <div class="raid-content">
           <div class="raid-head">
             <span class="raid-chip ${chip}">${escapeHtml(chipLabel(item))}</span>
@@ -978,11 +958,6 @@
 
           <div class="raid-main">
             <div class="raid-thumb">
-              ${
-                item.isShadow
-                  ? `<img src="${escapeHtml(item.shadowBg || 'images/shadow-flame.png')}" class="shadow-flame" alt="">`
-                  : ``
-              }
               ${
                 item.image
                   ? `<img src="${escapeHtml(item.image)}" class="pokemon-img" alt="${escapeHtml(item.name || '')}">`
