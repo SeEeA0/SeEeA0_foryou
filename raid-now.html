@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pokémon GO Raid Planner | 거다이맥스</title>
-<meta name="description" content="거다이맥스 보스 정보, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
+<meta name="description" content="Replay: GO Bigger 거다이맥스 보스 정보, 이벤트 보너스, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
 
 <style>
   *{box-sizing:border-box}
@@ -61,6 +61,7 @@
   .delay-1{animation-delay:.05s}
   .delay-2{animation-delay:.12s}
   .delay-3{animation-delay:.18s}
+  .delay-4{animation-delay:.24s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -183,6 +184,35 @@
     padding:14px;
   }
 
+  .bonus-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .bonus-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid #dce6f4;
+    border-radius:20px;
+    padding:14px;
+    min-height:88px;
+  }
+
+  .bonus-label{
+    font-size:12px;
+    color:#7a8ca8;
+    font-weight:900;
+  }
+
+  .bonus-value{
+    margin-top:8px;
+    font-size:16px;
+    line-height:1.45;
+    font-weight:900;
+    letter-spacing:-.02em;
+    word-break:keep-all;
+  }
+
   .boss-tabs{
     display:flex;
     gap:10px;
@@ -203,6 +233,12 @@
     cursor:pointer;
     transition:.18s ease;
     flex-shrink:0;
+    box-shadow:0 8px 20px rgba(43,67,110,.05);
+  }
+
+  .boss-tab:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-hover);
   }
 
   .boss-tab.active{
@@ -232,35 +268,6 @@
     font-size:11px;
     color:#7486a3;
     font-weight:800;
-  }
-
-  .summary-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .summary-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid #dce6f4;
-    border-radius:20px;
-    padding:14px;
-    min-height:96px;
-  }
-
-  .summary-label{
-    font-size:12px;
-    color:#7a8ca8;
-    font-weight:900;
-  }
-
-  .summary-value{
-    margin-top:8px;
-    font-size:18px;
-    line-height:1.3;
-    font-weight:900;
-    letter-spacing:-.03em;
-    word-break:keep-all;
   }
 
   .boss-panel{
@@ -432,6 +439,7 @@
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:12px;
+    margin-top:14px;
   }
 
   .role-card{
@@ -515,6 +523,23 @@
     color:#6f81a0;
   }
 
+  .event-points{
+    margin-top:14px;
+    display:grid;
+    gap:8px;
+  }
+
+  .event-point{
+    padding:12px 14px;
+    border-radius:16px;
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    font-size:13px;
+    font-weight:800;
+    color:#33465f;
+    line-height:1.45;
+  }
+
   .bottom-nav{
     position:fixed;
     left:50%;
@@ -592,19 +617,19 @@
       padding:12px;
     }
 
-    .summary-grid{
+    .bonus-grid{
       grid-template-columns:1fr 1fr;
       gap:8px;
     }
 
-    .summary-card{
+    .bonus-card{
       min-height:90px;
       border-radius:18px;
       padding:12px;
     }
 
-    .summary-value{
-      font-size:16px;
+    .bonus-value{
+      font-size:15px;
     }
 
     .boss-tabs{
@@ -720,12 +745,8 @@
   }
 
   @media (max-width:420px){
-    .summary-grid{
+    .bonus-grid{
       grid-template-columns:1fr;
-    }
-
-    .recommend-grid{
-      grid-template-columns:1fr 1fr;
     }
   }
 
@@ -742,43 +763,49 @@
 <div class="wrap">
 
   <section class="hero fade-up">
-    <div class="hero-badge">⚡ 거다이맥스 전용 페이지</div>
+    <div class="hero-badge">⚡ Replay: GO Bigger</div>
     <div class="hero-title">거다이맥스 배틀</div>
     <div class="hero-sub">
-      진행 중인 거다이맥스 보스의 약점, 추천 포켓몬, 위험 기술, 역할 구성을 모바일에서 빠르게 확인할 수 있게 정리했습니다.
+      Replay: GO Bigger 이벤트 기준으로 거다이맥스 보스 4종의 약점, 위험 기술, 추천 포켓몬, 공략 포인트를 모바일에서 빠르게 볼 수 있게 정리했습니다.
     </div>
     <div class="hero-meta">
-      <div class="hero-pill">이번 버전: 거다이맥스만 우선 정리</div>
-      <div class="hero-pill">리자몽 · 이상해꽃 · 거북왕 · 팬텀</div>
-      <div class="hero-pill">추후 다이맥스 추가 가능</div>
+      <div class="hero-pill">현지 시간 4/25 14:00 ~ 17:00</div>
+      <div class="hero-pill">거다이맥스 이상해꽃 · 리자몽 · 거북왕 · 팬텀</div>
+      <div class="hero-pill">모든 파워스폿 거다이맥스 배틀</div>
     </div>
   </section>
 
   <section class="section fade-up delay-1">
     <div class="section-head">
       <div>
-        <div class="section-title">빠른 요약</div>
-        <div class="section-sub">모바일에서 먼저 봐야 하는 핵심만 짧게 정리했습니다</div>
+        <div class="section-title">이벤트 핵심 정보</div>
+        <div class="section-sub">보너스와 진행 포인트를 먼저 확인하세요</div>
       </div>
     </div>
     <div class="section-body">
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="summary-label">추천 역할</div>
-          <div class="summary-value">탱커 1 · 어태커 3</div>
+      <div class="bonus-grid">
+        <div class="bonus-card">
+          <div class="bonus-label">맥스 파티클</div>
+          <div class="bonus-value">수집 한도 1,600</div>
         </div>
-        <div class="summary-card">
-          <div class="summary-label">우선순위</div>
-          <div class="summary-value">거다이맥스 가능하면 우선 사용</div>
+        <div class="bonus-card">
+          <div class="bonus-label">파워스폿</div>
+          <div class="bonus-value">모든 파워스폿에서 거다이맥스 배틀</div>
         </div>
-        <div class="summary-card">
-          <div class="summary-label">공통 팁</div>
-          <div class="summary-value">약점 타입과 위험 기술 먼저 확인</div>
+        <div class="bonus-card">
+          <div class="bonus-label">추가 보너스</div>
+          <div class="bonus-value">파워스폿 더 자주 갱신 + 추가 파워스폿 활성화</div>
         </div>
-        <div class="summary-card">
-          <div class="summary-label">페이지 구성</div>
-          <div class="summary-value">보스 선택 → 상세 공략 → 추천 포켓몬</div>
+        <div class="bonus-card">
+          <div class="bonus-label">기타</div>
+          <div class="bonus-value">파워스폿 맥스 파티클 8배 · 특별한 교환 최대 3회</div>
         </div>
+      </div>
+
+      <div class="event-points">
+        <div class="event-point">리모트 레이드 일일 한도는 이벤트 기간 일부 구간에 10회에서 20회로 증가합니다.</div>
+        <div class="event-point">유료 티켓은 4.99달러이며, 맥스 머쉬룸 1개·25,000 XP·6,400 맥스 파티클·맥스배틀 XP 2배 보너스를 안내합니다.</div>
+        <div class="event-point">맥스 머쉬룸은 맥스배틀에서 다이맥스·거다이맥스 포켓몬의 피해를 일시적으로 2배로 높입니다.</div>
       </div>
     </div>
   </section>
@@ -787,37 +814,11 @@
     <div class="section-head">
       <div>
         <div class="section-title">거다이맥스 보스 선택</div>
-        <div class="section-sub">상단 보스를 누르면 아래 상세 공략이 바뀝니다</div>
+        <div class="section-sub">보스를 누르면 아래 상세 공략과 추천 포켓몬이 자동으로 바뀝니다</div>
       </div>
     </div>
     <div class="section-body">
-
-      <div class="boss-tabs">
-        <button class="boss-tab active" data-boss="charizard">
-          <img src="./images/max/charizard.png" alt="거다이맥스 리자몽">
-          <div class="boss-tab-name">리자몽</div>
-          <div class="boss-tab-sub">불꽃 · 비행</div>
-        </button>
-
-        <button class="boss-tab" data-boss="venusaur">
-          <img src="./images/max/venusaur.png" alt="거다이맥스 이상해꽃">
-          <div class="boss-tab-name">이상해꽃</div>
-          <div class="boss-tab-sub">풀 · 독</div>
-        </button>
-
-        <button class="boss-tab" data-boss="blastoise">
-          <img src="./images/max/blastoise.png" alt="거다이맥스 거북왕">
-          <div class="boss-tab-name">거북왕</div>
-          <div class="boss-tab-sub">물</div>
-        </button>
-
-        <button class="boss-tab" data-boss="gengar">
-          <img src="./images/max/gengar.png" alt="거다이맥스 팬텀">
-          <div class="boss-tab-name">팬텀</div>
-          <div class="boss-tab-sub">고스트 · 독</div>
-        </button>
-      </div>
-
+      <div class="boss-tabs" id="bossTabs"></div>
     </div>
   </section>
 
@@ -825,542 +826,57 @@
     <div class="section-head">
       <div>
         <div class="section-title">보스 상세 공략</div>
-        <div class="section-sub">모바일 기준으로 핵심 정보부터 먼저 보이게 구성했습니다</div>
+        <div class="section-sub">약점 · 위험 기술 · 추천 구성 · 공략 팁을 한 번에 확인할 수 있습니다</div>
       </div>
     </div>
 
     <div class="section-body">
-
-      <!-- 리자몽 -->
-      <div class="boss-panel active" id="boss-charizard">
+      <div class="boss-panel active" id="bossPanel">
         <div class="boss-hero">
           <div class="boss-hero-top">
-            <div class="boss-name-ko">거다이맥스 리자몽</div>
-            <div class="boss-name-en">Gigantamax Charizard</div>
+            <div class="boss-name-ko" id="bossNameKo"></div>
+            <div class="boss-name-en" id="bossNameEn"></div>
           </div>
           <div class="boss-hero-image">
-            <img src="./images/max/charizard.png" alt="거다이맥스 리자몽">
+            <img id="bossMainImage" src="" alt="">
           </div>
 
           <div class="boss-info-table">
             <div class="boss-info-row">
               <div class="boss-info-cell label">색이 다른 모습</div>
-              <div class="boss-info-cell">✨ 7.5%</div>
+              <div class="boss-info-cell" id="bossShiny"></div>
             </div>
 
             <div class="boss-info-wide label">타입</div>
-            <div class="boss-info-wide value">🔥 불꽃, 🪽 비행</div>
+            <div class="boss-info-wide value" id="bossTypes"></div>
 
             <div class="weakness-grid">
               <div class="weakness-side">상성</div>
-              <div>2.56x</div>
-              <div>🪨 바위</div>
-              <div>1.6x</div>
-              <div>⚡ 전기, 💧 물</div>
+              <div id="bossWeaknessRate1"></div>
+              <div id="bossWeaknessTypes1"></div>
+              <div id="bossWeaknessRate2"></div>
+              <div id="bossWeaknessTypes2"></div>
             </div>
 
             <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
-            <div class="moves-grid">
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🔥 블라스트번</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🔥 오버히트</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🔥 화염방사</div>
-                  <div class="move-rank normal">어려움</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🔥 불대문자</div>
-                  <div class="move-rank easy">보통</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🐉 드래곤클로</div>
-                  <div class="move-rank easy">쉬움</div>
-                </div>
-              </div>
-              <div class="move-card"></div>
-            </div>
+            <div class="moves-grid" id="bossMoves"></div>
           </div>
         </div>
-
-        <div style="height:14px"></div>
 
         <div class="recommend-grid">
           <div class="role-card">
             <div class="role-head">탱크 · 백업</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/blastoise-small.png" alt="거북왕">
-                <div class="role-item-text">
-                  <div class="role-name">거북왕</div>
-                  <div class="role-skill">물대포</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/moltres-small.png" alt="파이어">
-                <div class="role-item-text">
-                  <div class="role-name">파이어</div>
-                  <div class="role-skill">날개치기</div>
-                </div>
-              </div>
-            </div>
+            <div class="role-list" id="tankList"></div>
           </div>
 
           <div class="role-card">
             <div class="role-head">어태커</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/kingler-small.png" alt="거다이맥스 킹크랩">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 킹크랩</div>
-                  <div class="role-skill">집게해머</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/toxtricity-small.png" alt="거다이맥스 스트린더">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 스트린더</div>
-                  <div class="role-skill">와일드볼트</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/inteleon-small.png" alt="인텔리레온">
-                <div class="role-item-text">
-                  <div class="role-name">인텔리레온</div>
-                  <div class="role-skill">물대포</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/zapdos-small.png" alt="썬더">
-                <div class="role-item-text">
-                  <div class="role-name">썬더</div>
-                  <div class="role-skill">차지빔</div>
-                </div>
-              </div>
-            </div>
+            <div class="role-list" id="attackerList"></div>
           </div>
         </div>
 
-        <div class="tip-box">
-          바위가 가장 강력하고, 물 / 전기 딜러도 안정적입니다. 거다이맥스 기술 1레벨이 다이맥스 기술 3레벨 수준이라면 거다이맥스 포켓몬 우선 사용이 좋습니다.
-          <small>다이월, 다이리커버리 최대 레벨 / 어태커는 다이어택, 다이월 최대 레벨 추천</small>
-        </div>
+        <div class="tip-box" id="bossTip"></div>
       </div>
-
-      <!-- 이상해꽃 -->
-      <div class="boss-panel" id="boss-venusaur">
-        <div class="boss-hero">
-          <div class="boss-hero-top">
-            <div class="boss-name-ko">거다이맥스 이상해꽃</div>
-            <div class="boss-name-en">Gigantamax Venusaur</div>
-          </div>
-          <div class="boss-hero-image">
-            <img src="./images/max/venusaur.png" alt="거다이맥스 이상해꽃">
-          </div>
-
-          <div class="boss-info-table">
-            <div class="boss-info-row">
-              <div class="boss-info-cell label">색이 다른 모습</div>
-              <div class="boss-info-cell">✨ 7.5%</div>
-            </div>
-
-            <div class="boss-info-wide label">타입</div>
-            <div class="boss-info-wide value">🌿 풀, ☠️ 독</div>
-
-            <div class="weakness-grid">
-              <div class="weakness-side">상성</div>
-              <div>1.6x</div>
-              <div>🪽 비행, 🔥 불꽃, ❄️ 얼음, 🔮 에스퍼</div>
-              <div></div>
-              <div></div>
-            </div>
-
-            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
-            <div class="moves-grid">
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🌿 하드플랜트</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🌿 솔라빔</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🌿 꽃보라</div>
-                  <div class="move-rank easy">쉬움</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">☠️ 오물폭탄</div>
-                  <div class="move-rank normal">보통</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="height:14px"></div>
-
-        <div class="recommend-grid">
-          <div class="role-card">
-            <div class="role-head">탱크 · 백업</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/charizard-small.png" alt="리자몽">
-                <div class="role-item-text">
-                  <div class="role-name">리자몽</div>
-                  <div class="role-skill">용의숨결 / (0.5초)</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/moltres-small.png" alt="파이어">
-                <div class="role-item-text">
-                  <div class="role-name">파이어</div>
-                  <div class="role-skill">회오리불꽃 / 날개치기</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/metagross-small.png" alt="메타그로스">
-                <div class="role-item-text">
-                  <div class="role-name">메타그로스</div>
-                  <div class="role-skill">사념의박치기</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-head">어태커</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/charizard-small.png" alt="거다이맥스 리자몽">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 리자몽</div>
-                  <div class="role-skill">회오리불꽃</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/moltres-small.png" alt="파이어">
-                <div class="role-item-text">
-                  <div class="role-name">파이어</div>
-                  <div class="role-skill">회오리불꽃 / 날개치기</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/metagross-small.png" alt="메타그로스">
-                <div class="role-item-text">
-                  <div class="role-name">메타그로스</div>
-                  <div class="role-skill">사념의박치기</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/zapdos-small.png" alt="썬더">
-                <div class="role-item-text">
-                  <div class="role-name">썬더</div>
-                  <div class="role-skill">차지빔 / 전기쇼크*</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tip-box">
-          비행 / 불꽃 / 얼음 / 에스퍼 약점입니다. 리자몽과 파이어 계열이 안정적이며, 거다이맥스 사용 가능 시 우선 채용이 좋습니다.
-          <small>오물폭탄 패턴에 약한 포켓몬은 주의하세요</small>
-        </div>
-      </div>
-
-      <!-- 거북왕 -->
-      <div class="boss-panel" id="boss-blastoise">
-        <div class="boss-hero">
-          <div class="boss-hero-top">
-            <div class="boss-name-ko">거다이맥스 거북왕</div>
-            <div class="boss-name-en">Gigantamax Blastoise</div>
-          </div>
-          <div class="boss-hero-image">
-            <img src="./images/max/blastoise.png" alt="거다이맥스 거북왕">
-          </div>
-
-          <div class="boss-info-table">
-            <div class="boss-info-row">
-              <div class="boss-info-cell label">색이 다른 모습</div>
-              <div class="boss-info-cell">✨ 7.5%</div>
-            </div>
-
-            <div class="boss-info-wide label">타입</div>
-            <div class="boss-info-wide value">💧 물</div>
-
-            <div class="weakness-grid">
-              <div class="weakness-side">상성</div>
-              <div>1.6x</div>
-              <div>⚡ 전기, 🌿 풀</div>
-              <div></div>
-              <div></div>
-            </div>
-
-            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
-            <div class="moves-grid">
-              <div class="move-card">
-                <div>
-                  <div class="move-name">💧 하이드로캐논</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">💧 하이드로펌프</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">❄️ 냉동빔</div>
-                  <div class="move-rank normal">보통</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">⚙️ 로켓박치기</div>
-                  <div class="move-rank normal">보통</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🔩 러스터캐논</div>
-                  <div class="move-rank easy">쉬움</div>
-                </div>
-              </div>
-              <div class="move-card"></div>
-            </div>
-          </div>
-        </div>
-
-        <div style="height:14px"></div>
-
-        <div class="recommend-grid">
-          <div class="role-card">
-            <div class="role-head">탱크 · 백업</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/blastoise-small.png" alt="거북왕">
-                <div class="role-item-text">
-                  <div class="role-name">거북왕</div>
-                  <div class="role-skill">물대포 / 물기</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/lapras-small.png" alt="라프라스">
-                <div class="role-item-text">
-                  <div class="role-name">라프라스</div>
-                  <div class="role-skill">사이코웨이브</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/metagross-small.png" alt="메타그로스">
-                <div class="role-item-text">
-                  <div class="role-name">메타그로스</div>
-                  <div class="role-skill">불릿펀치</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-head">어태커</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/toxtricity-small.png" alt="거다이맥스 스트린더">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 스트린더</div>
-                  <div class="role-skill">전기 딜러</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/venusaur-small.png" alt="거다이맥스 이상해꽃">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 이상해꽃</div>
-                  <div class="role-skill">풀 딜러</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/zapdos-small.png" alt="썬더">
-                <div class="role-item-text">
-                  <div class="role-name">썬더</div>
-                  <div class="role-skill">차지빔 / 전기쇼크*</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/raikou-small.png" alt="라이코">
-                <div class="role-item-text">
-                  <div class="role-name">라이코</div>
-                  <div class="role-skill">전기쇼크 / 볼트체인지</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tip-box">
-          전기와 풀이 핵심 약점입니다. 스트린더 / 이상해꽃 / 썬더 / 라이코 축이 가장 직관적이며, 하이드로캐논과 하이드로펌프 패턴은 우선 주의하세요.
-          <small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>
-        </div>
-      </div>
-
-      <!-- 팬텀 -->
-      <div class="boss-panel" id="boss-gengar">
-        <div class="boss-hero">
-          <div class="boss-hero-top">
-            <div class="boss-name-ko">거다이맥스 팬텀</div>
-            <div class="boss-name-en">Gigantamax Gengar</div>
-          </div>
-          <div class="boss-hero-image">
-            <img src="./images/max/gengar.png" alt="거다이맥스 팬텀">
-          </div>
-
-          <div class="boss-info-table">
-            <div class="boss-info-row">
-              <div class="boss-info-cell label">색이 다른 모습</div>
-              <div class="boss-info-cell">✨ 7.5%</div>
-            </div>
-
-            <div class="boss-info-wide label">타입</div>
-            <div class="boss-info-wide value">👻 고스트, ☠️ 독</div>
-
-            <div class="weakness-grid">
-              <div class="weakness-side">상성</div>
-              <div>1.6x</div>
-              <div>🪨 땅, 👻 고스트, 🌑 악, 🔮 에스퍼</div>
-              <div></div>
-              <div></div>
-            </div>
-
-            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
-            <div class="moves-grid">
-              <div class="move-card">
-                <div>
-                  <div class="move-name">👻 섀도볼</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">☠️ 오물폭탄</div>
-                  <div class="move-rank normal">보통</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">🥊 기합구슬</div>
-                  <div class="move-rank danger">위험</div>
-                </div>
-              </div>
-              <div class="move-card">
-                <div>
-                  <div class="move-name">👻 병상첨병</div>
-                  <div class="move-rank normal">보통</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="height:14px"></div>
-
-        <div class="recommend-grid">
-          <div class="role-card">
-            <div class="role-head">탱크 · 백업</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/blastoise-small.png" alt="거다이맥스 거북왕">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 거북왕</div>
-                  <div class="role-skill">물대포 / 물기</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/venusaur-small.png" alt="거다이맥스 이상해꽃">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 이상해꽃</div>
-                  <div class="role-skill">덤굴채찍 / 오물폭탄</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/metagross-small.png" alt="메타그로스">
-                <div class="role-item-text">
-                  <div class="role-name">메타그로스</div>
-                  <div class="role-skill">사념의박치기</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/lapras-small.png" alt="라프라스">
-                <div class="role-item-text">
-                  <div class="role-name">라프라스</div>
-                  <div class="role-skill">사이코웨이브</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-head">어태커</div>
-            <div class="role-list">
-              <div class="role-item">
-                <img src="./images/max/gengar-small.png" alt="거다이맥스 팬텀">
-                <div class="role-item-text">
-                  <div class="role-name">거다이맥스 팬텀</div>
-                  <div class="role-skill">고스트 미러 딜러</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/zapdos-small.png" alt="썬더">
-                <div class="role-item-text">
-                  <div class="role-name">썬더</div>
-                  <div class="role-skill">차지빔 / 전기쇼크</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/raikou-small.png" alt="라이코">
-                <div class="role-item-text">
-                  <div class="role-name">라이코</div>
-                  <div class="role-skill">전기쇼크 / 볼트체인지</div>
-                </div>
-              </div>
-              <div class="role-item">
-                <img src="./images/max/rillaboom-small.png" alt="고릴타">
-                <div class="role-item-text">
-                  <div class="role-name">고릴타</div>
-                  <div class="role-skill">잎날가르기</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tip-box">
-          팬텀은 고스트 / 악 / 땅 / 에스퍼 약점이 핵심이며, 섀도볼과 기합구슬 패턴은 특히 주의가 필요합니다. 거다이맥스 팬텀이 가능하면 우선 채용하세요.
-          <small>탱커 1 + 딜러 3 구성이 안정적이며, 회피가 매우 중요합니다.</small>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -1386,19 +902,209 @@
 </nav>
 
 <script>
-  const tabs = document.querySelectorAll('.boss-tab');
-  const panels = document.querySelectorAll('.boss-panel');
+  function getPokemonImage(id, isGmax = false) {
+    return isGmax
+      ? `https://cdn.leekduck.com/assets/img/pokemon_icons/pm${id}.fGIGANTAMAX.icon.png`
+      : `https://cdn.leekduck.com/assets/img/pokemon_icons/pm${id}.icon.png`;
+  }
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.boss;
+  const MAX_POKEMON = {
+    charizard: { id: 6, name: '리자몽', gmax: true, skill: '회오리불꽃 / 용의숨결' },
+    venusaur: { id: 3, name: '이상해꽃', gmax: true, skill: '덩굴채찍 / 독채찍' },
+    blastoise: { id: 9, name: '거북왕', gmax: true, skill: '물대포 / 물기' },
+    gengar: { id: 94, name: '팬텀', gmax: true, skill: '고스트 딜러' },
 
-      tabs.forEach(t => t.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
+    kingler: { id: 99, name: '킹크랩', gmax: true, skill: '집게해머' },
+    toxtricity: { id: 849, name: '스트린더', gmax: true, skill: '전기 딜러' },
 
-      tab.classList.add('active');
-      document.getElementById(`boss-${target}`).classList.add('active');
+    metagross: { id: 376, name: '메타그로스', skill: '사념의박치기 / 불릿펀치' },
+    lapras: { id: 131, name: '라프라스', skill: '사이코웨이브' },
+    moltres: { id: 146, name: '파이어', skill: '회오리불꽃 / 날개치기' },
+    zapdos: { id: 145, name: '썬더', skill: '차지빔 / 전기쇼크' },
+    raikou: { id: 243, name: '라이코', skill: '전기쇼크 / 볼트체인지' },
+    rillaboom: { id: 812, name: '고릴타', skill: '잎날가르기' },
+    inteleon: { id: 818, name: '인텔리레온', skill: '물 딜러' }
+  };
+
+  const BOSSES = {
+    charizard: {
+      key: 'charizard',
+      tabName: '리자몽',
+      tabSub: '불꽃 · 비행',
+      nameKo: '거다이맥스 리자몽',
+      nameEn: 'Gigantamax Charizard',
+      imageId: 6,
+      shiny: '✨ 7.5%',
+      types: '🔥 불꽃, 🪽 비행',
+      weakness: [
+        { rate: '2.56x', types: '🪨 바위' },
+        { rate: '1.6x', types: '⚡ 전기, 💧 물' }
+      ],
+      moves: [
+        { name: '🔥 블라스트번', rank: '위험', cls: 'danger' },
+        { name: '🔥 오버히트', rank: '위험', cls: 'danger' },
+        { name: '🔥 화염방사', rank: '어려움', cls: 'normal' },
+        { name: '🔥 불대문자', rank: '보통', cls: 'easy' },
+        { name: '🐉 드래곤클로', rank: '쉬움', cls: 'easy' }
+      ],
+      tank: ['blastoise', 'moltres'],
+      attacker: ['kingler', 'toxtricity', 'inteleon', 'zapdos'],
+      tip: '바위가 가장 강력하고, 물 / 전기 딜러도 안정적입니다. 거다이맥스 기술 효율이 높다면 거다이맥스 포켓몬을 우선 사용하세요.<small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>'
+    },
+    venusaur: {
+      key: 'venusaur',
+      tabName: '이상해꽃',
+      tabSub: '풀 · 독',
+      nameKo: '거다이맥스 이상해꽃',
+      nameEn: 'Gigantamax Venusaur',
+      imageId: 3,
+      shiny: '✨ 7.5%',
+      types: '🌿 풀, ☠️ 독',
+      weakness: [
+        { rate: '1.6x', types: '🪽 비행, 🔥 불꽃, ❄️ 얼음, 🔮 에스퍼' },
+        { rate: '', types: '' }
+      ],
+      moves: [
+        { name: '🌿 하드플랜트', rank: '위험', cls: 'danger' },
+        { name: '🌿 솔라빔', rank: '위험', cls: 'danger' },
+        { name: '🌿 꽃보라', rank: '쉬움', cls: 'easy' },
+        { name: '☠️ 오물폭탄', rank: '보통', cls: 'normal' }
+      ],
+      tank: ['charizard', 'metagross', 'moltres'],
+      attacker: ['charizard', 'gengar', 'zapdos', 'metagross'],
+      tip: '비행 / 불꽃 / 얼음 / 에스퍼 약점입니다. 리자몽과 파이어 계열이 안정적이며, 오물폭탄 패턴에는 약한 포켓몬을 오래 세우지 않는 편이 좋습니다.<small>거다이맥스 리자몽이 가능하면 우선 채용 추천</small>'
+    },
+    blastoise: {
+      key: 'blastoise',
+      tabName: '거북왕',
+      tabSub: '물',
+      nameKo: '거다이맥스 거북왕',
+      nameEn: 'Gigantamax Blastoise',
+      imageId: 9,
+      shiny: '✨ 7.5%',
+      types: '💧 물',
+      weakness: [
+        { rate: '1.6x', types: '⚡ 전기, 🌿 풀' },
+        { rate: '', types: '' }
+      ],
+      moves: [
+        { name: '💧 하이드로캐논', rank: '위험', cls: 'danger' },
+        { name: '💧 하이드로펌프', rank: '위험', cls: 'danger' },
+        { name: '❄️ 냉동빔', rank: '보통', cls: 'normal' },
+        { name: '⚙️ 로켓박치기', rank: '보통', cls: 'normal' },
+        { name: '🔩 러스터캐논', rank: '쉬움', cls: 'easy' }
+      ],
+      tank: ['lapras', 'metagross', 'blastoise'],
+      attacker: ['rillaboom', 'toxtricity', 'venusaur', 'raikou'],
+      tip: '전기와 풀이 핵심 약점입니다. 스트린더 / 이상해꽃 / 라이코 축이 직관적이며, 하이드로캐논과 하이드로펌프 패턴은 우선 주의하세요.<small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>'
+    },
+    gengar: {
+      key: 'gengar',
+      tabName: '팬텀',
+      tabSub: '고스트 · 독',
+      nameKo: '거다이맥스 팬텀',
+      nameEn: 'Gigantamax Gengar',
+      imageId: 94,
+      shiny: '✨ 7.5%',
+      types: '👻 고스트, ☠️ 독',
+      weakness: [
+        { rate: '1.6x', types: '🪨 땅, 👻 고스트, 🌑 악, 🔮 에스퍼' },
+        { rate: '', types: '' }
+      ],
+      moves: [
+        { name: '👻 섀도볼', rank: '위험', cls: 'danger' },
+        { name: '☠️ 오물폭탄', rank: '보통', cls: 'normal' },
+        { name: '🥊 기합구슬', rank: '위험', cls: 'danger' },
+        { name: '👻 병상첨병', rank: '보통', cls: 'normal' }
+      ],
+      tank: ['blastoise', 'lapras', 'metagross', 'venusaur'],
+      attacker: ['gengar', 'metagross', 'rillaboom', 'zapdos'],
+      tip: '팬텀은 고스트 / 악 / 땅 / 에스퍼 약점이 핵심이며, 섀도볼과 기합구슬 패턴은 특히 주의가 필요합니다. 거다이맥스 팬텀이 가능하면 우선 채용하세요.<small>탱커 1 + 딜러 3 구성이 안정적이며, 회피가 매우 중요합니다.</small>'
+    }
+  };
+
+  function renderBossTabs() {
+    const wrap = document.getElementById('bossTabs');
+    wrap.innerHTML = Object.values(BOSSES).map((boss, index) => `
+      <button class="boss-tab ${index === 0 ? 'active' : ''}" data-boss="${boss.key}">
+        <img src="${getPokemonImage(boss.imageId, true)}" alt="${boss.nameKo}">
+        <div class="boss-tab-name">${boss.tabName}</div>
+        <div class="boss-tab-sub">${boss.tabSub}</div>
+      </button>
+    `).join('');
+  }
+
+  function renderMoves(moves) {
+    const wrap = document.getElementById('bossMoves');
+    const safeMoves = [...moves];
+    if (safeMoves.length % 2 === 1) {
+      safeMoves.push({ name: '', rank: '', cls: '' });
+    }
+
+    wrap.innerHTML = safeMoves.map(move => {
+      if (!move.name) return `<div class="move-card"></div>`;
+      return `
+        <div class="move-card">
+          <div>
+            <div class="move-name">${move.name}</div>
+            <div class="move-rank ${move.cls}">${move.rank}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderRoleList(targetId, keys) {
+    const wrap = document.getElementById(targetId);
+    wrap.innerHTML = keys.map(key => {
+      const p = MAX_POKEMON[key];
+      return `
+        <div class="role-item">
+          <img src="${getPokemonImage(p.id, !!p.gmax)}" alt="${p.name}">
+          <div class="role-item-text">
+            <div class="role-name">${p.gmax ? `거다이맥스 ${p.name}` : p.name}</div>
+            <div class="role-skill">${p.skill}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderBoss(key) {
+    const boss = BOSSES[key];
+    if (!boss) return;
+
+    document.getElementById('bossNameKo').textContent = boss.nameKo;
+    document.getElementById('bossNameEn').textContent = boss.nameEn;
+    document.getElementById('bossMainImage').src = getPokemonImage(boss.imageId, true);
+    document.getElementById('bossMainImage').alt = boss.nameKo;
+    document.getElementById('bossShiny').textContent = boss.shiny;
+    document.getElementById('bossTypes').textContent = boss.types;
+
+    document.getElementById('bossWeaknessRate1').textContent = boss.weakness[0]?.rate || '';
+    document.getElementById('bossWeaknessTypes1').textContent = boss.weakness[0]?.types || '';
+    document.getElementById('bossWeaknessRate2').textContent = boss.weakness[1]?.rate || '';
+    document.getElementById('bossWeaknessTypes2').textContent = boss.weakness[1]?.types || '';
+
+    renderMoves(boss.moves);
+    renderRoleList('tankList', boss.tank);
+    renderRoleList('attackerList', boss.attacker);
+    document.getElementById('bossTip').innerHTML = boss.tip;
+
+    document.querySelectorAll('.boss-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.boss === key);
     });
+
+    document.getElementById('bossPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  renderBossTabs();
+  renderBoss('charizard');
+
+  document.getElementById('bossTabs').addEventListener('click', (event) => {
+    const tab = event.target.closest('.boss-tab');
+    if (!tab) return;
+    renderBoss(tab.dataset.boss);
   });
 </script>
 </body>
