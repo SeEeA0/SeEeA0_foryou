@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pokémon GO Raid Planner | 지금 레이드</title>
+
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -167,6 +168,27 @@
     gap:14px;
   }
 
+  .group-section + .group-section{
+    margin-top:14px;
+  }
+
+  .group-head{
+    margin-bottom:12px;
+  }
+
+  .group-title{
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .group-sub{
+    margin-top:6px;
+    font-size:12px;
+    color:#7b8ca8;
+    font-weight:800;
+  }
+
   .raid-card{
     background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
     border:1.5px solid var(--line);
@@ -238,7 +260,6 @@
   .chip-yellow{background:var(--yellow-soft);color:var(--yellow)}
   .chip-green{background:var(--green-soft);color:var(--green)}
   .chip-purple{background:var(--purple-soft);color:var(--purple)}
-  .chip-pink{background:var(--pink-soft);color:var(--pink)}
   .chip-gray{background:var(--gray-soft);color:var(--gray)}
   .chip-shadow{
     background:#e7e7ea;
@@ -670,7 +691,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">레이드 타입 필터</div>
-        <div class="section-sub"></div>
+        <div class="section-sub">원하는 타입만 골라서 볼 수 있습니다</div>
       </div>
     </div>
     <div class="section-body">
@@ -681,24 +702,26 @@
   <section class="section fade-up delay-1">
     <div class="section-head">
       <div>
-        <div class="section-title">일반 레이드</div>
+        <div class="section-title">진행 중인 레이드</div>
         <div class="section-sub"></div>
       </div>
     </div>
     <div class="section-body">
-      <div class="raid-grid" id="normalRaidGrid"></div>
-    </div>
-  </section>
+      <div class="group-section">
+        <div class="group-head">
+          <div class="group-title">일반 레이드</div>
+          <div class="group-sub"></div>
+        </div>
+        <div class="raid-grid" id="normalRaidGrid"></div>
+      </div>
 
-  <section class="section fade-up delay-2">
-    <div class="section-head">
-      <div>
-        <div class="section-title">그림자 레이드</div>
-        <div class="section-sub"></div>
+      <div class="group-section">
+        <div class="group-head">
+          <div class="group-title">그림자 레이드</div>
+          <div class="group-sub"></div>
+        </div>
+        <div class="raid-grid" id="shadowRaidGrid"></div>
       </div>
-    </div>
-    <div class="section-body">
-      <div class="raid-grid" id="shadowRaidGrid"></div>
     </div>
   </section>
 
@@ -723,398 +746,6 @@
   </a>
 </nav>
 
-<script>
-  const DATA_URL = './raid-data.json';
-  const ROCKET_ICON = './images/rocket-r.png';
-
-  const FILTERS = ['전체', '5성', '3성', '1성', '메가', '그림자'];
-  let currentFilter = '전체';
-  let currentItems = [];
-
-  const BOOST_ICON_MAP = {
-    '맑음': '/images/boost/sunny.png',
-    '쾌청': '/images/boost/sunny.png',
-    '비': '/images/boost/rainy.png',
-    '눈': '/images/boost/snow.png',
-    '안개': '/images/boost/fog.png',
-    '흐림': '/images/boost/cloudy.png',
-    '강풍': '/images/boost/windy.png',
-    '바람': '/images/boost/windy.png',
-    'windy': '/images/boost/windy.png',
-    'fog': '/images/boost/fog.png',
-    'sunny': '/images/boost/sunny.png',
-    'rainy': '/images/boost/rainy.png',
-    'snow': '/images/boost/snow.png',
-    'cloudy': '/images/boost/cloudy.png'
-  };
-
-  function getKoreaNow(){
-    const now = new Date();
-    const koreaString = now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
-    return new Date(koreaString);
-  }
-
-  function getKoreaToday(){
-    const koreaNow = getKoreaNow();
-    koreaNow.setHours(0, 0, 0, 0);
-    return koreaNow;
-  }
-
-  function pad(n){
-    return String(n).padStart(2, '0');
-  }
-
-  function toDate(str){
-    if(!str) return null;
-    const [y,m,d] = str.split('-').map(Number);
-    return new Date(y, m - 1, d, 0, 0, 0, 0);
-  }
-
-  function toKey(date){
-    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
-  }
-
-  function inRange(date, startStr, endStr){
-    const start = toDate(startStr);
-    const end = toDate(endStr);
-    if(!start || !end) return false;
-    const t = toDate(toKey(date)).getTime();
-    return t >= start.getTime() && t <= end.getTime();
-  }
-
-  function escapeHtml(value){
-    return String(value ?? '')
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
-  }
-
-  async function loadRecords(){
-    try{
-      const res = await fetch(DATA_URL, { cache: 'no-store' });
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      const parsed = await res.json();
-
-      if(Array.isArray(parsed)) return parsed;
-      if(Array.isArray(parsed.records)) return parsed.records;
-      if(Array.isArray(parsed.items)) return parsed.items;
-
-      return [];
-    }catch(error){
-      console.error('raid-data.json 불러오기 실패:', error);
-      return [];
-    }
-  }
-
-  function isAllowed(item, page){
-    return Array.isArray(item.showPages) && item.showPages.includes(page);
-  }
-
-  function sortPriority(item){
-    const isShadow = !!item.isShadow;
-    const label = item.label;
-
-    const order = {
-      '5성': 0,
-      '3성': 1,
-      '1성': 2,
-      '메가': 3
-    };
-
-    if(isShadow) return 10;
-    return order[label] ?? 99;
-  }
-
-  function chipClass(item){
-    if(item.isShadow) return 'chip-shadow';
-    if(item.label === '5성') return 'chip-blue';
-    if(item.label === '3성') return 'chip-yellow';
-    if(item.label === '1성') return 'chip-green';
-    if(item.label === '메가') return 'chip-purple';
-    return 'chip-gray';
-  }
-
-  function chipLabel(item){
-    return item.isShadow ? `그림자 ${item.label || ''}`.trim() : (item.label || '-');
-  }
-
-  function resolveBoostIcon(text, explicitIcon){
-    if(explicitIcon && String(explicitIcon).trim()) return explicitIcon;
-    const raw = String(text || '').trim();
-    const key = raw.toLowerCase();
-    return BOOST_ICON_MAP[key] || BOOST_ICON_MAP[raw] || '';
-  }
-
-  function normalizeBoostArray(item){
-    const result = [];
-
-    if(typeof item.boost === 'string' && item.boost.trim()){
-      result.push(item.boost.trim());
-    }
-    if(typeof item.boost2 === 'string' && item.boost2.trim()){
-      result.push(item.boost2.trim());
-    }
-
-    if(Array.isArray(item.boosts) && item.boosts.length){
-      item.boosts.forEach(v => {
-        const text = String(v || '').trim();
-        if(text) result.push(text);
-      });
-    }
-
-    return [...new Set(result)];
-  }
-
-  function normalizeTypeArray(item){
-    const result = [];
-
-    if(typeof item.type === 'string' && item.type.trim()){
-      result.push(item.type.trim());
-    }
-    if(typeof item.type2 === 'string' && item.type2.trim()){
-      result.push(item.type2.trim());
-    }
-
-    if(Array.isArray(item.types) && item.types.length){
-      item.types.forEach(v => {
-        const text = String(v || '').trim();
-        if(text) result.push(text);
-      });
-    }
-
-    return [...new Set(result)];
-  }
-
-  function getTypeIconPath(typeText, fallbackPath){
-    if(fallbackPath && String(fallbackPath).trim()) return fallbackPath;
-    return '';
-  }
-
-  function renderTypePills(item){
-    const types = normalizeTypeArray(item);
-    if(!types.length) return '';
-
-    const icons = [item.typeIcon || '', item.typeIcon2 || ''];
-
-    return `
-      <div class="type-row">
-        ${types.map((type, idx) => {
-          const icon = getTypeIconPath(type, icons[idx] || '');
-          return `
-            <span class="type-pill">
-              ${icon ? `<img src="${escapeHtml(icon)}" class="type-icon" alt="${escapeHtml(type)}">` : ``}
-              <span>${escapeHtml(type)}</span>
-            </span>
-          `;
-        }).join('')}
-      </div>
-    `;
-  }
-
-  function getTodayRaidItems(records, today){
-    return records
-      .filter(item =>
-        (isAllowed(item, 'raid-now') || isAllowed(item, 'index')) &&
-        ['1성','3성','5성','메가'].includes(item.label) &&
-        item.startDate &&
-        item.endDate &&
-        inRange(today, item.startDate, item.endDate)
-      )
-      .sort((a,b) => {
-        const diff = sortPriority(a) - sortPriority(b);
-        if(diff !== 0) return diff;
-        return (a.name || '').localeCompare((b.name || ''), 'ko');
-      });
-  }
-
-  function renderFilters(){
-    const wrap = document.getElementById('filterRow');
-    wrap.innerHTML = FILTERS.map(label => `
-      <button class="filter-btn ${label === currentFilter ? 'active' : ''}" data-filter="${label}">
-        ${label}
-      </button>
-    `).join('');
-
-    wrap.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentFilter = btn.dataset.filter;
-        renderFilters();
-        renderRaidSections();
-      });
-    });
-  }
-
-  function getFilteredNormalItems(){
-    const normalItems = currentItems.filter(item => !item.isShadow);
-
-    if(currentFilter === '전체') return normalItems;
-    if(currentFilter === '그림자') return [];
-    return normalItems.filter(item => item.label === currentFilter);
-  }
-
-  function getFilteredShadowItems(){
-    const shadowItems = currentItems.filter(item => item.isShadow);
-
-    if(currentFilter === '전체') return shadowItems;
-    if(currentFilter === '그림자') return shadowItems;
-    return shadowItems.filter(item => item.label === currentFilter);
-  }
-
-  function renderBoostPills(item){
-    const boosts = normalizeBoostArray(item);
-    if(!boosts.length) return '';
-
-    return `
-      <div class="boost-row">
-        ${boosts.map((boost, idx) => {
-          const explicitIcon = idx === 0 ? item.boostIcon : item.boostIcon2;
-          const icon = resolveBoostIcon(boost, explicitIcon);
-          return `
-            <span class="boost-pill">
-              ${icon ? `<img src="${escapeHtml(icon)}" class="boost-icon" alt="${escapeHtml(boost)}">` : ``}
-              <span>${escapeHtml(boost)}</span>
-            </span>
-          `;
-        }).join('')}
-      </div>
-    `;
-  }
-
-  function buildRaidCard(item, index, todayKey, sectionKey){
-    const shadowTheme = item.isShadow ? 'shadow-theme' : '';
-    const chip = chipClass(item);
-    const cpTableId = `cp-table-${sectionKey}-${index}-${todayKey}`;
-
-    return `
-      <article class="raid-card ${shadowTheme}">
-        ${
-          item.isShadow
-            ? `<img src="${escapeHtml(ROCKET_ICON)}" class="rocket-badge" alt="로켓단">`
-            : ``
-        }
-        <div class="raid-content">
-          <div class="raid-head">
-            <span class="raid-chip ${chip}">${escapeHtml(chipLabel(item))}</span>
-            <div class="raid-period">
-              ${(item.startDate || '').replaceAll('-', '.')}<br>
-              ${(item.endDate || '').replaceAll('-', '.')}
-            </div>
-          </div>
-
-          <div class="raid-main">
-            <div class="raid-thumb">
-              ${
-                item.isShadow
-                  ? `<img src="${escapeHtml(item.shadowBg || 'images/shadow-flame.png')}" class="shadow-flame" alt="">`
-                  : ``
-              }
-              ${
-                item.image
-                  ? `<img src="${escapeHtml(item.image)}" class="pokemon-img" alt="${escapeHtml(item.name || '')}">`
-                  : `<span style="font-size:28px; position:relative; z-index:2;">🖼️</span>`
-              }
-            </div>
-
-            <div>
-              <div class="raid-name">${escapeHtml(item.name || '-')}</div>
-              <div class="raid-desc">
-                ${
-                  item.isShadow
-                    ? '현재 진행 중인 그림자 레이드입니다.'
-                    : '현재 진행 중인 레이드 정보입니다.'
-                }
-              </div>
-            </div>
-          </div>
-
-          <div class="info-stack">
-            ${renderTypePills(item)}
-
-            <div class="meta-row">
-              ${
-                (item.cpMin || item.cpMax)
-                  ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
-                  : ``
-              }
-              ${
-                (item.boostedCpMin || item.boostedCpMax)
-                  ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
-                  : ``
-              }
-            </div>
-
-            ${renderBoostPills(item)}
-          </div>
-
-          <div class="card-bottom">
-            <div class="action-row">
-              ${
-                item.cpTableImage
-                  ? `<button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>`
-                  : ``
-              }
-            </div>
-          </div>
-
-          ${
-            item.cpTableImage
-              ? `
-                <div class="cp-table-panel" id="${cpTableId}">
-                  <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
-                </div>
-              `
-              : ``
-          }
-        </div>
-      </article>
-    `;
-  }
-
-  function renderGrid(targetId, items, sectionKey){
-    const wrap = document.getElementById(targetId);
-    const todayKey = toKey(getKoreaToday());
-
-    if(!items.length){
-      wrap.innerHTML = `<div class="empty-box">현재 조건에 맞는 레이드가 없습니다.</div>`;
-      return;
-    }
-
-    wrap.innerHTML = items.map((item, index) => buildRaidCard(item, index, todayKey, sectionKey)).join('');
-  }
-
-  function bindCpButtons(){
-    document.querySelectorAll('[data-cptable-target]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const panel = document.getElementById(btn.dataset.cptableTarget);
-        if(!panel) return;
-        const isOpen = panel.classList.contains('show');
-        panel.classList.toggle('show', !isOpen);
-        btn.textContent = isOpen ? 'CP표 보기' : 'CP표 닫기';
-      });
-    });
-  }
-
-  function renderRaidSections(){
-    const normalItems = getFilteredNormalItems();
-    const shadowItems = getFilteredShadowItems();
-
-    renderGrid('normalRaidGrid', normalItems, 'normal');
-    renderGrid('shadowRaidGrid', shadowItems, 'shadow');
-    bindCpButtons();
-  }
-
-  async function init(){
-    const today = getKoreaToday();
-    const records = await loadRecords();
-    currentItems = getTodayRaidItems(records, today);
-
-    renderFilters();
-    renderRaidSections();
-  }
-
-  init();
-</script>
+<script type="module" src="./js/raid-now.js"></script>
 </body>
 </html>
