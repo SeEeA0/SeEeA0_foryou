@@ -72,6 +72,29 @@
     100%{box-shadow:0 0 0 0 rgba(83,123,221,0)}
   }
 
+  @keyframes smokeFloat{
+    0%{
+      transform:translate(-50%, -50%) scale(1) rotate(0deg);
+      opacity:.62;
+    }
+    25%{
+      transform:translate(-50%, -50%) scale(1.02) rotate(-0.6deg);
+      opacity:.7;
+    }
+    50%{
+      transform:translate(-50%, -50%) scale(1.04) rotate(0.6deg);
+      opacity:.74;
+    }
+    75%{
+      transform:translate(-50%, -50%) scale(1.02) rotate(-0.4deg);
+      opacity:.68;
+    }
+    100%{
+      transform:translate(-50%, -50%) scale(1) rotate(0deg);
+      opacity:.62;
+    }
+  }
+
   .section{
     background:rgba(255,255,255,.9);
     border:1px solid var(--line);
@@ -268,6 +291,22 @@
     box-shadow:
       0 10px 20px rgba(0,0,0,.12),
       inset 0 1px 0 rgba(255,255,255,.25);
+    overflow:visible;
+  }
+
+  .shadow-flame{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+    width:76px;
+    height:76px;
+    object-fit:contain;
+    opacity:.7;
+    pointer-events:none;
+    z-index:1;
+    filter:drop-shadow(0 0 8px rgba(130, 92, 220, .22));
+    animation:smokeFloat 3.8s ease-in-out infinite;
   }
 
   .pokemon-img{
@@ -282,8 +321,8 @@
     position:absolute;
     right:18px;
     bottom:18px;
-    width:54px;
-    height:54px;
+    width:70px;
+    height:70px;
     object-fit:contain;
     z-index:2;
     opacity:.92;
@@ -585,6 +624,11 @@
       border-radius:18px;
     }
 
+    .shadow-flame{
+      width:62px;
+      height:62px;
+    }
+
     .pokemon-img{
       width:58px;
       height:58px;
@@ -593,8 +637,8 @@
     .rocket-badge{
       right:14px;
       bottom:14px;
-      width:42px;
-      height:42px;
+      width:55px;
+      height:55px;
     }
 
     .raid-name{
@@ -626,7 +670,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">레이드 타입 필터</div>
-        <div class="section-sub">원하는 타입만 골라서 볼 수 있습니다</div>
+        <div class="section-sub"></div>
       </div>
     </div>
     <div class="section-body">
@@ -650,7 +694,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">그림자 레이드</div>
-        <div class="section-sub">다</div>
+        <div class="section-sub"></div>
       </div>
     </div>
     <div class="section-body">
@@ -961,6 +1005,11 @@
 
           <div class="raid-main">
             <div class="raid-thumb">
+              ${
+                item.isShadow
+                  ? `<img src="${escapeHtml(item.shadowBg || 'images/shadow-flame.png')}" class="shadow-flame" alt="">`
+                  : ``
+              }
               ${
                 item.image
                   ? `<img src="${escapeHtml(item.image)}" class="pokemon-img" alt="${escapeHtml(item.name || '')}">`
