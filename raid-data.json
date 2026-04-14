@@ -622,7 +622,7 @@
       "typeIcon2": "",
       "cpTableImage": "",
       "guide": "",
-      "showPages": ["raid-now"]
+      "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
     {
       "name": "그림자 글라이거",
@@ -646,7 +646,7 @@
       "typeIcon2": "icons/10.png",
       "cpTableImage": "",
       "guide": "",
-      "showPages": ["raid-now"]
+      "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
     {
       "name": "그림자 선인왕",
@@ -670,7 +670,7 @@
       "typeIcon2": "",
       "cpTableImage": "",
       "guide": "",
-      "showPages": ["raid-now"]
+      "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
     {
       "name": "그림자 전지충이",
@@ -694,7 +694,7 @@
       "typeIcon2": "icons/4.png",
       "cpTableImage": "",
       "guide": "",
-      "showPages": ["raid-now"]
+      "showPages": ["index", "raid-now", "weekly", "monthly"]
     }
   ]
 }
