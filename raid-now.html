@@ -184,7 +184,11 @@
   }
 
   .raid-card.shadow-theme::after{
-    background:radial-gradient(circle, rgba(0,0,0,.14) 0%, rgba(0,0,0,0) 68%);
+    right:-18px;
+    bottom:-18px;
+    width:96px;
+    height:96px;
+    background:radial-gradient(circle, rgba(0,0,0,.08) 0%, rgba(0,0,0,0) 68%);
   }
 
   .raid-head{
@@ -230,6 +234,8 @@
 
   .raid-card.shadow-theme .raid-period{
     color:#5f6670;
+    position:relative;
+    z-index:3;
   }
 
   .raid-main{
@@ -274,18 +280,15 @@
 
   .rocket-badge{
     position:absolute;
-    top:14px;
-    right:14px;
-    width:26px;
-    height:26px;
+    right:18px;
+    bottom:18px;
+    width:54px;
+    height:54px;
     object-fit:contain;
-    z-index:3;
-    opacity:.95;
-    filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));
-  }
-
-  .raid-card.shadow-theme .raid-head{
-    padding-right:34px;
+    z-index:2;
+    opacity:.92;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,.12));
+    pointer-events:none;
   }
 
   .raid-name{
@@ -588,10 +591,10 @@
     }
 
     .rocket-badge{
-      width:22px;
-      height:22px;
-      top:12px;
-      right:12px;
+      right:14px;
+      bottom:14px;
+      width:42px;
+      height:42px;
     }
 
     .raid-name{
@@ -647,7 +650,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">그림자 레이드</div>
-        <div class="section-sub"></div>
+        <div class="section-sub">다</div>
       </div>
     </div>
     <div class="section-body">
