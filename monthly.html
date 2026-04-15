@@ -66,19 +66,6 @@
     50%{transform:translateY(-4px)}
   }
 
-  @keyframes shadowGlow{
-    0%,100%{
-      box-shadow:
-        0 16px 34px rgba(98,67,168,.18),
-        0 0 0 0 rgba(124,88,233,.18);
-    }
-    50%{
-      box-shadow:
-        0 18px 38px rgba(98,67,168,.24),
-        0 0 0 8px rgba(124,88,233,.08);
-    }
-  }
-
   @keyframes todayPulse{
     0%,100%{box-shadow:0 0 0 0 rgba(83,123,221,.12)}
     50%{box-shadow:0 0 0 6px rgba(83,123,221,.06)}
@@ -393,16 +380,46 @@
     border-radius:50%;
     background:linear-gradient(135deg, rgba(120,148,255,.14), rgba(123,99,255,.04));
     pointer-events:none;
+    z-index:0;
   }
 
   .raid-card.shadow-theme{
-    background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
-    border-color:#d7c8ff;
-    animation:shadowGlow 2.2s ease-in-out infinite;
+    background:
+      url('images/shadow-flame.png') center/cover no-repeat,
+      linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
+    border:2px solid #000;
+    box-shadow:
+      0 0 0 4px #dcdcdc,
+      0 16px 34px rgba(98,67,168,.18);
+  }
+
+  .raid-card.shadow-theme::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(80,40,160,.22);
+    pointer-events:none;
+    z-index:0;
   }
 
   .raid-card.shadow-theme::after{
     background:radial-gradient(circle, rgba(124,88,233,.26) 0%, rgba(124,88,233,0) 68%);
+  }
+
+  .raid-card > *{
+    position:relative;
+    z-index:1;
+  }
+
+  .shadow-r-icon{
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    width:32px;
+    height:32px;
+    background:url('images/rocket-r.png') center/contain no-repeat;
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));
+    z-index:2;
   }
 
   .raid-head{
@@ -505,12 +522,38 @@
     letter-spacing:-.03em;
   }
 
+  .boss-tier-row{
+    margin-top:8px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    flex-wrap:wrap;
+  }
+
+  .boss-tier-icon{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+    display:block;
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,.12));
+  }
+
+  .raid-card.shadow-theme .boss-tier-icon{
+    filter:drop-shadow(0 3px 6px rgba(74,30,140,.28));
+  }
+
   .raid-desc{
     margin-top:7px;
     font-size:12px;
     color:#7183a0;
     line-height:1.5;
     font-weight:800;
+  }
+
+  .raid-card.shadow-theme .raid-name,
+  .raid-card.shadow-theme .raid-desc{
+    color:#fff;
+    text-shadow:0 1px 4px rgba(0,0,0,.22);
   }
 
   .meta-row{
@@ -876,8 +919,8 @@
     <div class="nav-icon">🏠</div>
     <div>메인</div>
   </a>
-  <a href="./raid-now.html" class="nav-item">
-    <div class="nav-icon">⚔️</div>
+  <a href="./dynamax.html" class="nav-item">
+    <div class="nav-icon">⚡</div>
     <div>거다이맥스</div>
   </a>
   <a href="./weekly.html" class="nav-item">
@@ -991,7 +1034,33 @@
     return Array.isArray(item.showPages) && item.showPages.includes(page);
   }
 
-  function sortPriority(label){
+  function getBossTierCount(item){
+    const label = String(item.label || '').trim();
+
+    if(label === '1성') return 1;
+    if(label === '3성') return 3;
+    if(label === '5성') return 5;
+    if(label === '메가') return 4;
+
+    if(label === '그림자'){
+      const tier = String(item.tier || item.shadowTier || item.bossTier || '').trim();
+
+      if(tier === '1성' || tier === '1') return 1;
+      if(tier === '3성' || tier === '3') return 3;
+      if(tier === '5성' || tier === '5') return 5;
+
+      if(Number(item.raidTier) === 1) return 1;
+      if(Number(item.raidTier) === 3) return 3;
+      if(Number(item.raidTier) === 5) return 5;
+
+      return 3;
+    }
+
+    return 0;
+  }
+
+  function sortPriority(item){
+    const label = item.label;
     const order = {
       '5성': 0,
       '3성': 1,
@@ -999,7 +1068,17 @@
       '메가': 3,
       '그림자': 4
     };
-    return order[label] ?? 99;
+
+    const base = order[label] ?? 99;
+
+    if(label === '그림자'){
+      const tierCount = getBossTierCount(item);
+      if(tierCount === 5) return 0.5;
+      if(tierCount === 3) return 1.5;
+      if(tierCount === 1) return 2.5;
+    }
+
+    return base;
   }
 
   function chipClass(label){
@@ -1044,6 +1123,19 @@
     `;
   }
 
+  function createBossTierIcons(item){
+    const count = getBossTierCount(item);
+    if(!count) return '';
+
+    return `
+      <div class="boss-tier-row" aria-label="보스 등급 ${count}">
+        ${Array.from({ length: count }).map(() => `
+          <img class="boss-tier-icon" src="images/boss-icon.png" alt="보스 등급 아이콘">
+        `).join('')}
+      </div>
+    `;
+  }
+
   function getDisplayItemsForDate(records, date){
     return records
       .filter(item =>
@@ -1054,7 +1146,7 @@
         inRange(date, item.startDate, item.endDate)
       )
       .sort((a,b) => {
-        const diff = sortPriority(a.label) - sortPriority(b.label);
+        const diff = sortPriority(a) - sortPriority(b);
         if(diff !== 0) return diff;
         return (a.name || '').localeCompare((b.name || ''), 'ko');
       });
@@ -1175,11 +1267,12 @@
 
             <div>
               <div class="raid-name">${escapeHtml(item.name || '-')}</div>
+              ${createBossTierIcons(item)}
               <div class="raid-desc">
                 ${
                   item.label === '그림자'
-                    ? '그림자 레이드 · 보라 glow 적용'
-                    : '선택한 날짜 기준 진행 중'
+                    ? '선택한 날짜 기준 진행 중인 그림자 레이드입니다.'
+                    : '선택한 날짜 기준 진행 중인 레이드입니다.'
                 }
               </div>
             </div>
@@ -1217,6 +1310,8 @@
               `
               : ``
           }
+
+          ${item.label === '그림자' ? `<div class="shadow-r-icon" aria-hidden="true"></div>` : ``}
         </article>
       `;
     }).join('');
@@ -1345,5 +1440,6 @@
   }
 
   init();
-</script></body>
+</script>
+</body>
 </html>
