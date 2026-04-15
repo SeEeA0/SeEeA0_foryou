@@ -80,11 +80,13 @@
   @keyframes shadowGlow{
     0%,100%{
       box-shadow:
+        0 0 0 4px #d9d9d9,
         0 16px 34px rgba(98,67,168,.18),
-        0 0 0 0 rgba(124,88,233,.18);
+        0 0 0 0 rgba(124,88,233,.16);
     }
     50%{
       box-shadow:
+        0 0 0 4px #d9d9d9,
         0 18px 38px rgba(98,67,168,.24),
         0 0 0 8px rgba(124,88,233,.08);
     }
@@ -309,6 +311,99 @@
     color:#607897;
   }
 
+  .group-stack{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .raid-group{
+    border:1px solid #d9e4f2;
+    border-radius:22px;
+    background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
+    box-shadow:0 10px 24px rgba(43,67,110,.05);
+    overflow:hidden;
+  }
+
+  .raid-group.shadow-group{
+    border-color:#d6c8ff;
+    background:linear-gradient(180deg,#fbf8ff 0%, #f4efff 100%);
+  }
+
+  .raid-group-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 16px;
+    border-bottom:1px solid #e6eef8;
+    background:linear-gradient(180deg,#fdfefe 0%, #f4f8ff 100%);
+  }
+
+  .raid-group.shadow-group .raid-group-head{
+    background:linear-gradient(180deg,#f6f0ff 0%, #efe7ff 100%);
+    border-bottom-color:#e1d5ff;
+  }
+
+  .raid-group-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:16px;
+    font-weight:900;
+    letter-spacing:-.02em;
+    color:#24374c;
+  }
+
+  .raid-group-title-badge{
+    min-width:34px;
+    height:34px;
+    padding:0 10px;
+    border-radius:999px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:900;
+    border:1px solid transparent;
+  }
+
+  .raid-group-count{
+    font-size:12px;
+    font-weight:900;
+    color:#70829f;
+  }
+
+  .group-badge-1{
+    background:#e7f5eb;
+    color:#2f8d57;
+    border-color:#cfe8d8;
+  }
+  .group-badge-3{
+    background:#fff1c9;
+    color:#a17200;
+    border-color:#f1dfad;
+  }
+  .group-badge-5{
+    background:#e7f0ff;
+    color:#3567d7;
+    border-color:#cdddf5;
+  }
+  .group-badge-mega{
+    background:#efe7ff;
+    color:#7c58e9;
+    border-color:#d8c9ff;
+  }
+  .group-badge-shadow{
+    background:#ece8f8;
+    color:#5b40b4;
+    border-color:#d6c8ff;
+  }
+
+  .raid-group-body{
+    padding:14px;
+  }
+
   .raid-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -345,13 +440,34 @@
   }
 
   .raid-card.shadow-theme{
-    background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
-    border-color:#d7c8ff;
+    background:linear-gradient(180deg,#f3edff 0%, #e8dcff 100%);
+    border:2px solid #111;
+    box-shadow:
+      0 0 0 4px #d9d9d9,
+      0 16px 34px rgba(98,67,168,.18);
     animation:shadowGlow 2.2s ease-in-out infinite;
+  }
+
+  .raid-card.shadow-theme::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg, rgba(124,88,233,.10), rgba(255,255,255,0));
+    pointer-events:none;
+    z-index:0;
   }
 
   .raid-card.shadow-theme::after{
     background:radial-gradient(circle, rgba(124,88,233,.26) 0%, rgba(124,88,233,0) 68%);
+  }
+
+  .raid-head,
+  .raid-main,
+  .meta-row,
+  .action-row,
+  .cp-table-panel{
+    position:relative;
+    z-index:1;
   }
 
   .raid-head{
@@ -377,7 +493,7 @@
   .chip-yellow{background:var(--yellow-soft);color:var(--yellow)}
   .chip-green{background:var(--green-soft);color:var(--green)}
   .chip-purple{background:var(--purple-soft);color:var(--purple)}
-  .chip-pink{background:var(--pink-soft);color:var(--pink)}
+  .chip-pink{background:#efe6ff;color:#6a44d3}
   .chip-gray{background:var(--gray-soft);color:var(--gray)}
 
   .top-boosts{
@@ -412,7 +528,7 @@
   }
 
   .raid-card.shadow-theme .top-boost-badge{
-    background:rgba(255,255,255,.84);
+    background:rgba(255,255,255,.88);
     border-color:#ddcffd;
   }
 
@@ -496,7 +612,7 @@
   }
 
   .raid-card.shadow-theme .type-badge{
-    background:rgba(255,255,255,.84);
+    background:rgba(255,255,255,.88);
     border-color:#ddcffd;
   }
 
@@ -522,7 +638,7 @@
   }
 
   .raid-card.shadow-theme .meta-pill{
-    background:rgba(255,255,255,.84);
+    background:rgba(255,255,255,.88);
     border-color:#ddcffd;
   }
 
@@ -579,8 +695,15 @@
   }
 
   .raid-card.shadow-theme .cp-table-panel{
-    background:rgba(255,255,255,.74);
+    background:rgba(255,255,255,.76);
     border-color:#dacdfa;
+  }
+
+  .group-empty{
+    padding:18px 16px;
+    color:#98a6bb;
+    font-size:13px;
+    font-weight:800;
   }
 
   .empty-box{
@@ -592,6 +715,24 @@
     color:#97a5ba;
     font-size:13px;
     font-weight:800;
+  }
+
+  .shadow-r-icon{
+    position:absolute;
+    right:12px;
+    bottom:12px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#111;
+    color:#fff;
+    font-size:15px;
+    font-weight:900;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 6px 14px rgba(0,0,0,.28);
+    z-index:2;
   }
 
   .bottom-nav{
@@ -726,6 +867,12 @@
     .raid-name{
       font-size:18px;
     }
+
+    .raid-group-head{
+      padding:12px 14px;
+      align-items:flex-start;
+      flex-direction:column;
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -782,9 +929,9 @@
     <div class="nav-icon">🏠</div>
     <div>메인</div>
   </a>
-  <a href="./raid-now.html" class="nav-item">
-    <div class="nav-icon">⚔️</div>
-    <div>지금 레이드</div>
+  <a href="./dynamax.html" class="nav-item">
+    <div class="nav-icon">⚡</div>
+    <div>거다이맥스</div>
   </a>
   <a href="./weekly.html" class="nav-item active">
     <div class="nav-icon">🗓️</div>
@@ -837,6 +984,16 @@
     '강철': 17,
     '에스퍼': 18
   };
+
+  const RAID_GROUPS = [
+    { key:'tier1', title:'1성 레이드', badge:'1성', badgeClass:'group-badge-1', label:'1성', shadow:false },
+    { key:'tier3', title:'3성 레이드', badge:'3성', badgeClass:'group-badge-3', label:'3성', shadow:false },
+    { key:'tier5', title:'5성 레이드', badge:'5성', badgeClass:'group-badge-5', label:'5성', shadow:false },
+    { key:'mega', title:'메가 레이드', badge:'메가', badgeClass:'group-badge-mega', label:'메가', shadow:false },
+    { key:'shadow1', title:'그림자 1성', badge:'그림자 1성', badgeClass:'group-badge-shadow', label:'1성', shadow:true },
+    { key:'shadow3', title:'그림자 3성', badge:'그림자 3성', badgeClass:'group-badge-shadow', label:'3성', shadow:true },
+    { key:'shadow5', title:'그림자 5성', badge:'그림자 5성', badgeClass:'group-badge-shadow', label:'5성', shadow:true }
+  ];
 
   let weekDates = [];
   let records = [];
@@ -906,23 +1063,47 @@
     return Array.isArray(item.showPages) && item.showPages.includes(page);
   }
 
-  function sortPriority(label){
-    const order = {
-      '5성': 0,
-      '3성': 1,
-      '1성': 2,
-      '메가': 3,
-      '그림자': 4
-    };
-    return order[label] ?? 99;
+  function normalizeTierLabel(label){
+    const text = String(label || '').trim();
+    if(text === '1성') return '1성';
+    if(text === '3성') return '3성';
+    if(text === '5성') return '5성';
+    if(text === '메가') return '메가';
+
+    if(text.includes('그림자 1성')) return '1성';
+    if(text.includes('그림자 3성')) return '3성';
+    if(text.includes('그림자 5성')) return '5성';
+
+    if(text.includes('1성')) return '1성';
+    if(text.includes('3성')) return '3성';
+    if(text.includes('5성')) return '5성';
+
+    return text;
   }
 
-  function chipClass(label){
+  function isShadowItem(item){
+    if(item?.isShadow === true) return true;
+
+    const label = String(item?.label || '').trim();
+    const name = String(item?.name || '').trim();
+    const shadowBg = String(item?.shadowBg || '').trim().toLowerCase();
+
+    return (
+      label.includes('그림자') ||
+      name.includes('그림자') ||
+      shadowBg === 'true' ||
+      shadowBg === '1' ||
+      shadowBg === 'shadow' ||
+      shadowBg === 'yes'
+    );
+  }
+
+  function chipClass(label, shadow){
+    if(shadow) return 'chip-pink';
     if(label === '5성') return 'chip-blue';
     if(label === '3성') return 'chip-yellow';
     if(label === '1성') return 'chip-green';
     if(label === '메가') return 'chip-purple';
-    if(label === '그림자') return 'chip-pink';
     return 'chip-gray';
   }
 
@@ -981,20 +1162,59 @@
     return dates;
   }
 
+  function canShowOnWeekly(item){
+    const pages = Array.isArray(item?.showPages) ? item.showPages : [];
+    if(pages.length === 0) return true;
+    return ['weekly','index','raid-now'].some(page => pages.includes(page));
+  }
+
   function getDayItems(records, date){
     return records
       .filter(item =>
-        (isAllowed(item, 'weekly') || isAllowed(item, 'index') || isAllowed(item, 'raid-now')) &&
-        ['1성','3성','5성','메가','그림자'].includes(item.label) &&
+        canShowOnWeekly(item) &&
         item.startDate &&
         item.endDate &&
         inRange(date, item.startDate, item.endDate)
       )
+      .map(item => {
+        const shadow = isShadowItem(item);
+        const normalizedLabel = normalizeTierLabel(item.label);
+
+        return {
+          ...item,
+          __shadow: shadow,
+          __normalizedLabel: normalizedLabel
+        };
+      })
+      .filter(item => {
+        if(item.__shadow){
+          return ['1성','3성','5성'].includes(item.__normalizedLabel);
+        }
+        return ['1성','3성','5성','메가'].includes(item.__normalizedLabel);
+      })
       .sort((a,b) => {
-        const diff = sortPriority(a.label) - sortPriority(b.label);
-        if(diff !== 0) return diff;
+        const orderMap = {
+          '1성': 0,
+          '3성': 1,
+          '5성': 2,
+          '메가': 3
+        };
+
+        const aKey = `${a.__shadow ? '1' : '0'}-${orderMap[a.__normalizedLabel] ?? 99}`;
+        const bKey = `${b.__shadow ? '1' : '0'}-${orderMap[b.__normalizedLabel] ?? 99}`;
+
+        if(aKey < bKey) return -1;
+        if(aKey > bKey) return 1;
+
         return (a.name || '').localeCompare((b.name || ''), 'ko');
       });
+  }
+
+  function getGroupItems(items, group){
+    return items.filter(item => {
+      if(group.shadow !== item.__shadow) return false;
+      return item.__normalizedLabel === group.label;
+    });
   }
 
   function renderDateCurrent(){
@@ -1044,6 +1264,89 @@
     nextBtn.disabled = selectedIndex >= weekDates.length - 1;
   }
 
+  function getDisplayChipText(item){
+    if(item.__shadow){
+      return `그림자 ${item.__normalizedLabel}`;
+    }
+    return item.__normalizedLabel || '-';
+  }
+
+  function createRaidCard(item, selectedDate, itemIndex){
+    const shadowTheme = item.__shadow ? 'shadow-theme' : '';
+    const chip = chipClass(item.__normalizedLabel, item.__shadow);
+
+    const topBoosts = [
+      createTopBoostBadge(item.boost, item.boostIcon),
+      createTopBoostBadge(item.boost2, item.boostIcon2)
+    ].join('');
+
+    const typeBadges = [
+      createTypeBadge(item.type, item.typeIcon),
+      createTypeBadge(item.type2, item.typeIcon2)
+    ].join('');
+
+    const cpTableId = `cp-table-${toKey(selectedDate)}-${itemIndex}-${escapeHtml(item.name || 'raid')}`;
+
+    return `
+      <article class="raid-card ${shadowTheme}">
+        <div class="raid-head">
+          <span class="raid-chip ${chip}">${escapeHtml(getDisplayChipText(item))}</span>
+          <div class="top-boosts">${topBoosts}</div>
+        </div>
+
+        <div class="raid-main">
+          <div class="raid-thumb">
+            ${
+              item.image
+                ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
+                : `<span style="font-size:26px;">🖼️</span>`
+            }
+          </div>
+
+          <div>
+            <div class="raid-name">${escapeHtml(item.name || '-')}</div>
+            <div class="raid-desc">
+              ${
+                item.__shadow
+                  ? '이 날짜에 진행 중인 그림자 레이드입니다.'
+                  : '이 날짜에 진행 중인 레이드입니다.'
+              }
+            </div>
+            ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
+          </div>
+        </div>
+
+        <div class="meta-row">
+          ${
+            (item.cpMin || item.cpMax)
+              ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
+              : ``
+          }
+          ${
+            (item.boostedCpMin || item.boostedCpMax)
+              ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+              : ``
+          }
+        </div>
+
+        ${
+          item.cpTableImage
+            ? `
+              <div class="action-row">
+                <button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>
+              </div>
+              <div class="cp-table-panel" id="${cpTableId}">
+                <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+              </div>
+            `
+            : ``
+        }
+
+        ${item.__shadow ? `<div class="shadow-r-icon">R</div>` : ``}
+      </article>
+    `;
+  }
+
   function renderSelectedDay(){
     const daysKor = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
     const selectedDate = weekDates[selectedIndex];
@@ -1052,77 +1355,32 @@
 
     const content = items.length
       ? `
-        <div class="raid-grid">
-          ${items.map((item, itemIndex) => {
-            const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
-            const chip = chipClass(item.label);
-            const topBoosts = [
-              createTopBoostBadge(item.boost, item.boostIcon),
-              createTopBoostBadge(item.boost2, item.boostIcon2)
-            ].join('');
-
-            const typeBadges = [
-              createTypeBadge(item.type, item.typeIcon),
-              createTypeBadge(item.type2, item.typeIcon2)
-            ].join('');
-
-            const cpTableId = `cp-table-${toKey(selectedDate)}-${itemIndex}`;
+        <div class="group-stack">
+          ${RAID_GROUPS.map((group, groupIndex) => {
+            const groupItems = getGroupItems(items, group);
+            const isShadowGroup = group.shadow ? 'shadow-group' : '';
 
             return `
-              <article class="raid-card ${shadowTheme}">
-                <div class="raid-head">
-                  <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
-                  <div class="top-boosts">${topBoosts}</div>
-                </div>
-
-                <div class="raid-main">
-                  <div class="raid-thumb">
-                    ${
-                      item.image
-                        ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
-                        : `<span style="font-size:26px;">🖼️</span>`
-                    }
+              <section class="raid-group ${isShadowGroup}">
+                <div class="raid-group-head">
+                  <div class="raid-group-title">
+                    <span class="raid-group-title-badge ${group.badgeClass}">${escapeHtml(group.badge)}</span>
+                    <span>${escapeHtml(group.title)}</span>
                   </div>
-
-                  <div>
-                    <div class="raid-name">${escapeHtml(item.name || '-')}</div>
-                    <div class="raid-desc">
-                      ${
-                        item.label === '그림자'
-                          ? '이 날짜에 진행 중인 그림자 레이드입니다.'
-                          : '이 날짜에 진행 중인 레이드입니다.'
-                      }
-                    </div>
-                    ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
-                  </div>
+                  <div class="raid-group-count">${groupItems.length}마리</div>
                 </div>
-
-                <div class="meta-row">
+                <div class="raid-group-body">
                   ${
-                    (item.cpMin || item.cpMax)
-                      ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
-                      : ``
-                  }
-                  ${
-                    (item.boostedCpMin || item.boostedCpMax)
-                      ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
-                      : ``
+                    groupItems.length
+                      ? `
+                        <div class="raid-grid">
+                          ${groupItems.map((item, itemIndex) => createRaidCard(item, selectedDate, `${groupIndex}-${itemIndex}`)).join('')}
+                        </div>
+                      `
+                      : `<div class="group-empty">이 구간에는 진행 중인 레이드가 없습니다.</div>`
                   }
                 </div>
-
-                ${
-                  item.cpTableImage
-                    ? `
-                      <div class="action-row">
-                        <button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>
-                      </div>
-                      <div class="cp-table-panel" id="${cpTableId}">
-                        <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
-                      </div>
-                    `
-                    : ``
-                }
-              </article>
+              </section>
             `;
           }).join('')}
         </div>
