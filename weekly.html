@@ -310,7 +310,7 @@
     position:relative;
     overflow:hidden;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    min-height:260px;
+    min-height:240px;
   }
 
   .raid-card::after{
@@ -332,13 +332,11 @@
   }
 
   .raid-card.shadow-theme{
-    background:
-      url('images/shadow-flame.png') center/cover no-repeat,
-      linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
-    border:2px solid #000;
+    background:linear-gradient(180deg,#ececec 0%, #d9d9d9 100%);
+    border:2px solid #111;
     box-shadow:
-      0 0 0 4px #dcdcdc,
-      0 16px 34px rgba(98,67,168,.18);
+      0 0 0 4px #cfcfcf,
+      0 14px 30px rgba(20,20,20,.10);
     position:relative;
     overflow:hidden;
   }
@@ -346,14 +344,26 @@
   .raid-card.shadow-theme::before{
     content:"";
     position:absolute;
-    inset:0;
-    background:rgba(80,40,160,.22);
+    left:24px;
+    top:72px;
+    width:150px;
+    height:150px;
+    background:url('images/shadow-flame.png') center/contain no-repeat;
+    opacity:.58;
     pointer-events:none;
     z-index:0;
   }
 
   .raid-card.shadow-theme::after{
-    background:radial-gradient(circle, rgba(124,88,233,.26) 0%, rgba(124,88,233,0) 68%);
+    content:"";
+    position:absolute;
+    right:-30px;
+    bottom:-30px;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(130,110,255,.16) 0%, rgba(130,110,255,0) 70%);
+    pointer-events:none;
     z-index:0;
   }
 
@@ -364,12 +374,12 @@
 
   .shadow-r-icon{
     position:absolute;
-    right:10px;
-    bottom:10px;
-    width:32px;
-    height:32px;
+    right:12px;
+    bottom:12px;
+    width:34px;
+    height:34px;
     background:url('images/rocket-r.png') center/contain no-repeat;
-    filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));
+    filter:drop-shadow(0 4px 8px rgba(0,0,0,.32));
     z-index:2;
   }
 
@@ -431,8 +441,8 @@
   }
 
   .raid-card.shadow-theme .top-boost-badge{
-    background:rgba(255,255,255,.84);
-    border-color:#ddcffd;
+    background:rgba(255,255,255,.70);
+    border-color:#bdbdbd;
   }
 
   .raid-main{
@@ -458,11 +468,12 @@
   }
 
   .raid-card.shadow-theme .raid-thumb{
-    background:#f4eeff;
-    border-color:#d8ccff;
+    background:rgba(255,255,255,.22);
+    border:1px solid rgba(255,255,255,.28);
     box-shadow:
-      0 12px 28px rgba(98,67,168,.2),
-      0 0 18px rgba(124,88,233,.15);
+      0 10px 24px rgba(45,20,90,.20),
+      inset 0 0 0 1px rgba(255,255,255,.08);
+    backdrop-filter:blur(2px);
   }
 
   .raid-thumb img{
@@ -476,6 +487,10 @@
     line-height:1.1;
     font-weight:900;
     letter-spacing:-.03em;
+  }
+
+  .raid-card.shadow-theme .raid-name{
+    color:#1c2340;
   }
 
   .boss-tier-row{
@@ -496,20 +511,6 @@
 
   .raid-card.shadow-theme .boss-tier-icon{
     filter:drop-shadow(0 3px 6px rgba(74,30,140,.28));
-  }
-
-  .raid-desc{
-    margin-top:7px;
-    font-size:12px;
-    color:#7183a0;
-    line-height:1.5;
-    font-weight:800;
-  }
-
-  .raid-card.shadow-theme .raid-desc,
-  .raid-card.shadow-theme .raid-name{
-    color:#fff;
-    text-shadow:0 1px 4px rgba(0,0,0,.22);
   }
 
   .type-row{
@@ -541,8 +542,8 @@
   }
 
   .raid-card.shadow-theme .type-badge{
-    background:rgba(255,255,255,.84);
-    border-color:#ddcffd;
+    background:rgba(255,255,255,.70);
+    border-color:#bdbdbd;
   }
 
   .meta-row{
@@ -567,8 +568,8 @@
   }
 
   .raid-card.shadow-theme .meta-pill{
-    background:rgba(255,255,255,.84);
-    border-color:#ddcffd;
+    background:rgba(255,255,255,.70);
+    border-color:#bdbdbd;
   }
 
   .action-row{
@@ -625,7 +626,7 @@
 
   .raid-card.shadow-theme .cp-table-panel{
     background:rgba(255,255,255,.74);
-    border-color:#dacdfa;
+    border-color:#bdbdbd;
   }
 
   .empty-box{
@@ -770,6 +771,13 @@
 
     .raid-name{
       font-size:18px;
+    }
+
+    .raid-card.shadow-theme::before{
+      left:12px;
+      top:68px;
+      width:120px;
+      height:120px;
     }
   }
 
@@ -951,19 +959,29 @@
     return Array.isArray(item.showPages) && item.showPages.includes(page);
   }
 
+  function getBossTierCount(item){
+    const label = String(item.label || '').trim();
+
+    if(label === '1성') return 1;
+    if(label === '3성') return 3;
+    if(label === '5성') return 5;
+    if(label === '메가') return 4;
+
+    return 0;
+  }
+
   function sortPriority(item){
     const label = item.label;
     const order = {
       '5성': 0,
       '3성': 1,
       '1성': 2,
-      '메가': 3,
-      '그림자': 4
+      '메가': 3
     };
 
     const base = order[label] ?? 99;
 
-    if(label === '그림자'){
+    if(item.isShadow){
       const tierCount = getBossTierCount(item);
       if(tierCount === 5) return 0.5;
       if(tierCount === 3) return 1.5;
@@ -978,7 +996,6 @@
     if(label === '3성') return 'chip-yellow';
     if(label === '1성') return 'chip-green';
     if(label === '메가') return 'chip-purple';
-    if(label === '그림자') return 'chip-pink';
     return 'chip-gray';
   }
 
@@ -1018,31 +1035,6 @@
     `;
   }
 
-  function getBossTierCount(item){
-    const label = String(item.label || '').trim();
-
-    if(label === '1성') return 1;
-    if(label === '3성') return 3;
-    if(label === '5성') return 5;
-    if(label === '메가') return 4;
-
-    if(label === '그림자'){
-      const tier = String(item.tier || item.shadowTier || item.bossTier || '').trim();
-
-      if(tier === '1성' || tier === '1') return 1;
-      if(tier === '3성' || tier === '3') return 3;
-      if(tier === '5성' || tier === '5') return 5;
-
-      if(Number(item.raidTier) === 1) return 1;
-      if(Number(item.raidTier) === 3) return 3;
-      if(Number(item.raidTier) === 5) return 5;
-
-      return 3;
-    }
-
-    return 0;
-  }
-
   function createBossTierIcons(item){
     const count = getBossTierCount(item);
     if(!count) return '';
@@ -1079,7 +1071,7 @@
     return records
       .filter(item =>
         (isAllowed(item, 'weekly') || isAllowed(item, 'index') || isAllowed(item, 'raid-now')) &&
-        ['1성','3성','5성','메가','그림자'].includes(item.label) &&
+        ['1성','3성','5성','메가'].includes(item.label) &&
         item.startDate &&
         item.endDate &&
         inRange(date, item.startDate, item.endDate)
@@ -1148,7 +1140,7 @@
       ? `
         <div class="raid-grid">
           ${items.map((item, itemIndex) => {
-            const shadowTheme = item.label === '그림자' ? 'shadow-theme' : '';
+            const shadowTheme = item.isShadow ? 'shadow-theme' : '';
             const chip = chipClass(item.label);
             const topBoosts = [
               createTopBoostBadge(item.boost, item.boostIcon),
@@ -1181,13 +1173,6 @@
                   <div>
                     <div class="raid-name">${escapeHtml(item.name || '-')}</div>
                     ${createBossTierIcons(item)}
-                    <div class="raid-desc">
-                      ${
-                        item.label === '그림자'
-                          ? '이 날짜에 진행 중인 그림자 레이드입니다.'
-                          : '이 날짜에 진행 중인 레이드입니다.'
-                      }
-                    </div>
                     ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
                   </div>
                 </div>
@@ -1218,7 +1203,7 @@
                     : ``
                 }
 
-                ${item.label === '그림자' ? `<div class="shadow-r-icon" aria-hidden="true"></div>` : ``}
+                ${item.isShadow ? `<div class="shadow-r-icon" aria-hidden="true"></div>` : ``}
               </article>
             `;
           }).join('')}
