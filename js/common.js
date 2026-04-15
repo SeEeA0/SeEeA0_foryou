@@ -1,22 +1,24 @@
-const DATA_URL = './raid-data.json';
-const ROCKET_ICON = './images/rocket-r.png';
-const DEFAULT_SHADOW_BG = './images/shadow-flame.png';
+const DATA_URL = '../raid-data.json';
+const DATA_JS_URL = '../raid-data.js';
+
+const ROCKET_ICON = '../images/rocket-r.png';
+const DEFAULT_SHADOW_BG = '../images/shadow-flame.png';
 
 const BOOST_ICON_MAP = {
-  '맑음': './images/boost/sunny.png',
-  '쾌청': './images/boost/sunny.png',
-  '비': './images/boost/rainy.png',
-  '눈': './images/boost/snow.png',
-  '안개': './images/boost/fog.png',
-  '흐림': './images/boost/cloudy.png',
-  '강풍': './images/boost/windy.png',
-  '바람': './images/boost/windy.png',
-  'windy': './images/boost/windy.png',
-  'fog': './images/boost/fog.png',
-  'sunny': './images/boost/sunny.png',
-  'rainy': './images/boost/rainy.png',
-  'snow': './images/boost/snow.png',
-  'cloudy': './images/boost/cloudy.png'
+  '맑음': '../images/boost/sunny.png',
+  '쾌청': '../images/boost/sunny.png',
+  '비': '../images/boost/rainy.png',
+  '눈': '../images/boost/snow.png',
+  '안개': '../images/boost/fog.png',
+  '흐림': '../images/boost/cloudy.png',
+  '강풍': '../images/boost/windy.png',
+  '바람': '../images/boost/windy.png',
+  'windy': '../images/boost/windy.png',
+  'fog': '../images/boost/fog.png',
+  'sunny': '../images/boost/sunny.png',
+  'rainy': '../images/boost/rainy.png',
+  'snow': '../images/boost/snow.png',
+  'cloudy': '../images/boost/cloudy.png'
 };
 
 const TYPE_ICON_NUMBER_MAP = {
@@ -54,6 +56,7 @@ const LABEL_ORDER = {
 
 export {
   DATA_URL,
+  DATA_JS_URL,
   ROCKET_ICON,
   DEFAULT_SHADOW_BG,
   BOOST_ICON_MAP,
@@ -105,18 +108,38 @@ export function inRange(date, startStr, endStr) {
 }
 
 export async function loadRecords() {
-  const res = await fetch(DATA_URL, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`raid-data.json load failed: ${res.status}`);
+  try {
+    const res = await fetch(DATA_URL, { cache: 'no-store' });
+
+    if (!res.ok) {
+      throw new Error(`raid-data.json load failed: ${res.status}`);
+    }
+
+    const parsed = await res.json();
+
+    if (Array.isArray(parsed)) return parsed;
+    if (Array.isArray(parsed.records)) return parsed.records;
+    if (Array.isArray(parsed.items)) return parsed.items;
+
+    return [];
+  } catch (jsonError) {
+    console.warn('JSON 로드 실패, JS fallback 시도:', jsonError);
+
+    try {
+      const mod = await import(DATA_JS_URL);
+
+      if (Array.isArray(mod.default)) return mod.default;
+      if (Array.isArray(mod.records)) return mod.records;
+      if (Array.isArray(mod.raidData?.records)) return mod.raidData.records;
+      if (Array.isArray(mod.default?.records)) return mod.default.records;
+      if (Array.isArray(mod.default?.items)) return mod.default.items;
+
+      return [];
+    } catch (jsError) {
+      console.error('JS fallback도 실패:', jsError);
+      throw jsError;
+    }
   }
-
-  const parsed = await res.json();
-
-  if (Array.isArray(parsed)) return parsed;
-  if (Array.isArray(parsed.records)) return parsed.records;
-  if (Array.isArray(parsed.items)) return parsed.items;
-
-  return [];
 }
 
 export function isAllowed(item, page) {
@@ -199,7 +222,7 @@ export function resolveBoostIcon(text, explicitIcon = '') {
 export function getTypeIconPath(typeText, explicitIcon = '') {
   if (explicitIcon && String(explicitIcon).trim()) return explicitIcon;
   const number = TYPE_ICON_NUMBER_MAP[String(typeText || '').trim()];
-  return number ? `./icons/${number}.png` : '';
+  return number ? `../icons/${number}.png` : '';
 }
 
 export function filterByPageAndDate(records, page, date) {
