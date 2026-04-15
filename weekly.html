@@ -31,13 +31,16 @@
     --pink-soft:#ffe8f0;
 
     --yellow:#b88818;
-    --yellow-soft:#fff1c9;
+    --yellow-soft:#fff6d8;
 
     --green:#49a66b;
     --green-soft:#e7f5eb;
 
     --gray:#67768f;
     --gray-soft:#f2f5fa;
+
+    --shadow-bg:#2e323b;
+    --shadow-soft:#3b404c;
 
     --shadow:0 14px 32px rgba(43,67,110,.08);
     --shadow-hover:0 18px 36px rgba(43,67,110,.14);
@@ -54,9 +57,6 @@
     transform:translateY(10px);
     animation:fadeUp .55s ease forwards;
   }
-
-  .delay-1{animation-delay:.05s}
-  .delay-2{animation-delay:.1s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -81,15 +81,15 @@
     }
     25%{
       transform:translate(-50%, -50%) scale(1.02) rotate(-0.6deg);
-      opacity:.7;
+      opacity:.72;
     }
     50%{
-      transform:translate(-50%, -50%) scale(1.04) rotate(0.6deg);
-      opacity:.74;
+      transform:translate(-50%, -50%) scale(1.05) rotate(0.6deg);
+      opacity:.78;
     }
     75%{
       transform:translate(-50%, -50%) scale(1.02) rotate(-0.4deg);
-      opacity:.68;
+      opacity:.7;
     }
     100%{
       transform:translate(-50%, -50%) scale(1) rotate(0deg);
@@ -279,7 +279,7 @@
     align-items:flex-start;
     justify-content:space-between;
     gap:16px;
-    margin-bottom:16px;
+    margin-bottom:18px;
   }
 
   .day-left{
@@ -339,26 +339,144 @@
     white-space:nowrap;
   }
 
-  .group-section + .group-section{
-    margin-top:14px;
+  .tier-section + .tier-section{
+    margin-top:16px;
   }
 
-  .group-head{
-    margin-bottom:12px;
+  .tier-section{
+    border-radius:24px;
+    overflow:hidden;
+    border:1px solid #dde7f4;
+    background:#fff;
+    box-shadow:0 8px 20px rgba(43,67,110,.05);
   }
 
-  .group-title{
-    font-size:18px;
+  .tier-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px 16px;
+    border-bottom:1px solid rgba(0,0,0,.04);
+  }
+
+  .tier-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+  }
+
+  .tier-egg-wrap{
+    position:relative;
+    width:54px;
+    height:54px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .tier-egg{
+    width:44px;
+    height:44px;
+    object-fit:contain;
+    position:relative;
+    z-index:2;
+  }
+
+  .tier-shadow-flame{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:56px;
+    height:56px;
+    transform:translate(-50%, -50%);
+    object-fit:contain;
+    z-index:1;
+    opacity:.85;
+    pointer-events:none;
+    animation:smokeFloat 3.8s ease-in-out infinite;
+  }
+
+  .tier-title-wrap{
+    min-width:0;
+  }
+
+  .tier-title{
+    font-size:22px;
+    line-height:1.1;
     font-weight:900;
     letter-spacing:-.03em;
+    word-break:keep-all;
   }
 
-  .group-sub{
-    margin-top:6px;
+  .tier-sub{
+    margin-top:5px;
     font-size:12px;
-    color:#7b8ca8;
     font-weight:800;
-    line-height:1.45;
+    color:rgba(31,47,70,.58);
+  }
+
+  .tier-right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    flex-shrink:0;
+  }
+
+  .boss-icons{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:4px;
+  }
+
+  .boss-icon{
+    width:26px;
+    height:26px;
+    object-fit:contain;
+    border-radius:50%;
+    background:rgba(255,255,255,.8);
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+  }
+
+  .boss-icon + .boss-icon{
+    margin-left:-7px;
+  }
+
+  .tier-body{
+    padding:16px;
+  }
+
+  .tier-1 .tier-header{
+    background:linear-gradient(180deg,#fff1f5 0%, #ffe8f0 100%);
+    border-top:6px solid #e67d9a;
+  }
+
+  .tier-3 .tier-header{
+    background:linear-gradient(180deg,#fffdf3 0%, #fff6d8 100%);
+    border-top:6px solid #d6b541;
+  }
+
+  .tier-5 .tier-header{
+    background:linear-gradient(180deg,#eef5ff 0%, #e2eeff 100%);
+    border-top:6px solid #5f92f0;
+  }
+
+  .tier-mega .tier-header{
+    background:linear-gradient(180deg,#f5f0ff 0%, #efe7ff 100%);
+    border-top:6px solid #9874ef;
+  }
+
+  .tier-shadow .tier-header{
+    background:linear-gradient(180deg,#424854 0%, #343943 100%);
+    border-top:6px solid #a276ff;
+    color:#fff;
+  }
+
+  .tier-shadow .tier-sub{
+    color:rgba(255,255,255,.72);
   }
 
   .raid-grid{
@@ -833,6 +951,35 @@
       font-size:22px;
     }
 
+    .tier-header{
+      padding:13px 14px;
+      align-items:flex-start;
+    }
+
+    .tier-title{
+      font-size:19px;
+    }
+
+    .tier-egg-wrap{
+      width:48px;
+      height:48px;
+    }
+
+    .tier-egg{
+      width:38px;
+      height:38px;
+    }
+
+    .tier-shadow-flame{
+      width:50px;
+      height:50px;
+    }
+
+    .boss-icon{
+      width:22px;
+      height:22px;
+    }
+
     .raid-card{
       min-height:auto;
       padding:16px;
@@ -891,7 +1038,7 @@
     <div class="section-head">
       <div>
         <div class="section-title">주간 레이드 일정</div>
-        <div class="section-sub"></div>
+        <div class="section-sub">날짜를 선택하면 1성, 3성, 5성, 메가, 그림자 레이드를 구분해서 볼 수 있어요.</div>
       </div>
     </div>
 
