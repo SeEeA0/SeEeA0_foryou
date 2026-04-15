@@ -593,6 +593,48 @@
     line-height:1;
   }
 
+  .type-inline,
+  .type-chip-list{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .type-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    line-height:1;
+  }
+
+  .type-chip img{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+    display:block;
+  }
+
+  .type-chip span{
+    font-size:13px;
+    font-weight:900;
+    color:#334863;
+    white-space:nowrap;
+  }
+
+  .weakness-type-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
   @media (max-width:768px){
     .wrap{
       padding:14px 12px 120px;
@@ -741,6 +783,20 @@
     .nav-item{
       min-height:60px;
       font-size:11px;
+    }
+
+    .type-chip{
+      padding:3px 7px;
+      gap:5px;
+    }
+
+    .type-chip img{
+      width:16px;
+      height:16px;
+    }
+
+    .type-chip span{
+      font-size:12px;
     }
   }
 
@@ -908,6 +964,72 @@
       : `https://cdn.leekduck.com/assets/img/pokemon_icons/pm${id}.icon.png`;
   }
 
+  const TYPE_ICON_MAP = {
+    '노말': 1,
+    '불': 2,
+    '불꽃': 2,
+    '물': 3,
+    '전기': 4,
+    '풀': 5,
+    '얼음': 6,
+    '격투': 7,
+    '독': 8,
+    '땅': 9,
+    '비행': 10,
+    '페어리': 11,
+    '벌레': 12,
+    '바위': 13,
+    '고스트': 14,
+    '드래곤': 15,
+    '드레곤': 15,
+    '악': 16,
+    '강철': 17,
+    '에스퍼': 18
+  };
+
+  function normalizeTypeName(type) {
+    if (!type) return '';
+    const cleaned = String(type).trim();
+    if (cleaned === '불꽃') return '불';
+    if (cleaned === '드레곤') return '드래곤';
+    return cleaned;
+  }
+
+  function getTypeIcon(type) {
+    const normalized = normalizeTypeName(type);
+    const num = TYPE_ICON_MAP[normalized];
+    return num ? `icons/${num}.png` : '';
+  }
+
+  function renderTypeChip(type) {
+    const normalized = normalizeTypeName(type);
+    const icon = getTypeIcon(normalized);
+    if (!normalized) return '';
+    return `
+      <span class="type-chip">
+        ${icon ? `<img src="${icon}" alt="${normalized}">` : ''}
+        <span>${normalized}</span>
+      </span>
+    `;
+  }
+
+  function renderTypeList(types) {
+    return `
+      <div class="type-chip-list">
+        ${types.map(type => renderTypeChip(type)).join('')}
+      </div>
+    `;
+  }
+
+  function renderWeaknessTypes(types) {
+    if (!types || !types.length) return '';
+    return `
+      <div class="weakness-type-wrap">
+        ${types.map(type => renderTypeChip(type)).join('')}
+      </div>
+    `;
+  }
+
   const MAX_POKEMON = {
     charizard: { id: 6, name: '리자몽', gmax: true, skill: '회오리불꽃 / 용의숨결' },
     venusaur: { id: 3, name: '이상해꽃', gmax: true, skill: '덩굴채찍 / 독채찍' },
@@ -935,17 +1057,17 @@
       nameEn: 'Gigantamax Charizard',
       imageId: 6,
       shiny: '✨ 7.5%',
-      types: '🔥 불꽃, 🪽 비행',
+      types: ['불꽃', '비행'],
       weakness: [
-        { rate: '2.56x', types: '🪨 바위' },
-        { rate: '1.6x', types: '⚡ 전기, 💧 물' }
+        { rate: '2.56x', types: ['바위'] },
+        { rate: '1.6x', types: ['전기', '물'] }
       ],
       moves: [
-        { name: '🔥 블라스트번', rank: '위험', cls: 'danger' },
-        { name: '🔥 오버히트', rank: '위험', cls: 'danger' },
-        { name: '🔥 화염방사', rank: '어려움', cls: 'normal' },
-        { name: '🔥 불대문자', rank: '보통', cls: 'easy' },
-        { name: '🐉 드래곤클로', rank: '쉬움', cls: 'easy' }
+        { name: '블라스트번', rank: '위험', cls: 'danger' },
+        { name: '오버히트', rank: '위험', cls: 'danger' },
+        { name: '화염방사', rank: '어려움', cls: 'normal' },
+        { name: '불대문자', rank: '보통', cls: 'easy' },
+        { name: '드래곤클로', rank: '쉬움', cls: 'easy' }
       ],
       tank: ['blastoise', 'moltres'],
       attacker: ['kingler', 'toxtricity', 'inteleon', 'zapdos'],
@@ -959,16 +1081,16 @@
       nameEn: 'Gigantamax Venusaur',
       imageId: 3,
       shiny: '✨ 7.5%',
-      types: '🌿 풀, ☠️ 독',
+      types: ['풀', '독'],
       weakness: [
-        { rate: '1.6x', types: '🪽 비행, 🔥 불꽃, ❄️ 얼음, 🔮 에스퍼' },
-        { rate: '', types: '' }
+        { rate: '1.6x', types: ['비행', '불꽃', '얼음', '에스퍼'] },
+        { rate: '', types: [] }
       ],
       moves: [
-        { name: '🌿 하드플랜트', rank: '위험', cls: 'danger' },
-        { name: '🌿 솔라빔', rank: '위험', cls: 'danger' },
-        { name: '🌿 꽃보라', rank: '쉬움', cls: 'easy' },
-        { name: '☠️ 오물폭탄', rank: '보통', cls: 'normal' }
+        { name: '하드플랜트', rank: '위험', cls: 'danger' },
+        { name: '솔라빔', rank: '위험', cls: 'danger' },
+        { name: '꽃보라', rank: '쉬움', cls: 'easy' },
+        { name: '오물폭탄', rank: '보통', cls: 'normal' }
       ],
       tank: ['charizard', 'metagross', 'moltres'],
       attacker: ['charizard', 'gengar', 'zapdos', 'metagross'],
@@ -982,17 +1104,17 @@
       nameEn: 'Gigantamax Blastoise',
       imageId: 9,
       shiny: '✨ 7.5%',
-      types: '💧 물',
+      types: ['물'],
       weakness: [
-        { rate: '1.6x', types: '⚡ 전기, 🌿 풀' },
-        { rate: '', types: '' }
+        { rate: '1.6x', types: ['전기', '풀'] },
+        { rate: '', types: [] }
       ],
       moves: [
-        { name: '💧 하이드로캐논', rank: '위험', cls: 'danger' },
-        { name: '💧 하이드로펌프', rank: '위험', cls: 'danger' },
-        { name: '❄️ 냉동빔', rank: '보통', cls: 'normal' },
-        { name: '⚙️ 로켓박치기', rank: '보통', cls: 'normal' },
-        { name: '🔩 러스터캐논', rank: '쉬움', cls: 'easy' }
+        { name: '하이드로캐논', rank: '위험', cls: 'danger' },
+        { name: '하이드로펌프', rank: '위험', cls: 'danger' },
+        { name: '냉동빔', rank: '보통', cls: 'normal' },
+        { name: '로켓박치기', rank: '보통', cls: 'normal' },
+        { name: '러스터캐논', rank: '쉬움', cls: 'easy' }
       ],
       tank: ['lapras', 'metagross', 'blastoise'],
       attacker: ['rillaboom', 'toxtricity', 'venusaur', 'raikou'],
@@ -1006,16 +1128,16 @@
       nameEn: 'Gigantamax Gengar',
       imageId: 94,
       shiny: '✨ 7.5%',
-      types: '👻 고스트, ☠️ 독',
+      types: ['고스트', '독'],
       weakness: [
-        { rate: '1.6x', types: '🪨 땅, 👻 고스트, 🌑 악, 🔮 에스퍼' },
-        { rate: '', types: '' }
+        { rate: '1.6x', types: ['땅', '고스트', '악', '에스퍼'] },
+        { rate: '', types: [] }
       ],
       moves: [
-        { name: '👻 섀도볼', rank: '위험', cls: 'danger' },
-        { name: '☠️ 오물폭탄', rank: '보통', cls: 'normal' },
-        { name: '🥊 기합구슬', rank: '위험', cls: 'danger' },
-        { name: '👻 병상첨병', rank: '보통', cls: 'normal' }
+        { name: '섀도볼', rank: '위험', cls: 'danger' },
+        { name: '오물폭탄', rank: '보통', cls: 'normal' },
+        { name: '기합구슬', rank: '위험', cls: 'danger' },
+        { name: '병상첨병', rank: '보통', cls: 'normal' }
       ],
       tank: ['blastoise', 'lapras', 'metagross', 'venusaur'],
       attacker: ['gengar', 'metagross', 'rillaboom', 'zapdos'],
@@ -1079,12 +1201,13 @@
     document.getElementById('bossMainImage').src = getPokemonImage(boss.imageId, true);
     document.getElementById('bossMainImage').alt = boss.nameKo;
     document.getElementById('bossShiny').textContent = boss.shiny;
-    document.getElementById('bossTypes').textContent = boss.types;
+
+    document.getElementById('bossTypes').innerHTML = renderTypeList(boss.types);
 
     document.getElementById('bossWeaknessRate1').textContent = boss.weakness[0]?.rate || '';
-    document.getElementById('bossWeaknessTypes1').textContent = boss.weakness[0]?.types || '';
+    document.getElementById('bossWeaknessTypes1').innerHTML = renderWeaknessTypes(boss.weakness[0]?.types || []);
     document.getElementById('bossWeaknessRate2').textContent = boss.weakness[1]?.rate || '';
-    document.getElementById('bossWeaknessTypes2').textContent = boss.weakness[1]?.types || '';
+    document.getElementById('bossWeaknessTypes2').innerHTML = renderWeaknessTypes(boss.weakness[1]?.types || []);
 
     renderMoves(boss.moves);
     renderRoleList('tankList', boss.tank);
