@@ -425,6 +425,22 @@
     line-height:1.2;
   }
 
+  .move-title{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+
+  .move-type-icon{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
+  }
+
   .move-rank{
     margin-top:4px;
     font-size:13px;
@@ -730,6 +746,11 @@
       font-size:14px;
     }
 
+    .move-type-icon{
+      width:16px;
+      height:16px;
+    }
+
     .move-rank{
       font-size:12px;
     }
@@ -1030,6 +1051,17 @@
     `;
   }
 
+  function renderMoveName(move) {
+    const type = normalizeTypeName(move.type);
+    const icon = getTypeIcon(type);
+    return `
+      <div class="move-title">
+        ${icon ? `<img class="move-type-icon" src="${icon}" alt="${type}">` : ''}
+        <span>${move.name}</span>
+      </div>
+    `;
+  }
+
   const MAX_POKEMON = {
     charizard: { id: 6, name: '리자몽', gmax: true, skill: '회오리불꽃 / 용의숨결' },
     venusaur: { id: 3, name: '이상해꽃', gmax: true, skill: '덩굴채찍 / 독채찍' },
@@ -1063,11 +1095,11 @@
         { rate: '1.6x', types: ['전기', '물'] }
       ],
       moves: [
-        { name: '블라스트번', rank: '위험', cls: 'danger' },
-        { name: '오버히트', rank: '위험', cls: 'danger' },
-        { name: '화염방사', rank: '어려움', cls: 'normal' },
-        { name: '불대문자', rank: '보통', cls: 'easy' },
-        { name: '드래곤클로', rank: '쉬움', cls: 'easy' }
+        { type: '불꽃', name: '블라스트번', rank: '위험', cls: 'danger' },
+        { type: '불꽃', name: '오버히트', rank: '위험', cls: 'danger' },
+        { type: '불꽃', name: '화염방사', rank: '어려움', cls: 'normal' },
+        { type: '불꽃', name: '불대문자', rank: '보통', cls: 'easy' },
+        { type: '드래곤', name: '드래곤클로', rank: '쉬움', cls: 'easy' }
       ],
       tank: ['blastoise', 'moltres'],
       attacker: ['kingler', 'toxtricity', 'inteleon', 'zapdos'],
@@ -1087,10 +1119,10 @@
         { rate: '', types: [] }
       ],
       moves: [
-        { name: '하드플랜트', rank: '위험', cls: 'danger' },
-        { name: '솔라빔', rank: '위험', cls: 'danger' },
-        { name: '꽃보라', rank: '쉬움', cls: 'easy' },
-        { name: '오물폭탄', rank: '보통', cls: 'normal' }
+        { type: '풀', name: '하드플랜트', rank: '위험', cls: 'danger' },
+        { type: '풀', name: '솔라빔', rank: '위험', cls: 'danger' },
+        { type: '풀', name: '꽃보라', rank: '쉬움', cls: 'easy' },
+        { type: '독', name: '오물폭탄', rank: '보통', cls: 'normal' }
       ],
       tank: ['charizard', 'metagross', 'moltres'],
       attacker: ['charizard', 'gengar', 'zapdos', 'metagross'],
@@ -1110,11 +1142,11 @@
         { rate: '', types: [] }
       ],
       moves: [
-        { name: '하이드로캐논', rank: '위험', cls: 'danger' },
-        { name: '하이드로펌프', rank: '위험', cls: 'danger' },
-        { name: '냉동빔', rank: '보통', cls: 'normal' },
-        { name: '로켓박치기', rank: '보통', cls: 'normal' },
-        { name: '러스터캐논', rank: '쉬움', cls: 'easy' }
+        { type: '물', name: '하이드로캐논', rank: '위험', cls: 'danger' },
+        { type: '물', name: '하이드로펌프', rank: '위험', cls: 'danger' },
+        { type: '얼음', name: '냉동빔', rank: '보통', cls: 'normal' },
+        { type: '노말', name: '로켓박치기', rank: '보통', cls: 'normal' },
+        { type: '강철', name: '러스터캐논', rank: '쉬움', cls: 'easy' }
       ],
       tank: ['lapras', 'metagross', 'blastoise'],
       attacker: ['rillaboom', 'toxtricity', 'venusaur', 'raikou'],
@@ -1134,10 +1166,10 @@
         { rate: '', types: [] }
       ],
       moves: [
-        { name: '섀도볼', rank: '위험', cls: 'danger' },
-        { name: '오물폭탄', rank: '보통', cls: 'normal' },
-        { name: '기합구슬', rank: '위험', cls: 'danger' },
-        { name: '병상첨병', rank: '보통', cls: 'normal' }
+        { type: '고스트', name: '섀도볼', rank: '위험', cls: 'danger' },
+        { type: '독', name: '오물폭탄', rank: '보통', cls: 'normal' },
+        { type: '격투', name: '기합구슬', rank: '위험', cls: 'danger' },
+        { type: '고스트', name: '병상첨병', rank: '보통', cls: 'normal' }
       ],
       tank: ['blastoise', 'lapras', 'metagross', 'venusaur'],
       attacker: ['gengar', 'metagross', 'rillaboom', 'zapdos'],
@@ -1160,7 +1192,7 @@
     const wrap = document.getElementById('bossMoves');
     const safeMoves = [...moves];
     if (safeMoves.length % 2 === 1) {
-      safeMoves.push({ name: '', rank: '', cls: '' });
+      safeMoves.push({ name: '', rank: '', cls: '', type: '' });
     }
 
     wrap.innerHTML = safeMoves.map(move => {
@@ -1168,7 +1200,7 @@
       return `
         <div class="move-card">
           <div>
-            <div class="move-name">${move.name}</div>
+            <div class="move-name">${renderMoveName(move)}</div>
             <div class="move-rank ${move.cls}">${move.rank}</div>
           </div>
         </div>
