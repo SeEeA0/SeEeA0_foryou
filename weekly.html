@@ -296,6 +296,39 @@
     color:#607897;
   }
 
+  .raid-group{
+    margin-top:18px;
+  }
+
+  .raid-group:first-child{
+    margin-top:0;
+  }
+
+  .raid-group-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:12px;
+    font-size:16px;
+    font-weight:900;
+    letter-spacing:-.02em;
+    color:#314761;
+  }
+
+  .raid-group-title .group-pill{
+    min-height:28px;
+    padding:0 10px;
+    border-radius:999px;
+    border:1px solid #d8e3f2;
+    background:#f6f9ff;
+    color:#607897;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:900;
+  }
+
   .raid-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -380,7 +413,7 @@
     height:34px;
     background:url('images/rocket-r.png') center/contain no-repeat;
     filter:drop-shadow(0 4px 8px rgba(0,0,0,.32));
-    z-index:2;
+    z-index:3;
   }
 
   .raid-head{
@@ -835,7 +868,7 @@
     <div class="nav-icon">🏠</div>
     <div>메인</div>
   </a>
-  <a href="./dynamax.html" class="nav-item">
+  <a href="./raid-now.html" class="nav-item">
     <div class="nav-icon">⚡</div>
     <div>거다이맥스</div>
   </a>
@@ -979,16 +1012,7 @@
       '메가': 3
     };
 
-    const base = order[label] ?? 99;
-
-    if(item.isShadow){
-      const tierCount = getBossTierCount(item);
-      if(tierCount === 5) return 0.5;
-      if(tierCount === 3) return 1.5;
-      if(tierCount === 1) return 2.5;
-    }
-
-    return base;
+    return order[label] ?? 99;
   }
 
   function chipClass(label){
@@ -1130,86 +1154,119 @@
     nextBtn.disabled = selectedIndex >= weekDates.length - 1;
   }
 
+  function createRaidCard(item, selectedDate, itemIndex, groupPrefix){
+    const shadowTheme = item.isShadow ? 'shadow-theme' : '';
+    const chip = chipClass(item.label);
+    const topBoosts = [
+      createTopBoostBadge(item.boost, item.boostIcon),
+      createTopBoostBadge(item.boost2, item.boostIcon2)
+    ].join('');
+
+    const typeBadges = [
+      createTypeBadge(item.type, item.typeIcon),
+      createTypeBadge(item.type2, item.typeIcon2)
+    ].join('');
+
+    const cpTableId = `cp-table-${groupPrefix}-${toKey(selectedDate)}-${itemIndex}`;
+
+    return `
+      <article class="raid-card ${shadowTheme}">
+        <div class="raid-head">
+          <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
+          <div class="top-boosts">${topBoosts}</div>
+        </div>
+
+        <div class="raid-main">
+          <div class="raid-thumb">
+            ${
+              item.image
+                ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
+                : `<span style="font-size:26px;">🖼️</span>`
+            }
+          </div>
+
+          <div>
+            <div class="raid-name">${escapeHtml(item.name || '-')}</div>
+            ${createBossTierIcons(item)}
+            ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
+          </div>
+        </div>
+
+        <div class="meta-row">
+          ${
+            (item.cpMin || item.cpMax)
+              ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
+              : ``
+          }
+          ${
+            (item.boostedCpMin || item.boostedCpMax)
+              ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
+              : ``
+          }
+        </div>
+
+        ${
+          item.cpTableImage
+            ? `
+              <div class="action-row">
+                <button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>
+              </div>
+              <div class="cp-table-panel" id="${cpTableId}">
+                <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
+              </div>
+            `
+            : ``
+        }
+
+        ${item.isShadow ? `<div class="shadow-r-icon" aria-hidden="true"></div>` : ``}
+      </article>
+    `;
+  }
+
   function renderSelectedDay(){
     const daysKor = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
     const selectedDate = weekDates[selectedIndex];
     const wrap = document.getElementById('weekList');
     const items = getDayItems(records, selectedDate);
 
-    const content = items.length
-      ? `
-        <div class="raid-grid">
-          ${items.map((item, itemIndex) => {
-            const shadowTheme = item.isShadow ? 'shadow-theme' : '';
-            const chip = chipClass(item.label);
-            const topBoosts = [
-              createTopBoostBadge(item.boost, item.boostIcon),
-              createTopBoostBadge(item.boost2, item.boostIcon2)
-            ].join('');
+    const normalItems = items.filter(item => !item.isShadow);
+    const shadowItems = items.filter(item => item.isShadow);
 
-            const typeBadges = [
-              createTypeBadge(item.type, item.typeIcon),
-              createTypeBadge(item.type2, item.typeIcon2)
-            ].join('');
+    let content = '';
 
-            const cpTableId = `cp-table-${toKey(selectedDate)}-${itemIndex}`;
+    if(!items.length){
+      content = `<div class="empty-box">이 날짜에는 진행 중인 레이드가 없습니다.</div>`;
+    } else {
+      const normalSection = normalItems.length
+        ? `
+          <div class="raid-group">
+            <div class="raid-group-title">
+              <span>일반 레이드</span>
+              <span class="group-pill">${normalItems.length}개</span>
+            </div>
+            <div class="raid-grid">
+              ${normalItems.map((item, itemIndex) => createRaidCard(item, selectedDate, itemIndex, 'normal')).join('')}
+            </div>
+          </div>
+        `
+        : '';
 
-            return `
-              <article class="raid-card ${shadowTheme}">
-                <div class="raid-head">
-                  <span class="raid-chip ${chip}">${escapeHtml(item.label || '-')}</span>
-                  <div class="top-boosts">${topBoosts}</div>
-                </div>
+      const shadowSection = shadowItems.length
+        ? `
+          <div class="raid-group">
+            <div class="raid-group-title">
+              <span>그림자 레이드</span>
+              <span class="group-pill">${shadowItems.length}개</span>
+            </div>
+            <div class="raid-grid">
+              ${shadowItems.map((item, itemIndex) => createRaidCard(item, selectedDate, itemIndex, 'shadow')).join('')}
+            </div>
+          </div>
+        `
+        : '';
 
-                <div class="raid-main">
-                  <div class="raid-thumb">
-                    ${
-                      item.image
-                        ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name || '')}">`
-                        : `<span style="font-size:26px;">🖼️</span>`
-                    }
-                  </div>
-
-                  <div>
-                    <div class="raid-name">${escapeHtml(item.name || '-')}</div>
-                    ${createBossTierIcons(item)}
-                    ${typeBadges ? `<div class="type-row">${typeBadges}</div>` : ``}
-                  </div>
-                </div>
-
-                <div class="meta-row">
-                  ${
-                    (item.cpMin || item.cpMax)
-                      ? `<span class="meta-pill">CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}</span>`
-                      : ``
-                  }
-                  ${
-                    (item.boostedCpMin || item.boostedCpMax)
-                      ? `<span class="meta-pill">부스트 ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}</span>`
-                      : ``
-                  }
-                </div>
-
-                ${
-                  item.cpTableImage
-                    ? `
-                      <div class="action-row">
-                        <button class="action-btn primary" type="button" data-cptable-target="${cpTableId}">CP표 보기</button>
-                      </div>
-                      <div class="cp-table-panel" id="${cpTableId}">
-                        <img src="${escapeHtml(item.cpTableImage)}" alt="${escapeHtml(item.name || '')} CP표">
-                      </div>
-                    `
-                    : ``
-                }
-
-                ${item.isShadow ? `<div class="shadow-r-icon" aria-hidden="true"></div>` : ``}
-              </article>
-            `;
-          }).join('')}
-        </div>
-      `
-      : `<div class="empty-box">이 날짜에는 진행 중인 레이드가 없습니다.</div>`;
+      content = `${normalSection}${shadowSection}`;
+    }
 
     wrap.innerHTML = `
       <div class="selected-day-wrap">
