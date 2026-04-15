@@ -554,6 +554,7 @@
       "typeIcon2": "icons/17.png",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
+
     {
       "name": "단칼빙",
       "label": "1성",
@@ -610,6 +611,7 @@
       "typeIcon": "icons/8.png",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
+
     {
       "name": "카푸나비나",
       "label": "5성",
@@ -647,6 +649,7 @@
       "typeIcon": "icons/14.png",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
+
     {
       "name": "메가 피죤투",
       "label": "메가",
