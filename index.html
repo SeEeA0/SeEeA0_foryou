@@ -75,14 +75,8 @@
   .delay-4{animation-delay:.26s}
 
   @keyframes fadeUp{
-    from{
-      opacity:0;
-      transform:translateY(10px);
-    }
-    to{
-      opacity:1;
-      transform:translateY(0);
-    }
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
   }
 
   @keyframes softFloat{
@@ -233,35 +227,6 @@
     color:var(--muted);
     font-weight:800;
     line-height:1.45;
-  }
-
-  .head-link{
-    min-height:38px;
-    padding:0 14px;
-    border-radius:999px;
-    background:#f3f7ff;
-    border:1px solid var(--line);
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:12px;
-    font-weight:900;
-    color:#5c7395;
-    text-decoration:none;
-    white-space:nowrap;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }
-
-  .head-link:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(43,67,110,.08);
-    border-color:#c7d7ec;
-  }
-
-  .hot-link{
-    background:#fff3f6;
-    border-color:#ffd7e2;
-    color:#d85b85;
   }
 
   .section-body{
@@ -427,7 +392,7 @@
     border:1.5px solid var(--line);
     border-radius:22px;
     padding:14px;
-    min-height:188px;
+    min-height:210px;
     text-decoration:none;
     color:inherit;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
@@ -453,6 +418,7 @@
     border-radius:50%;
     background:linear-gradient(135deg, rgba(120,148,255,.14), rgba(123,99,255,.04));
     pointer-events:none;
+    z-index:0;
   }
 
   .now-card.hot-legend{
@@ -466,12 +432,57 @@
   }
 
   .now-card.hot-shadow{
-    background:linear-gradient(180deg,#fff1f5 0%, #fff 100%);
-    border-color:#ffd4df;
+    background:linear-gradient(180deg,#ececec 0%, #d9d9d9 100%);
+    border:2px solid #111;
+    box-shadow:
+      0 0 0 4px #cfcfcf,
+      0 14px 30px rgba(20,20,20,.10);
+  }
+
+  .now-card.hot-shadow::before{
+    content:"";
+    position:absolute;
+    left:14px;
+    top:56px;
+    width:116px;
+    height:116px;
+    background:url('images/shadow-flame.png') center/contain no-repeat;
+    opacity:.58;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .now-card.hot-shadow::after{
+    content:"";
+    position:absolute;
+    right:-30px;
+    bottom:-30px;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(130,110,255,.16) 0%, rgba(130,110,255,0) 70%);
+    pointer-events:none;
+    z-index:0;
   }
 
   .now-card.hot-fallback{
     background:linear-gradient(180deg,#f7fbff 0%, #fff 100%);
+  }
+
+  .now-card > *{
+    position:relative;
+    z-index:1;
+  }
+
+  .shadow-r-icon{
+    position:absolute;
+    right:12px;
+    bottom:12px;
+    width:34px;
+    height:34px;
+    background:url('images/rocket-r.png') center/contain no-repeat;
+    filter:drop-shadow(0 4px 8px rgba(0,0,0,.32));
+    z-index:2;
   }
 
   .now-head{
@@ -533,6 +544,15 @@
     animation:softFloat 3.8s ease-in-out infinite;
   }
 
+  .now-card.hot-shadow .now-thumb{
+    background:rgba(255,255,255,.22);
+    border:1px solid rgba(255,255,255,.28);
+    box-shadow:
+      0 10px 24px rgba(45,20,90,.20),
+      inset 0 0 0 1px rgba(255,255,255,.08);
+    backdrop-filter:blur(2px);
+  }
+
   .now-thumb img{
     width:50px;
     height:50px;
@@ -545,6 +565,30 @@
     line-height:1.12;
     letter-spacing:-.03em;
     word-break:keep-all;
+  }
+
+  .now-card.hot-shadow .now-name{
+    color:#1c2340;
+  }
+
+  .boss-tier-row{
+    margin-top:7px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    flex-wrap:wrap;
+  }
+
+  .boss-tier-icon{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+    display:block;
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,.12));
+  }
+
+  .now-card.hot-shadow .boss-tier-icon{
+    filter:drop-shadow(0 3px 6px rgba(74,30,140,.28));
   }
 
   .now-meta{
@@ -576,6 +620,11 @@
     font-weight:900;
     color:#607897;
     max-width:100%;
+  }
+
+  .now-card.hot-shadow .boost-badge{
+    background:rgba(255,255,255,.70);
+    border-color:#bdbdbd;
   }
 
   .boost-badge img{
@@ -745,32 +794,20 @@
   }
 
   @media (max-width:1100px){
-    .quick-grid{
-      grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-
-    .now-row{
-      grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-
-    .weekday-points{
-      grid-template-columns:1fr;
-    }
+    .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .now-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .weekday-points{grid-template-columns:1fr}
   }
 
   @media (max-width:768px){
-    .wrap{
-      padding:14px 12px 120px;
-    }
+    .wrap{padding:14px 12px 120px}
 
     .topbar{
       flex-direction:column;
       align-items:flex-start;
     }
 
-    .topbar-title{
-      font-size:28px;
-    }
+    .topbar-title{font-size:28px}
 
     .section-head{
       padding:16px 16px 12px;
@@ -778,18 +815,14 @@
       align-items:flex-start;
     }
 
-    .section-body{
-      padding:12px;
-    }
+    .section-body{padding:12px}
 
     .weekday-top{
       flex-direction:column;
       align-items:flex-start;
     }
 
-    .weekday-title{
-      font-size:22px;
-    }
+    .weekday-title{font-size:22px}
 
     .weekday-visual{
       width:100%;
@@ -805,23 +838,15 @@
       object-fit:contain;
     }
 
-    .quick-grid{
-      grid-template-columns:1fr;
-    }
-
-    .now-row{
-      grid-template-columns:1fr;
-      gap:10px;
-    }
+    .quick-grid{grid-template-columns:1fr}
+    .now-row{grid-template-columns:1fr;gap:10px}
 
     .now-card{
       min-height:auto;
       padding:13px;
     }
 
-    .now-head{
-      align-items:center;
-    }
+    .now-head{align-items:center}
 
     .hot-badge{
       min-height:26px;
@@ -845,19 +870,9 @@
       height:44px;
     }
 
-    .now-name{
-      font-size:17px;
-    }
-
-    .now-meta{
-      font-size:11px;
-      line-height:1.4;
-    }
-
-    .boost-row{
-      margin-top:10px;
-      gap:6px;
-    }
+    .now-name{font-size:17px}
+    .now-meta{font-size:11px;line-height:1.4}
+    .boost-row{margin-top:10px;gap:6px}
 
     .boost-badge{
       min-height:28px;
@@ -876,14 +891,8 @@
       padding:20px;
     }
 
-    .test-cta-title{
-      font-size:24px;
-    }
-
-    .test-cta-btn{
-      width:100%;
-      min-width:0;
-    }
+    .test-cta-title{font-size:24px}
+    .test-cta-btn{width:100%;min-width:0}
 
     .bottom-nav{
       grid-template-columns:repeat(4,1fr);
@@ -894,6 +903,13 @@
     .nav-item{
       min-height:60px;
       font-size:11px;
+    }
+
+    .now-card.hot-shadow::before{
+      left:10px;
+      top:50px;
+      width:98px;
+      height:98px;
     }
   }
 
@@ -918,11 +934,11 @@
   </div>
 
   <section class="quick-grid fade-up delay-1">
-    <a class="quick-card" href="./raid-now.html">
-      <div class="quick-icon">⚔️</div>
+    <a class="quick-card" href="./dynamax.html">
+      <div class="quick-icon">⚡</div>
       <div>
-        <div class="quick-title">오늘의 레이드</div>
-        <div class="quick-desc">현재 진행 중인 레이드를 빠르게 확인하세요.</div>
+        <div class="quick-title">거다이맥스</div>
+        <div class="quick-desc">현재 진행 중인 거다이맥스와 관련 정보를 확인하세요.</div>
       </div>
     </a>
 
@@ -930,7 +946,7 @@
       <div class="quick-icon">🗓️</div>
       <div>
         <div class="quick-title">주간 일정</div>
-        <div class="quick-desc"></div>
+        <div class="quick-desc">이번 주 레이드 일정을 날짜별로 살펴보세요.</div>
       </div>
     </a>
 
@@ -938,7 +954,7 @@
       <div class="quick-icon">📆</div>
       <div>
         <div class="quick-title">월간 일정</div>
-        <div class="quick-desc"></div>
+        <div class="quick-desc">한 달 전체 레이드 일정을 한눈에 확인하세요.</div>
       </div>
     </a>
   </section>
@@ -965,9 +981,7 @@
         </div>
 
         <div class="weekday-points" id="weekdayPoints"></div>
-
         <div class="weekday-note" id="weekdayNote" style="display:none;"></div>
-
         <div class="weekday-tabs" id="weekdayTabs"></div>
       </div>
     </div>
@@ -1006,9 +1020,9 @@
     <div class="nav-icon">🏠</div>
     <div>메인</div>
   </a>
-  <a href="./raid-now.html" class="nav-item">
-    <div class="nav-icon">⚔️</div>
-    <div>오늘의 레이드</div>
+  <a href="./dynamax.html" class="nav-item">
+    <div class="nav-icon">⚡</div>
+    <div>거다이맥스</div>
   </a>
   <a href="./weekly.html" class="nav-item">
     <div class="nav-icon">🗓️</div>
@@ -1195,6 +1209,15 @@
     return Array.isArray(item.showPages) && item.showPages.includes(page);
   }
 
+  function getBossTierCount(item){
+    const label = String(item.label || '').trim();
+    if(label === '1성') return 1;
+    if(label === '3성') return 3;
+    if(label === '5성') return 5;
+    if(label === '메가') return 4;
+    return 0;
+  }
+
   function chipClass(item){
     if(item.isShadow) return 'pink';
     if(item.label === '5성') return 'blue';
@@ -1255,10 +1278,8 @@
 
   function resolveBoostIcon(text, explicitIcon){
     if(explicitIcon && String(explicitIcon).trim()) return explicitIcon;
-
     const raw = String(text || '').trim();
     const lower = raw.toLowerCase();
-
     return BOOST_ICON_MAP[raw] || BOOST_ICON_MAP[lower] || '';
   }
 
@@ -1271,6 +1292,19 @@
       <div class="boost-badge">
         ${icon ? `<img src="${escapeHtml(icon)}" alt="${escapeHtml(text)}">` : ``}
         <span>${escapeHtml(text)}</span>
+      </div>
+    `;
+  }
+
+  function createBossTierIcons(item){
+    const count = getBossTierCount(item);
+    if(!count) return '';
+
+    return `
+      <div class="boss-tier-row" aria-label="보스 등급 ${count}">
+        ${Array.from({ length: count }).map(() => `
+          <img class="boss-tier-icon" src="images/boss-icon.png" alt="보스 등급 아이콘">
+        `).join('')}
       </div>
     `;
   }
@@ -1303,7 +1337,7 @@
     document.getElementById('weekdayDayBadge').textContent = data.day;
     document.getElementById('weekdayTitle').textContent = data.title;
     document.getElementById('weekdaySummary').textContent = data.summary;
-    document.getElementById('weekdaySub').textContent = `${data.day} `;
+    document.getElementById('weekdaySub').textContent = `${data.day}`;
     document.getElementById('weekdayImage').src = data.image || '';
     document.getElementById('weekdayImage').alt = data.title || '요일 이벤트 이미지';
 
@@ -1355,6 +1389,7 @@
             </div>
             <div>
               <div class="now-name">${escapeHtml(item.name || '-')}</div>
+              ${createBossTierIcons(item)}
               <div class="now-meta">
                 일반 CP ${escapeHtml(item.cpMin || '-')} ~ ${escapeHtml(item.cpMax || '-')}<br>
                 부스트 CP ${escapeHtml(item.boostedCpMin || '-')} ~ ${escapeHtml(item.boostedCpMax || '-')}
@@ -1363,6 +1398,7 @@
           </div>
 
           ${boostBadges ? `<div class="boost-row">${boostBadges}</div>` : ``}
+          ${item.isShadow ? `<div class="shadow-r-icon" aria-hidden="true"></div>` : ``}
         </a>
       `;
     }).join('');
