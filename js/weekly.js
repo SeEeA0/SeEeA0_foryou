@@ -1,206 +1,239 @@
-import {
-  loadRecords,
-  getKoreaToday,
-  toKey,
-  pad,
-  inRange,
-  splitShadowGroups,
-  buildRaidCard,
-  bindCpButtons
-} from './common.js';
+import raidData from "../data/raids.json" assert { type: "json" };
 
-let records = [];
+const weekListEl = document.getElementById("weekList");
+const weekDotsEl = document.getElementById("weekDots");
+const dateCurrentEl = document.getElementById("dateCurrent");
+const prevBtn = document.getElementById("prevDateBtn");
+const nextBtn = document.getElementById("nextDateBtn");
+
+const today = new Date();
+let currentIndex = 0;
 let weekDates = [];
-let selectedIndex = 0;
 
-function getWeekStart(today) {
-  const d = new Date(today);
-  const day = d.getDay();
-  d.setDate(d.getDate() - day);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
+/* =========================
+   날짜 생성
+========================= */
+function getWeekDates() {
+  const start = new Date(today);
+  start.setDate(today.getDate() - 3);
 
-function getWeekDates(today) {
-  const start = getWeekStart(today);
-  const dates = [];
-
-  for (let i = 0; i < 7; i += 1) {
+  return Array.from({ length: 7 }).map((_, i) => {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
-    dates.push(d);
-  }
-
-  return dates;
+    return d;
+  });
 }
 
-function getDayItems(date) {
-  return records
-    .filter(item => Array.isArray(item.showPages) && (item.showPages.includes('weekly') || item.showPages.includes('index') || item.showPages.includes('raid-now')))
-    .filter(item => item.startDate && item.endDate)
-    .filter(item => inRange(date, item.startDate, item.endDate));
+/* =========================
+   날짜 포맷
+========================= */
+function formatDate(date) {
+  return date.toISOString().split("T")[0];
 }
 
-function renderDateCurrent() {
-  const days = ['일', '월', '화', '수', '목', '금', '토'];
-  const selectedDate = weekDates[selectedIndex];
-  const wrap = document.getElementById('dateCurrent');
-  if (!wrap || !selectedDate) return;
+function formatDisplay(date) {
+  return `${date.getMonth() + 1}월 ${date.getDate()}일`;
+}
 
-  wrap.innerHTML = `
-    <div class="date-current-inner">
-      <div class="date-current-weekday">${days[selectedDate.getDay()]}</div>
-      <div class="date-current-day">${selectedDate.getDate()}</div>
-      <div class="date-current-full">${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일</div>
+function getWeekday(date) {
+  return ["일","월","화","수","목","금","토"][date.getDay()];
+}
+
+/* =========================
+   보스 아이콘
+========================= */
+function renderBossIcons(label) {
+  let count = 1;
+
+  if (label === "3성") count = 3;
+  if (label === "5성") count = 5;
+  if (label === "메가") count = 1;
+
+  return `
+    <div class="boss-icons">
+      ${Array.from({ length: count }).map(() => `
+        <img src="./images/boss-icons/boss.png" class="boss-icon">
+      `).join("")}
     </div>
   `;
 }
 
-function renderWeekDots(today) {
-  const wrap = document.getElementById('weekDots');
-  if (!wrap) return;
-
-  wrap.innerHTML = weekDates.map((date, index) => {
-    const isToday = toKey(date) === toKey(today);
-    const isActive = index === selectedIndex;
-
-    return `
-      <button
-        type="button"
-        class="week-dot ${isToday ? 'today' : ''} ${isActive ? 'active' : ''}"
-        data-index="${index}"
-        aria-label="${date.getMonth() + 1}월 ${date.getDate()}일 선택"
-      ></button>
-    `;
-  }).join('');
-
-  wrap.querySelectorAll('[data-index]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      selectedIndex = Number(btn.dataset.index);
-      updateSelectedDay(today);
-    });
-  });
-}
-
-function renderNavButtons() {
-  const prevBtn = document.getElementById('prevDateBtn');
-  const nextBtn = document.getElementById('nextDateBtn');
-  if (!prevBtn || !nextBtn) return;
-
-  prevBtn.disabled = selectedIndex <= 0;
-  nextBtn.disabled = selectedIndex >= weekDates.length - 1;
-}
-
-function renderGroupSection(title, subtitle, items, sectionKey, dateKey) {
-  if (!items.length) {
-    return `
-      <section class="group-section">
-        <div class="group-head">
-          <div class="group-title">${title}</div>
-          <div class="group-sub">${subtitle}</div>
-        </div>
-        <div class="empty-box">해당 레이드가 없습니다.</div>
-      </section>
-    `;
+/* =========================
+   알 아이콘
+========================= */
+function getEggIcon(label, isShadow) {
+  if (isShadow) {
+    return `./images/eggs/egg-shadow-${label.replace("성","")}.png`;
   }
 
+  if (label === "메가") return "./images/eggs/egg-mega.png";
+
+  return `./images/eggs/egg-${label.replace("성","")}.png`;
+}
+
+/* =========================
+   카드 생성
+========================= */
+function createCard(raid) {
   return `
-    <section class="group-section">
-      <div class="group-head">
-        <div class="group-title">${title}</div>
-        <div class="group-sub">${subtitle}</div>
+    <div class="raid-card ${raid.isShadow ? "shadow-theme" : ""}">
+      <div class="raid-main">
+        <div class="raid-thumb">
+          ${raid.isShadow ? `<img src="./images/eggs/shadow-flame.png" class="shadow-flame">` : ""}
+          <img src="${raid.image}" class="pokemon-img">
+        </div>
+
+        <div>
+          <div class="raid-name">${raid.name}</div>
+          <div class="raid-desc">이 날짜에 진행 중인 레이드입니다.</div>
+        </div>
       </div>
-      <div class="raid-grid">
-        ${items.map((item, index) =>
-          buildRaidCard(item, {
-            sectionKey: `${sectionKey}-${index}`,
-            index,
-            dateKey,
-            showCpButton: true,
-            showDateRange: true,
-            shadowDescription: '이 날짜에 진행 중인 그림자 레이드입니다.',
-            normalDescription: '이 날짜에 진행 중인 레이드입니다.'
-          })
-        ).join('')}
+    </div>
+  `;
+}
+
+/* =========================
+   섹션 생성
+========================= */
+function createSection(title, raids, isShadow = false) {
+  if (!raids.length) return "";
+
+  const tierClass =
+    title === "1성" ? "tier-1" :
+    title === "3성" ? "tier-3" :
+    title === "5성" ? "tier-5" :
+    title === "메가" ? "tier-mega" :
+    "tier-shadow";
+
+  const eggIcon = getEggIcon(title, isShadow);
+
+  return `
+    <section class="tier-section ${tierClass}">
+      <div class="tier-header">
+        <div class="tier-left">
+          <div class="tier-egg-wrap">
+            ${isShadow ? `<img src="./images/eggs/shadow-flame.png" class="tier-shadow-flame">` : ""}
+            <img src="${eggIcon}" class="tier-egg">
+          </div>
+          <div class="tier-title">${isShadow ? "그림자 레이드" : `${title} 레이드`}</div>
+        </div>
+
+        <div class="tier-right">
+          ${renderBossIcons(title)}
+        </div>
+      </div>
+
+      <div class="tier-body">
+        <div class="raid-grid">
+          ${raids.map(createCard).join("")}
+        </div>
       </div>
     </section>
   `;
 }
 
-function renderSelectedDay() {
-  const wrap = document.getElementById('weekList');
-  const selectedDate = weekDates[selectedIndex];
-  if (!wrap || !selectedDate) return;
+/* =========================
+   렌더링
+========================= */
+function renderDay(date) {
+  const todayStr = formatDate(date);
 
-  const dayItems = getDayItems(selectedDate);
-  const { normal, shadow } = splitShadowGroups(dayItems);
-  const dateKey = toKey(selectedDate);
-  const daysKor = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+  const raids = raidData.records.filter(r =>
+    todayStr >= r.startDate && todayStr <= r.endDate
+  );
 
-  wrap.innerHTML = `
+  const normal = raids.filter(r => !r.isShadow);
+  const shadow = raids.filter(r => r.isShadow);
+
+  const tier1 = normal.filter(r => r.label === "1성");
+  const tier3 = normal.filter(r => r.label === "3성");
+  const tier5 = normal.filter(r => r.label === "5성");
+  const mega = normal.filter(r => r.label === "메가");
+
+  weekListEl.innerHTML = `
     <div class="selected-day-wrap">
-      <section class="day-card">
+      <div class="day-card">
         <div class="day-head">
           <div class="day-left">
             <div class="day-badge">
-              <div class="day-num">${selectedDate.getDate()}</div>
-              <div class="day-week">${daysKor[selectedDate.getDay()].replace('요일', '')}</div>
+              <div class="day-num">${date.getDate()}</div>
+              <div class="day-week">${getWeekday(date)}</div>
             </div>
-            <div>
-              <div class="day-title">${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일 ${daysKor[selectedDate.getDay()]}</div>
+
+            <div class="day-title">
+              ${formatDisplay(date)} ${getWeekday(date)}요일
             </div>
           </div>
-          <div class="day-chip">${dateKey}</div>
         </div>
 
-        ${renderGroupSection('일반 레이드', '1성 · 3성 · 5성 · 메가 · 다이맥스 · 거다이맥스', normal, 'weekly-normal', dateKey)}
-        ${renderGroupSection('그림자 레이드', '그림자 1성 · 그림자 3성 · 그림자 5성', shadow, 'weekly-shadow', dateKey)}
-      </section>
+        ${createSection("1성", tier1)}
+        ${createSection("3성", tier3)}
+        ${createSection("5성", tier5)}
+        ${createSection("메가", mega)}
+        ${createSection("그림자", shadow, true)}
+      </div>
     </div>
   `;
-
-  bindCpButtons(document);
 }
 
-function updateSelectedDay(today) {
-  renderDateCurrent();
-  renderWeekDots(today);
-  renderNavButtons();
-  renderSelectedDay();
-}
+/* =========================
+   날짜 UI
+========================= */
+function renderDots() {
+  weekDotsEl.innerHTML = weekDates.map((d, i) => `
+    <div class="week-dot ${i === currentIndex ? "active" : ""}" data-index="${i}"></div>
+  `).join("");
 
-function bindNavButtons(today) {
-  const prevBtn = document.getElementById('prevDateBtn');
-  const nextBtn = document.getElementById('nextDateBtn');
-  if (!prevBtn || !nextBtn) return;
-
-  prevBtn.addEventListener('click', () => {
-    if (selectedIndex <= 0) return;
-    selectedIndex -= 1;
-    updateSelectedDay(today);
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if (selectedIndex >= weekDates.length - 1) return;
-    selectedIndex += 1;
-    updateSelectedDay(today);
+  document.querySelectorAll(".week-dot").forEach(dot => {
+    dot.addEventListener("click", () => {
+      currentIndex = +dot.dataset.index;
+      update();
+    });
   });
 }
 
-async function init() {
-  try {
-    const today = getKoreaToday();
-    weekDates = getWeekDates(today);
-    records = await loadRecords();
+function renderCurrentDate() {
+  const d = weekDates[currentIndex];
 
-    const todayIndex = weekDates.findIndex(date => toKey(date) === toKey(today));
-    selectedIndex = todayIndex >= 0 ? todayIndex : 0;
+  dateCurrentEl.innerHTML = `
+    <div class="date-current-inner">
+      <div class="date-current-weekday">${getWeekday(d)}</div>
+      <div class="date-current-day">${d.getDate()}</div>
+      <div class="date-current-full">${formatDisplay(d)}</div>
+    </div>
+  `;
+}
 
-    bindNavButtons(today);
-    updateSelectedDay(today);
-  } catch (error) {
-    console.error(error);
+/* =========================
+   업데이트
+========================= */
+function update() {
+  renderDots();
+  renderCurrentDate();
+  renderDay(weekDates[currentIndex]);
+}
+
+/* =========================
+   이벤트
+========================= */
+prevBtn.addEventListener("click", () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    update();
   }
-}
+});
 
-init();
+nextBtn.addEventListener("click", () => {
+  if (currentIndex < 6) {
+    currentIndex++;
+    update();
+  }
+});
+
+/* =========================
+   INIT
+========================= */
+weekDates = getWeekDates();
+currentIndex = 3;
+
+update();
