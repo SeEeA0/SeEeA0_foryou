@@ -4,219 +4,1263 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pokémon GO Raid Planner | 거다이맥스</title>
+<meta name="description" content="Replay: GO Bigger 거다이맥스 보스 정보, 이벤트 보너스, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
 
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:'Pretendard',sans-serif;
-  background:#edf3fb;
-  color:#1f2f46;
-}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:#edf3fb;
+    color:#1f2f46;
+  }
 
-.wrap{
-  max-width:1100px;
-  margin:auto;
-  padding:16px 12px 100px;
-}
+  :root{
+    --bg:#edf3fb;
+    --card:#ffffff;
+    --line:#d8e3f2;
+    --text:#1f2f46;
+    --muted:#7486a3;
 
-/* 🔥 상단 (최종 미니멀) */
-.hero{
-  background:#fff;
-  border-radius:24px;
-  padding:18px 16px;
-  box-shadow:0 10px 25px rgba(0,0,0,.05);
-  margin-bottom:14px;
-}
+    --blue:#3567d7;
+    --blue-soft:#e7f0ff;
 
-.hero-title{
-  font-size:28px;
-  font-weight:900;
-}
+    --purple:#7c58e9;
+    --purple-soft:#efe7ff;
 
-.hero-date{
-  margin-top:8px;
-  font-size:13px;
-  font-weight:800;
-  color:#6f81a0;
-}
+    --pink:#d85b85;
+    --pink-soft:#ffe8f0;
 
-/* 카드 */
-.section{
-  background:#fff;
-  border-radius:22px;
-  padding:14px;
-  margin-bottom:14px;
-  box-shadow:0 10px 25px rgba(0,0,0,.05);
-}
+    --yellow:#b88818;
+    --yellow-soft:#fff1c9;
 
-.section-title{
-  font-weight:900;
-  margin-bottom:10px;
-}
+    --green:#49a66b;
+    --green-soft:#e7f5eb;
 
-/* 이벤트 */
-.event-point{
-  background:#f6f9ff;
-  border-radius:12px;
-  padding:10px;
-  margin-bottom:6px;
-  font-size:13px;
-}
+    --orange:#eb7d35;
+    --orange-soft:#fff0e5;
 
-/* 탭 */
-.boss-tabs{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-}
+    --red:#d95656;
+    --red-soft:#ffeaea;
 
-.boss-tab{
-  min-width:110px;
-  background:#fff;
-  border-radius:16px;
-  padding:10px;
-  text-align:center;
-  border:1px solid #e2ebf7;
-  cursor:pointer;
-}
+    --shadow:0 14px 32px rgba(43,67,110,.08);
+    --shadow-hover:0 18px 36px rgba(43,67,110,.14);
+  }
 
-.boss-tab.active{
-  border:2px solid #3567d7;
-}
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:16px 14px 110px;
+  }
 
-.boss-tab img{
-  width:60px;
-}
+  .fade-up{
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeUp .55s ease forwards;
+  }
+  .delay-1{animation-delay:.05s}
+  .delay-2{animation-delay:.12s}
+  .delay-3{animation-delay:.18s}
+  .delay-4{animation-delay:.24s}
 
-/* 타입 */
-.type-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:4px 8px;
-  border-radius:999px;
-  background:#f3f7ff;
-  margin:2px;
-}
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+  }
 
-.type-chip img{
-  width:16px;
-}
+  @keyframes softFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-4px)}
+  }
 
-/* 하단 네비 */
-.bottom-nav{
-  position:fixed;
-  bottom:10px;
-  left:50%;
-  transform:translateX(-50%);
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  width:90%;
-  background:#fff;
-  border-radius:18px;
-  padding:8px;
-  box-shadow:0 10px 25px rgba(0,0,0,.1);
-}
+  .hero{
+    background:linear-gradient(135deg,#ffffff 0%, #eef4ff 100%);
+    border:1px solid var(--line);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:22px 18px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:16px;
+  }
 
-.nav-item{
-  text-align:center;
-  font-size:12px;
-}
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-40px;
+    top:-40px;
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(124,88,233,.18) 0%, rgba(124,88,233,0) 72%);
+    pointer-events:none;
+  }
+
+  .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:30px;
+    padding:0 12px;
+    border-radius:999px;
+    background:#efe7ff;
+    color:#7c58e9;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:12px;
+  }
+
+  .hero-title{
+    font-size:32px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    line-height:1.05;
+  }
+
+  .hero-sub{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:14px;
+    font-weight:800;
+    line-height:1.6;
+    max-width:760px;
+    word-break:keep-all;
+  }
+
+  .hero-meta{
+    margin-top:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .hero-pill{
+    min-height:34px;
+    padding:0 12px;
+    border-radius:999px;
+    border:1px solid #d7e2f0;
+    background:#fff;
+    color:#597392;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:900;
+  }
+
+  .section{
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    border-radius:26px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+
+  .section-head{
+    padding:18px 18px 14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid #e6eef8;
+  }
+
+  .section-title{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .section-sub{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--muted);
+    font-weight:800;
+    line-height:1.5;
+  }
+
+  .section-body{
+    padding:14px;
+  }
+
+  .bonus-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .bonus-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid #dce6f4;
+    border-radius:20px;
+    padding:14px;
+    min-height:88px;
+  }
+
+  .bonus-label{
+    font-size:12px;
+    color:#7a8ca8;
+    font-weight:900;
+  }
+
+  .bonus-value{
+    margin-top:8px;
+    font-size:16px;
+    line-height:1.45;
+    font-weight:900;
+    letter-spacing:-.02em;
+    word-break:keep-all;
+  }
+
+  .boss-tabs{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:2px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .boss-tabs::-webkit-scrollbar{display:none}
+
+  .boss-tab{
+    min-width:132px;
+    border-radius:22px;
+    border:1.5px solid #dce6f4;
+    background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
+    padding:12px;
+    text-align:center;
+    cursor:pointer;
+    transition:.18s ease;
+    flex-shrink:0;
+    box-shadow:0 8px 20px rgba(43,67,110,.05);
+  }
+
+  .boss-tab:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-hover);
+  }
+
+  .boss-tab.active{
+    border-color:#bfd2ef;
+    box-shadow:0 0 0 2px rgba(83,123,221,.12);
+    transform:translateY(-1px);
+  }
+
+  .boss-tab img{
+    width:72px;
+    height:72px;
+    object-fit:contain;
+    display:block;
+    margin:0 auto 8px;
+    animation:softFloat 3.8s ease-in-out infinite;
+  }
+
+  .boss-tab-name{
+    font-size:15px;
+    font-weight:900;
+    letter-spacing:-.02em;
+    line-height:1.2;
+  }
+
+  .boss-tab-sub{
+    margin-top:4px;
+    font-size:11px;
+    color:#7486a3;
+    font-weight:800;
+  }
+
+  .boss-panel{
+    display:none;
+  }
+
+  .boss-panel.active{
+    display:block;
+    animation:fadeUp .3s ease;
+  }
+
+  .boss-hero{
+    background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
+    border:1.5px solid #dce6f4;
+    border-radius:24px;
+    overflow:hidden;
+  }
+
+  .boss-hero-top{
+    padding:18px 16px 14px;
+    text-align:center;
+    border-bottom:1px solid #e7eef8;
+  }
+
+  .boss-name-ko{
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    line-height:1.2;
+  }
+
+  .boss-name-en{
+    margin-top:4px;
+    font-size:14px;
+    color:#6f81a0;
+    font-weight:800;
+  }
+
+  .boss-hero-image{
+    padding:18px 16px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:220px;
+    background:#fbfdff;
+  }
+
+  .boss-hero-image img{
+    max-width:100%;
+    max-height:220px;
+    object-fit:contain;
+    display:block;
+  }
+
+  .boss-info-table{
+    border-top:1px solid #e7eef8;
+  }
+
+  .boss-info-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    border-top:1px solid #f0f4fa;
+  }
+
+  .boss-info-row:first-child{border-top:0}
+
+  .boss-info-cell{
+    min-height:48px;
+    padding:10px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:14px;
+    font-weight:900;
+    color:#334863;
+  }
+
+  .boss-info-cell.label{
+    background:#faf2f4;
+  }
+
+  .boss-info-wide{
+    border-top:1px solid #f0f4fa;
+    padding:12px 14px;
+    text-align:center;
+  }
+
+  .boss-info-wide.label{
+    background:#faf2f4;
+    font-size:14px;
+    font-weight:900;
+    color:#334863;
+  }
+
+  .boss-info-wide.value{
+    font-size:15px;
+    font-weight:900;
+    color:#334863;
+  }
+
+  .weakness-grid{
+    display:grid;
+    grid-template-columns:120px 80px 1fr;
+    border-top:1px solid #f0f4fa;
+  }
+
+  .weakness-grid > div{
+    min-height:52px;
+    padding:10px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:14px;
+    font-weight:900;
+    color:#334863;
+    border-top:1px solid #f0f4fa;
+  }
+
+  .weakness-grid > div:nth-child(1),
+  .weakness-grid > div:nth-child(2),
+  .weakness-grid > div:nth-child(3){
+    border-top:0;
+  }
+
+  .weakness-side{
+    background:#faf2f4;
+    grid-row:span 2;
+  }
+
+  .moves-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .move-card{
+    min-height:86px;
+    border-top:1px solid #f0f4fa;
+    border-right:1px solid #f0f4fa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:12px;
+  }
+
+  .move-card:nth-child(2n){
+    border-right:0;
+  }
+
+  .move-name{
+    font-size:15px;
+    font-weight:900;
+    line-height:1.2;
+  }
+
+  .move-title{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+
+  .move-type-icon{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
+  }
+
+  .move-rank{
+    margin-top:4px;
+    font-size:13px;
+    font-weight:900;
+  }
+
+  .danger{color:#ef4b4b}
+  .normal{color:#ff8a1f}
+  .easy{color:#29b86f}
+
+  .recommend-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:14px;
+  }
+
+  .role-card{
+    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
+    border:1.5px solid #dce6f4;
+    border-radius:24px;
+    overflow:hidden;
+  }
+
+  .role-head{
+    padding:16px 14px;
+    border-bottom:1px solid #e8eef8;
+    text-align:center;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:-.03em;
+  }
+
+  .role-list{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .role-item{
+    min-height:82px;
+    padding:10px 12px;
+    border-top:1px solid #eef3fa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    text-align:center;
+  }
+
+  .role-item:first-child{border-top:0}
+
+  .role-item img{
+    width:42px;
+    height:42px;
+    object-fit:contain;
+    flex-shrink:0;
+  }
+
+  .role-item-text{
+    line-height:1.25;
+  }
+
+  .role-name{
+    font-size:15px;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .role-skill{
+    margin-top:3px;
+    font-size:13px;
+    color:#607897;
+    font-weight:800;
+    white-space:pre-line;
+  }
+
+  .tip-box{
+    margin-top:14px;
+    background:#faf4f5;
+    border:1px solid #f0dfe3;
+    border-radius:22px;
+    padding:18px 16px;
+    text-align:center;
+    font-size:15px;
+    line-height:1.7;
+    font-weight:900;
+    color:#314761;
+    word-break:keep-all;
+  }
+
+  .tip-box small{
+    display:block;
+    margin-top:6px;
+    font-size:12px;
+    font-weight:800;
+    color:#6f81a0;
+  }
+
+  .event-points{
+    margin-top:14px;
+    display:grid;
+    gap:8px;
+  }
+
+  .event-point{
+    padding:12px 14px;
+    border-radius:16px;
+    background:#f6f9ff;
+    border:1px solid #dde7f5;
+    font-size:13px;
+    font-weight:800;
+    color:#33465f;
+    line-height:1.45;
+  }
+
+  .bottom-nav{
+    position:fixed;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    width:min(1080px, calc(100% - 24px));
+    background:rgba(255,255,255,.94);
+    border:1px solid var(--line);
+    border-radius:24px;
+    box-shadow:0 18px 36px rgba(42,59,97,.12);
+    backdrop-filter:blur(10px);
+    padding:10px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    z-index:30;
+  }
+
+  .nav-item{
+    min-height:64px;
+    border-radius:16px;
+    text-decoration:none;
+    color:#6f819e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:6px;
+    font-size:12px;
+    font-weight:900;
+    transition:.18s ease;
+    background:#f8fbff;
+    border:1px solid transparent;
+  }
+
+  .nav-item:hover{
+    background:#f3f7ff;
+    color:#486995;
+    border-color:#d6e3f3;
+    transform:translateY(-1px);
+  }
+
+  .nav-item.active{
+    background:#edf4ff;
+    color:#3567d7;
+    border-color:#cdddf5;
+  }
+
+  .nav-icon{
+    font-size:18px;
+    line-height:1;
+  }
+
+  .type-inline,
+  .type-chip-list{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .type-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    line-height:1;
+  }
+
+  .type-chip img{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+    display:block;
+  }
+
+  .type-chip span{
+    font-size:13px;
+    font-weight:900;
+    color:#334863;
+    white-space:nowrap;
+  }
+
+  .weakness-type-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  @media (max-width:768px){
+    .wrap{
+      padding:14px 12px 120px;
+    }
+
+    .hero{
+      padding:20px 16px;
+      border-radius:24px;
+    }
+
+    .hero-title{
+      font-size:28px;
+    }
+
+    .section-head{
+      padding:16px 16px 12px;
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .section-body{
+      padding:12px;
+    }
+
+    .bonus-grid{
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .bonus-card{
+      min-height:90px;
+      border-radius:18px;
+      padding:12px;
+    }
+
+    .bonus-value{
+      font-size:15px;
+    }
+
+    .boss-tabs{
+      gap:8px;
+    }
+
+    .boss-tab{
+      min-width:120px;
+      padding:10px;
+      border-radius:18px;
+    }
+
+    .boss-tab img{
+      width:64px;
+      height:64px;
+    }
+
+    .boss-hero{
+      border-radius:20px;
+    }
+
+    .boss-hero-image{
+      min-height:180px;
+      padding:14px 12px;
+    }
+
+    .boss-hero-image img{
+      max-height:180px;
+    }
+
+    .boss-info-cell,
+    .boss-info-wide.value,
+    .boss-info-wide.label{
+      font-size:13px;
+    }
+
+    .weakness-grid{
+      grid-template-columns:92px 68px 1fr;
+    }
+
+    .weakness-grid > div{
+      font-size:13px;
+      padding:9px 8px;
+    }
+
+    .moves-grid{
+      grid-template-columns:1fr 1fr;
+    }
+
+    .move-card{
+      min-height:78px;
+      padding:10px;
+    }
+
+    .move-name{
+      font-size:14px;
+    }
+
+    .move-type-icon{
+      width:16px;
+      height:16px;
+    }
+
+    .move-rank{
+      font-size:12px;
+    }
+
+    .recommend-grid{
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .role-card{
+      border-radius:20px;
+    }
+
+    .role-head{
+      font-size:16px;
+      padding:14px 12px;
+    }
+
+    .role-item{
+      min-height:76px;
+      padding:10px 8px;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .role-item img{
+      width:38px;
+      height:38px;
+    }
+
+    .role-name{
+      font-size:14px;
+    }
+
+    .role-skill{
+      font-size:12px;
+    }
+
+    .tip-box{
+      border-radius:18px;
+      padding:16px 14px;
+      font-size:14px;
+    }
+
+    .bottom-nav{
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      padding:8px;
+    }
+
+    .nav-item{
+      min-height:60px;
+      font-size:11px;
+    }
+
+    .type-chip{
+      padding:3px 7px;
+      gap:5px;
+    }
+
+    .type-chip img{
+      width:16px;
+      height:16px;
+    }
+
+    .type-chip span{
+      font-size:12px;
+    }
+  }
+
+  @media (max-width:420px){
+    .bonus-grid{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{
+      animation:none !important;
+      transition:none !important;
+      scroll-behavior:auto !important;
+    }
+  }
 </style>
 </head>
-
 <body>
 <div class="wrap">
 
-<!-- ✅ 상단 -->
-<section class="hero">
-  <div class="hero-title">거다이맥스 배틀</div>
-  <div class="hero-date">4/25 14:00 ~ 17:00</div>
-</section>
+  <section class="hero fade-up">
+    <div class="hero-badge">⚡ Replay: GO Bigger</div>
+    <div class="hero-title">거다이맥스 배틀</div>
+    <div class="hero-sub">
+      Replay: GO Bigger 이벤트 기준으로 거다이맥스 보스 4종의 약점, 위험 기술, 추천 포켓몬, 공략 포인트를 모바일에서 빠르게 볼 수 있게 정리했습니다.
+    </div>
+    <div class="hero-meta">
+      <div class="hero-pill">현지 시간 4/25 14:00 ~ 17:00</div>
+      <div class="hero-pill">거다이맥스 이상해꽃 · 리자몽 · 거북왕 · 팬텀</div>
+      <div class="hero-pill">모든 파워스폿 거다이맥스 배틀</div>
+    </div>
+  </section>
 
-<!-- ✅ 이벤트 -->
-<section class="section">
-  <div class="section-title">이벤트 핵심 정보</div>
+  <section class="section fade-up delay-1">
+    <div class="section-head">
+      <div>
+        <div class="section-title">이벤트 핵심 정보</div>
+        <div class="section-sub">보너스와 진행 포인트를 먼저 확인하세요</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="bonus-grid">
+        <div class="bonus-card">
+          <div class="bonus-label">맥스 파티클</div>
+          <div class="bonus-value">수집 한도 1,600</div>
+        </div>
+        <div class="bonus-card">
+          <div class="bonus-label">파워스폿</div>
+          <div class="bonus-value">모든 파워스폿에서 거다이맥스 배틀</div>
+        </div>
+        <div class="bonus-card">
+          <div class="bonus-label">추가 보너스</div>
+          <div class="bonus-value">파워스폿 더 자주 갱신 + 추가 파워스폿 활성화</div>
+        </div>
+        <div class="bonus-card">
+          <div class="bonus-label">기타</div>
+          <div class="bonus-value">파워스폿 맥스 파티클 8배 · 특별한 교환 최대 3회</div>
+        </div>
+      </div>
 
-  <div class="event-point">파워스폿에서 거다이맥스 배틀 등장</div>
-  <div class="event-point">맥스 파티클 8배</div>
-  <div class="event-point">특별 교환 최대 3회</div>
-  <div class="event-point">다이버섯 → 데미지 2배</div>
+      <div class="event-points">
+        <div class="event-point">리모트 레이드 일일 한도는 이벤트 기간 일부 구간에 10회에서 20회로 증가합니다.</div>
+        <div class="event-point">유료 티켓은 4.99달러이며, 맥스 머쉬룸 1개·25,000 XP·6,400 맥스 파티클·맥스배틀 XP 2배 보너스를 안내합니다.</div>
+        <div class="event-point">맥스 머쉬룸은 맥스배틀에서 다이맥스·거다이맥스 포켓몬의 피해를 일시적으로 2배로 높입니다.</div>
+      </div>
+    </div>
+  </section>
 
-</section>
+  <section class="section fade-up delay-2">
+    <div class="section-head">
+      <div>
+        <div class="section-title">거다이맥스 보스 선택</div>
+        <div class="section-sub">보스를 누르면 아래 상세 공략과 추천 포켓몬이 자동으로 바뀝니다</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="boss-tabs" id="bossTabs"></div>
+    </div>
+  </section>
 
-<!-- ✅ 보스 선택 -->
-<section class="section">
-  <div class="section-title">보스 선택</div>
-  <div class="boss-tabs" id="bossTabs"></div>
-</section>
+  <section class="section fade-up delay-3">
+    <div class="section-head">
+      <div>
+        <div class="section-title">보스 상세 공략</div>
+        <div class="section-sub">약점 · 위험 기술 · 추천 구성 · 공략 팁을 한 번에 확인할 수 있습니다</div>
+      </div>
+    </div>
 
-<!-- ✅ 상세 -->
-<section class="section">
-  <div id="bossDetail"></div>
-</section>
+    <div class="section-body">
+      <div class="boss-panel active" id="bossPanel">
+        <div class="boss-hero">
+          <div class="boss-hero-top">
+            <div class="boss-name-ko" id="bossNameKo"></div>
+            <div class="boss-name-en" id="bossNameEn"></div>
+          </div>
+          <div class="boss-hero-image">
+            <img id="bossMainImage" src="" alt="">
+          </div>
+
+          <div class="boss-info-table">
+            <div class="boss-info-row">
+              <div class="boss-info-cell label">색이 다른 모습</div>
+              <div class="boss-info-cell" id="bossShiny"></div>
+            </div>
+
+            <div class="boss-info-wide label">타입</div>
+            <div class="boss-info-wide value" id="bossTypes"></div>
+
+            <div class="weakness-grid">
+              <div class="weakness-side">상성</div>
+              <div id="bossWeaknessRate1"></div>
+              <div id="bossWeaknessTypes1"></div>
+              <div id="bossWeaknessRate2"></div>
+              <div id="bossWeaknessTypes2"></div>
+            </div>
+
+            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
+            <div class="moves-grid" id="bossMoves"></div>
+          </div>
+        </div>
+
+        <div class="recommend-grid">
+          <div class="role-card">
+            <div class="role-head">탱크 · 백업</div>
+            <div class="role-list" id="tankList"></div>
+          </div>
+
+          <div class="role-card">
+            <div class="role-head">어태커</div>
+            <div class="role-list" id="attackerList"></div>
+          </div>
+        </div>
+
+        <div class="tip-box" id="bossTip"></div>
+      </div>
+    </div>
+  </section>
 
 </div>
 
-<!-- 하단 -->
 <nav class="bottom-nav">
-  <a href="./index.html" class="nav-item">메인</a>
-  <a href="./raid-now.html" class="nav-item">거다이맥스</a>
-  <a href="./weekly.html" class="nav-item">주간</a>
-  <a href="./monthly.html" class="nav-item">월간</a>
+  <a href="./index.html" class="nav-item">
+    <div class="nav-icon">🏠</div>
+    <div>메인</div>
+  </a>
+  <a href="./raid-now.html" class="nav-item active">
+    <div class="nav-icon">⚡</div>
+    <div>거다이맥스</div>
+  </a>
+  <a href="./weekly.html" class="nav-item">
+    <div class="nav-icon">🗓️</div>
+    <div>주간 일정표</div>
+  </a>
+  <a href="./monthly.html" class="nav-item">
+    <div class="nav-icon">📆</div>
+    <div>월간 일정</div>
+  </a>
 </nav>
 
 <script>
-const TYPE_MAP={
-'불':2,'물':3,'전기':4,'풀':5,'얼음':6,'격투':7,'독':8,'땅':9,
-'비행':10,'페어리':11,'벌레':12,'바위':13,'고스트':14,
-'드래곤':15,'악':16,'강철':17,'에스퍼':18
-}
+  function getPokemonImage(id, isGmax = false) {
+    return isGmax
+      ? `https://cdn.leekduck.com/assets/img/pokemon_icons/pm${id}.fGIGANTAMAX.icon.png`
+      : `https://cdn.leekduck.com/assets/img/pokemon_icons/pm${id}.icon.png`;
+  }
 
-function typeChip(t){
- return `<span class="type-chip">
- <img src="icons/${TYPE_MAP[t]}.png">${t}</span>`
-}
+  const TYPE_ICON_MAP = {
+    '노말': 1,
+    '불': 2,
+    '불꽃': 2,
+    '물': 3,
+    '전기': 4,
+    '풀': 5,
+    '얼음': 6,
+    '격투': 7,
+    '독': 8,
+    '땅': 9,
+    '비행': 10,
+    '페어리': 11,
+    '벌레': 12,
+    '바위': 13,
+    '고스트': 14,
+    '드래곤': 15,
+    '드레곤': 15,
+    '악': 16,
+    '강철': 17,
+    '에스퍼': 18
+  };
 
-const BOSSES={
-charizard:{
-name:'리자몽',
-types:['불','비행'],
-weak:['바위','전기','물'],
-img:6
-},
-blastoise:{
-name:'거북왕',
-types:['물'],
-weak:['전기','풀'],
-img:9
-}
-}
+  function normalizeTypeName(type) {
+    if (!type) return '';
+    const cleaned = String(type).trim();
+    if (cleaned === '불꽃') return '불';
+    if (cleaned === '드레곤') return '드래곤';
+    return cleaned;
+  }
 
-function renderTabs(){
-document.getElementById('bossTabs').innerHTML=
-Object.entries(BOSSES).map(([k,v])=>`
-<div class="boss-tab" onclick="render('${k}')">
-<img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm${v.img}.fGIGANTAMAX.icon.png">
-<div>${v.name}</div>
-</div>
-`).join('')
-}
+  function getTypeIcon(type) {
+    const normalized = normalizeTypeName(type);
+    const num = TYPE_ICON_MAP[normalized];
+    return num ? `icons/${num}.png` : '';
+  }
 
-function render(k){
-const b=BOSSES[k]
+  function renderTypeChip(type) {
+    const normalized = normalizeTypeName(type);
+    const icon = getTypeIcon(normalized);
+    if (!normalized) return '';
+    return `
+      <span class="type-chip">
+        ${icon ? `<img src="${icon}" alt="${normalized}">` : ''}
+        <span>${normalized}</span>
+      </span>
+    `;
+  }
 
-document.getElementById('bossDetail').innerHTML=`
-<h2>${b.name}</h2>
-<div>${b.types.map(typeChip).join('')}</div>
-<div>약점: ${b.weak.map(typeChip).join('')}</div>
-`
-}
+  function renderTypeList(types) {
+    return `
+      <div class="type-chip-list">
+        ${types.map(type => renderTypeChip(type)).join('')}
+      </div>
+    `;
+  }
 
-renderTabs()
-render('charizard')
+  function renderWeaknessTypes(types) {
+    if (!types || !types.length) return '';
+    return `
+      <div class="weakness-type-wrap">
+        ${types.map(type => renderTypeChip(type)).join('')}
+      </div>
+    `;
+  }
+
+  function renderMoveName(move) {
+    const type = normalizeTypeName(move.type);
+    const icon = getTypeIcon(type);
+    return `
+      <div class="move-title">
+        ${icon ? `<img class="move-type-icon" src="${icon}" alt="${type}">` : ''}
+        <span>${move.name}</span>
+      </div>
+    `;
+  }
+
+  const MAX_POKEMON = {
+    charizard: { id: 6, name: '리자몽', gmax: true, skill: '회오리불꽃 / 용의숨결' },
+    venusaur: { id: 3, name: '이상해꽃', gmax: true, skill: '덩굴채찍 / 독채찍' },
+    blastoise: { id: 9, name: '거북왕', gmax: true, skill: '물대포 / 물기' },
+    gengar: { id: 94, name: '팬텀', gmax: true, skill: '고스트 딜러' },
+
+    kingler: { id: 99, name: '킹크랩', gmax: true, skill: '집게해머' },
+    toxtricity: { id: 849, name: '스트린더', gmax: true, skill: '전기 딜러' },
+
+    metagross: { id: 376, name: '메타그로스', skill: '사념의박치기 / 불릿펀치' },
+    lapras: { id: 131, name: '라프라스', skill: '사이코웨이브' },
+    moltres: { id: 146, name: '파이어', skill: '회오리불꽃 / 날개치기' },
+    zapdos: { id: 145, name: '썬더', skill: '차지빔 / 전기쇼크' },
+    raikou: { id: 243, name: '라이코', skill: '전기쇼크 / 볼트체인지' },
+    rillaboom: { id: 812, name: '고릴타', skill: '잎날가르기' },
+    inteleon: { id: 818, name: '인텔리레온', skill: '물 딜러' }
+  };
+
+  const BOSSES = {
+    charizard: {
+      key: 'charizard',
+      tabName: '리자몽',
+      tabSub: '불꽃 · 비행',
+      nameKo: '거다이맥스 리자몽',
+      nameEn: 'Gigantamax Charizard',
+      imageId: 6,
+      shiny: '✨ 7.5%',
+      types: ['불꽃', '비행'],
+      weakness: [
+        { rate: '2.56x', types: ['바위'] },
+        { rate: '1.6x', types: ['전기', '물'] }
+      ],
+      moves: [
+        { type: '불꽃', name: '블라스트번', rank: '위험', cls: 'danger' },
+        { type: '불꽃', name: '오버히트', rank: '위험', cls: 'danger' },
+        { type: '불꽃', name: '화염방사', rank: '어려움', cls: 'normal' },
+        { type: '불꽃', name: '불대문자', rank: '보통', cls: 'easy' },
+        { type: '드래곤', name: '드래곤클로', rank: '쉬움', cls: 'easy' }
+      ],
+      tank: ['blastoise', 'moltres'],
+      attacker: ['kingler', 'toxtricity', 'inteleon', 'zapdos'],
+      tip: '바위가 가장 강력하고, 물 / 전기 딜러도 안정적입니다. 거다이맥스 기술 효율이 높다면 거다이맥스 포켓몬을 우선 사용하세요.<small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>'
+    },
+    venusaur: {
+      key: 'venusaur',
+      tabName: '이상해꽃',
+      tabSub: '풀 · 독',
+      nameKo: '거다이맥스 이상해꽃',
+      nameEn: 'Gigantamax Venusaur',
+      imageId: 3,
+      shiny: '✨ 7.5%',
+      types: ['풀', '독'],
+      weakness: [
+        { rate: '1.6x', types: ['비행', '불꽃', '얼음', '에스퍼'] },
+        { rate: '', types: [] }
+      ],
+      moves: [
+        { type: '풀', name: '하드플랜트', rank: '위험', cls: 'danger' },
+        { type: '풀', name: '솔라빔', rank: '위험', cls: 'danger' },
+        { type: '풀', name: '꽃보라', rank: '쉬움', cls: 'easy' },
+        { type: '독', name: '오물폭탄', rank: '보통', cls: 'normal' }
+      ],
+      tank: ['charizard', 'metagross', 'moltres'],
+      attacker: ['charizard', 'gengar', 'zapdos', 'metagross'],
+      tip: '비행 / 불꽃 / 얼음 / 에스퍼 약점입니다. 리자몽과 파이어 계열이 안정적이며, 오물폭탄 패턴에는 약한 포켓몬을 오래 세우지 않는 편이 좋습니다.<small>거다이맥스 리자몽이 가능하면 우선 채용 추천</small>'
+    },
+    blastoise: {
+      key: 'blastoise',
+      tabName: '거북왕',
+      tabSub: '물',
+      nameKo: '거다이맥스 거북왕',
+      nameEn: 'Gigantamax Blastoise',
+      imageId: 9,
+      shiny: '✨ 7.5%',
+      types: ['물'],
+      weakness: [
+        { rate: '1.6x', types: ['전기', '풀'] },
+        { rate: '', types: [] }
+      ],
+      moves: [
+        { type: '물', name: '하이드로캐논', rank: '위험', cls: 'danger' },
+        { type: '물', name: '하이드로펌프', rank: '위험', cls: 'danger' },
+        { type: '얼음', name: '냉동빔', rank: '보통', cls: 'normal' },
+        { type: '노말', name: '로켓박치기', rank: '보통', cls: 'normal' },
+        { type: '강철', name: '러스터캐논', rank: '쉬움', cls: 'easy' }
+      ],
+      tank: ['lapras', 'metagross', 'blastoise'],
+      attacker: ['rillaboom', 'toxtricity', 'venusaur', 'raikou'],
+      tip: '전기와 풀이 핵심 약점입니다. 스트린더 / 이상해꽃 / 라이코 축이 직관적이며, 하이드로캐논과 하이드로펌프 패턴은 우선 주의하세요.<small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>'
+    },
+    gengar: {
+      key: 'gengar',
+      tabName: '팬텀',
+      tabSub: '고스트 · 독',
+      nameKo: '거다이맥스 팬텀',
+      nameEn: 'Gigantamax Gengar',
+      imageId: 94,
+      shiny: '✨ 7.5%',
+      types: ['고스트', '독'],
+      weakness: [
+        { rate: '1.6x', types: ['땅', '고스트', '악', '에스퍼'] },
+        { rate: '', types: [] }
+      ],
+      moves: [
+        { type: '고스트', name: '섀도볼', rank: '위험', cls: 'danger' },
+        { type: '독', name: '오물폭탄', rank: '보통', cls: 'normal' },
+        { type: '격투', name: '기합구슬', rank: '위험', cls: 'danger' },
+        { type: '고스트', name: '병상첨병', rank: '보통', cls: 'normal' }
+      ],
+      tank: ['blastoise', 'lapras', 'metagross', 'venusaur'],
+      attacker: ['gengar', 'metagross', 'rillaboom', 'zapdos'],
+      tip: '팬텀은 고스트 / 악 / 땅 / 에스퍼 약점이 핵심이며, 섀도볼과 기합구슬 패턴은 특히 주의가 필요합니다. 거다이맥스 팬텀이 가능하면 우선 채용하세요.<small>탱커 1 + 딜러 3 구성이 안정적이며, 회피가 매우 중요합니다.</small>'
+    }
+  };
+
+  function renderBossTabs() {
+    const wrap = document.getElementById('bossTabs');
+    wrap.innerHTML = Object.values(BOSSES).map((boss, index) => `
+      <button class="boss-tab ${index === 0 ? 'active' : ''}" data-boss="${boss.key}">
+        <img src="${getPokemonImage(boss.imageId, true)}" alt="${boss.nameKo}">
+        <div class="boss-tab-name">${boss.tabName}</div>
+        <div class="boss-tab-sub">${boss.tabSub}</div>
+      </button>
+    `).join('');
+  }
+
+  function renderMoves(moves) {
+    const wrap = document.getElementById('bossMoves');
+    const safeMoves = [...moves];
+    if (safeMoves.length % 2 === 1) {
+      safeMoves.push({ name: '', rank: '', cls: '', type: '' });
+    }
+
+    wrap.innerHTML = safeMoves.map(move => {
+      if (!move.name) return `<div class="move-card"></div>`;
+      return `
+        <div class="move-card">
+          <div>
+            <div class="move-name">${renderMoveName(move)}</div>
+            <div class="move-rank ${move.cls}">${move.rank}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderRoleList(targetId, keys) {
+    const wrap = document.getElementById(targetId);
+    wrap.innerHTML = keys.map(key => {
+      const p = MAX_POKEMON[key];
+      return `
+        <div class="role-item">
+          <img src="${getPokemonImage(p.id, !!p.gmax)}" alt="${p.name}">
+          <div class="role-item-text">
+            <div class="role-name">${p.gmax ? `거다이맥스 ${p.name}` : p.name}</div>
+            <div class="role-skill">${p.skill}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderBoss(key) {
+    const boss = BOSSES[key];
+    if (!boss) return;
+
+    document.getElementById('bossNameKo').textContent = boss.nameKo;
+    document.getElementById('bossNameEn').textContent = boss.nameEn;
+    document.getElementById('bossMainImage').src = getPokemonImage(boss.imageId, true);
+    document.getElementById('bossMainImage').alt = boss.nameKo;
+    document.getElementById('bossShiny').textContent = boss.shiny;
+
+    document.getElementById('bossTypes').innerHTML = renderTypeList(boss.types);
+
+    document.getElementById('bossWeaknessRate1').textContent = boss.weakness[0]?.rate || '';
+    document.getElementById('bossWeaknessTypes1').innerHTML = renderWeaknessTypes(boss.weakness[0]?.types || []);
+    document.getElementById('bossWeaknessRate2').textContent = boss.weakness[1]?.rate || '';
+    document.getElementById('bossWeaknessTypes2').innerHTML = renderWeaknessTypes(boss.weakness[1]?.types || []);
+
+    renderMoves(boss.moves);
+    renderRoleList('tankList', boss.tank);
+    renderRoleList('attackerList', boss.attacker);
+    document.getElementById('bossTip').innerHTML = boss.tip;
+
+    document.querySelectorAll('.boss-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.boss === key);
+    });
+
+    document.getElementById('bossPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  renderBossTabs();
+  renderBoss('charizard');
+
+  document.getElementById('bossTabs').addEventListener('click', (event) => {
+    const tab = event.target.closest('.boss-tab');
+    if (!tab) return;
+    renderBoss(tab.dataset.boss);
+  });
 </script>
-
 </body>
 </html>
