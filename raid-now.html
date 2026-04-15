@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pokémon GO Raid Planner | 거다이맥스</title>
-<meta name="description" content="Replay: GO Bigger 거다이맥스 보스 정보, 이벤트 보너스, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
+<meta name="description" content="거다이맥스 보스 정보, 이벤트 보너스, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
 
 <style>
   *{box-sizing:border-box}
@@ -74,11 +74,11 @@
   }
 
   .hero{
-    background:linear-gradient(135deg,#ffffff 0%, #eef4ff 100%);
+    background:linear-gradient(135deg,#ffffff 0%, #f3f6ff 100%);
     border:1px solid var(--line);
     border-radius:28px;
     box-shadow:var(--shadow);
-    padding:22px 18px;
+    padding:18px 18px;
     position:relative;
     overflow:hidden;
     margin-bottom:16px;
@@ -92,60 +92,27 @@
     width:160px;
     height:160px;
     border-radius:50%;
-    background:radial-gradient(circle, rgba(124,88,233,.18) 0%, rgba(124,88,233,0) 72%);
+    background:radial-gradient(circle, rgba(124,88,233,.14) 0%, rgba(124,88,233,0) 72%);
     pointer-events:none;
   }
 
-  .hero-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-height:30px;
-    padding:0 12px;
-    border-radius:999px;
-    background:#efe7ff;
-    color:#7c58e9;
-    font-size:12px;
-    font-weight:900;
-    margin-bottom:12px;
-  }
-
   .hero-title{
-    font-size:32px;
+    font-size:30px;
     font-weight:900;
     letter-spacing:-.04em;
-    line-height:1.05;
+    line-height:1.08;
+    position:relative;
+    z-index:1;
   }
 
-  .hero-sub{
+  .hero-date{
     margin-top:10px;
-    color:var(--muted);
     font-size:14px;
     font-weight:800;
-    line-height:1.6;
-    max-width:760px;
-    word-break:keep-all;
-  }
-
-  .hero-meta{
-    margin-top:14px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-
-  .hero-pill{
-    min-height:34px;
-    padding:0 12px;
-    border-radius:999px;
-    border:1px solid #d7e2f0;
-    background:#fff;
-    color:#597392;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:12px;
-    font-weight:900;
+    color:#6f81a0;
+    letter-spacing:-.01em;
+    position:relative;
+    z-index:1;
   }
 
   .section{
@@ -657,12 +624,16 @@
     }
 
     .hero{
-      padding:20px 16px;
+      padding:16px 16px;
       border-radius:24px;
     }
 
     .hero-title{
-      font-size:28px;
+      font-size:27px;
+    }
+
+    .hero-date{
+      font-size:13px;
     }
 
     .section-head{
@@ -839,10 +810,10 @@
 <body>
 <div class="wrap">
 
-<section class="hero fade-up">
-  <div class="hero-title">거다이맥스 배틀</div>
-  <div class="hero-date">4/25 14:00 ~ 17:00</div>
-</section>
+  <section class="hero fade-up">
+    <div class="hero-title">거다이맥스 배틀</div>
+    <div class="hero-date">4/25 14:00 ~ 17:00</div>
+  </section>
 
   <section class="section fade-up delay-1">
     <div class="section-head">
@@ -873,8 +844,8 @@
 
       <div class="event-points">
         <div class="event-point">리모트 레이드 일일 한도는 이벤트 기간 일부 구간에 10회에서 20회로 증가합니다.</div>
-        <div class="event-point">유료 티켓은 4.99달러이며, 맥스 머쉬룸 1개·25,000 XP·6,400 맥스 파티클·맥스배틀 XP 2배 보너스를 안내합니다.</div>
-        <div class="event-point">맥스 머쉬룸은 맥스배틀에서 다이맥스·거다이맥스 포켓몬의 피해를 일시적으로 2배로 높입니다.</div>
+        <div class="event-point">유료 티켓은 4.99달러이며, 다이버섯 1개·25,000 XP·6,400 맥스 파티클·맥스배틀 XP 2배 보너스를 안내합니다.</div>
+        <div class="event-point">다이버섯은 맥스배틀에서 다이맥스·거다이맥스 포켓몬의 피해를 일시적으로 2배로 높입니다.</div>
       </div>
     </div>
   </section>
@@ -1241,8 +1212,6 @@
     document.querySelectorAll('.boss-tab').forEach(tab => {
       tab.classList.toggle('active', tab.dataset.boss === key);
     });
-
-    document.getElementById('bossPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   renderBossTabs();
