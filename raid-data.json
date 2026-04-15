@@ -298,8 +298,6 @@
       "typeIcon2": "icons/17.png",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
-    // ===== 강철의 결심 =====
     {
       "name": "단칼빙",
       "label": "1성",
@@ -356,8 +354,6 @@
       "typeIcon": "icons/8.png",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
-    // ===== 4/29 ~ 5/5 =====
     {
       "name": "카푸나비나",
       "label": "5성",
@@ -395,8 +391,6 @@
       "typeIcon": "icons/14.png",
       "showPages": ["index", "raid-now", "weekly", "monthly"]
     },
-
-    // ===== 5/9 메가 레이드 데이 =====
     {
       "name": "메가 피죤투",
       "label": "메가",
