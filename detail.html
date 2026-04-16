@@ -73,48 +73,6 @@
     50%{transform:translateY(-4px)}
   }
 
-  .hero{
-    background:linear-gradient(135deg,#ffffff 0%, #f3f6ff 100%);
-    border:1px solid var(--line);
-    border-radius:28px;
-    box-shadow:var(--shadow);
-    padding:18px 18px;
-    position:relative;
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-
-  .hero::after{
-    content:"";
-    position:absolute;
-    right:-40px;
-    top:-40px;
-    width:160px;
-    height:160px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(124,88,233,.14) 0%, rgba(124,88,233,0) 72%);
-    pointer-events:none;
-  }
-
-  .hero-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.04em;
-    line-height:1.08;
-    position:relative;
-    z-index:1;
-  }
-
-  .hero-date{
-    margin-top:10px;
-    font-size:14px;
-    font-weight:800;
-    color:#6f81a0;
-    letter-spacing:-.01em;
-    position:relative;
-    z-index:1;
-  }
-
   .section{
     background:rgba(255,255,255,.92);
     border:1px solid var(--line);
@@ -305,7 +263,12 @@
     word-break:keep-all;
   }
 
-  .event-ticket-box{
+  .ticket-section{
+    display:grid;
+    gap:14px;
+  }
+
+  .ticket-box{
     background:linear-gradient(135deg,#fff6fb 0%, #fff 100%);
     border:1.5px solid #f0ddea;
     border-radius:24px;
@@ -313,7 +276,7 @@
     box-shadow:0 8px 18px rgba(190,90,135,.08);
   }
 
-  .event-ticket-top{
+  .ticket-top{
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -322,14 +285,14 @@
     margin-bottom:12px;
   }
 
-  .event-ticket-name{
+  .ticket-name{
     font-size:18px;
     font-weight:900;
     color:#2a3b53;
     letter-spacing:-.02em;
   }
 
-  .event-ticket-price{
+  .ticket-price{
     display:inline-flex;
     align-items:center;
     justify-content:center;
@@ -342,20 +305,20 @@
     font-weight:900;
   }
 
-  .event-ticket-grid{
+  .ticket-grid{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:10px;
   }
 
-  .event-ticket-item{
+  .ticket-item{
     background:#fff;
     border:1px solid #f2e3ec;
     border-radius:18px;
     padding:12px;
   }
 
-  .event-ticket-item strong{
+  .ticket-item strong{
     display:block;
     margin-bottom:8px;
     font-size:13px;
@@ -363,7 +326,7 @@
     font-weight:900;
   }
 
-  .event-ticket-reward{
+  .ticket-reward{
     display:flex;
     flex-direction:column;
     gap:8px;
@@ -407,12 +370,12 @@
     word-break:keep-all;
   }
 
-  .event-note-list{
+  .ticket-note-list{
     display:grid;
     gap:8px;
   }
 
-  .event-note-item{
+  .ticket-note-item{
     background:#f7f9fc;
     border:1px solid #dde7f4;
     border-radius:16px;
@@ -859,19 +822,6 @@
       padding:14px 12px 120px;
     }
 
-    .hero{
-      padding:16px 16px;
-      border-radius:24px;
-    }
-
-    .hero-title{
-      font-size:27px;
-    }
-
-    .hero-date{
-      font-size:13px;
-    }
-
     .section-head{
       padding:16px 16px 12px;
       flex-direction:column;
@@ -919,7 +869,7 @@
       font-size:12px;
     }
 
-    .event-ticket-grid{
+    .ticket-grid{
       grid-template-columns:1fr;
     }
 
@@ -1073,19 +1023,7 @@
 <body>
 <div class="wrap">
 
-  <section class="hero fade-up">
-    <div class="hero-title">거다이맥스 배틀</div>
-    <div class="hero-date">4/25 14:00 ~ 17:00</div>
-  </section>
-
   <section class="section fade-up delay-1">
-    <div class="section-head">
-      <div>
-        <div class="section-title">이벤트 핵심 정보</div>
-        <div class="section-sub">이벤트 이미지 기준 핵심 내용만 깔끔하게 정리했습니다</div>
-      </div>
-    </div>
-
     <div class="section-body">
       <div class="event-overview">
 
@@ -1192,16 +1130,31 @@
           </div>
         </div>
 
-        <div class="event-ticket-box">
-          <div class="event-ticket-top">
-            <div class="event-ticket-name">유료 이벤트 티켓</div>
-            <div class="event-ticket-price">$4.99</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fade-up delay-2">
+    <div class="section-head">
+      <div>
+        <div class="section-title">유료 이벤트 티켓</div>
+        <div class="section-sub">구매 시 추가 보너스</div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <div class="ticket-section">
+
+        <div class="ticket-box">
+          <div class="ticket-top">
+            <div class="ticket-name">시간제한 리서치 티켓</div>
+            <div class="ticket-price">$4.99</div>
           </div>
 
-          <div class="event-ticket-grid">
-            <div class="event-ticket-item">
+          <div class="ticket-grid">
+            <div class="ticket-item">
               <strong>시간제한 리서치 보상</strong>
-              <div class="event-ticket-reward">
+              <div class="ticket-reward">
                 <div class="ticket-reward-row">
                   <div class="ticket-reward-icon">
                     <img src="./images/event/max-mushroom.png" alt="다이버섯">
@@ -1225,9 +1178,9 @@
               </div>
             </div>
 
-            <div class="event-ticket-item">
+            <div class="ticket-item">
               <strong>추가 보너스</strong>
-              <div class="event-ticket-reward">
+              <div class="ticket-reward">
                 <div class="ticket-reward-row">
                   <div class="ticket-reward-icon">
                     <img src="./images/event/xp-boost.png" alt="XP 2배">
@@ -1239,15 +1192,16 @@
           </div>
         </div>
 
-        <div class="event-note-list">
-          <div class="event-note-item">
-            리모트 레이드 일일 한도는 이벤트 안내 이미지 기준으로 20회로 증가한 내용만 반영했습니다.
+        <div class="ticket-note-list">
+          <div class="ticket-note-item">
+            유료 티켓 보너스는 이벤트 무료 보너스와 별도로 정리했습니다.
           </div>
-          <div class="event-note-item">
-            보스 CP는 현재 일반 CP만 정리했고, 부스트 CP는 넣지 않았습니다.
-          </div>
-          <div class="event-note-item">
-            이벤트 카드와 티켓 박스 아이콘은 모두 이미지 파일 경로 기준으로 연결되어 있습니다.
+          <div class="ticket-note-item">
+            아이콘 경로: <br>
+            ./images/event/max-mushroom.png<br>
+            ./images/event/xp.png<br>
+            ./images/event/max-particle.png<br>
+            ./images/event/xp-boost.png
           </div>
         </div>
 
@@ -1255,7 +1209,7 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-2">
+  <section class="section fade-up delay-3">
     <div class="section-head">
       <div>
         <div class="section-title">거다이맥스 보스 선택</div>
@@ -1267,7 +1221,7 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-3">
+  <section class="section fade-up delay-4">
     <div class="section-head">
       <div>
         <div class="section-title">보스 상세 공략</div>
