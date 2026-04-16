@@ -6,51 +6,58 @@
 <title>Pokémon GO Raid Planner | 거다이맥스</title>
 <meta name="description" content="거다이맥스 보스 정보, 이벤트 보너스, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
 
+<meta property="og:title" content="2026.04.25 이벤트 정리 페이지" />
+<meta property="og:description" content="리자몽 · 이상해꽃 · 거북왕 · 팬텀 일정과 공략을 한눈에 확인하세요." />
+<meta property="og:image" content="https://seeea0-foryou.pages.dev/images/og-gigantamax.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="거다이맥스 배틀 플래너" />
+<meta name="twitter:description" content="리자몽 · 이상해꽃 · 거북왕 · 팬텀 일정과 공략을 한눈에 확인하세요." />
+<meta name="twitter:image" content="https://seeea0-foryou.pages.dev/images/og-gigantamax.jpg" />
+
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
     font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    background:#edf3fb;
+    background:
+      radial-gradient(circle at top left, rgba(124,88,233,.05), transparent 28%),
+      linear-gradient(180deg,#eff4fb 0%, #edf3fb 100%);
     color:#1f2f46;
   }
 
   :root{
     --bg:#edf3fb;
     --card:#ffffff;
-    --line:#d8e3f2;
+    --line:#dce5f3;
+    --line-soft:#e8eef8;
     --text:#1f2f46;
     --muted:#7486a3;
 
     --blue:#3567d7;
-    --blue-soft:#e7f0ff;
+    --blue-soft:#edf4ff;
 
     --purple:#7c58e9;
-    --purple-soft:#efe7ff;
+    --purple-soft:#f3eeff;
 
     --pink:#d85b85;
-    --pink-soft:#ffe8f0;
+    --pink-soft:#fff1f6;
 
-    --yellow:#b88818;
-    --yellow-soft:#fff1c9;
-
-    --green:#49a66b;
-    --green-soft:#e7f5eb;
-
-    --orange:#eb7d35;
-    --orange-soft:#fff0e5;
-
-    --red:#d95656;
-    --red-soft:#ffeaea;
+    --icon-bg:linear-gradient(180deg,#fbfcff 0%, #eef4ff 100%);
+    --icon-line:#d7e2f4;
 
     --shadow:0 14px 32px rgba(43,67,110,.08);
-    --shadow-hover:0 18px 36px rgba(43,67,110,.14);
+    --shadow-soft:0 8px 22px rgba(43,67,110,.05);
+    --shadow-hover:0 18px 36px rgba(43,67,110,.12);
   }
 
   .wrap{
     max-width:1180px;
     margin:0 auto;
-    padding:16px 14px 110px;
+    padding:12px 12px 110px;
   }
 
   .fade-up{
@@ -61,7 +68,6 @@
   .delay-1{animation-delay:.05s}
   .delay-2{animation-delay:.12s}
   .delay-3{animation-delay:.18s}
-  .delay-4{animation-delay:.24s}
 
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(10px)}
@@ -73,116 +79,320 @@
     50%{transform:translateY(-4px)}
   }
 
-  .hero{
-    background:linear-gradient(135deg,#ffffff 0%, #f3f6ff 100%);
-    border:1px solid var(--line);
-    border-radius:28px;
-    box-shadow:var(--shadow);
-    padding:18px 18px;
-    position:relative;
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-
-  .hero::after{
-    content:"";
-    position:absolute;
-    right:-40px;
-    top:-40px;
-    width:160px;
-    height:160px;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(124,88,233,.14) 0%, rgba(124,88,233,0) 72%);
-    pointer-events:none;
-  }
-
-  .hero-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.04em;
-    line-height:1.08;
-    position:relative;
-    z-index:1;
-  }
-
-  .hero-date{
-    margin-top:10px;
-    font-size:14px;
-    font-weight:800;
-    color:#6f81a0;
-    letter-spacing:-.01em;
-    position:relative;
-    z-index:1;
-  }
-
   .section{
-    background:rgba(255,255,255,.92);
+    background:rgba(255,255,255,.97);
     border:1px solid var(--line);
-    border-radius:26px;
+    border-radius:24px;
     box-shadow:var(--shadow);
     overflow:hidden;
-    margin-bottom:16px;
+    margin-bottom:14px;
+    backdrop-filter:blur(10px);
   }
 
   .section-head{
-    padding:18px 18px 14px;
+    padding:16px 16px 12px;
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:12px;
-    border-bottom:1px solid #e6eef8;
+    border-bottom:1px solid var(--line-soft);
   }
 
   .section-title{
-    font-size:20px;
+    font-size:18px;
     font-weight:900;
     letter-spacing:-.03em;
   }
 
   .section-sub{
     margin-top:6px;
-    font-size:13px;
+    font-size:12px;
     color:var(--muted);
     font-weight:800;
     line-height:1.5;
   }
 
   .section-body{
-    padding:14px;
+    padding:12px;
   }
 
-  .bonus-grid{
+  .event-overview{
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+
+  .event-top-card{
+    background:linear-gradient(135deg,#ffffff 0%, #f6f2ff 100%);
+    border:1.5px solid #ddd6fb;
+    border-radius:22px;
+    padding:16px;
+    box-shadow:0 12px 28px rgba(99,80,180,.08);
+  }
+
+  .event-top-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:7px 12px;
+    border-radius:999px;
+    background:#7f6bb4;
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.01em;
+    margin-bottom:10px;
+  }
+
+  .event-top-title{
+    font-size:22px;
+    line-height:1.2;
+    font-weight:900;
+    letter-spacing:-.04em;
+    color:#24374f;
+  }
+
+  .event-top-desc{
+    margin-top:8px;
+    font-size:13px;
+    line-height:1.65;
+    color:#5d7390;
+    font-weight:800;
+    word-break:keep-all;
+  }
+
+  .event-boss-strip{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .event-boss-mini{
+    background:linear-gradient(180deg,#fff 0%, #fbfcff 100%);
+    border:1.5px solid #dde6f5;
+    border-radius:18px;
+    padding:12px 10px;
+    text-align:center;
+    box-shadow:var(--shadow-soft);
+  }
+
+  .event-boss-mini img{
+    width:68px;
+    height:68px;
+    object-fit:contain;
+    display:block;
+    margin:0 auto 8px;
+  }
+
+  .event-boss-mini-name{
+    font-size:13px;
+    font-weight:900;
+    color:#26384f;
+    letter-spacing:-.02em;
+    line-height:1.25;
+  }
+
+  .event-boss-mini-cp{
+    margin-top:5px;
+    font-size:12px;
+    font-weight:900;
+    color:#6b7f9b;
+    line-height:1.35;
+  }
+
+  .event-card-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
     gap:10px;
   }
 
-  .bonus-card{
-    background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
-    border:1.5px solid #dce6f4;
-    border-radius:20px;
+  .event-info-card{
+    background:linear-gradient(180deg,#fff 0%, #fcfdff 100%);
+    border:1.5px solid #dfe8f5;
+    border-radius:22px;
     padding:14px;
-    min-height:88px;
+    min-height:208px;
+    box-shadow:var(--shadow-soft);
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-start;
+    text-align:left;
   }
 
-  .bonus-label{
+  .event-info-icon{
+    width:62px;
+    height:62px;
+    border-radius:18px;
+    background:var(--icon-bg);
+    border:1px solid var(--icon-line);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.92),
+      0 8px 18px rgba(61,95,160,.05);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+    margin-bottom:16px;
+  }
+
+  .event-info-icon img{
+    width:34px;
+    height:34px;
+    object-fit:contain;
+    display:block;
+  }
+
+  .event-info-icon img[src=""]{
+    display:none;
+  }
+
+  .event-info-value{
+    font-size:18px;
+    line-height:1.22;
+    font-weight:900;
+    color:#24374f;
+    letter-spacing:-.03em;
+    word-break:keep-all;
+  }
+
+  .event-info-text{
+    margin-top:12px;
     font-size:12px;
-    color:#7a8ca8;
+    line-height:1.65;
+    color:#667c98;
+    font-weight:800;
+    word-break:keep-all;
+  }
+
+  .ticket-section{
+    display:grid;
+    gap:12px;
+  }
+
+  .ticket-box{
+    background:linear-gradient(135deg,#fff7fb 0%, #fff 100%);
+    border:1.5px solid #f0ddea;
+    border-radius:22px;
+    padding:14px;
+    box-shadow:0 8px 18px rgba(190,90,135,.07);
+  }
+
+  .ticket-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+  }
+
+  .ticket-name{
+    font-size:17px;
+    font-weight:900;
+    color:#2a3b53;
+    letter-spacing:-.02em;
+  }
+
+  .ticket-price{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 14px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #edd9e6;
+    color:#c14e86;
+    font-size:15px;
     font-weight:900;
   }
 
-  .bonus-value{
-    margin-top:8px;
-    font-size:16px;
-    line-height:1.45;
+  .ticket-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .ticket-item{
+    background:#fff;
+    border:1px solid #f2e3ec;
+    border-radius:18px;
+    padding:12px;
+  }
+
+  .ticket-item strong{
+    display:block;
+    margin-bottom:8px;
+    font-size:12px;
+    color:#8b6d82;
     font-weight:900;
-    letter-spacing:-.02em;
+  }
+
+  .ticket-reward{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .ticket-reward-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .ticket-reward-icon{
+    width:40px;
+    height:40px;
+    border-radius:14px;
+    background:linear-gradient(180deg,#fff 0%, #fff4f9 100%);
+    border:1px solid #f0dee8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.92);
+  }
+
+  .ticket-reward-icon img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+    display:block;
+  }
+
+  .ticket-reward-icon img[src=""]{
+    display:none;
+  }
+
+  .ticket-reward-text{
+    font-size:14px;
+    line-height:1.35;
+    color:#2f425b;
+    font-weight:900;
+    word-break:keep-all;
+  }
+
+  .ticket-note-list{
+    display:grid;
+    gap:8px;
+  }
+
+  .ticket-note-item{
+    background:#f7f9fc;
+    border:1px solid #dde7f4;
+    border-radius:16px;
+    padding:12px 14px;
+    font-size:12px;
+    line-height:1.6;
+    font-weight:800;
+    color:#415873;
     word-break:keep-all;
   }
 
   .boss-tabs{
     display:flex;
-    gap:10px;
+    gap:8px;
     overflow-x:auto;
     padding-bottom:2px;
     -webkit-overflow-scrolling:touch;
@@ -191,11 +401,11 @@
   .boss-tabs::-webkit-scrollbar{display:none}
 
   .boss-tab{
-    min-width:132px;
-    border-radius:22px;
+    min-width:120px;
+    border-radius:18px;
     border:1.5px solid #dce6f4;
     background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
-    padding:12px;
+    padding:10px;
     text-align:center;
     cursor:pointer;
     transition:.18s ease;
@@ -205,7 +415,7 @@
 
   .boss-tab:hover{
     transform:translateY(-2px);
-    box-shadow:var(--shadow-hover);
+    box-shadow:0 18px 36px rgba(43,67,110,.12);
   }
 
   .boss-tab.active{
@@ -215,8 +425,8 @@
   }
 
   .boss-tab img{
-    width:72px;
-    height:72px;
+    width:64px;
+    height:64px;
     object-fit:contain;
     display:block;
     margin:0 auto 8px;
@@ -224,7 +434,7 @@
   }
 
   .boss-tab-name{
-    font-size:15px;
+    font-size:14px;
     font-weight:900;
     letter-spacing:-.02em;
     line-height:1.2;
@@ -249,7 +459,7 @@
   .boss-hero{
     background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
     border:1.5px solid #dce6f4;
-    border-radius:24px;
+    border-radius:20px;
     overflow:hidden;
   }
 
@@ -268,25 +478,34 @@
 
   .boss-name-en{
     margin-top:4px;
-    font-size:14px;
+    font-size:13px;
     color:#6f81a0;
     font-weight:800;
   }
 
   .boss-hero-image{
-    padding:18px 16px;
+    padding:14px 12px;
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:220px;
+    min-height:180px;
     background:#fbfdff;
+    flex-direction:column;
+    gap:10px;
   }
 
   .boss-hero-image img{
     max-width:100%;
-    max-height:220px;
+    max-height:180px;
     object-fit:contain;
     display:block;
+  }
+
+  .boss-cp{
+    font-size:13px;
+    font-weight:900;
+    color:#6b7f9b;
+    text-align:center;
   }
 
   .boss-info-table{
@@ -302,13 +521,13 @@
   .boss-info-row:first-child{border-top:0}
 
   .boss-info-cell{
-    min-height:48px;
+    min-height:46px;
     padding:10px 12px;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:14px;
+    font-size:13px;
     font-weight:900;
     color:#334863;
   }
@@ -325,31 +544,31 @@
 
   .boss-info-wide.label{
     background:#faf2f4;
-    font-size:14px;
+    font-size:13px;
     font-weight:900;
     color:#334863;
   }
 
   .boss-info-wide.value{
-    font-size:15px;
+    font-size:14px;
     font-weight:900;
     color:#334863;
   }
 
   .weakness-grid{
     display:grid;
-    grid-template-columns:120px 80px 1fr;
+    grid-template-columns:92px 68px 1fr;
     border-top:1px solid #f0f4fa;
   }
 
   .weakness-grid > div{
-    min-height:52px;
-    padding:10px 12px;
+    min-height:50px;
+    padding:9px 8px;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:14px;
+    font-size:13px;
     font-weight:900;
     color:#334863;
     border-top:1px solid #f0f4fa;
@@ -372,14 +591,14 @@
   }
 
   .move-card{
-    min-height:86px;
+    min-height:78px;
     border-top:1px solid #f0f4fa;
     border-right:1px solid #f0f4fa;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
-    padding:12px;
+    padding:10px;
   }
 
   .move-card:nth-child(2n){
@@ -387,7 +606,7 @@
   }
 
   .move-name{
-    font-size:15px;
+    font-size:14px;
     font-weight:900;
     line-height:1.2;
   }
@@ -401,8 +620,8 @@
   }
 
   .move-type-icon{
-    width:18px;
-    height:18px;
+    width:16px;
+    height:16px;
     object-fit:contain;
     display:block;
     flex-shrink:0;
@@ -410,7 +629,7 @@
 
   .move-rank{
     margin-top:4px;
-    font-size:13px;
+    font-size:12px;
     font-weight:900;
   }
 
@@ -421,22 +640,22 @@
   .recommend-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:12px;
+    gap:10px;
     margin-top:14px;
   }
 
   .role-card{
     background:linear-gradient(180deg,#fff 0%, #f9fbff 100%);
     border:1.5px solid #dce6f4;
-    border-radius:24px;
+    border-radius:20px;
     overflow:hidden;
   }
 
   .role-head{
-    padding:16px 14px;
+    padding:14px 12px;
     border-bottom:1px solid #e8eef8;
     text-align:center;
-    font-size:18px;
+    font-size:16px;
     font-weight:900;
     letter-spacing:-.03em;
   }
@@ -447,21 +666,22 @@
   }
 
   .role-item{
-    min-height:82px;
-    padding:10px 12px;
+    min-height:76px;
+    padding:10px 8px;
     border-top:1px solid #eef3fa;
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
+    flex-direction:column;
+    gap:6px;
     text-align:center;
   }
 
   .role-item:first-child{border-top:0}
 
   .role-item img{
-    width:42px;
-    height:42px;
+    width:38px;
+    height:38px;
     object-fit:contain;
     flex-shrink:0;
   }
@@ -471,14 +691,14 @@
   }
 
   .role-name{
-    font-size:15px;
+    font-size:14px;
     font-weight:900;
     letter-spacing:-.02em;
   }
 
   .role-skill{
     margin-top:3px;
-    font-size:13px;
+    font-size:12px;
     color:#607897;
     font-weight:800;
     white-space:pre-line;
@@ -488,10 +708,10 @@
     margin-top:14px;
     background:#faf4f5;
     border:1px solid #f0dfe3;
-    border-radius:22px;
-    padding:18px 16px;
+    border-radius:18px;
+    padding:16px 14px;
     text-align:center;
-    font-size:15px;
+    font-size:14px;
     line-height:1.7;
     font-weight:900;
     color:#314761;
@@ -506,23 +726,6 @@
     color:#6f81a0;
   }
 
-  .event-points{
-    margin-top:14px;
-    display:grid;
-    gap:8px;
-  }
-
-  .event-point{
-    padding:12px 14px;
-    border-radius:16px;
-    background:#f6f9ff;
-    border:1px solid #dde7f5;
-    font-size:13px;
-    font-weight:800;
-    color:#33465f;
-    line-height:1.45;
-  }
-
   .bottom-nav{
     position:fixed;
     left:50%;
@@ -534,15 +737,15 @@
     border-radius:24px;
     box-shadow:0 18px 36px rgba(42,59,97,.12);
     backdrop-filter:blur(10px);
-    padding:10px;
+    padding:8px;
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:10px;
+    gap:8px;
     z-index:30;
   }
 
   .nav-item{
-    min-height:64px;
+    min-height:60px;
     border-radius:16px;
     text-decoration:none;
     color:#6f819e;
@@ -551,7 +754,7 @@
     justify-content:center;
     flex-direction:column;
     gap:6px;
-    font-size:12px;
+    font-size:11px;
     font-weight:900;
     transition:.18s ease;
     background:#f8fbff;
@@ -588,8 +791,8 @@
   .type-chip{
     display:inline-flex;
     align-items:center;
-    gap:6px;
-    padding:4px 8px;
+    gap:5px;
+    padding:3px 7px;
     border-radius:999px;
     background:#f4f8ff;
     border:1px solid #dce6f4;
@@ -597,14 +800,14 @@
   }
 
   .type-chip img{
-    width:18px;
-    height:18px;
+    width:16px;
+    height:16px;
     object-fit:contain;
     display:block;
   }
 
   .type-chip span{
-    font-size:13px;
+    font-size:12px;
     font-weight:900;
     color:#334863;
     white-space:nowrap;
@@ -618,183 +821,107 @@
     gap:8px;
   }
 
-  @media (max-width:768px){
+  @media (min-width:769px){
     .wrap{
-      padding:14px 12px 120px;
+      padding:16px 14px 110px;
     }
 
-    .hero{
-      padding:16px 16px;
-      border-radius:24px;
+    .event-boss-strip{
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
     }
 
-    .hero-title{
-      font-size:27px;
+    .event-card-grid{
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
     }
 
-    .hero-date{
-      font-size:13px;
+    .event-info-card{
+      min-height:220px;
+      padding:16px;
     }
 
-    .section-head{
-      padding:16px 16px 12px;
-      flex-direction:column;
-      align-items:flex-start;
-    }
-
-    .section-body{
-      padding:12px;
-    }
-
-    .bonus-grid{
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-    }
-
-    .bonus-card{
-      min-height:90px;
-      border-radius:18px;
-      padding:12px;
-    }
-
-    .bonus-value{
-      font-size:15px;
-    }
-
-    .boss-tabs{
-      gap:8px;
-    }
-
-    .boss-tab{
-      min-width:120px;
-      padding:10px;
-      border-radius:18px;
-    }
-
-    .boss-tab img{
-      width:64px;
-      height:64px;
-    }
-
-    .boss-hero{
+    .event-info-icon{
+      width:66px;
+      height:66px;
       border-radius:20px;
+      margin-bottom:18px;
     }
 
-    .boss-hero-image{
-      min-height:180px;
-      padding:14px 12px;
+    .event-info-icon img{
+      width:36px;
+      height:36px;
     }
 
-    .boss-hero-image img{
-      max-height:180px;
+    .event-info-value{
+      font-size:19px;
     }
 
-    .boss-info-cell,
-    .boss-info-wide.value,
-    .boss-info-wide.label{
+    .event-info-text{
       font-size:13px;
     }
 
-    .weakness-grid{
-      grid-template-columns:92px 68px 1fr;
-    }
-
-    .weakness-grid > div{
-      font-size:13px;
-      padding:9px 8px;
-    }
-
-    .moves-grid{
-      grid-template-columns:1fr 1fr;
-    }
-
-    .move-card{
-      min-height:78px;
-      padding:10px;
-    }
-
-    .move-name{
-      font-size:14px;
-    }
-
-    .move-type-icon{
-      width:16px;
-      height:16px;
-    }
-
-    .move-rank{
-      font-size:12px;
+    .ticket-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
     }
 
     .recommend-grid{
       grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .role-card{
-      border-radius:20px;
-    }
-
-    .role-head{
-      font-size:16px;
-      padding:14px 12px;
+      gap:12px;
     }
 
     .role-item{
-      min-height:76px;
-      padding:10px 8px;
-      flex-direction:column;
-      gap:6px;
+      min-height:82px;
+      padding:10px 12px;
+      flex-direction:row;
+      gap:10px;
     }
 
     .role-item img{
-      width:38px;
-      height:38px;
+      width:42px;
+      height:42px;
     }
 
     .role-name{
-      font-size:14px;
+      font-size:15px;
     }
 
     .role-skill{
-      font-size:12px;
+      font-size:13px;
     }
 
-    .tip-box{
-      border-radius:18px;
-      padding:16px 14px;
+    .section{
+      border-radius:26px;
+    }
+
+    .section-head{
+      padding:18px 18px 14px;
+      align-items:center;
+    }
+
+    .section-title{
+      font-size:20px;
+    }
+
+    .section-sub{
+      font-size:13px;
+    }
+
+    .section-body{
+      padding:14px;
+    }
+
+    .event-top-card{
+      border-radius:28px;
+      padding:18px;
+    }
+
+    .event-top-title{
+      font-size:26px;
+    }
+
+    .event-top-desc{
       font-size:14px;
-    }
-
-    .bottom-nav{
-      grid-template-columns:repeat(4,1fr);
-      gap:8px;
-      padding:8px;
-    }
-
-    .nav-item{
-      min-height:60px;
-      font-size:11px;
-    }
-
-    .type-chip{
-      padding:3px 7px;
-      gap:5px;
-    }
-
-    .type-chip img{
-      width:16px;
-      height:16px;
-    }
-
-    .type-chip span{
-      font-size:12px;
-    }
-  }
-
-  @media (max-width:420px){
-    .bonus-grid{
-      grid-template-columns:1fr;
     }
   }
 
@@ -810,47 +937,186 @@
 <body>
 <div class="wrap">
 
-  <section class="hero fade-up">
-    <div class="hero-title">거다이맥스 배틀</div>
-    <div class="hero-date">4/25 14:00 ~ 17:00</div>
-  </section>
-
   <section class="section fade-up delay-1">
-    <div class="section-head">
-      <div>
-        <div class="section-title">이벤트 핵심 정보</div>
-        <div class="section-sub">보너스와 진행 포인트를 먼저 확인하세요</div>
-      </div>
-    </div>
     <div class="section-body">
-      <div class="bonus-grid">
-        <div class="bonus-card">
-          <div class="bonus-label">맥스 파티클</div>
-          <div class="bonus-value">수집 한도 1,600</div>
-        </div>
-        <div class="bonus-card">
-          <div class="bonus-label">파워스폿</div>
-          <div class="bonus-value">모든 파워스폿에서 거다이맥스 배틀</div>
-        </div>
-        <div class="bonus-card">
-          <div class="bonus-label">추가 보너스</div>
-          <div class="bonus-value">파워스폿 더 자주 갱신 + 추가 파워스폿 활성화</div>
-        </div>
-        <div class="bonus-card">
-          <div class="bonus-label">기타</div>
-          <div class="bonus-value">파워스폿 맥스 파티클 8배 · 특별한 교환 최대 3회</div>
-        </div>
-      </div>
+      <div class="event-overview">
 
-      <div class="event-points">
-        <div class="event-point">리모트 레이드 일일 한도는 이벤트 기간 일부 구간에 10회에서 20회로 증가합니다.</div>
-        <div class="event-point">유료 티켓은 4.99달러이며, 다이버섯 1개·25,000 XP·6,400 맥스 파티클·맥스배틀 XP 2배 보너스를 안내합니다.</div>
-        <div class="event-point">다이버섯은 맥스배틀에서 다이맥스·거다이맥스 포켓몬의 피해를 일시적으로 2배로 높입니다.</div>
+        <div class="event-top-card">
+          <div class="event-top-badge">MAX BATTLE DAY</div>
+          <div class="event-top-title">Replay : GO Bigger<br>거다이맥스 맥스배틀 데이</div>
+          <div class="event-top-desc">
+            4월 25일 14:00 ~ 17:00 동안<br>
+            거다이맥스 이상해꽃 · 리자몽 · 거북왕 · 팬텀이 다시 등장합니다.
+          </div>
+        </div>
+
+        <div class="event-boss-strip">
+          <div class="event-boss-mini">
+            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm3.fGIGANTAMAX.icon.png" alt="거다이맥스 이상해꽃">
+            <div class="event-boss-mini-name">거다이맥스 이상해꽃</div>
+            <div class="event-boss-mini-cp">CP 1480 - 1554</div>
+          </div>
+
+          <div class="event-boss-mini">
+            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm6.fGIGANTAMAX.icon.png" alt="거다이맥스 리자몽">
+            <div class="event-boss-mini-name">거다이맥스 리자몽</div>
+            <div class="event-boss-mini-cp">CP 1574 - 1651</div>
+          </div>
+
+          <div class="event-boss-mini">
+            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm9.fGIGANTAMAX.icon.png" alt="거다이맥스 거북왕">
+            <div class="event-boss-mini-name">거다이맥스 거북왕</div>
+            <div class="event-boss-mini-cp">CP 1338 - 1409</div>
+          </div>
+
+          <div class="event-boss-mini">
+            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm94.fGIGANTAMAX.icon.png" alt="거다이맥스 팬텀">
+            <div class="event-boss-mini-name">거다이맥스 팬텀</div>
+            <div class="event-boss-mini-cp">CP 1566 - 1644</div>
+          </div>
+        </div>
+
+        <div class="event-card-grid">
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/mp-limit.png" alt="맥스 파티클 수집 상한">
+            </div>
+            <div class="event-info-value">하루 1,600 MP</div>
+            <div class="event-info-text">이벤트 기간 동안 하루 수집 한도가 1,600까지 증가합니다.</div>
+          </div>
+
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/adventure.png" alt="탐험 거리 감소">
+            </div>
+            <div class="event-info-value">거리 1/4</div>
+            <div class="event-info-text">맥스 파티클을 받을 수 있는 탐험 거리가 1/4로 감소합니다.</div>
+          </div>
+
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/adventure-2x.png" alt="탐험 파티클 2배">
+            </div>
+            <div class="event-info-value">맥스 파티클 2배</div>
+            <div class="event-info-text">탐험을 통해 획득하는 맥스 파티클이 2배로 증가합니다.</div>
+          </div>
+
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/mp-8x.png" alt="파워스폿 획득량">
+            </div>
+            <div class="event-info-value">맥스 파티클 8배</div>
+            <div class="event-info-text">같은 파워스폿에서도 이벤트 중 더 많은 파티클을 획득할 수 있습니다.</div>
+          </div>
+
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/power-spot-refresh.png" alt="파워스폿 갱신">
+            </div>
+            <div class="event-info-value">더 자주 갱신</div>
+            <div class="event-info-text">이벤트 동안 파워스폿이 더 자주 리프레시됩니다.</div>
+          </div>
+
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/special-trade.png" alt="특별한 교환">
+            </div>
+            <div class="event-info-value">하루 최대 3회</div>
+            <div class="event-info-text">이벤트 중 특별한 교환 횟수가 늘어나 하루 최대 3회까지 가능합니다.</div>
+          </div>
+
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/power-spot-battle.png" alt="거다이맥스 배틀 진행">
+            </div>
+            <div class="event-info-value">모든 파워스폿</div>
+            <div class="event-info-text">이벤트 시간 동안 모든 파워스폿에서 거다이맥스 배틀이 진행됩니다.</div>
+          </div>
+
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <img src="./images/event/remote-raid.png" alt="리모트 레이드 상한 증가">
+            </div>
+            <div class="event-info-value">하루 최대 20회</div>
+            <div class="event-info-text">이벤트 기간 동안 리모트 레이드 참여 횟수가 하루 최대 20회까지 증가합니다.</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
   <section class="section fade-up delay-2">
+    <div class="section-head">
+      <div>
+        <div class="section-title">유료 이벤트 티켓</div>
+        <div class="section-sub">구매 시 추가 보너스</div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <div class="ticket-section">
+
+        <div class="ticket-box">
+          <div class="ticket-top">
+            <div class="ticket-name">시간제한 리서치 티켓</div>
+            <div class="ticket-price">$4.99</div>
+          </div>
+
+          <div class="ticket-grid">
+            <div class="ticket-item">
+              <strong>시간제한 리서치 보상</strong>
+              <div class="ticket-reward">
+                <div class="ticket-reward-row">
+                  <div class="ticket-reward-icon">
+                    <img src="./images/event/max-mushroom.png" alt="다이버섯">
+                  </div>
+                  <div class="ticket-reward-text">다이버섯 1개</div>
+                </div>
+
+                <div class="ticket-reward-row">
+                  <div class="ticket-reward-icon">
+                    <img src="./images/event/xp.png" alt="XP">
+                  </div>
+                  <div class="ticket-reward-text">25,000 XP</div>
+                </div>
+
+                <div class="ticket-reward-row">
+                  <div class="ticket-reward-icon">
+                    <img src="./images/event/max-particle.png" alt="맥스 파티클">
+                  </div>
+                  <div class="ticket-reward-text">맥스 파티클 6,400개</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ticket-item">
+              <strong>추가 보너스</strong>
+              <div class="ticket-reward">
+                <div class="ticket-reward-row">
+                  <div class="ticket-reward-icon">
+                    <img src="./images/event/xp-boost.png" alt="XP 2배">
+                  </div>
+                  <div class="ticket-reward-text">맥스배틀 보상 XP 2배</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticket-note-list">
+          <div class="ticket-note-item">
+            이벤트가 종료되면 거다이맥스 / 다이맥스 <br>
+            정리된 도감으로 리뉴얼 할 예정입니다.<br>
+            업데이트 일자는 미정입니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section fade-up delay-3">
     <div class="section-head">
       <div>
         <div class="section-title">거다이맥스 보스 선택</div>
@@ -862,7 +1128,7 @@
     </div>
   </section>
 
-  <section class="section fade-up delay-3">
+  <section class="section fade-up">
     <div class="section-head">
       <div>
         <div class="section-title">보스 상세 공략</div>
@@ -879,6 +1145,7 @@
           </div>
           <div class="boss-hero-image">
             <img id="bossMainImage" src="" alt="">
+            <div class="boss-cp" id="bossCp"></div>
           </div>
 
           <div class="boss-info-table">
@@ -905,7 +1172,7 @@
 
         <div class="recommend-grid">
           <div class="role-card">
-            <div class="role-head">탱크 · 백업</div>
+            <div class="role-head">탱커 · 백업</div>
             <div class="role-list" id="tankList"></div>
           </div>
 
@@ -1026,21 +1293,35 @@
   }
 
   const MAX_POKEMON = {
-    charizard: { id: 6, name: '리자몽', gmax: true, skill: '회오리불꽃 / 용의숨결' },
-    venusaur: { id: 3, name: '이상해꽃', gmax: true, skill: '덩굴채찍 / 독채찍' },
-    blastoise: { id: 9, name: '거북왕', gmax: true, skill: '물대포 / 물기' },
-    gengar: { id: 94, name: '팬텀', gmax: true, skill: '고스트 딜러' },
+    blissey: { id: 242, name: '해피너스', skill: '막치기\\n다이월 / 다이리커버리' },
+    zamazenta: { id: 889, name: '자마젠타(방패왕)', skill: '메탈크로우\\n다이월 특화' },
+    zacian: { id: 888, name: '자시안(검왕)', skill: '메탈크로우\\n다이월 / 보조딜' },
+    suicune: { id: 245, name: '스이쿤', skill: '물대포\\n다이월' },
+    lapras: { id: 131, name: '라프라스', skill: '물대포 / 사이코웨이브\\n다이월 / 다이리커버리' },
+    omastar: { id: 139, name: '암스타', skill: '물대포 / 머드샷\\n다이월' },
+    excadrill: { id: 530, name: '몰드류', skill: '머드샷\\n다이어스 / 다이월' },
+    metagross: { id: 376, name: '메타그로스', skill: '사념의박치기 / 불릿펀치\\n다이사이코 / 다이웜 / 다이월' },
+    latios: { id: 381, name: '라티오스', skill: '사념의박치기\\n다이사이코' },
+    latias: { id: 380, name: '라티아스', skill: '사념의박치기\\n다이사이코' },
+    zapdos: { id: 145, name: '썬더', skill: '전기쇼크 / 차지빔\\n다이썬더' },
+    raikou: { id: 243, name: '라이코', skill: '전기쇼크 / 볼트체인지\\n다이썬더' },
+    moltres: { id: 146, name: '파이어', skill: '회오리불꽃 / 날개치기\\n다이번 / 다이제트' },
+    corviknight: { id: 823, name: '아머까오', skill: '에어슬래시 / 강철날개\\n다이월 / 다이제트' },
 
-    kingler: { id: 99, name: '킹크랩', gmax: true, skill: '집게해머' },
-    toxtricity: { id: 849, name: '스트린더', gmax: true, skill: '전기 딜러' },
+    charizard: { id: 6, name: '리자몽', gmax: true, skill: '거다이옥염' },
+    venusaur: { id: 3, name: '이상해꽃', gmax: true, skill: '거다이편달' },
+    blastoise: { id: 9, name: '거북왕', gmax: true, skill: '거다이포격' },
+    gengar: { id: 94, name: '팬텀', gmax: true, skill: '거다이환영' },
+    kingler: { id: 99, name: '킹크랩', gmax: true, skill: '거다이포말' },
+    toxtricity: { id: 849, name: '스트린더', gmax: true, skill: '거다이감전' },
+    rillaboom: { id: 812, name: '고릴타', gmax: true, skill: '거다이난타' },
+    inteleon: { id: 818, name: '인텔리레온', gmax: true, skill: '거다이저격' },
+    cinderace: { id: 815, name: '신데레이스', gmax: true, skill: '거다이화구' },
+    machamp: { id: 68, name: '괴력몬', gmax: true, skill: '거다이진권' },
 
-    metagross: { id: 376, name: '메타그로스', skill: '사념의박치기 / 불릿펀치' },
-    lapras: { id: 131, name: '라프라스', skill: '사이코웨이브' },
-    moltres: { id: 146, name: '파이어', skill: '회오리불꽃 / 날개치기' },
-    zapdos: { id: 145, name: '썬더', skill: '차지빔 / 전기쇼크' },
-    raikou: { id: 243, name: '라이코', skill: '전기쇼크 / 볼트체인지' },
-    rillaboom: { id: 812, name: '고릴타', skill: '잎날가르기' },
-    inteleon: { id: 818, name: '인텔리레온', skill: '물 딜러' }
+    gengarNormal: { id: 94, name: '팬텀', skill: '섀도클로\\n다이할로우' },
+    blastoiseNormal: { id: 9, name: '거북왕', skill: '물대포\\n다이스트림' },
+    rillaboomNormal: { id: 812, name: '고릴타', skill: '잎날가르기\\n다이그래스' }
   };
 
   const BOSSES = {
@@ -1051,6 +1332,7 @@
       nameKo: '거다이맥스 리자몽',
       nameEn: 'Gigantamax Charizard',
       imageId: 6,
+      cp: 'CP 1574 - 1651',
       shiny: '✨ 7.5%',
       types: ['불꽃', '비행'],
       weakness: [
@@ -1064,10 +1346,11 @@
         { type: '불꽃', name: '불대문자', rank: '보통', cls: 'easy' },
         { type: '드래곤', name: '드래곤클로', rank: '쉬움', cls: 'easy' }
       ],
-      tank: ['blastoise', 'moltres'],
-      attacker: ['kingler', 'toxtricity', 'inteleon', 'zapdos'],
-      tip: '바위가 가장 강력하고, 물 / 전기 딜러도 안정적입니다. 거다이맥스 기술 효율이 높다면 거다이맥스 포켓몬을 우선 사용하세요.<small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>'
+      tank: ['zamazenta', 'blissey', 'suicune', 'omastar', 'lapras', 'blastoise', 'moltres'],
+      attacker: ['toxtricity', 'inteleon', 'kingler', 'zapdos', 'raikou', 'blastoise', 'blastoiseNormal'],
+      tip: '불꽃 기술이 강한 패턴에서는 자마젠타 · 해피너스 · 스이쿤처럼 안정적으로 버티는 쪽이 편합니다.<small>어태커는 전기 / 물 위주로 구성하면 가장 무난합니다.</small>'
     },
+
     venusaur: {
       key: 'venusaur',
       tabName: '이상해꽃',
@@ -1075,22 +1358,24 @@
       nameKo: '거다이맥스 이상해꽃',
       nameEn: 'Gigantamax Venusaur',
       imageId: 3,
+      cp: 'CP 1480 - 1554',
       shiny: '✨ 7.5%',
       types: ['풀', '독'],
       weakness: [
-        { rate: '1.6x', types: ['비행', '불꽃', '얼음', '에스퍼'] },
+        { rate: '1.6x', types: ['불꽃', '비행', '얼음', '에스퍼'] },
         { rate: '', types: [] }
       ],
       moves: [
         { type: '풀', name: '하드플랜트', rank: '위험', cls: 'danger' },
         { type: '풀', name: '솔라빔', rank: '위험', cls: 'danger' },
-        { type: '풀', name: '꽃보라', rank: '쉬움', cls: 'easy' },
-        { type: '독', name: '오물폭탄', rank: '보통', cls: 'normal' }
+        { type: '풀', name: '꽃보라', rank: '보통', cls: 'normal' },
+        { type: '독', name: '오물폭탄', rank: '어려움', cls: 'normal' }
       ],
-      tank: ['charizard', 'metagross', 'moltres'],
-      attacker: ['charizard', 'gengar', 'zapdos', 'metagross'],
-      tip: '비행 / 불꽃 / 얼음 / 에스퍼 약점입니다. 리자몽과 파이어 계열이 안정적이며, 오물폭탄 패턴에는 약한 포켓몬을 오래 세우지 않는 편이 좋습니다.<small>거다이맥스 리자몽이 가능하면 우선 채용 추천</small>'
+      tank: ['zamazenta', 'corviknight', 'metagross', 'zacian', 'venusaur', 'charizard', 'moltres'],
+      attacker: ['cinderace', 'charizard', 'latios', 'metagross', 'moltres', 'machamp', 'latias'],
+      tip: '이상해꽃은 불꽃 · 비행 · 에스퍼 압박이 강합니다. 오물폭탄 패턴이 보이면 페어리 계열은 오래 세우지 않는 편이 더 안정적입니다.<small>신데레이스와 리자몽이 있으면 우선 채용하는 편이 좋습니다.</small>'
     },
+
     blastoise: {
       key: 'blastoise',
       tabName: '거북왕',
@@ -1098,6 +1383,7 @@
       nameKo: '거다이맥스 거북왕',
       nameEn: 'Gigantamax Blastoise',
       imageId: 9,
+      cp: 'CP 1338 - 1409',
       shiny: '✨ 7.5%',
       types: ['물'],
       weakness: [
@@ -1111,10 +1397,11 @@
         { type: '노말', name: '로켓박치기', rank: '보통', cls: 'normal' },
         { type: '강철', name: '러스터캐논', rank: '쉬움', cls: 'easy' }
       ],
-      tank: ['lapras', 'metagross', 'blastoise'],
-      attacker: ['rillaboom', 'toxtricity', 'venusaur', 'raikou'],
-      tip: '전기와 풀이 핵심 약점입니다. 스트린더 / 이상해꽃 / 라이코 축이 직관적이며, 하이드로캐논과 하이드로펌프 패턴은 우선 주의하세요.<small>탱커는 다이월 / 다이리커버리, 어태커는 다이어택 / 다이월 최대 레벨 추천</small>'
+      tank: ['blissey', 'zamazenta', 'lapras', 'suicune', 'zacian', 'blastoise', 'metagross'],
+      attacker: ['rillaboom', 'toxtricity', 'venusaur', 'zapdos', 'raikou', 'rillaboomNormal', 'metagross'],
+      tip: '거북왕은 전기와 풀이 핵심 약점입니다. 냉동빔 때문에 풀 타입만 몰아넣기보다는 전기 딜러와 섞는 구성이 더 안정적입니다.<small>고릴타와 스트린더가 있으면 체감이 좋습니다.</small>'
     },
+
     gengar: {
       key: 'gengar',
       tabName: '팬텀',
@@ -1122,6 +1409,7 @@
       nameKo: '거다이맥스 팬텀',
       nameEn: 'Gigantamax Gengar',
       imageId: 94,
+      cp: 'CP 1566 - 1644',
       shiny: '✨ 7.5%',
       types: ['고스트', '독'],
       weakness: [
@@ -1134,9 +1422,9 @@
         { type: '격투', name: '기합구슬', rank: '위험', cls: 'danger' },
         { type: '고스트', name: '병상첨병', rank: '보통', cls: 'normal' }
       ],
-      tank: ['blastoise', 'lapras', 'metagross', 'venusaur'],
-      attacker: ['gengar', 'metagross', 'rillaboom', 'zapdos'],
-      tip: '팬텀은 고스트 / 악 / 땅 / 에스퍼 약점이 핵심이며, 섀도볼과 기합구슬 패턴은 특히 주의가 필요합니다. 거다이맥스 팬텀이 가능하면 우선 채용하세요.<small>탱커 1 + 딜러 3 구성이 안정적이며, 회피가 매우 중요합니다.</small>'
+      tank: ['blissey', 'zacian', 'zamazenta', 'excadrill', 'metagross', 'lapras', 'venusaur'],
+      attacker: ['gengar', 'excadrill', 'latios', 'metagross', 'gengarNormal', 'zacian', 'lapras'],
+      tip: '팬텀은 섀도볼과 기합구슬 패턴이 특히 까다롭습니다. 탱커는 안정적으로 버티는 쪽을 두고, 어태커는 고스트 · 땅 · 에스퍼 축으로 짜는 편이 좋습니다.<small>거다이맥스 팬텀이 있으면 가장 먼저 넣는 구성이 편합니다.</small>'
     }
   };
 
@@ -1173,13 +1461,14 @@
 
   function renderRoleList(targetId, keys) {
     const wrap = document.getElementById(targetId);
-    wrap.innerHTML = keys.map(key => {
+    wrap.innerHTML = keys.map((key, index) => {
       const p = MAX_POKEMON[key];
+      const rank = index + 1;
       return `
         <div class="role-item">
           <img src="${getPokemonImage(p.id, !!p.gmax)}" alt="${p.name}">
           <div class="role-item-text">
-            <div class="role-name">${p.gmax ? `거다이맥스 ${p.name}` : p.name}</div>
+            <div class="role-name">${rank}위 · ${p.gmax ? `거다이맥스 ${p.name}` : p.name}</div>
             <div class="role-skill">${p.skill}</div>
           </div>
         </div>
@@ -1195,6 +1484,7 @@
     document.getElementById('bossNameEn').textContent = boss.nameEn;
     document.getElementById('bossMainImage').src = getPokemonImage(boss.imageId, true);
     document.getElementById('bossMainImage').alt = boss.nameKo;
+    document.getElementById('bossCp').textContent = boss.cp || '';
     document.getElementById('bossShiny').textContent = boss.shiny;
 
     document.getElementById('bossTypes').innerHTML = renderTypeList(boss.types);
