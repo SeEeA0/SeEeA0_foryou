@@ -6,13 +6,25 @@
 <title>Pokémon GO Raid Planner | 거다이맥스</title>
 <meta name="description" content="거다이맥스 보스 정보, 이벤트 보너스, 약점, 추천 포켓몬, 공략 포인트를 한눈에 확인하세요." />
 
+<meta property="og:title" content="거다이맥스 배틀 플래너" />
+<meta property="og:description" content="리자몽 · 이상해꽃 · 거북왕 · 팬텀 일정과 공략을 한눈에 확인하세요." />
+<meta property="og:image" content="https://사용자도메인/images/og/og-gigantamax.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="거다이맥스 배틀 플래너" />
+<meta name="twitter:description" content="리자몽 · 이상해꽃 · 거북왕 · 팬텀 일정과 공략을 한눈에 확인하세요." />
+<meta name="twitter:image" content="https://사용자도메인/images/og/og-gigantamax.jpg" />
+
 <style>
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
     font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
     background:
-      radial-gradient(circle at top left, rgba(124,88,233,.06), transparent 28%),
+      radial-gradient(circle at top left, rgba(124,88,233,.05), transparent 28%),
       linear-gradient(180deg,#eff4fb 0%, #edf3fb 100%);
     color:#1f2f46;
   }
@@ -20,7 +32,7 @@
   :root{
     --bg:#edf3fb;
     --card:#ffffff;
-    --line:#dbe5f3;
+    --line:#dce5f3;
     --line-soft:#e8eef8;
     --text:#1f2f46;
     --muted:#7486a3;
@@ -34,11 +46,11 @@
     --pink:#d85b85;
     --pink-soft:#fff1f6;
 
-    --icon-bg:linear-gradient(180deg,#f9fbff 0%, #eef4ff 100%);
-    --icon-line:#d9e4f5;
+    --icon-bg:linear-gradient(180deg,#fbfcff 0%, #eef4ff 100%);
+    --icon-line:#d7e2f4;
 
     --shadow:0 14px 32px rgba(43,67,110,.08);
-    --shadow-soft:0 10px 24px rgba(43,67,110,.05);
+    --shadow-soft:0 8px 22px rgba(43,67,110,.05);
     --shadow-hover:0 18px 36px rgba(43,67,110,.12);
   }
 
@@ -68,7 +80,7 @@
   }
 
   .section{
-    background:rgba(255,255,255,.96);
+    background:rgba(255,255,255,.97);
     border:1px solid var(--line);
     border-radius:24px;
     box-shadow:var(--shadow);
@@ -194,60 +206,50 @@
   }
 
   .event-info-card{
-    background:linear-gradient(180deg,#fff 0%, #fbfdff 100%);
+    background:linear-gradient(180deg,#fff 0%, #fcfdff 100%);
     border:1.5px solid #dfe8f5;
     border-radius:22px;
     padding:14px;
-    min-height:152px;
+    min-height:208px;
     box-shadow:var(--shadow-soft);
-  }
-
-  .event-info-head{
     display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:12px;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-start;
+    text-align:left;
   }
 
   .event-info-icon{
-    width:58px;
-    height:58px;
+    width:62px;
+    height:62px;
     border-radius:18px;
     background:var(--icon-bg);
     border:1px solid var(--icon-line);
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.9),
-      0 8px 18px rgba(61,95,160,.06);
+      inset 0 1px 0 rgba(255,255,255,.92),
+      0 8px 18px rgba(61,95,160,.05);
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
     flex-shrink:0;
+    margin-bottom:16px;
   }
 
   .event-info-icon img{
-    width:32px;
-    height:32px;
+    width:34px;
+    height:34px;
     object-fit:contain;
     display:block;
-    filter:contrast(1.02);
   }
 
   .event-info-icon img[src=""]{
     display:none;
   }
 
-  .event-info-label{
-    font-size:12px;
-    color:#8090ab;
-    font-weight:900;
-    line-height:1.35;
-    letter-spacing:-.01em;
-  }
-
   .event-info-value{
-    font-size:17px;
-    line-height:1.2;
+    font-size:18px;
+    line-height:1.22;
     font-weight:900;
     color:#24374f;
     letter-spacing:-.03em;
@@ -255,10 +257,10 @@
   }
 
   .event-info-text{
-    margin-top:9px;
+    margin-top:12px;
     font-size:12px;
-    line-height:1.55;
-    color:#607794;
+    line-height:1.65;
+    color:#667c98;
     font-weight:800;
     word-break:keep-all;
   }
@@ -349,7 +351,7 @@
     justify-content:center;
     overflow:hidden;
     flex-shrink:0;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.92);
   }
 
   .ticket-reward-icon img{
@@ -413,7 +415,7 @@
 
   .boss-tab:hover{
     transform:translateY(-2px);
-    box-shadow:var(--shadow-hover);
+    box-shadow:0 18px 36px rgba(43,67,110,.12);
   }
 
   .boss-tab.active{
@@ -835,19 +837,28 @@
     }
 
     .event-info-card{
-      min-height:156px;
+      min-height:220px;
       padding:16px;
     }
 
     .event-info-icon{
-      width:62px;
-      height:62px;
+      width:66px;
+      height:66px;
       border-radius:20px;
+      margin-bottom:18px;
     }
 
     .event-info-icon img{
-      width:34px;
-      height:34px;
+      width:36px;
+      height:36px;
+    }
+
+    .event-info-value{
+      font-size:19px;
+    }
+
+    .event-info-text{
+      font-size:13px;
     }
 
     .ticket-grid{
@@ -967,88 +978,64 @@
 
         <div class="event-card-grid">
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/mp-limit.png" alt="맥스 파티클 수집 상한">
-              </div>
-              <div class="event-info-label">맥스 파티클 수집 상한</div>
+            <div class="event-info-icon">
+              <img src="./images/event/mp-limit.png" alt="맥스 파티클 수집 상한">
             </div>
             <div class="event-info-value">하루 1,600 MP</div>
             <div class="event-info-text">이벤트 기간 동안 하루 수집 한도가 1,600까지 증가합니다.</div>
           </div>
 
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/adventure.png" alt="탐험 보너스">
-              </div>
-              <div class="event-info-label">탐험 거리 감소</div>
+            <div class="event-info-icon">
+              <img src="./images/event/adventure.png" alt="탐험 거리 감소">
             </div>
             <div class="event-info-value">거리 1/4</div>
             <div class="event-info-text">맥스 파티클을 받을 수 있는 탐험 거리가 1/4로 감소합니다.</div>
           </div>
 
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/adventure-2x.png" alt="탐험 파티클 2배">
-              </div>
-              <div class="event-info-label">탐험 파티클 증가</div>
+            <div class="event-info-icon">
+              <img src="./images/event/adventure-2x.png" alt="탐험 파티클 2배">
             </div>
             <div class="event-info-value">맥스 파티클 2배</div>
             <div class="event-info-text">탐험을 통해 획득하는 맥스 파티클이 2배로 증가합니다.</div>
           </div>
 
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/mp-8x.png" alt="파워스폿 획득량">
-              </div>
-              <div class="event-info-label">파워스폿 획득량</div>
+            <div class="event-info-icon">
+              <img src="./images/event/mp-8x.png" alt="파워스폿 획득량">
             </div>
             <div class="event-info-value">맥스 파티클 8배</div>
             <div class="event-info-text">같은 파워스폿에서도 이벤트 중 더 많은 파티클을 획득할 수 있습니다.</div>
           </div>
 
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/power-spot-refresh.png" alt="파워스폿 갱신">
-              </div>
-              <div class="event-info-label">파워스폿 갱신</div>
+            <div class="event-info-icon">
+              <img src="./images/event/power-spot-refresh.png" alt="파워스폿 갱신">
             </div>
             <div class="event-info-value">더 자주 갱신</div>
             <div class="event-info-text">이벤트 동안 파워스폿이 더 자주 리프레시됩니다.</div>
           </div>
 
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/special-trade.png" alt="특별한 교환">
-              </div>
-              <div class="event-info-label">특별한 교환</div>
+            <div class="event-info-icon">
+              <img src="./images/event/special-trade.png" alt="특별한 교환">
             </div>
             <div class="event-info-value">하루 최대 3회</div>
             <div class="event-info-text">이벤트 중 특별한 교환 횟수가 늘어나 하루 최대 3회까지 가능합니다.</div>
           </div>
 
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/power-spot-battle.png" alt="거다이맥스 배틀 진행">
-              </div>
-              <div class="event-info-label">거다이맥스 배틀 진행</div>
+            <div class="event-info-icon">
+              <img src="./images/event/power-spot-battle.png" alt="거다이맥스 배틀 진행">
             </div>
             <div class="event-info-value">모든 파워스폿</div>
             <div class="event-info-text">이벤트 시간 동안 모든 파워스폿에서 거다이맥스 배틀이 진행됩니다.</div>
           </div>
 
           <div class="event-info-card">
-            <div class="event-info-head">
-              <div class="event-info-icon">
-                <img src="./images/event/remote-raid.png" alt="리모트 레이드 상한 증가">
-              </div>
-              <div class="event-info-label">리모트 레이드 상한</div>
+            <div class="event-info-icon">
+              <img src="./images/event/remote-raid.png" alt="리모트 레이드 상한 증가">
             </div>
             <div class="event-info-value">하루 최대 20회</div>
             <div class="event-info-text">이벤트 기간 동안 리모트 레이드 참여 횟수가 하루 최대 20회까지 증가합니다.</div>
@@ -1119,12 +1106,9 @@
 
         <div class="ticket-note-list">
           <div class="ticket-note-item">
-            루이님 메롱 메롱메롱
-          </div>
-          <div class="ticket-note-item">
-            이 페이지는 거다이맥스 이벤트가 종료 된 후<br>
-            거다이맥스 정보 페이지로 변경될 예정입니다<br>
-            업데이트는 거다이맥스 > 다이맥스 순서로 할꺼에요!<br>
+            이벤트가 종료되면 거다이맥스 / 다이맥스 <br>
+            정리된 도감으로 리뉴얼 할 예정입니다.<br>
+            업데이트 일자는 미정입니다.
           </div>
         </div>
 
@@ -1309,20 +1293,20 @@
   }
 
   const MAX_POKEMON = {
-    blissey: { id: 242, name: '해피너스', skill: '막치기\n다이월 / 다이리커버리' },
-    zamazenta: { id: 889, name: '자마젠타(방패왕)', skill: '메탈크로우\n다이월 특화' },
-    zacian: { id: 888, name: '자시안(검왕)', skill: '메탈크로우\n다이월 / 보조딜' },
-    suicune: { id: 245, name: '스이쿤', skill: '물대포\n다이월' },
-    lapras: { id: 131, name: '라프라스', skill: '물대포 / 사이코웨이브\n다이월 / 다이리커버리' },
-    omastar: { id: 139, name: '암스타', skill: '물대포 / 머드샷\n다이월' },
-    excadrill: { id: 530, name: '몰드류', skill: '머드샷\n다이어스 / 다이월' },
-    metagross: { id: 376, name: '메타그로스', skill: '사념의박치기 / 불릿펀치\n다이사이코 / 다이웜 / 다이월' },
-    latios: { id: 381, name: '라티오스', skill: '사념의박치기\n다이사이കോ' },
-    latias: { id: 380, name: '라티아스', skill: '사념의박치기\n다이사이코' },
-    zapdos: { id: 145, name: '썬더', skill: '전기쇼크 / 차지빔\n다이썬더' },
-    raikou: { id: 243, name: '라이코', skill: '전기쇼크 / 볼트체인지\n다이썬더' },
-    moltres: { id: 146, name: '파이어', skill: '회오리불꽃 / 날개치기\n다이번 / 다이제트' },
-    corviknight: { id: 823, name: '아머까오', skill: '에어슬래시 / 강철날개\n다이월 / 다이제트' },
+    blissey: { id: 242, name: '해피너스', skill: '막치기\\n다이월 / 다이리커버리' },
+    zamazenta: { id: 889, name: '자마젠타(방패왕)', skill: '메탈크로우\\n다이월 특화' },
+    zacian: { id: 888, name: '자시안(검왕)', skill: '메탈크로우\\n다이월 / 보조딜' },
+    suicune: { id: 245, name: '스이쿤', skill: '물대포\\n다이월' },
+    lapras: { id: 131, name: '라프라스', skill: '물대포 / 사이코웨이브\\n다이월 / 다이리커버리' },
+    omastar: { id: 139, name: '암스타', skill: '물대포 / 머드샷\\n다이월' },
+    excadrill: { id: 530, name: '몰드류', skill: '머드샷\\n다이어스 / 다이월' },
+    metagross: { id: 376, name: '메타그로스', skill: '사념의박치기 / 불릿펀치\\n다이사이코 / 다이웜 / 다이월' },
+    latios: { id: 381, name: '라티오스', skill: '사념의박치기\\n다이사이코' },
+    latias: { id: 380, name: '라티아스', skill: '사념의박치기\\n다이사이코' },
+    zapdos: { id: 145, name: '썬더', skill: '전기쇼크 / 차지빔\\n다이썬더' },
+    raikou: { id: 243, name: '라이코', skill: '전기쇼크 / 볼트체인지\\n다이썬더' },
+    moltres: { id: 146, name: '파이어', skill: '회오리불꽃 / 날개치기\\n다이번 / 다이제트' },
+    corviknight: { id: 823, name: '아머까오', skill: '에어슬래시 / 강철날개\\n다이월 / 다이제트' },
 
     charizard: { id: 6, name: '리자몽', gmax: true, skill: '거다이옥염' },
     venusaur: { id: 3, name: '이상해꽃', gmax: true, skill: '거다이편달' },
@@ -1335,9 +1319,9 @@
     cinderace: { id: 815, name: '신데레이스', gmax: true, skill: '거다이화구' },
     machamp: { id: 68, name: '괴력몬', gmax: true, skill: '거다이진권' },
 
-    gengarNormal: { id: 94, name: '팬텀', skill: '섀도클로\n다이할로우' },
-    blastoiseNormal: { id: 9, name: '거북왕', skill: '물대포\n다이스트림' },
-    rillaboomNormal: { id: 812, name: '고릴타', skill: '잎날가르기\n다이그래스' }
+    gengarNormal: { id: 94, name: '팬텀', skill: '섀도클로\\n다이할로우' },
+    blastoiseNormal: { id: 9, name: '거북왕', skill: '물대포\\n다이스트림' },
+    rillaboomNormal: { id: 812, name: '고릴타', skill: '잎날가르기\\n다이그래스' }
   };
 
   const BOSSES = {
