@@ -1084,6 +1084,7 @@ let answers = {};
 let currentPage = 0;
 let currentRendered = null;
 let draggingScale = null;
+let isComposing = false;
 
 const QUESTIONS_PER_PAGE = 4;
 const TOTAL_PAGES = Math.ceil(questionBank.length / QUESTIONS_PER_PAGE);
@@ -1104,13 +1105,35 @@ const submitBtn = document.getElementById('submitBtn');
 const quizForm = document.getElementById('quizForm');
 const analyzingOverlay = document.getElementById('analyzingOverlay');
 
-nickname.addEventListener('input', () => {
-  nickname.value = nickname.value.replace(/\s+/g, '').replace(/[^ㄱ-ㅎ가-힣ㅏ-ㅣ]/g, '');
+function sanitizeNickname(value) {
+  return value
+    .replace(/\s+/g, '')
+    .replace(/[^ㄱ-ㅎ가-힣ㅏ-ㅣ]/g, '')
+    .slice(0, 8);
+}
+
+function updateNicknameErrorState() {
   if (/^[ㄱ-ㅎ가-힣ㅏ-ㅣ]{0,8}$/.test(nickname.value)) {
     nickname.classList.remove('input-error');
   } else {
     nickname.classList.add('input-error');
   }
+}
+
+nickname.addEventListener('compositionstart', () => {
+  isComposing = true;
+});
+
+nickname.addEventListener('compositionend', () => {
+  isComposing = false;
+  nickname.value = sanitizeNickname(nickname.value);
+  updateNicknameErrorState();
+});
+
+nickname.addEventListener('input', () => {
+  if (isComposing) return;
+  nickname.value = sanitizeNickname(nickname.value);
+  updateNicknameErrorState();
 });
 
 trainerLevel.addEventListener('input', () => {
@@ -1132,7 +1155,9 @@ function validateTrainerLevel() {
 }
 
 function validateNickname() {
+  nickname.value = sanitizeNickname(nickname.value);
   const value = nickname.value.trim();
+
   if (!value) {
     alert('닉네임을 입력해주세요.');
     nickname.focus();
@@ -1411,6 +1436,10 @@ window.addEventListener('pointerup', () => {
 });
 
 document.getElementById('startBtn').addEventListener('click', () => {
+  nickname.blur();
+  nickname.value = sanitizeNickname(nickname.value);
+  updateNicknameErrorState();
+
   if (!validateTrainerLevel()) return;
   if (!validateNickname()) return;
 
@@ -1452,6 +1481,9 @@ quizForm.addEventListener('submit', (e) => {
     return;
   }
 
+  nickname.blur();
+  nickname.value = sanitizeNickname(nickname.value);
+
   const resultType = getResultType();
   const profile = typeProfiles[resultType];
   const bestType = profile.best || '노말';
@@ -1471,6 +1503,7 @@ quizForm.addEventListener('submit', (e) => {
   showResult();
   window.scrollTo({ top:0, behavior:'smooth' });
 
+  document.getElementById('resultNickname').textContent = nickname.value;
   analyzingOverlay.classList.remove('hidden');
 
   document.getElementById('resultLevel').textContent = '15';
@@ -1484,7 +1517,6 @@ quizForm.addEventListener('submit', (e) => {
   });
 
   setTimeout(() => {
-    document.getElementById('resultNickname').textContent = nickname.value;
     document.getElementById('resultHpText').textContent = `${randomHp} / ${randomHp} HP`;
 
     document.getElementById('resultMainCopy').textContent = profile.mainCopy;
@@ -1544,6 +1576,7 @@ document.getElementById('retryBtn').addEventListener('click', () => {
   questionSlider.innerHTML = '';
   document.getElementById('resultLevel').textContent = '15';
   analyzingOverlay.classList.add('hidden');
+  nickname.classList.remove('input-error');
   showIntro();
   window.scrollTo({ top:0, behavior:'smooth' });
 });
