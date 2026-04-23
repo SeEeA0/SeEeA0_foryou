@@ -701,7 +701,38 @@
     font-size:12px;
     color:#607897;
     font-weight:800;
-    white-space:pre-line;
+    line-height:1.5;
+  }
+
+  .skill-line{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:4px;
+  }
+
+  .skill-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    padding:2px 6px;
+    border-radius:999px;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    font-size:11px;
+    line-height:1.2;
+    color:#4b627d;
+    font-weight:900;
+  }
+
+  .skill-chip img{
+    width:14px;
+    height:14px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
   }
 
   .tip-box{
@@ -888,6 +919,10 @@
 
     .role-skill{
       font-size:13px;
+    }
+
+    .skill-chip{
+      font-size:12px;
     }
 
     .section{
@@ -1292,6 +1327,83 @@
     `;
   }
 
+  function inferSkillType(skillName) {
+    const name = String(skillName || '').trim();
+
+    const map = {
+      '막치기': '노말',
+      '메탈크로우': '강철',
+      '물대포': '물',
+      '사이코웨이브': '에스퍼',
+      '머드샷': '땅',
+      '사념의박치기': '에스퍼',
+      '불릿펀치': '강철',
+      '전기쇼크': '전기',
+      '차지빔': '전기',
+      '볼트체인지': '전기',
+      '회오리불꽃': '불꽃',
+      '날개치기': '비행',
+      '에어슬래시': '비행',
+      '강철날개': '강철',
+      '섀도클로': '고스트',
+      '잎날가르기': '풀',
+
+      '다이월': '노말',
+      '다이리커버리': '노말',
+      '다이어스': '땅',
+      '다이사이코': '에스퍼',
+      '다이웜': '강철',
+      '다이썬더': '전기',
+      '다이번': '불꽃',
+      '다이제트': '비행',
+      '다이할로우': '고스트',
+      '다이스트림': '물',
+      '다이그래스': '풀',
+
+      '다이월 특화': '노말',
+      '보조딜': '노말',
+
+      '거다이옥염': '불꽃',
+      '거다이편달': '풀',
+      '거다이포격': '물',
+      '거다이환영': '고스트',
+      '거다이포말': '물',
+      '거다이감전': '전기',
+      '거다이난타': '풀',
+      '거다이저격': '물',
+      '거다이화구': '불꽃',
+      '거다이진권': '격투'
+    };
+
+    return map[name] || '';
+  }
+
+  function renderSkillText(skillText) {
+    if (!skillText) return '';
+
+    return String(skillText)
+      .split('\\n')
+      .map(line => {
+        const skills = line.split('/').map(v => v.trim()).filter(Boolean);
+
+        return `
+          <div class="skill-line">
+            ${skills.map(skill => {
+              const type = inferSkillType(skill);
+              const icon = getTypeIcon(type);
+              return `
+                <span class="skill-chip">
+                  ${icon ? `<img src="${icon}" alt="${type}">` : ''}
+                  <span>${skill}</span>
+                </span>
+              `;
+            }).join('')}
+          </div>
+        `;
+      })
+      .join('');
+  }
+
   const MAX_POKEMON = {
     blissey: { id: 242, name: '해피너스', skill: '막치기\\n다이월 / 다이리커버리' },
     zamazenta: { id: 889, name: '자마젠타(방패왕)', skill: '메탈크로우\\n다이월 특화' },
@@ -1469,7 +1581,7 @@
           <img src="${getPokemonImage(p.id, !!p.gmax)}" alt="${p.name}">
           <div class="role-item-text">
             <div class="role-name">${rank}위 · ${p.gmax ? `거다이맥스 ${p.name}` : p.name}</div>
-            <div class="role-skill">${p.skill}</div>
+            <div class="role-skill">${renderSkillText(p.skill)}</div>
           </div>
         </div>
       `;
