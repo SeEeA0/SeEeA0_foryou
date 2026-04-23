@@ -36,47 +36,15 @@
     --line-soft:#e8eef8;
     --text:#1f2f46;
     --muted:#7486a3;
-
     --blue:#3567d7;
-    --blue-soft:#edf4ff;
-
-    --purple:#7c58e9;
-    --purple-soft:#f3eeff;
-
-    --pink:#d85b85;
-    --pink-soft:#fff1f6;
-
-    --icon-bg:linear-gradient(180deg,#fbfcff 0%, #eef4ff 100%);
-    --icon-line:#d7e2f4;
-
     --shadow:0 14px 32px rgba(43,67,110,.08);
     --shadow-soft:0 8px 22px rgba(43,67,110,.05);
-    --shadow-hover:0 18px 36px rgba(43,67,110,.12);
   }
 
   .wrap{
     max-width:1180px;
     margin:0 auto;
     padding:12px 12px 110px;
-  }
-
-  .fade-up{
-    opacity:0;
-    transform:translateY(10px);
-    animation:fadeUp .55s ease forwards;
-  }
-  .delay-1{animation-delay:.05s}
-  .delay-2{animation-delay:.12s}
-  .delay-3{animation-delay:.18s}
-
-  @keyframes fadeUp{
-    from{opacity:0;transform:translateY(10px)}
-    to{opacity:1;transform:translateY(0)}
-  }
-
-  @keyframes softFloat{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-4px)}
   }
 
   .section{
@@ -116,280 +84,6 @@
     padding:12px;
   }
 
-  .event-overview{
-    display:grid;
-    gap:12px;
-  }
-
-  .event-top-card{
-    background:linear-gradient(135deg,#ffffff 0%, #f6f2ff 100%);
-    border:1.5px solid #ddd6fb;
-    border-radius:22px;
-    padding:16px;
-    box-shadow:0 12px 28px rgba(99,80,180,.08);
-  }
-
-  .event-top-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    padding:7px 12px;
-    border-radius:999px;
-    background:#7f6bb4;
-    color:#fff;
-    font-size:11px;
-    font-weight:900;
-    letter-spacing:.01em;
-    margin-bottom:10px;
-  }
-
-  .event-top-title{
-    font-size:22px;
-    line-height:1.2;
-    font-weight:900;
-    letter-spacing:-.04em;
-    color:#24374f;
-  }
-
-  .event-top-desc{
-    margin-top:8px;
-    font-size:13px;
-    line-height:1.65;
-    color:#5d7390;
-    font-weight:800;
-    word-break:keep-all;
-  }
-
-  .event-boss-strip{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-  }
-
-  .event-boss-mini{
-    background:linear-gradient(180deg,#fff 0%, #fbfcff 100%);
-    border:1.5px solid #dde6f5;
-    border-radius:18px;
-    padding:12px 10px;
-    text-align:center;
-    box-shadow:var(--shadow-soft);
-  }
-
-  .event-boss-mini img{
-    width:68px;
-    height:68px;
-    object-fit:contain;
-    display:block;
-    margin:0 auto 8px;
-  }
-
-  .event-boss-mini-name{
-    font-size:13px;
-    font-weight:900;
-    color:#26384f;
-    letter-spacing:-.02em;
-    line-height:1.25;
-  }
-
-  .event-boss-mini-cp{
-    margin-top:5px;
-    font-size:12px;
-    font-weight:900;
-    color:#6b7f9b;
-    line-height:1.35;
-  }
-
-  .event-card-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
-
-  .event-info-card{
-    background:linear-gradient(180deg,#fff 0%, #fcfdff 100%);
-    border:1.5px solid #dfe8f5;
-    border-radius:22px;
-    padding:14px;
-    min-height:208px;
-    box-shadow:var(--shadow-soft);
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    justify-content:flex-start;
-    text-align:left;
-  }
-
-  .event-info-icon{
-    width:62px;
-    height:62px;
-    border-radius:18px;
-    background:var(--icon-bg);
-    border:1px solid var(--icon-line);
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.92),
-      0 8px 18px rgba(61,95,160,.05);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    flex-shrink:0;
-    margin-bottom:16px;
-  }
-
-  .event-info-icon img{
-    width:34px;
-    height:34px;
-    object-fit:contain;
-    display:block;
-  }
-
-  .event-info-icon img[src=""]{
-    display:none;
-  }
-
-  .event-info-value{
-    font-size:18px;
-    line-height:1.22;
-    font-weight:900;
-    color:#24374f;
-    letter-spacing:-.03em;
-    word-break:keep-all;
-  }
-
-  .event-info-text{
-    margin-top:12px;
-    font-size:12px;
-    line-height:1.65;
-    color:#667c98;
-    font-weight:800;
-    word-break:keep-all;
-  }
-
-  .ticket-section{
-    display:grid;
-    gap:12px;
-  }
-
-  .ticket-box{
-    background:linear-gradient(135deg,#fff7fb 0%, #fff 100%);
-    border:1.5px solid #f0ddea;
-    border-radius:22px;
-    padding:14px;
-    box-shadow:0 8px 18px rgba(190,90,135,.07);
-  }
-
-  .ticket-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:12px;
-  }
-
-  .ticket-name{
-    font-size:17px;
-    font-weight:900;
-    color:#2a3b53;
-    letter-spacing:-.02em;
-  }
-
-  .ticket-price{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:8px 14px;
-    border-radius:999px;
-    background:#fff;
-    border:1px solid #edd9e6;
-    color:#c14e86;
-    font-size:15px;
-    font-weight:900;
-  }
-
-  .ticket-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
-  .ticket-item{
-    background:#fff;
-    border:1px solid #f2e3ec;
-    border-radius:18px;
-    padding:12px;
-  }
-
-  .ticket-item strong{
-    display:block;
-    margin-bottom:8px;
-    font-size:12px;
-    color:#8b6d82;
-    font-weight:900;
-  }
-
-  .ticket-reward{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-  }
-
-  .ticket-reward-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-
-  .ticket-reward-icon{
-    width:40px;
-    height:40px;
-    border-radius:14px;
-    background:linear-gradient(180deg,#fff 0%, #fff4f9 100%);
-    border:1px solid #f0dee8;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    flex-shrink:0;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.92);
-  }
-
-  .ticket-reward-icon img{
-    width:24px;
-    height:24px;
-    object-fit:contain;
-    display:block;
-  }
-
-  .ticket-reward-icon img[src=""]{
-    display:none;
-  }
-
-  .ticket-reward-text{
-    font-size:14px;
-    line-height:1.35;
-    color:#2f425b;
-    font-weight:900;
-    word-break:keep-all;
-  }
-
-  .ticket-note-list{
-    display:grid;
-    gap:8px;
-  }
-
-  .ticket-note-item{
-    background:#f7f9fc;
-    border:1px solid #dde7f4;
-    border-radius:16px;
-    padding:12px 14px;
-    font-size:12px;
-    line-height:1.6;
-    font-weight:800;
-    color:#415873;
-    word-break:keep-all;
-  }
-
   .boss-tabs{
     display:flex;
     gap:8px;
@@ -413,24 +107,17 @@
     box-shadow:0 8px 20px rgba(43,67,110,.05);
   }
 
-  .boss-tab:hover{
-    transform:translateY(-2px);
-    box-shadow:0 18px 36px rgba(43,67,110,.12);
-  }
-
   .boss-tab.active{
     border-color:#bfd2ef;
     box-shadow:0 0 0 2px rgba(83,123,221,.12);
-    transform:translateY(-1px);
   }
 
   .boss-tab img{
-    width:64px;
-    height:64px;
+    width:56px;
+    height:56px;
     object-fit:contain;
     display:block;
     margin:0 auto 8px;
-    animation:softFloat 3.8s ease-in-out infinite;
   }
 
   .boss-tab-name{
@@ -445,15 +132,6 @@
     font-size:11px;
     color:#7486a3;
     font-weight:800;
-  }
-
-  .boss-panel{
-    display:none;
-  }
-
-  .boss-panel.active{
-    display:block;
-    animation:fadeUp .3s ease;
   }
 
   .boss-hero{
@@ -488,7 +166,7 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    min-height:180px;
+    min-height:160px;
     background:#fbfdff;
     flex-direction:column;
     gap:10px;
@@ -496,7 +174,7 @@
 
   .boss-hero-image img{
     max-width:100%;
-    max-height:180px;
+    max-height:150px;
     object-fit:contain;
     display:block;
   }
@@ -517,7 +195,6 @@
     grid-template-columns:1fr 1fr;
     border-top:1px solid #f0f4fa;
   }
-
   .boss-info-row:first-child{border-top:0}
 
   .boss-info-cell{
@@ -639,8 +316,8 @@
 
   .recommend-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
+    grid-template-columns:1fr;
+    gap:14px;
     margin-top:14px;
   }
 
@@ -655,53 +332,130 @@
     padding:14px 12px;
     border-bottom:1px solid #e8eef8;
     text-align:center;
-    font-size:16px;
+    font-size:18px;
     font-weight:900;
     letter-spacing:-.03em;
   }
 
   .role-list{
-    display:flex;
-    flex-direction:column;
+    display:grid;
+    grid-template-columns:1fr;
   }
 
-  .role-item{
-    min-height:76px;
-    padding:10px 8px;
+  .poke-card{
+    position:relative;
     border-top:1px solid #eef3fa;
+    padding:14px 12px 0;
+    background:linear-gradient(180deg,#ffffff 0%, #fbfdff 100%);
+  }
+  .poke-card:first-child{border-top:0}
+
+  .poke-rank{
+    position:absolute;
+    top:12px;
+    left:12px;
+    font-size:15px;
+    font-weight:900;
+    color:#3d73dd;
+    line-height:1;
+  }
+
+  .poke-name{
+    text-align:center;
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    line-height:1.25;
+    color:#22354d;
+    padding:0 36px;
+    min-height:50px;
     display:flex;
     align-items:center;
     justify-content:center;
-    flex-direction:column;
-    gap:6px;
-    text-align:center;
   }
 
-  .role-item:first-child{border-top:0}
+  .poke-image-wrap{
+    min-height:108px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 0 12px;
+  }
 
-  .role-item img{
-    width:38px;
-    height:38px;
+  .poke-image{
+    width:88px;
+    height:88px;
     object-fit:contain;
+    display:block;
+  }
+
+  .poke-skill-table{
+    margin-top:2px;
+    border-top:1px solid #dfe7f4;
+    background:#fff;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .poke-skill-col{
+    border-left:1px solid #e5edf8;
+  }
+  .poke-skill-col:first-child{border-left:0}
+
+  .poke-skill-head{
+    min-height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:8px 6px;
+    font-size:12px;
+    font-weight:900;
+    color:#314761;
+    background:#f5f8fd;
+    border-bottom:1px solid #e5edf8;
+  }
+
+  .poke-skill-body{
+    min-height:64px;
+    padding:10px 8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:8px;
+  }
+
+  .skill-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    min-height:32px;
+    padding:6px 10px;
+    border-radius:999px;
+    background:#f4f8ff;
+    border:1px solid #dce6f4;
+    font-size:13px;
+    line-height:1.2;
+    color:#435b77;
+    font-weight:900;
+    word-break:keep-all;
+  }
+
+  .skill-chip img{
+    width:16px;
+    height:16px;
+    object-fit:contain;
+    display:block;
     flex-shrink:0;
   }
 
-  .role-item-text{
-    line-height:1.25;
-  }
-
-  .role-name{
+  .skill-empty{
     font-size:14px;
     font-weight:900;
-    letter-spacing:-.02em;
-  }
-
-  .role-skill{
-    margin-top:3px;
-    font-size:12px;
-    color:#607897;
-    font-weight:800;
-    white-space:pre-line;
+    color:#9aa9bd;
+    line-height:1.2;
+    padding-top:4px;
   }
 
   .tip-box{
@@ -761,13 +515,6 @@
     border:1px solid transparent;
   }
 
-  .nav-item:hover{
-    background:#f3f7ff;
-    color:#486995;
-    border-color:#d6e3f3;
-    transform:translateY(-1px);
-  }
-
   .nav-item.active{
     background:#edf4ff;
     color:#3567d7;
@@ -779,8 +526,8 @@
     line-height:1;
   }
 
-  .type-inline,
-  .type-chip-list{
+  .type-chip-list,
+  .weakness-type-wrap{
     display:flex;
     align-items:center;
     justify-content:center;
@@ -813,115 +560,85 @@
     white-space:nowrap;
   }
 
-  .weakness-type-wrap{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-
-  @media (min-width:769px){
-    .wrap{
-      padding:16px 14px 110px;
-    }
-
-    .event-boss-strip{
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-    }
-
-    .event-card-grid{
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-
-    .event-info-card{
-      min-height:220px;
-      padding:16px;
-    }
-
-    .event-info-icon{
-      width:66px;
-      height:66px;
-      border-radius:20px;
-      margin-bottom:18px;
-    }
-
-    .event-info-icon img{
-      width:36px;
-      height:36px;
-    }
-
-    .event-info-value{
-      font-size:19px;
-    }
-
-    .event-info-text{
-      font-size:13px;
-    }
-
-    .ticket-grid{
-      grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-
+  @media (min-width: 860px){
     .recommend-grid{
       grid-template-columns:1fr 1fr;
       gap:12px;
     }
 
-    .role-item{
-      min-height:82px;
-      padding:10px 12px;
-      flex-direction:row;
-      gap:10px;
+    .role-list{
+      grid-template-columns:1fr 1fr;
     }
 
-    .role-item img{
-      width:42px;
-      height:42px;
+    .poke-name{
+      font-size:18px;
+      min-height:46px;
     }
 
-    .role-name{
-      font-size:15px;
+    .poke-image{
+      width:78px;
+      height:78px;
+    }
+  }
+
+  @media (min-width: 1200px){
+    .wrap{
+      padding:16px 14px 110px;
     }
 
-    .role-skill{
-      font-size:13px;
+    .boss-tab img{
+      width:60px;
+      height:60px;
     }
 
-    .section{
-      border-radius:26px;
+    .role-list{
+      grid-template-columns:1fr 1fr;
     }
 
-    .section-head{
-      padding:18px 18px 14px;
-      align-items:center;
+    .poke-card{
+      padding:12px 10px 0;
     }
 
-    .section-title{
-      font-size:20px;
+    .poke-name{
+      font-size:16px;
+      min-height:42px;
+      padding:0 32px;
     }
 
-    .section-sub{
-      font-size:13px;
-    }
-
-    .section-body{
-      padding:14px;
-    }
-
-    .event-top-card{
-      border-radius:28px;
-      padding:18px;
-    }
-
-    .event-top-title{
-      font-size:26px;
-    }
-
-    .event-top-desc{
+    .poke-rank{
       font-size:14px;
+    }
+
+    .poke-image-wrap{
+      min-height:92px;
+      padding:6px 0 10px;
+    }
+
+    .poke-image{
+      width:70px;
+      height:70px;
+    }
+
+    .poke-skill-head{
+      font-size:11px;
+      min-height:34px;
+    }
+
+    .poke-skill-body{
+      min-height:58px;
+      padding:8px 6px;
+      gap:6px;
+    }
+
+    .skill-chip{
+      font-size:12px;
+      min-height:28px;
+      padding:5px 9px;
+    }
+
+    .skill-chip img{
+      width:14px;
+      height:14px;
     }
   }
 
@@ -937,186 +654,7 @@
 <body>
 <div class="wrap">
 
-  <section class="section fade-up delay-1">
-    <div class="section-body">
-      <div class="event-overview">
-
-        <div class="event-top-card">
-          <div class="event-top-badge">MAX BATTLE DAY</div>
-          <div class="event-top-title">Replay : GO Bigger<br>거다이맥스 맥스배틀 데이</div>
-          <div class="event-top-desc">
-            4월 25일 14:00 ~ 17:00 동안<br>
-            거다이맥스 이상해꽃 · 리자몽 · 거북왕 · 팬텀이 다시 등장합니다.
-          </div>
-        </div>
-
-        <div class="event-boss-strip">
-          <div class="event-boss-mini">
-            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm3.fGIGANTAMAX.icon.png" alt="거다이맥스 이상해꽃">
-            <div class="event-boss-mini-name">거다이맥스 이상해꽃</div>
-            <div class="event-boss-mini-cp">CP 1480 - 1554</div>
-          </div>
-
-          <div class="event-boss-mini">
-            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm6.fGIGANTAMAX.icon.png" alt="거다이맥스 리자몽">
-            <div class="event-boss-mini-name">거다이맥스 리자몽</div>
-            <div class="event-boss-mini-cp">CP 1574 - 1651</div>
-          </div>
-
-          <div class="event-boss-mini">
-            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm9.fGIGANTAMAX.icon.png" alt="거다이맥스 거북왕">
-            <div class="event-boss-mini-name">거다이맥스 거북왕</div>
-            <div class="event-boss-mini-cp">CP 1338 - 1409</div>
-          </div>
-
-          <div class="event-boss-mini">
-            <img src="https://cdn.leekduck.com/assets/img/pokemon_icons/pm94.fGIGANTAMAX.icon.png" alt="거다이맥스 팬텀">
-            <div class="event-boss-mini-name">거다이맥스 팬텀</div>
-            <div class="event-boss-mini-cp">CP 1566 - 1644</div>
-          </div>
-        </div>
-
-        <div class="event-card-grid">
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/mp-limit.png" alt="맥스 파티클 수집 상한">
-            </div>
-            <div class="event-info-value">하루 1,600 MP</div>
-            <div class="event-info-text">이벤트 기간 동안 하루 수집 한도가 1,600까지 증가합니다.</div>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/adventure.png" alt="탐험 거리 감소">
-            </div>
-            <div class="event-info-value">거리 1/4</div>
-            <div class="event-info-text">맥스 파티클을 받을 수 있는 탐험 거리가 1/4로 감소합니다.</div>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/adventure-2x.png" alt="탐험 파티클 2배">
-            </div>
-            <div class="event-info-value">맥스 파티클 2배</div>
-            <div class="event-info-text">탐험을 통해 획득하는 맥스 파티클이 2배로 증가합니다.</div>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/mp-8x.png" alt="파워스폿 획득량">
-            </div>
-            <div class="event-info-value">맥스 파티클 8배</div>
-            <div class="event-info-text">같은 파워스폿에서도 이벤트 중 더 많은 파티클을 획득할 수 있습니다.</div>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/power-spot-refresh.png" alt="파워스폿 갱신">
-            </div>
-            <div class="event-info-value">더 자주 갱신</div>
-            <div class="event-info-text">이벤트 동안 파워스폿이 더 자주 리프레시됩니다.</div>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/special-trade.png" alt="특별한 교환">
-            </div>
-            <div class="event-info-value">하루 최대 3회</div>
-            <div class="event-info-text">이벤트 중 특별한 교환 횟수가 늘어나 하루 최대 3회까지 가능합니다.</div>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/power-spot-battle.png" alt="거다이맥스 배틀 진행">
-            </div>
-            <div class="event-info-value">모든 파워스폿</div>
-            <div class="event-info-text">이벤트 시간 동안 모든 파워스폿에서 거다이맥스 배틀이 진행됩니다.</div>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <img src="./images/event/remote-raid.png" alt="리모트 레이드 상한 증가">
-            </div>
-            <div class="event-info-value">하루 최대 20회</div>
-            <div class="event-info-text">이벤트 기간 동안 리모트 레이드 참여 횟수가 하루 최대 20회까지 증가합니다.</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="section fade-up delay-2">
-    <div class="section-head">
-      <div>
-        <div class="section-title">유료 이벤트 티켓</div>
-        <div class="section-sub">구매 시 추가 보너스</div>
-      </div>
-    </div>
-
-    <div class="section-body">
-      <div class="ticket-section">
-
-        <div class="ticket-box">
-          <div class="ticket-top">
-            <div class="ticket-name">시간제한 리서치 티켓</div>
-            <div class="ticket-price">$4.99</div>
-          </div>
-
-          <div class="ticket-grid">
-            <div class="ticket-item">
-              <strong>시간제한 리서치 보상</strong>
-              <div class="ticket-reward">
-                <div class="ticket-reward-row">
-                  <div class="ticket-reward-icon">
-                    <img src="./images/event/max-mushroom.png" alt="다이버섯">
-                  </div>
-                  <div class="ticket-reward-text">다이버섯 1개</div>
-                </div>
-
-                <div class="ticket-reward-row">
-                  <div class="ticket-reward-icon">
-                    <img src="./images/event/xp.png" alt="XP">
-                  </div>
-                  <div class="ticket-reward-text">25,000 XP</div>
-                </div>
-
-                <div class="ticket-reward-row">
-                  <div class="ticket-reward-icon">
-                    <img src="./images/event/max-particle.png" alt="맥스 파티클">
-                  </div>
-                  <div class="ticket-reward-text">맥스 파티클 6,400개</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="ticket-item">
-              <strong>추가 보너스</strong>
-              <div class="ticket-reward">
-                <div class="ticket-reward-row">
-                  <div class="ticket-reward-icon">
-                    <img src="./images/event/xp-boost.png" alt="XP 2배">
-                  </div>
-                  <div class="ticket-reward-text">맥스배틀 보상 XP 2배</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="ticket-note-list">
-          <div class="ticket-note-item">
-            이벤트가 종료되면 거다이맥스 / 다이맥스 <br>
-            정리된 도감으로 리뉴얼 할 예정입니다.<br>
-            업데이트 일자는 미정입니다.
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="section fade-up delay-3">
+  <section class="section">
     <div class="section-head">
       <div>
         <div class="section-title">거다이맥스 보스 선택</div>
@@ -1128,7 +666,7 @@
     </div>
   </section>
 
-  <section class="section fade-up">
+  <section class="section">
     <div class="section-head">
       <div>
         <div class="section-title">보스 상세 공략</div>
@@ -1137,53 +675,51 @@
     </div>
 
     <div class="section-body">
-      <div class="boss-panel active" id="bossPanel">
-        <div class="boss-hero">
-          <div class="boss-hero-top">
-            <div class="boss-name-ko" id="bossNameKo"></div>
-            <div class="boss-name-en" id="bossNameEn"></div>
-          </div>
-          <div class="boss-hero-image">
-            <img id="bossMainImage" src="" alt="">
-            <div class="boss-cp" id="bossCp"></div>
-          </div>
-
-          <div class="boss-info-table">
-            <div class="boss-info-row">
-              <div class="boss-info-cell label">색이 다른 모습</div>
-              <div class="boss-info-cell" id="bossShiny"></div>
-            </div>
-
-            <div class="boss-info-wide label">타입</div>
-            <div class="boss-info-wide value" id="bossTypes"></div>
-
-            <div class="weakness-grid">
-              <div class="weakness-side">상성</div>
-              <div id="bossWeaknessRate1"></div>
-              <div id="bossWeaknessTypes1"></div>
-              <div id="bossWeaknessRate2"></div>
-              <div id="bossWeaknessTypes2"></div>
-            </div>
-
-            <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
-            <div class="moves-grid" id="bossMoves"></div>
-          </div>
+      <div class="boss-hero">
+        <div class="boss-hero-top">
+          <div class="boss-name-ko" id="bossNameKo"></div>
+          <div class="boss-name-en" id="bossNameEn"></div>
+        </div>
+        <div class="boss-hero-image">
+          <img id="bossMainImage" src="" alt="">
+          <div class="boss-cp" id="bossCp"></div>
         </div>
 
-        <div class="recommend-grid">
-          <div class="role-card">
-            <div class="role-head">탱커 · 백업</div>
-            <div class="role-list" id="tankList"></div>
+        <div class="boss-info-table">
+          <div class="boss-info-row">
+            <div class="boss-info-cell label">색이 다른 모습</div>
+            <div class="boss-info-cell" id="bossShiny"></div>
           </div>
 
-          <div class="role-card">
-            <div class="role-head">어태커</div>
-            <div class="role-list" id="attackerList"></div>
+          <div class="boss-info-wide label">타입</div>
+          <div class="boss-info-wide value" id="bossTypes"></div>
+
+          <div class="weakness-grid">
+            <div class="weakness-side">상성</div>
+            <div id="bossWeaknessRate1"></div>
+            <div id="bossWeaknessTypes1"></div>
+            <div id="bossWeaknessRate2"></div>
+            <div id="bossWeaknessTypes2"></div>
           </div>
+
+          <div class="boss-info-wide label">스페셜 기술 (Charge moves)</div>
+          <div class="moves-grid" id="bossMoves"></div>
         </div>
-
-        <div class="tip-box" id="bossTip"></div>
       </div>
+
+      <div class="recommend-grid">
+        <div class="role-card">
+          <div class="role-head">탱커 · 백업</div>
+          <div class="role-list" id="tankList"></div>
+        </div>
+
+        <div class="role-card">
+          <div class="role-head">어태커</div>
+          <div class="role-list" id="attackerList"></div>
+        </div>
+      </div>
+
+      <div class="tip-box" id="bossTip"></div>
     </div>
   </section>
 
@@ -1290,6 +826,83 @@
         <span>${move.name}</span>
       </div>
     `;
+  }
+
+  function inferSkillType(skillName) {
+    const name = String(skillName || '').trim();
+
+    const map = {
+      '막치기': '노말',
+      '메탈크로우': '강철',
+      '물대포': '물',
+      '사이코웨이브': '에스퍼',
+      '머드샷': '땅',
+      '사념의박치기': '에스퍼',
+      '불릿펀치': '강철',
+      '전기쇼크': '전기',
+      '차지빔': '전기',
+      '볼트체인지': '전기',
+      '회오리불꽃': '불꽃',
+      '날개치기': '비행',
+      '에어슬래시': '비행',
+      '강철날개': '강철',
+      '섀도클로': '고스트',
+      '잎날가르기': '풀',
+
+      '다이월': '노말',
+      '다이리커버리': '노말',
+      '다이어스': '땅',
+      '다이사이코': '에스퍼',
+      '다이웜': '강철',
+      '다이썬더': '전기',
+      '다이번': '불꽃',
+      '다이제트': '비행',
+      '다이할로우': '고스트',
+      '다이스트림': '물',
+      '다이그래스': '풀',
+
+      '거다이옥염': '불꽃',
+      '거다이편달': '풀',
+      '거다이포격': '물',
+      '거다이환영': '고스트',
+      '거다이포말': '물',
+      '거다이감전': '전기',
+      '거다이난타': '풀',
+      '거다이저격': '물',
+      '거다이화구': '불꽃',
+      '거다이진권': '격투'
+    };
+
+    return map[name] || '';
+  }
+
+  function splitSkills(skillText) {
+    const lines = String(skillText || '').split('\\n').map(v => v.trim()).filter(Boolean);
+    const normal = [];
+    const special = [];
+
+    lines.forEach((line, lineIndex) => {
+      const parts = line.split('/').map(v => v.trim()).filter(Boolean);
+      if (lineIndex === 0) normal.push(...parts);
+      else special.push(...parts);
+    });
+
+    return { normal, special };
+  }
+
+  function renderSkillChips(skills) {
+    if (!skills.length) return `<div class="skill-empty">-</div>`;
+
+    return skills.map(skill => {
+      const type = inferSkillType(skill);
+      const icon = getTypeIcon(type);
+      return `
+        <span class="skill-chip">
+          ${icon ? `<img src="${icon}" alt="${type}">` : ''}
+          <span>${skill}</span>
+        </span>
+      `;
+    }).join('');
   }
 
   const MAX_POKEMON = {
@@ -1459,21 +1072,42 @@
     }).join('');
   }
 
-  function renderRoleList(targetId, keys) {
-    const wrap = document.getElementById(targetId);
-    wrap.innerHTML = keys.map((key, index) => {
-      const p = MAX_POKEMON[key];
-      const rank = index + 1;
-      return `
-        <div class="role-item">
-          <img src="${getPokemonImage(p.id, !!p.gmax)}" alt="${p.name}">
-          <div class="role-item-text">
-            <div class="role-name">${rank}위 · ${p.gmax ? `거다이맥스 ${p.name}` : p.name}</div>
-            <div class="role-skill">${p.skill}</div>
+  function renderPokemonCard(key, index) {
+    const p = MAX_POKEMON[key];
+    const rank = index + 1;
+    const skills = splitSkills(p.skill);
+
+    return `
+      <div class="poke-card">
+        <div class="poke-rank">${rank}위</div>
+        <div class="poke-name">${p.gmax ? `거다이맥스 ${p.name}` : p.name}</div>
+
+        <div class="poke-image-wrap">
+          <img class="poke-image" src="${getPokemonImage(p.id, !!p.gmax)}" alt="${p.name}">
+        </div>
+
+        <div class="poke-skill-table">
+          <div class="poke-skill-col">
+            <div class="poke-skill-head">노말기술</div>
+            <div class="poke-skill-body">
+              ${renderSkillChips(skills.normal)}
+            </div>
+          </div>
+
+          <div class="poke-skill-col">
+            <div class="poke-skill-head">스페셜기술</div>
+            <div class="poke-skill-body">
+              ${renderSkillChips(skills.special)}
+            </div>
           </div>
         </div>
-      `;
-    }).join('');
+      </div>
+    `;
+  }
+
+  function renderRoleList(targetId, keys) {
+    const wrap = document.getElementById(targetId);
+    wrap.innerHTML = keys.map((key, index) => renderPokemonCard(key, index)).join('');
   }
 
   function renderBoss(key) {
@@ -1488,7 +1122,6 @@
     document.getElementById('bossShiny').textContent = boss.shiny;
 
     document.getElementById('bossTypes').innerHTML = renderTypeList(boss.types);
-
     document.getElementById('bossWeaknessRate1').textContent = boss.weakness[0]?.rate || '';
     document.getElementById('bossWeaknessTypes1').innerHTML = renderWeaknessTypes(boss.weakness[0]?.types || []);
     document.getElementById('bossWeaknessRate2').textContent = boss.weakness[1]?.rate || '';
